@@ -125,6 +125,7 @@ class AppsTab extends StatelessWidget {
                               content: Column(
                                 children: [
                                   AppFeedPost(
+                                    nevent: '1',
                                     content:
                                         'Yeah, this is why I\'m not using Nostr so much on mobile. The browser experience is king, for now.',
                                     profileName: 'James Lewis',
@@ -172,6 +173,9 @@ class AppsTab extends StatelessWidget {
                                     },
                                     onLinkTap: (url) {
                                       print(url);
+                                    },
+                                    onReply: (nevent) {
+                                      print(nevent);
                                     },
                                     zaps: [
                                       Zap(
