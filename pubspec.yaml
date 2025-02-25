@@ -1,5 +1,5 @@
-name: zaplab_design_demo
-description: "Zaplab Design Demo"
+name: zapchat
+description: "Zapchat"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -41,6 +41,7 @@ dependencies:
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
   window_manager: ^0.4.3
+  riverpod_annotation: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +54,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.13.1
+  riverpod_generator: ^2.3.9
+  build_runner: ^2.4.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

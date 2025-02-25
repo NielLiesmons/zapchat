@@ -1,14 +1,14 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class LoadersTab extends StatelessWidget {
-  const LoadersTab({super.key});
+class ReposTab extends StatelessWidget {
+  const ReposTab({super.key});
 
   TabData tabData(BuildContext context) {
     final theme = AppTheme.of(context);
 
     return TabData(
-      label: 'Loaders',
-      icon: AppIcon.s16(theme.icons.characters.zap),
+      label: 'Repos',
+      icon: const AppEmojiContentType(contentType: 'repo'),
       content: Builder(
         builder: (context) {
           final theme = AppTheme.of(context);
@@ -17,16 +17,7 @@ class LoadersTab extends StatelessWidget {
             padding: const AppEdgeInsets.all(AppGapSize.s16),
             child: Column(
               children: [
-                AppButton(
-                  content: [
-                    AppLoadingDots(),
-                  ],
-                  onTap: () {},
-                  inactiveGradient: theme.colors.blurple66,
-                  pressedGradient: theme.colors.blurple66,
-                ),
-                const AppGap.s16(),
-                const AppLoadBar(progress: 0.72),
+                AppText.h1('Repos'),
               ],
             ),
           );

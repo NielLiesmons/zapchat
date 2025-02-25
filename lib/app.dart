@@ -2,25 +2,17 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/homepage.dart';
+import 'src/router.dart';
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   App({super.key});
 
-  final _router = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const HomePage(),
-      ),
-    ],
-  );
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ProviderScope(
       child: AppBase(
-        title: 'Zaplab Demo',
-        routerConfig: _router,
+        title: 'Zapchat',
+        routerConfig: goRouter,
         appLogo: Image.asset(
           'assets/images/logo.png',
           fit: BoxFit.contain,

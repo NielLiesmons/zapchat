@@ -8,11 +8,7 @@ class PostsTab extends StatelessWidget {
 
     return TabData(
       label: 'Posts',
-      icon: AppIcon.s16(
-        theme.icons.characters.zap,
-        outlineColor: theme.colors.white66,
-        outlineThickness: LineThicknessData.normal().medium,
-      ),
+      icon: const AppEmojiContentType(contentType: 'post'),
       content: Builder(
         builder: (context) {
           return Column(

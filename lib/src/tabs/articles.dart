@@ -1,21 +1,21 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppsTab extends StatelessWidget {
-  const AppsTab({super.key});
+class ArticlesTab extends StatelessWidget {
+  const ArticlesTab({super.key});
 
   TabData tabData(BuildContext context) {
     final theme = AppTheme.of(context);
 
     return TabData(
-      label: 'Apps',
-      icon: const AppEmojiContentType(contentType: 'app'),
+      label: 'Articles',
+      icon: const AppEmojiContentType(contentType: 'article'),
       content: Builder(
         builder: (context) {
           return AppContainer(
-            padding: const AppEdgeInsets.all(AppGapSize.s12),
+            padding: AppEdgeInsets.all(AppGapSize.s16),
             child: Column(
               children: [
-                AppText.h1('Apps'),
+                AppText.h1('Articles'),
               ],
             ),
           );
