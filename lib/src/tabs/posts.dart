@@ -25,7 +25,10 @@ class PostsTab extends StatelessWidget {
                   // Simulate network delay
                   await Future.delayed(const Duration(seconds: 1));
                   return NostrEvent(
-                    nevent: '1',
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     contentType: 'article',
                     title: 'Simple Questions',
                     imageUrl:
@@ -63,7 +66,10 @@ class PostsTab extends StatelessWidget {
                 },
                 zaps: [
                   Zap(
-                    nevent: '1',
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     amount: 110,
                     profileName: 'ثعبان',
                     profilePicUrl:
@@ -71,7 +77,10 @@ class PostsTab extends StatelessWidget {
                     timestamp: DateTime.now(),
                   ),
                   Zap(
-                    nevent: '1',
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     amount: 56,
                     profileName: 'Pip',
                     profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
@@ -80,6 +89,10 @@ class PostsTab extends StatelessWidget {
                 ],
                 reactions: [
                   Reaction(
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     emojiName: 'todo',
                     emojiUrl:
                         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Femojiguide.org%2Fimages%2Femoji%2Fc%2F1e2fb481tsfvyc.png&f=1&nofb=1&ipt=73d8789f7a055e207ff06bd2278184a2ab6108a8c019f59d0526d05f91d925e7&ipo=images',
@@ -89,6 +102,10 @@ class PostsTab extends StatelessWidget {
                     timestamp: DateTime.now(),
                   ),
                   Reaction(
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     emojiName: 'todo',
                     emojiUrl:
                         'https://cdn.satellite.earth/60a5e73bfa6dfd35bd0b144f38f6ed2aaab0606b2bd68b623f419ae0709fa10a.png',
@@ -129,7 +146,10 @@ class PostsTab extends StatelessWidget {
                   // Simulate network delay
                   await Future.delayed(const Duration(seconds: 1));
                   return NostrEvent(
-                    nevent: '1',
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     contentType: 'article',
                     title: 'Swipe. Action.',
                     imageUrl:
@@ -167,7 +187,10 @@ class PostsTab extends StatelessWidget {
                 },
                 zaps: [
                   Zap(
-                    nevent: '1',
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     amount: 110,
                     profileName: 'ثعبان',
                     profilePicUrl:
@@ -175,7 +198,10 @@ class PostsTab extends StatelessWidget {
                     timestamp: DateTime.now(),
                   ),
                   Zap(
-                    nevent: '1',
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     amount: 56,
                     profileName: 'Pip',
                     profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
@@ -184,6 +210,10 @@ class PostsTab extends StatelessWidget {
                 ],
                 reactions: [
                   Reaction(
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     emojiName: 'todo',
                     emojiUrl:
                         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Femojiguide.org%2Fimages%2Femoji%2Fc%2F1e2fb481tsfvyc.png&f=1&nofb=1&ipt=73d8789f7a055e207ff06bd2278184a2ab6108a8c019f59d0526d05f91d925e7&ipo=images',
@@ -193,6 +223,10 @@ class PostsTab extends StatelessWidget {
                     timestamp: DateTime.now(),
                   ),
                   Reaction(
+                    npub:
+                        'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+                    nevent:
+                        'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                     emojiName: 'todo',
                     emojiUrl:
                         'https://cdn.satellite.earth/60a5e73bfa6dfd35bd0b144f38f6ed2aaab0606b2bd68b623f419ae0709fa10a.png',

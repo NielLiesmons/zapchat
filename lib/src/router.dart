@@ -6,6 +6,7 @@ import 'providers/messages.dart';
 import 'providers/chat_screen.dart';
 import 'providers/posts.dart';
 import 'providers/articles.dart';
+import 'providers/current_user.dart';
 
 final goRouter = GoRouter(
   routes: [
@@ -26,6 +27,7 @@ final goRouter = GoRouter(
               final articles =
                   ref.watch(articlesProvider.notifier).getArticles(npub);
               final profile = ref.watch(chatScreenDataProvider)[npub];
+              final currentNpub = ref.watch(currentUserProvider);
 
               return AppChatScreen(
                 npub: npub,
@@ -34,6 +36,7 @@ final goRouter = GoRouter(
                 messages: messages,
                 posts: posts,
                 articles: articles,
+                currentNpub: currentNpub,
                 mainCount: profile?.mainCount,
                 contentCounts: profile?.contentCounts ?? {},
                 onNostrEvent: (event) {

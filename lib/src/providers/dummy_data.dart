@@ -40,6 +40,7 @@ final dummyMessages = {
   'npub1': [
     Message(
       nevent: 'nevent1',
+      npub: 'npub1',
       message: 'Ow, I see. This is not just a chat app, is it?',
       profileName: 'Youser Naim',
       profilePicUrl:
@@ -48,6 +49,7 @@ final dummyMessages = {
     ),
     Message(
       nevent: 'nevent2',
+      npub: 'npub1',
       message: 'This is awesome!',
       profileName: 'John',
       profilePicUrl: 'https://example.com/john.jpg',
@@ -55,6 +57,7 @@ final dummyMessages = {
     ),
     Message(
       nevent: 'nevent3',
+      npub: 'npub1',
       message: 'Yeah, loving the UX',
       profileName: 'John',
       profilePicUrl: 'https://example.com/john.jpg',
@@ -62,6 +65,7 @@ final dummyMessages = {
     ),
     Message(
       nevent: 'nevent4',
+      npub: 'npub1',
       message: 'This is awesome!',
       profileName: 'John',
       profilePicUrl: 'https://example.com/john.jpg',
@@ -71,6 +75,7 @@ final dummyMessages = {
   'npub2': [
     Message(
       nevent: 'nevent2',
+      npub: 'npub2',
       message: 'This is awesome!',
       profileName: 'franzap',
       profilePicUrl:
@@ -78,24 +83,46 @@ final dummyMessages = {
       timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
     ),
     Message(
+      nevent: 'nevent2',
+      npub: 'npub2',
+      message: 'Are the margins ok?',
+      profileName: 'franzap',
+      profilePicUrl:
+          'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
+      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+    ),
+    Message(
+      nevent: 'nevent2',
+      npub: 'npub4',
+      message:
+          'This is a message by the current user that is long enough to see if we have correct margins and paddings going on.',
+      profileName: 'Niel Liesmons',
+      profilePicUrl:
+          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+    ),
+    Message(
       nevent: 'nevent3',
+      npub: 'npub2',
       message: 'Yeah, loving the UX',
       profileName: '⚡️ᗪㄖ匚⚡️',
       profilePicUrl:
           'https://primal.b-cdn.net/media-cache?s=s&a=1&u=https%3A%2F%2Fnostr.build%2Fi%2Fp%2Fnostr.build_fab35c1107ceb94a0a8cfb346f0299f2a1e0a447dfe3c57a1e741b61b741e35d.gif',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 8)),
+      timestamp: DateTime.now(),
     ),
     Message(
       nevent: 'nevent3',
+      npub: 'npub3',
       message: 'Test message ',
       profileName: 'Pip',
       profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 8)),
+      timestamp: DateTime.now(),
     ),
   ],
   'npub3': [
     Message(
       nevent: 'nevent1',
+      npub: 'npub3',
       message: 'Hey, I just finished wiring all this up!',
       profileName: 'franzap',
       profilePicUrl:
@@ -109,7 +136,8 @@ final dummyMessages = {
 final dummyPosts = {
   'npub1': [
     Post(
-      nevent: '1',
+      npub: 'npub1',
+      nevent: 'nevent1',
       profileName: 'Prof. Ille Namez',
       profilePicUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2FD5603AQGo4xFyJdt9_Q%2Fprofile-displayphoto-shrink_200_200%2F0%2F1697162085116%3Fe%3D2147483647%26v%3Dbeta%26t%3DkrXTtbRXKpTPHLaTG72YYdPiy3JVHjv5naMeZ5pBhwc&f=1&nofb=1&ipt=76b21679ded9ac6d0ecd3f3520538c08d6a9433fee07170a53845c7b26068631&ipo=images',
@@ -120,7 +148,8 @@ final dummyPosts = {
       zaps: [],
     ),
     Post(
-      nevent: '1',
+      npub: 'npub4',
+      nevent: 'nevent2',
       profileName: 'Prof. Ille Namez',
       profilePicUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2FD5603AQGo4xFyJdt9_Q%2Fprofile-displayphoto-shrink_200_200%2F0%2F1697162085116%3Fe%3D2147483647%26v%3Dbeta%26t%3DkrXTtbRXKpTPHLaTG72YYdPiy3JVHjv5naMeZ5pBhwc&f=1&nofb=1&ipt=76b21679ded9ac6d0ecd3f3520538c08d6a9433fee07170a53845c7b26068631&ipo=images',
@@ -133,7 +162,8 @@ final dummyPosts = {
   ],
   'npub2': [
     Post(
-      nevent: '1',
+      npub: 'npub4',
+      nevent: 'nevent2',
       profileName: 'Prof. Ille Namez',
       profilePicUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2FD5603AQGo4xFyJdt9_Q%2Fprofile-displayphoto-shrink_200_200%2F0%2F1697162085116%3Fe%3D2147483647%26v%3Dbeta%26t%3DkrXTtbRXKpTPHLaTG72YYdPiy3JVHjv5naMeZ5pBhwc&f=1&nofb=1&ipt=76b21679ded9ac6d0ecd3f3520538c08d6a9433fee07170a53845c7b26068631&ipo=images',
@@ -144,7 +174,8 @@ final dummyPosts = {
       zaps: [],
     ),
     Post(
-      nevent: '2',
+      npub: 'npub4',
+      nevent: 'nevent2',
       content:
           'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
       profileName: 'Youser Naim',
@@ -157,7 +188,8 @@ final dummyPosts = {
   ],
   'npub3': [
     Post(
-      nevent: '1',
+      npub: 'npub4',
+      nevent: 'nevent2',
       profileName: 'franzap',
       profilePicUrl:
           'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
@@ -172,6 +204,7 @@ final dummyPosts = {
 final dummyArticles = {
   'npub1': [
     Article(
+      npub: 'npub1qqqqqq',
       nevent: 'article1',
       profileName: 'hodlbod',
       profilePicUrl: 'https://i.nostr.build/AZ0L.jpg',
@@ -183,6 +216,7 @@ final dummyArticles = {
       zaps: [],
     ),
     Article(
+      npub: 'npub1qqqqqq',
       nevent: 'article1',
       profileName: 'Pip',
       profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
@@ -194,6 +228,7 @@ final dummyArticles = {
       zaps: [],
     ),
     Article(
+      npub: 'npub1qqqqqq',
       nevent: 'article3',
       profileName: 'Silberengel',
       profilePicUrl: 'https://i.nostr.build/k1vuNUKWqrxLaprb.jpg',
@@ -207,6 +242,7 @@ final dummyArticles = {
   ],
   'npub2': [
     Article(
+      npub: 'npub1qqqqqq',
       nevent: 'article1',
       profileName: 'Niel Liesmons',
       profilePicUrl:
@@ -219,6 +255,7 @@ final dummyArticles = {
       zaps: [],
     ),
     Article(
+      npub: 'npub1qqqqqq',
       nevent: 'article1',
       profileName: 'hodlbod',
       profilePicUrl: 'https://i.nostr.build/AZ0L.jpg',
@@ -231,6 +268,7 @@ final dummyArticles = {
       zaps: [],
     ),
     Article(
+      npub: 'npub1qqqqqq',
       nevent: 'article3',
       profileName: 'Silberengel',
       profilePicUrl: 'https://i.nostr.build/k1vuNUKWqrxLaprb.jpg',

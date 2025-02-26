@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/nielliesmons/Nextcloud/Documents/Projects/Buffalo/Nostr/Zapchat/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/nielliesmons/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/nielliesmons/Nextcloud/Documents/Projects/Buffalo/Nostr/Zapchat/zapchat/android/app/.cxx/RelWithDebInfo/66641i4s/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/nielliesmons/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/nielliesmons/Nextcloud/Documents/Projects/Buffalo/Nostr/Zapchat/zapchat/android/app/.cxx/RelWithDebInfo/66641i4s/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
