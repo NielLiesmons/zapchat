@@ -102,6 +102,15 @@ final dummyMessages = {
       timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
     ),
     Message(
+      nevent: 'nevent2',
+      npub: 'npub4',
+      message: 'Looks good!',
+      profileName: 'Niel Liesmons',
+      profilePicUrl:
+          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+    ),
+    Message(
       nevent: 'nevent3',
       npub: 'npub2',
       message: 'Yeah, loving the UX',
@@ -282,3 +291,25 @@ final dummyArticles = {
     ),
   ],
 };
+
+final dummyProfilesInUse = [
+  Profile(
+    npub:
+        'npub149p5act9a5qm9p47elp8w8h3wpwn2d7s2xecw2ygnrxqp4wgsklq9g722q', // Current user's npub
+    profileName: 'Niel Liesmons',
+    profilePicUrl:
+        'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+  ),
+  Profile(
+    npub: 'npub1ak68qfcjj7k95c0jwleu69x72nr8adwv6g80pkwl9xlps6zmkqzqrxy8fx',
+    profileName: 'Zapchat',
+    profilePicUrl:
+        'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+  ),
+  Profile(
+    npub: 'npub1yay8e9sqk94jfgdlkpgeelj2t5ddsj2eu0xwt4kh4xw5ses2rauqnstrdv',
+    profileName: 'Proof Of Reign',
+    profilePicUrl:
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
+  ),
+];

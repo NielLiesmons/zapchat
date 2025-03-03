@@ -1,6 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'dart:ui';
-import 'dart:io';
+import 'package:go_router/go_router.dart';
+import 'providers/current_profile.dart';
 
 import 'tabs/apps.dart';
 import 'tabs/articles.dart';
@@ -60,7 +60,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Row(
                       children: [
                         AppProfilePic.s48(
-                            'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png'),
+                          ref.watch(currentProfileProvider).profilePicUrl,
+                          onTap: () => context.push('/settings'),
+                        ),
                         const AppGap.s12(),
                         Expanded(
                           child: AppContainer(

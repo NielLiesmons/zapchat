@@ -29,7 +29,10 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   zaplab_design:
-    path: ../zaplab_design
+    # path: ../zaplab_design
+    git:
+      url: https://github.com/NielLiesmons/zaplab_design.git
+      ref: main
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.14
@@ -42,6 +45,7 @@ dependencies:
   flutter_riverpod: ^2.6.1
   window_manager: ^0.4.3
   riverpod_annotation: ^2.3.3
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
