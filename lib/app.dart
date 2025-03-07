@@ -23,50 +23,27 @@ class _AppWithTheme extends ConsumerWidget {
 
     return themeState.when(
       data: (state) {
-        print('Initializing app with:');
-        print('  - Text scale: ${state.textScale}');
-        print('  - System scale: ${state.systemScale}');
-        print('  - Theme mode: ${state.colorMode}');
-
-        return AppResponsiveTheme(
+        return AppBase(
+          title: 'Zapchat',
+          routerConfig: goRouter,
           colorMode: state.colorMode,
           textScale: state.textScale,
           systemScale: state.systemScale,
-          child: AppBase(
-            title: 'Zapchat',
-            routerConfig: goRouter,
-            appLogo: Image.asset(
-              'assets/images/logo.png',
-              fit: BoxFit.contain,
-            ),
-            darkAppLogo: Image.asset(
-              'assets/images/logo_dark.png',
-              fit: BoxFit.contain,
-            ),
-          ),
         );
       },
-      loading: () => AppResponsiveTheme(
+      loading: () => AppBase(
+        title: 'Zapchat',
+        routerConfig: goRouter,
         colorMode: null, // Use system theme
         textScale: AppTextScale.normal,
         systemScale: AppSystemScale.normal,
-        child: AppBase(
-          title: 'Zapchat',
-          routerConfig: goRouter,
-          appLogo: const SizedBox(),
-          darkAppLogo: const SizedBox(),
-        ),
       ),
-      error: (_, __) => AppResponsiveTheme(
+      error: (_, __) => AppBase(
+        title: 'Zapchat',
+        routerConfig: goRouter,
         colorMode: null, // Use system theme
         textScale: AppTextScale.normal,
         systemScale: AppSystemScale.normal,
-        child: AppBase(
-          title: 'Zapchat',
-          routerConfig: goRouter,
-          appLogo: const SizedBox(),
-          darkAppLogo: const SizedBox(),
-        ),
       ),
     );
   }
