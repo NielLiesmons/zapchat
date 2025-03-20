@@ -1,8 +1,5 @@
-# Zaplab Demo App
+# Zapchat
 
-This is a demo app for Zaplab that allows you to:
-* See the Zaplab stack in action
-* Learn how to use it
-
+Community Interop
 
 

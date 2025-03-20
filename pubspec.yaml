@@ -32,10 +32,11 @@ dependencies:
     # path: ../zaplab_design
     git:
       url: https://github.com/NielLiesmons/zaplab_design.git
-      ref: main
+      ref: d53bd119b4b0bf8712343d8425249efc230444f2
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.14
+  audio_waveforms: ^1.3.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
