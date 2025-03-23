@@ -1,13 +1,11 @@
 import 'package:go_router/go_router.dart';
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'homepage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/messages.dart';
 import 'providers/chat_screen.dart';
-import 'providers/posts.dart';
 import 'providers/articles.dart';
-import 'providers/current_profile.dart';
-import 'providers/dummy_data.dart';
 import 'modals/preferences_modal.dart';
 
 final goRouter = GoRouter(
@@ -25,20 +23,22 @@ final goRouter = GoRouter(
             builder: (context, ref, _) {
               final messages =
                   ref.watch(messagesProvider.notifier).getMessages(npub);
-              final posts = ref.watch(postsProvider.notifier).getPosts(npub);
+              final state =
+                  ref.watch(query(kinds: {1}, authors: {'a', 'b'}, limit: 5));
+              final pstate = ref.watch(query(kinds: {0}));
+
               final articles =
                   ref.watch(articlesProvider.notifier).getArticles(npub);
               final profile = ref.watch(chatScreenDataProvider)[npub];
-              final currentProfile = ref.watch(currentProfileProvider);
 
               return AppChatScreen(
                 npub: npub,
                 profileName: profile?.profileName ?? '',
                 profilePicUrl: profile?.profilePicUrl ?? '',
                 messages: messages,
-                posts: posts,
+                posts: List.castFrom(state.models),
                 articles: articles,
-                currentNpub: currentProfile.npub,
+                currentNpub: (pstate.models.first as Profile).npub,
                 mainCount: profile?.mainCount,
                 contentCounts: profile?.contentCounts ?? {},
                 onHomeTap: () => context.pop(),
@@ -110,14 +110,17 @@ final goRouter = GoRouter(
         return AppSlideInScreen(
           child: Consumer(
             builder: (context, ref, _) {
-              final currentProfile = ref.watch(currentProfileProvider);
+              final pstate = ref.watch(query(kinds: {0}));
+              final currentProfile = pstate.models.first as Profile;
+
               return AppSettingsScreen(
                 currentNpub: currentProfile.npub,
-                profiles: dummyProfilesInUse,
+                profiles: List.castFrom(pstate.models),
                 onSelect: (profile) {
-                  ref
-                      .read(currentProfileProvider.notifier)
-                      .setCurrentProfile(profile);
+                  // TODO
+                  // ref
+                  //     .read(currentProfileProvider.notifier)
+                  //     .setCurrentProfile(profile);
                 },
                 onHomeTap: () => context.pop(),
                 onHistoryTap: () => context.push('/settings/history'),

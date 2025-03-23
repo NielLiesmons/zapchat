@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:zaplab_design/zaplab_design.dart';
 import 'dummy_data.dart';
 
 part 'chat_screen.g.dart';

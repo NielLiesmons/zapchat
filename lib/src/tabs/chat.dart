@@ -8,7 +8,6 @@ class ChatTab extends ConsumerWidget {
   const ChatTab({super.key});
 
   TabData tabData(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
     final messages = ref.watch(messagesProvider.notifier);
     final chatData = ref.watch(chatScreenDataProvider);
 

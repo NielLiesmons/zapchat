@@ -1,6 +1,6 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
-import 'providers/current_profile.dart';
 
 import 'tabs/apps.dart';
 import 'tabs/articles.dart';
@@ -39,10 +39,13 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
-// Home page content
+  // Home page content
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
+    final pstate = ref.watch(query(kinds: {0}));
+    final currentProfile = pstate.models.first as Profile;
 
     return Stack(
       children: [
@@ -60,7 +63,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Row(
                       children: [
                         AppProfilePic.s48(
-                          ref.watch(currentProfileProvider).profilePicUrl,
+                          currentProfile.pictureUrl ?? 'profile-pic!?',
                           onTap: () => context.push('/settings'),
                         ),
                         const AppGap.s12(),

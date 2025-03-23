@@ -4,8 +4,6 @@ class ArticlesTab extends StatelessWidget {
   const ArticlesTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Articles',
       icon: const AppEmojiContentType(contentType: 'article'),

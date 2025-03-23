@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'chat_screen.dart';
 
@@ -284,74 +285,6 @@ final dummyMessages = {
   // Add more messages...
 };
 
-final dummyPosts = {
-  'npub1': [
-    Post(
-      npub: 'npub1',
-      nevent: 'nevent1',
-      profileName: 'Prof. Ille Namez',
-      profilePicUrl:
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2FD5603AQGo4xFyJdt9_Q%2Fprofile-displayphoto-shrink_200_200%2F0%2F1697162085116%3Fe%3D2147483647%26v%3Dbeta%26t%3DkrXTtbRXKpTPHLaTG72YYdPiy3JVHjv5naMeZ5pBhwc&f=1&nofb=1&ipt=76b21679ded9ac6d0ecd3f3520538c08d6a9433fee07170a53845c7b26068631&ipo=images',
-      content:
-          'A new study on swipe actions shows that it cleans up interfaces like nothing else',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
-      reactions: [],
-      zaps: [],
-    ),
-    Post(
-      npub: 'npub4',
-      nevent: 'nevent2',
-      profileName: 'Prof. Ille Namez',
-      profilePicUrl:
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2FD5603AQGo4xFyJdt9_Q%2Fprofile-displayphoto-shrink_200_200%2F0%2F1697162085116%3Fe%3D2147483647%26v%3Dbeta%26t%3DkrXTtbRXKpTPHLaTG72YYdPiy3JVHjv5naMeZ5pBhwc&f=1&nofb=1&ipt=76b21679ded9ac6d0ecd3f3520538c08d6a9433fee07170a53845c7b26068631&ipo=images',
-      content:
-          'A new study on swipe actions shows that it cleans up interfaces like nothing else',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
-      reactions: [],
-      zaps: [],
-    ),
-  ],
-  'npub2': [
-    Post(
-      npub: 'npub4',
-      nevent: 'nevent2',
-      profileName: 'Prof. Ille Namez',
-      profilePicUrl:
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2FD5603AQGo4xFyJdt9_Q%2Fprofile-displayphoto-shrink_200_200%2F0%2F1697162085116%3Fe%3D2147483647%26v%3Dbeta%26t%3DkrXTtbRXKpTPHLaTG72YYdPiy3JVHjv5naMeZ5pBhwc&f=1&nofb=1&ipt=76b21679ded9ac6d0ecd3f3520538c08d6a9433fee07170a53845c7b26068631&ipo=images',
-      content:
-          'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
-      reactions: [],
-      zaps: [],
-    ),
-    Post(
-      npub: 'npub4',
-      nevent: 'nevent2',
-      content:
-          'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
-      profileName: 'Youser Naim',
-      profilePicUrl:
-          'https://img.freepik.com/premium-photo/girl-happy-portrait-user-profile-by-ai_1119669-10.jpg',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 32)),
-      reactions: [],
-      zaps: [],
-    ),
-  ],
-  'npub3': [
-    Post(
-      npub: 'npub4',
-      nevent: 'nevent2',
-      profileName: 'franzap',
-      profilePicUrl:
-          'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
-      content: 'Test Poast',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 32)),
-      reactions: [],
-      zaps: [],
-    ),
-  ],
-};
-
 final dummyArticles = {
   'npub1': [
     Article(
@@ -434,24 +367,63 @@ final dummyArticles = {
   ],
 };
 
-final dummyProfilesInUse = [
-  Profile(
-    npub:
-        'npub149p5act9a5qm9p47elp8w8h3wpwn2d7s2xecw2ygnrxqp4wgsklq9g722q', // Current user's npub
-    profileName: 'Niel Liesmons',
-    profilePicUrl:
-        'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-  ),
-  Profile(
-    npub: 'npub1ak68qfcjj7k95c0jwleu69x72nr8adwv6g80pkwl9xlps6zmkqzqrxy8fx',
-    profileName: 'Zapchat',
-    profilePicUrl:
-        'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
-  ),
-  Profile(
-    npub: 'npub1yay8e9sqk94jfgdlkpgeelj2t5ddsj2eu0xwt4kh4xw5ses2rauqnstrdv',
-    profileName: 'Proof Of Reign',
-    profilePicUrl:
-        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
-  ),
-];
+// NEW models
+
+final signer = DummySigner();
+
+dummyProfilesInUse() async => [
+      await PartialProfile(
+        name: 'Niel Liesmons',
+        pictureUrl:
+            'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+      ).signWith(signer,
+          withPubkey:
+              'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'),
+      await PartialProfile(
+        name: 'Zapchat',
+        pictureUrl:
+            'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+      ).signWith(signer,
+          withPubkey:
+              'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004'),
+      await PartialProfile(
+        name: 'Proof Of Reign',
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
+      ).signWith(signer,
+          withPubkey:
+              '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78')
+    ];
+
+dummyNotes() async => [
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer,
+          withPubkey:
+              'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'),
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer,
+          withPubkey:
+              'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'),
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer,
+          withPubkey:
+              'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004'),
+      await PartialNote(
+        'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+      ).signWith(signer,
+          withPubkey:
+              'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004'),
+      await PartialNote(
+        'Test Poast',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+      ).signWith(signer,
+          withPubkey:
+              '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78'),
+    ];
