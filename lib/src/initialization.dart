@@ -80,7 +80,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer, withPubkey: proof.pubkey),
   ]);
 
-  await ref.read(storageProvider).save(dummyArticles);
+  await ref.read(storageProvider).save(dummyNotes);
 
   return true;
 });

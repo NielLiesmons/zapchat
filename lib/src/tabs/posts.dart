@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PostsTab extends StatelessWidget {
   const PostsTab({super.key});
@@ -9,23 +12,32 @@ class PostsTab extends StatelessWidget {
     return TabData(
       label: 'Posts',
       icon: const AppEmojiContentType(contentType: 'post'),
-      content: Consumer(
+      content: HookConsumer(
         builder: (context, ref, _) {
-          final state = ref.watch(query(kinds: {0, 1}));
+          final state = ref.watch(query(kinds: {1}));
 
-          final profile = state.models.whereType<Profile>().first;
-          final posts = state.models.whereType<Note>();
+          // useMemoized(() async {
+          //   ref.read(storageNotifierProvider.notifier).generateDummyFor(
+          //       pubkey:
+          //           'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be',
+          //       kind: 1);
+          // });
+
+          if (state case StorageLoading()) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          final posts = state.models.cast<Note>();
 
           return Column(
-            key: ValueKey(state.models),
             children: [
               for (final post in posts)
                 AppFeedPost(
                   nevent: post.internal.nevent,
                   content: post.content,
-                  profileName: profile.nameOrNpub,
-                  profilePicUrl: 'https://robohash.org/${profile.nameOrNpub}',
-                  timestamp: post.internal.createdAt,
+                  profileName: post.author.value!.name ?? '',
+                  profilePicUrl: post.author.value!.pictureUrl!,
+                  timestamp: post.createdAt,
                   onResolveEvent: (identifier) async {
                     // Simulate network delay
                     await Future.delayed(const Duration(seconds: 1));
