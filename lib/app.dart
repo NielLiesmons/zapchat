@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:zapchat/src/initialization.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/router.dart';
@@ -8,8 +10,17 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const ProviderScope(
-      child: _AppWithTheme(),
+    return ProviderScope(
+      child: Consumer(
+        builder: (context, ref, _) {
+          final value = ref.watch(zapchatInitializationProvider);
+          return switch (value) {
+            AsyncLoading() => Center(child: CircularProgressIndicator()),
+            AsyncError() => Center(child: Text('Error initializing')),
+            AsyncValue() => _AppWithTheme(),
+          };
+        },
+      ),
     );
   }
 }
