@@ -46,4 +46,4 @@ app.*.map.json
 
 .fvm/
 
-app/android/.cxx
+**/.cxx/
