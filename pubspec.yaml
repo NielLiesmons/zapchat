@@ -29,15 +29,18 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   zaplab_design:
-    path: ../zaplab_design
-    # git:
-    #   url: https://github.com/NielLiesmons/zaplab_design.git
-    #   ref: main
+    # path: ../zaplab_design
+    git:
+      url: https://github.com/franzaps/zaplab_design.git
+      ref: models-1
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.14
   models:
-    path: ../../purplebase/models
+    # path: ../../purplebase/models
+    git:
+      url: https://github.com/purplebase/models.git
+      ref: models-1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
