@@ -4,8 +4,6 @@ class VideosTab extends StatelessWidget {
   const VideosTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Videos',
       icon: const AppEmojiContentType(contentType: 'video'),

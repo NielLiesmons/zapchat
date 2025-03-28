@@ -4,8 +4,6 @@ class AppsTab extends StatelessWidget {
   const AppsTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Apps',
       icon: const AppEmojiContentType(contentType: 'app'),

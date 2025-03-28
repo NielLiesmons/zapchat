@@ -1,1 +1,0 @@
-/Users/nielliesmons/Nextcloud/Documents/Projects/Buffalo/Nostr/Zapchat/zapchat/build/app/intermediates/cxx/Debug/3z3z6p3m/obj/arm64-v8a

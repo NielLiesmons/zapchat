@@ -4,8 +4,6 @@ class BooksTab extends StatelessWidget {
   const BooksTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Books',
       icon: const AppEmojiContentType(contentType: 'book'),

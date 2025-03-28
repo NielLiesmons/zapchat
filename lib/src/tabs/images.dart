@@ -4,8 +4,6 @@ class ImagesTab extends StatelessWidget {
   const ImagesTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Images',
       icon: const AppEmojiContentType(contentType: 'image'),

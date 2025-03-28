@@ -1,16 +1,15 @@
 import 'package:go_router/go_router.dart';
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/messages.dart';
-import '../providers/chat_screen.dart';
 
 class ChatTab extends ConsumerWidget {
   const ChatTab({super.key});
 
   TabData tabData(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
-    final messages = ref.watch(messagesProvider.notifier);
-    final chatData = ref.watch(chatScreenDataProvider);
+    final messagesState = ref.watch(query(kinds: {9}));
+    final messages = messagesState.models.cast<ChatMessage>();
+    // final chatData = ref.watch(chatScreenDataProvider);
 
     return TabData(
       label: 'Chats',
@@ -19,21 +18,20 @@ class ChatTab extends ConsumerWidget {
         builder: (context) {
           return Column(
             children: [
-              for (final npub in chatData.keys)
+              for (final message in messages)
                 AppChatHomePanel(
-                  npub: chatData[npub]!.npub,
-                  profileName: chatData[npub]!.profileName,
-                  profilePicUrl: chatData[npub]!.profilePicUrl,
-                  lastMessage: messages.getLastMessage(npub)?.message ?? '',
-                  lastMessageProfileName:
-                      messages.getLastMessage(npub)?.profileName,
-                  lastMessageTimeStamp:
-                      messages.getLastMessage(npub)?.timestamp ??
-                          DateTime.now(),
-                  mainCount: chatData[npub]!.mainCount,
-                  contentCounts: chatData[npub]!.contentCounts,
+                  npub: message.author.value!.npub,
+                  profileName: message.author.value!.nameOrNpub,
+                  profilePicUrl: message.author.value!.pictureUrl!,
+                  lastMessage: message.content,
+                  // TODO: Can't find how to diff sender/recipient with NIP-C7
+                  lastMessageProfileName: message.author.value!.nameOrNpub,
+                  lastMessageTimeStamp: message.createdAt,
+                  // TODO: This stuff should be accessed via relationships
+                  mainCount: 21,
+                  contentCounts: {},
                   onNavigateToChat: (context, _) {
-                    context.push('/chat/$npub');
+                    context.push('/chat/${message.author.value!.npub}');
                   },
                   onNavigateToContent: (context, npub, contentType) {
                     context.push('/content/$npub/$contentType');
