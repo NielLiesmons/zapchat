@@ -8,6 +8,7 @@ class ChatTab extends ConsumerWidget {
 
   TabData tabData(BuildContext context, WidgetRef ref) {
     final messagesState = ref.watch(query(kinds: {9}));
+    final messages = messagesState.models.cast<ChatMessage>();
     // final chatData = ref.watch(chatScreenDataProvider);
 
     return TabData(
@@ -17,26 +18,25 @@ class ChatTab extends ConsumerWidget {
         builder: (context) {
           return Column(
             children: [
-              // for (final npub in chatData.keys)
-              //   AppChatHomePanel(
-              //     npub: chatData[npub]!.npub,
-              //     profileName: chatData[npub]!.profileName,
-              //     profilePicUrl: chatData[npub]!.profilePicUrl,
-              //     lastMessage: messages.getLastMessage(npub)?.message ?? '',
-              //     lastMessageProfileName:
-              //         messages.getLastMessage(npub)?.profileName,
-              //     lastMessageTimeStamp:
-              //         messages.getLastMessage(npub)?.timestamp ??
-              //             DateTime.now(),
-              //     mainCount: chatData[npub]!.mainCount,
-              //     contentCounts: chatData[npub]!.contentCounts,
-              //     onNavigateToChat: (context, _) {
-              //       context.push('/chat/$npub');
-              //     },
-              //     onNavigateToContent: (context, npub, contentType) {
-              //       context.push('/content/$npub/$contentType');
-              //     },
-              //   ),
+              for (final message in messages)
+                AppChatHomePanel(
+                  npub: message.author.value!.npub,
+                  profileName: message.author.value!.nameOrNpub,
+                  profilePicUrl: message.author.value!.pictureUrl!,
+                  lastMessage: message.content,
+                  // TODO: Can't find how to diff sender/recipient with NIP-C7
+                  lastMessageProfileName: message.author.value!.nameOrNpub,
+                  lastMessageTimeStamp: message.createdAt,
+                  // TODO: This stuff should be accessed via relationships
+                  mainCount: 21,
+                  contentCounts: {},
+                  onNavigateToChat: (context, _) {
+                    context.push('/chat/${message.author.value!.npub}');
+                  },
+                  onNavigateToContent: (context, npub, contentType) {
+                    context.push('/content/$npub/$contentType');
+                  },
+                ),
             ],
           );
         },

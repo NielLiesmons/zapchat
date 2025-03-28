@@ -1,4 +1,3 @@
-import 'package:models/models.dart';
 import 'package:zapchat/src/providers/signed_in_profile.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';

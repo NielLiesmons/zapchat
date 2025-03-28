@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:zapchat/src/providers/signed_in_profile.dart';
@@ -19,7 +20,7 @@ final goRouter = GoRouter(
         return AppSlideInScreen(
           child: Consumer(
             builder: (context, ref, _) {
-              // This data should NOT be loaded here
+              // TODO: This data should not be loaded here, but in corresponding widgets
 
               final messagesState =
                   ref.watch(query(kinds: {9}, authors: {npub}));
@@ -29,6 +30,10 @@ final goRouter = GoRouter(
 
               final articlesState =
                   ref.watch(query(kinds: {30023}, authors: {npub}));
+
+              if (profilesState case StorageLoading()) {
+                return Center(child: CircularProgressIndicator());
+              }
 
               final profile = profilesState.models.first as Profile;
 

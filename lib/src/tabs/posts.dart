@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PostsTab extends StatelessWidget {
   const PostsTab({super.key});
@@ -16,12 +15,12 @@ class PostsTab extends StatelessWidget {
         builder: (context, ref, _) {
           final state = ref.watch(query(kinds: {1}));
 
-          // useMemoized(() async {
-          //   ref.read(storageNotifierProvider.notifier).generateDummyFor(
-          //       pubkey:
-          //           'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be',
-          //       kind: 1);
-          // });
+          useMemoized(() async {
+            ref.read(storageNotifierProvider.notifier).generateDummyFor(
+                pubkey:
+                    'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be',
+                kind: 1);
+          });
 
           if (state case StorageLoading()) {
             return Center(child: CircularProgressIndicator());
@@ -33,7 +32,7 @@ class PostsTab extends StatelessWidget {
             children: [
               for (final post in posts)
                 AppFeedPost(
-                  nevent: post.internal.nevent,
+                  nevent: post.internal.shareableId,
                   content: post.content,
                   profileName: post.author.value!.name ?? '',
                   profilePicUrl: post.author.value!.pictureUrl!,

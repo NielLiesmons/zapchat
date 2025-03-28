@@ -36,11 +36,13 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       withPubkey:
           '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
 
-  final youser = await PartialProfile(
-    name: 'Youser Naim',
+  final pip = await PartialProfile(
+    name: 'Pip',
     pictureUrl:
-        'https://img.freepik.com/premium-photo/girl-happy-portrait-user-profile-by-ai_1119669-10.jpg',
-  ).signWith(signer, withPubkey: 'youser');
+        'https://primal.b-cdn.net/media-upload?u=https%3A%2F%2Fmedia.primal.net%2Fuploads%2F5%2F23%2F5d%2F5235d240286bc5ebd3f663631eec7b48d8ff2918e7a1c81edb9c4295f37a6af0.jpg',
+  ).signWith(signer,
+      withPubkey:
+          'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
 
   final franzap = await PartialProfile(
     name: 'franzap',
@@ -49,13 +51,15 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
   ).signWith(signer,
       withPubkey:
           'npub1wf4pufsucer5va8g9p0rj5dnhvfeh6d8w0g6eayaep5dhps6rsgs43dgh9');
-  final john = await PartialProfile(
-          name: 'John', pictureUrl: 'https://example.com/john.jpg')
-      .signWith(signer, withPubkey: 'john');
+  final verbiricha = await PartialProfile(
+    name: 'verbiricha',
+    pictureUrl:
+        'https://cdn.satellite.earth/da67840aae6720f5e5fb9e4c8ce25a85f6d8cbf22f4a04fd44babd58a9badfc6.png',
+  ).signWith(signer,
+      withPubkey:
+          '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
 
-  await ref
-      .read(storageProvider)
-      .save([niel, zapchat, proof, youser, franzap, john]);
+  dummyProfiles.addAll([niel, zapchat, proof, pip, franzap, verbiricha]);
 
   dummyNotes.addAll([
     await PartialNote(
@@ -63,8 +67,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
     ).signWith(signer, withPubkey: niel.pubkey),
     await PartialNote(
-      'A new study on swipe actions shows that it cleans up interfaces like nothing else',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      'I love Zaplab',
+      createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
     ).signWith(signer, withPubkey: niel.pubkey),
     await PartialNote(
       'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
@@ -80,39 +84,38 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer, withPubkey: proof.pubkey),
   ]);
 
-  await ref.read(storageProvider).save(dummyNotes);
+  // Chat messages
+
+  dummyChatMessages.addAll([
+    await PartialChatMessage(
+      'Ow, I see. This is not just a chat app, is it?',
+      createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+    ).signWith(signer, withPubkey: pip.pubkey),
+    await PartialChatMessage(
+      '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
+                    https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
+                    https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
+      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+    ).signWith(signer, withPubkey: pip.pubkey),
+    await PartialChatMessage(
+      'Yeah, loving the UX',
+      createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+    ).signWith(signer, withPubkey: verbiricha.pubkey),
+    await PartialChatMessage(
+      'This is awesome!',
+      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+    ).signWith(signer, withPubkey: verbiricha.pubkey),
+  ]);
+
+  await ref.read(storageNotifierProvider.notifier).save([
+    ...dummyProfiles,
+    ...dummyNotes,
+    ...dummyArticles,
+    ...dummyChatMessages
+  ]);
 
   return true;
 });
-
-void loadDummyData() async {
-  // Notes
-
-// dummyChatMessages.addAll([
-//       await PartialChatMessage(
-//         'Ow, I see. This is not just a chat app, is it?',
-//         createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-//       ).signWith(signer, withPubkey: 'youser'),
-//       await PartialChatMessage(
-//         '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
-//                     https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
-//                     https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
-//         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-//       ).signWith(signer, withPubkey: 'youser'),
-//       await PartialChatMessage(
-//         'Yeah, loving the UX',
-//         createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
-//       ).signWith(signer, withPubkey: 'john'),
-//       Message(
-//         nevent: 'nevent4',
-//         npub: 'npub1',
-//         message: 'This is awesome!',
-//         profileName: 'John',
-//         profilePicUrl: 'https://example.com/john.jpg',
-//         timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
-//       ),
-//     ]);
-}
 
 // ***
 
