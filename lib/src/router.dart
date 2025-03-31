@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:zapchat/src/providers/signed_in_profile.dart';
@@ -35,7 +34,7 @@ final goRouter = GoRouter(
                   ref.watch(query(kinds: {30023}, authors: {npub}));
 
               if (profilesState case StorageLoading()) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: AppLoadingDots());
               }
 
               final profile = profilesState.models.first as Profile;
@@ -50,7 +49,11 @@ final goRouter = GoRouter(
                 currentNpub: profile.npub,
                 // TODO: This stuff should be derived from relationships
                 mainCount: 21,
-                contentCounts: {},
+                contentCounts: {
+                  'chat': messagesState.models.length,
+                  'article': articlesState.models.length,
+                  'post': notesState.models.length,
+                },
                 // Callbacks
                 onHomeTap: () => context.pop(),
                 onActions: (nevent) => context.push('/actions/$nevent'),
@@ -99,22 +102,55 @@ final goRouter = GoRouter(
       pageBuilder: (context, state) {
         final nevent = state.pathParameters['nevent']!;
         return AppSlideInModal(
-          child: AppActionsModal(
-            nevent: nevent,
-            contentType: 'message',
-            profileName: 'User',
-            profilePicUrl: '',
-            recentReactions: DefaultData.defaultReactions,
-            recentAmounts: DefaultData.defaultAmounts,
-            onReactionTap: (eventId) {},
-            onMoreReactionsTap: () {},
-            onZapTap: (eventId) {},
-            onMoreZapsTap: () {},
-            onReportTap: () {},
-            onAddProfileTap: () {},
-            onOpenWithTap: () {},
-            onLabelTap: () {},
-            onShareTap: () {},
+          child: Consumer(
+            builder: (context, ref, _) {
+              return AppActionsModal(
+                nevent: nevent,
+                contentType: 'message',
+                profileName: 'User',
+                profilePicUrl: '',
+                recentReactions: DefaultData.defaultReactions,
+                recentAmounts: DefaultData.defaultAmounts,
+                onReactionTap: (eventId) {},
+                onMoreReactionsTap: () {},
+                onZapTap: (eventId) {},
+                onMoreZapsTap: () {},
+                onReportTap: () {},
+                onAddProfileTap: () {},
+                onOpenWithTap: () {},
+                onLabelTap: () {},
+                onShareTap: () {},
+                onResolveEvent: (id) async {
+                  final events = await ref.read(storageProvider).queryAsync(
+                        RequestFilter(
+                          kinds: {30023},
+                          authors: {
+                            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'
+                          },
+                          limit: 1,
+                        ),
+                      );
+                  return events.cast<Article>().first;
+                },
+                onResolveProfile: (id) async {
+                  final profiles = await ref.read(storageProvider).queryAsync(
+                        RequestFilter(
+                          kinds: {0},
+                          authors: {
+                            'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2'
+                          },
+                          limit: 1,
+                        ),
+                      );
+                  return profiles.cast<Profile>().first;
+                },
+                onResolveEmoji: (id) async =>
+                    'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
+                onResolveHashtag: (id) async => () {
+                  print('Hashtag #$id tapped');
+                },
+              );
+            },
           ),
         );
       },

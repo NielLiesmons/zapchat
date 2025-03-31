@@ -1089,11 +1089,9 @@ packages:
   zaplab_design:
     dependency: "direct main"
     description:
-      path: "."
-      ref: models-1
-      resolved-ref: "0953ece0ba8fee337cba735c59e492620a8c4cc1"
-      url: "https://github.com/franzaps/zaplab_design.git"
-    source: git
+      path: "../zaplab_design"
+      relative: true
+    source: path
     version: "0.0.1"
 sdks:
   dart: ">=3.7.0 <4.0.0"

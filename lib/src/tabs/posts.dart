@@ -26,17 +26,23 @@ class PostsTab extends StatelessWidget {
             return const Center(child: AppLoadingDots());
           }
 
-          final posts = state.models.cast<Post>();
+          final posts = state.models.cast<Note>();
 
           return Column(
             children: [
               for (final post in posts)
                 AppFeedPost(
-                  nevent: post.nevent,
+                  nevent: post.internal.shareableId,
                   content: post.content,
-                  profileName: post.profileName,
-                  profilePicUrl: post.profilePicUrl,
-                  timestamp: post.timestamp,
+                  profileName: post.author.value!.nameOrNpub,
+                  profilePicUrl: post.author.value!.pictureUrl!,
+                  timestamp: post.createdAt,
+                  onActions: (nevent) {},
+                  onReply: (nevent) {
+                    print(nevent);
+                  },
+                  onReactionTap: (eventId) {},
+                  onZapTap: (eventId) {},
                   onResolveEvent: (identifier) async {
                     // Simulate network delay
                     await Future.delayed(const Duration(seconds: 1));
@@ -53,11 +59,11 @@ class PostsTab extends StatelessWidget {
                   },
                   onResolveProfile: (identifier) async {
                     await Future.delayed(const Duration(seconds: 1));
-                    return Profile(
-                      npub: identifier,
-                      profileName: 'Pip',
-                      profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
-                    );
+                    final signer = DummySigner();
+                    return await PartialProfile(
+                      name: 'Pip',
+                      pictureUrl: 'https://m.primal.net/IfSZ.jpg',
+                    ).signWith(signer, withPubkey: identifier);
                   },
                   onResolveEmoji: (identifier) async {
                     await Future.delayed(const Duration(seconds: 1));
@@ -69,9 +75,6 @@ class PostsTab extends StatelessWidget {
                   },
                   onLinkTap: (url) {
                     print(url);
-                  },
-                  onReply: (nevent) {
-                    print(nevent);
                   },
                 ),
             ],
