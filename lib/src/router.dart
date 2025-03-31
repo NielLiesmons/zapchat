@@ -43,6 +43,7 @@ final goRouter = GoRouter(
                 npub: npub,
                 profileName: profile.nameOrNpub,
                 profilePicUrl: profile.pictureUrl ?? '',
+                onProfileTap: () => context.push('/chat/$npub/info'),
                 messages: messagesState.models.cast(),
                 posts: notesState.models.cast(),
                 articles: articlesState.models.cast(),
@@ -90,6 +91,42 @@ final goRouter = GoRouter(
                 onResolveHashtag: (id) async => () {
                   print('Hashtag #$id tapped');
                 },
+              );
+            },
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info',
+      pageBuilder: (context, state) {
+        final npub = state.pathParameters['npub']!;
+        return AppSlideInModal(
+          child: Consumer(
+            builder: (context, ref, _) {
+              final profileState =
+                  ref.watch(query(kinds: {0}, authors: {npub}));
+
+              if (profileState case StorageLoading()) {
+                return Center(child: AppLoadingDots());
+              }
+
+              if (profileState.models.isEmpty) {
+                return Center(
+                  child: AppText.reg14(
+                    'Profile not found',
+                    color: AppTheme.of(context).colors.white66,
+                  ),
+                );
+              }
+
+              final profile = profileState.models.first as Profile;
+              return CommunityInfoModal(
+                profilePicUrl: profile.pictureUrl ?? '',
+                title: profile.nameOrNpub,
+                description:
+                    '${profile.nameOrNpub} is a lorem ipsum and then some more info on this specific community that we are talking about here and although we are pretty sure we can come with better examples in the future this will have to dod for now',
+                npub: npub,
               );
             },
           ),
