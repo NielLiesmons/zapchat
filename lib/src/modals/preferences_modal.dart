@@ -16,7 +16,7 @@ class PreferencesModal extends ConsumerWidget {
         onTap: () {
           Navigator.pop(context);
         },
-        content: [
+        children: [
           AppText.med14('Done', color: AppColorsData.dark().white),
         ],
       ),

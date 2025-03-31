@@ -18,7 +18,7 @@ class WikisTab extends StatelessWidget {
             child: Column(
               children: [
                 AppButton(
-                  content: [
+                  children: [
                     AppLoadingDots(),
                   ],
                   onTap: () {},

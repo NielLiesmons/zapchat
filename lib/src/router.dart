@@ -9,6 +9,9 @@ import 'providers/articles.dart';
 import 'providers/current_profile.dart';
 import 'providers/dummy_data.dart';
 import 'modals/preferences_modal.dart';
+import 'modals/community_info_modal.dart';
+import 'modals/community_pricing_modal.dart';
+import 'modals/community_notifications_modal.dart';
 
 final goRouter = GoRouter(
   routes: [
@@ -35,6 +38,7 @@ final goRouter = GoRouter(
                 npub: npub,
                 profileName: profile?.profileName ?? '',
                 profilePicUrl: profile?.profilePicUrl ?? '',
+                onProfileTap: () => context.push('/chat/$npub/info'),
                 messages: messages,
                 posts: posts,
                 articles: articles,
@@ -71,9 +75,54 @@ final goRouter = GoRouter(
                 onResolveHashtag: (id) async => () {
                   print('Hashtag #$id tapped');
                 },
+                onNotificationsTap: () =>
+                    context.push('/chat/$npub/info/notifications'),
               );
             },
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info',
+      pageBuilder: (context, state) {
+        final npub = state.pathParameters['npub']!;
+        return AppSlideInModal(
+          child: Consumer(
+            builder: (context, ref, _) {
+              final profile = ref.watch(chatScreenDataProvider)[npub];
+              return CommunityInfoModal(
+                profilePicUrl: profile?.profilePicUrl ?? '',
+                title: profile?.profileName ?? '',
+                description:
+                    '${profile?.profileName ?? npub} is a lorem ipsum and then some more info on this specific community that we are talking about here and although we are pretty sure we can come with better examples in the future this will have to dod for now',
+                npub: npub,
+              );
+            },
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info/pricing',
+      pageBuilder: (context, state) {
+        final npub = state.pathParameters['npub']!;
+        return AppSlideInModal(
+          child: Consumer(
+            builder: (context, ref, _) {
+              final profile = ref.watch(chatScreenDataProvider)[npub];
+              return CommunityPricingModal();
+            },
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info/notifications',
+      pageBuilder: (context, state) {
+        final npub = state.pathParameters['npub']!;
+        return AppSlideInModal(
+          child: const CommunityNotificationsModal(),
         );
       },
     ),
@@ -83,22 +132,79 @@ final goRouter = GoRouter(
       pageBuilder: (context, state) {
         final nevent = state.pathParameters['nevent']!;
         return AppSlideInModal(
-          child: AppActionsModal(
-            nevent: nevent,
-            contentType: 'message',
-            profileName: 'User',
-            profilePicUrl: '',
-            recentReactions: DefaultData.defaultReactions,
-            recentAmounts: DefaultData.defaultAmounts,
-            onReactionTap: (eventId) {},
-            onMoreReactionsTap: () {},
-            onZapTap: (eventId) {},
-            onMoreZapsTap: () {},
-            onReportTap: () {},
-            onAddProfileTap: () {},
-            onOpenWithTap: () {},
-            onLabelTap: () {},
-            onShareTap: () {},
+          child: Consumer(
+            builder: (context, ref, _) {
+              // Find the message with this nevent
+              final messages = ref.watch(messagesProvider.notifier);
+              Message? message;
+              String? npub;
+
+              // Search through all messages to find the one with matching nevent
+              for (final entry in messages.state.entries) {
+                message = entry.value.firstWhere(
+                  (m) => m.nevent == nevent,
+                  orElse: () => Message(
+                    nevent: '',
+                    npub: '',
+                    message: '',
+                    profileName: '',
+                    profilePicUrl: '',
+                    timestamp: DateTime.now(),
+                  ),
+                );
+                if (message?.nevent == nevent) {
+                  npub = entry.key;
+                  break;
+                }
+              }
+
+              if (message == null || npub == null) {
+                return const SizedBox(); // Return empty widget if message not found
+              }
+
+              return AppActionsModal(
+                nevent: nevent,
+                contentType: 'message',
+                profileName: message.profileName,
+                profilePicUrl: message.profilePicUrl,
+                message: message.message,
+                recentReactions: DefaultData.defaultReactions,
+                recentAmounts: DefaultData.defaultAmounts,
+                onReactionTap: (eventId) {},
+                onMoreReactionsTap: () {},
+                onZapTap: (eventId) {},
+                onMoreZapsTap: () {},
+                onReportTap: () {},
+                onAddProfileTap: () {},
+                onOpenWithTap: () {},
+                onLabelTap: () {},
+                onShareTap: () {},
+                onResolveEvent: (id) async => NostrEvent(
+                  nevent: id,
+                  npub: 'npub1test',
+                  contentType: 'article',
+                  title: 'Communi-keys',
+                  imageUrl:
+                      'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
+                  profileName: 'Niel Liesmons',
+                  profilePicUrl:
+                      'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+                  timestamp: DateTime.now(),
+                  onTap: () {},
+                ),
+                onResolveProfile: (id) async => Profile(
+                  npub: id,
+                  profileName: 'Pip',
+                  profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
+                  onTap: () {},
+                ),
+                onResolveEmoji: (id) async =>
+                    'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
+                onResolveHashtag: (id) async => () {
+                  print('Hashtag #$id tapped');
+                },
+              );
+            },
           ),
         );
       },

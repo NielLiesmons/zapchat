@@ -64,6 +64,15 @@ class PostsTab extends StatelessWidget {
                 onReply: (nevent) {
                   print(nevent);
                 },
+                onActions: (nevent) {
+                  print(nevent);
+                },
+                onReactionTap: (nevent) {
+                  print(nevent);
+                },
+                onZapTap: (nevent) {
+                  print(nevent);
+                },
                 zaps: [
                   Zap(
                     npub:
@@ -183,6 +192,15 @@ class PostsTab extends StatelessWidget {
                   print(url);
                 },
                 onReply: (nevent) {
+                  print(nevent);
+                },
+                onActions: (nevent) {
+                  print(nevent);
+                },
+                onReactionTap: (nevent) {
+                  print(nevent);
+                },
+                onZapTap: (nevent) {
                   print(nevent);
                 },
                 zaps: [
