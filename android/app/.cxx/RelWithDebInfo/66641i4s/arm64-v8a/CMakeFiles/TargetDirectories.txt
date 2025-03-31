@@ -1,2 +1,0 @@
-/Users/nielliesmons/Nextcloud/Documents/Projects/Buffalo/Nostr/Zapchat/zapchat/android/app/.cxx/RelWithDebInfo/66641i4s/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/nielliesmons/Nextcloud/Documents/Projects/Buffalo/Nostr/Zapchat/zapchat/android/app/.cxx/RelWithDebInfo/66641i4s/arm64-v8a/CMakeFiles/rebuild_cache.dir

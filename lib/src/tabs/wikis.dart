@@ -4,8 +4,6 @@ class WikisTab extends StatelessWidget {
   const WikisTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Wikis',
       icon: const AppEmojiContentType(contentType: 'wiki'),

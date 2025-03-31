@@ -1,6 +1,6 @@
+import 'package:zapchat/src/providers/signed_in_profile.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
-import 'providers/current_profile.dart';
 
 import 'tabs/apps.dart';
 import 'tabs/articles.dart';
@@ -39,10 +39,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
-// Home page content
+  // Home page content
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
+    final currentProfile = ref.watch(signedInProfile);
 
     return Stack(
       children: [
@@ -59,10 +61,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                         horizontal: AppGapSize.s12),
                     child: Row(
                       children: [
-                        AppProfilePic.s48(
-                          ref.watch(currentProfileProvider).profilePicUrl,
-                          onTap: () => context.push('/settings'),
-                        ),
+                        if (currentProfile != null)
+                          AppProfilePic.s48(
+                            currentProfile.pictureUrl ?? '',
+                            onTap: () => context.push('/settings'),
+                          ),
                         const AppGap.s12(),
                         Expanded(
                           child: AppContainer(
