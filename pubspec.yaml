@@ -104,8 +104,7 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   assets:
-    - assets/images/logo.png
-    - assets/images/logo_dark.png
+    - assets/images/
 
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -46,9 +46,9 @@ final dummyChatScreenProfiles = {
 final dummyMessages = {
   'npub1': [
     Message(
-      nevent: 'nevent1jhbkjdsnfdkgl,fh',
+      nevent: 'nevent1jhbkjdsnfdkglfh',
       npub: 'npub1',
-      message: 'Ow, I see. This is not just a chat app, is it?',
+      message: 'nostr:nevent1jhbkjdsnfdkgl This one you mean?',
       profileName: 'franzap',
       profilePicUrl:
           'https://img.freepik.com/premium-photo/girl-happy-portrait-user-profile-by-ai_1119669-10.jpg',
@@ -87,7 +87,7 @@ final dummyMessages = {
     Message(
       nevent: 'nevent2gsdoppppp',
       npub: 'npub2',
-      message: 'Replies are looking great!',
+      message: 'Love it! :emoji:',
       profileName: 'franzap',
       profilePicUrl:
           'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
@@ -96,7 +96,7 @@ final dummyMessages = {
     Message(
       nevent: 'nevent4rtyuin',
       npub: 'npub2',
-      message: '''We're using `kind 1111`for that too, right?''',
+      message: '''We're using `kind 1111` for that too, right?''',
       profileName: 'franzap',
       profilePicUrl:
           'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',

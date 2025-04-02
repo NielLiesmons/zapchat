@@ -47,7 +47,7 @@ final goRouter = GoRouter(
                 contentCounts: profile?.contentCounts ?? {},
                 onHomeTap: () => context.pop(),
                 onActions: (nevent) => context.push('/actions/$nevent'),
-                onReply: (eventId) {},
+                onReply: (eventId) => context.push('/reply/$eventId'),
                 onReactionTap: (eventId) {},
                 onZapTap: (eventId) {},
                 onLinkTap: (url) {},
@@ -126,7 +126,69 @@ final goRouter = GoRouter(
         );
       },
     ),
-    // Add the new actions modal route
+    GoRoute(
+      path: '/reply/:nevent',
+      pageBuilder: (context, state) {
+        final nevent = state.pathParameters['nevent']!;
+        return AppSlideInModal(
+          child: Consumer(
+            builder: (context, ref, _) {
+              // Find the message with this nevent
+              final messages = ref.watch(messagesProvider.notifier);
+              Message? message;
+              String? npub;
+
+              // Search through all messages to find the one with matching nevent
+              for (final entry in messages.state.entries) {
+                message = entry.value.firstWhere(
+                  (m) => m.nevent == nevent,
+                  orElse: () => Message(
+                    nevent: '',
+                    npub: '',
+                    message: '',
+                    profileName: '',
+                    profilePicUrl: '',
+                    timestamp: DateTime.now(),
+                  ),
+                );
+                if (message?.nevent == nevent) {
+                  npub = entry.key;
+                  break;
+                }
+              }
+
+              if (message == null || npub == null) {
+                return const SizedBox(); // Return empty widget if message not found
+              }
+
+              return AppReplyModal(
+                nevent: nevent,
+                contentType: 'message',
+                profileName: message.profileName,
+                profilePicUrl: message.profilePicUrl,
+                message: message.message,
+                onSearchProfiles: (query) async {
+                  return [];
+                },
+                onSearchEmojis: (query) async {
+                  return [];
+                },
+                onCameraTap: () {},
+                onGifTap: () {},
+                onAddTap: () {},
+                onSendTap: () {
+                  // TODO: Handle sending reply
+                  context.pop();
+                },
+                onChevronTap: () {
+                  context.pop();
+                },
+              );
+            },
+          ),
+        );
+      },
+    ),
     GoRoute(
       path: '/actions/:nevent',
       pageBuilder: (context, state) {
@@ -225,6 +287,7 @@ final goRouter = GoRouter(
                       .read(currentProfileProvider.notifier)
                       .setCurrentProfile(profile);
                 },
+                onAddProfile: () => context.push('/settings/get-started'),
                 onHomeTap: () => context.pop(),
                 onHistoryTap: () => context.push('/settings/history'),
                 historyDescription: 'Last activity 12m ago',
@@ -244,6 +307,21 @@ final goRouter = GoRouter(
                 onInviteTap: () => context.push('/settings/invite'),
                 onDisconnectTap: () => context.push('/settings/disconnect'),
               );
+            },
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/settings/get-started',
+      pageBuilder: (context, state) {
+        return AppSlideInModal(
+          child: AppAddProfileModal(
+            onStart: (profileName) {
+              context.replace('/slotMachine', extra: profileName);
+            },
+            onAlreadyHaveKey: () {
+              // Handle already have key case
             },
           ),
         );
@@ -297,5 +375,16 @@ final goRouter = GoRouter(
       },
     ),
     // TODO: Implement content screen
+    GoRoute(
+      path: '/slotMachine',
+      pageBuilder: (context, state) {
+        final profileName = state.extra as String;
+        return AppSlideInModal(
+          child: AppSlotMachineModal(
+            profileName: profileName,
+          ),
+        );
+      },
+    ),
   ],
 );
