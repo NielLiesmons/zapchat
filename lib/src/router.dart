@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
-import 'package:zapchat/src/providers/signed_in_profile.dart';
+import 'package:zapchat/src/providers/current_profile.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'homepage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,21 +39,16 @@ final goRouter = GoRouter(
 
               final profile = profilesState.models.first as Profile;
 
-              return AppChatScreen(
-                npub: npub,
-                profileName: profile.nameOrNpub,
-                profilePicUrl: profile.pictureUrl ?? '',
+              return AppCommunityScreen(
+                community: community,
                 onProfileTap: () => context.push('/chat/$npub/info'),
-                messages: messagesState.models.cast(),
-                posts: notesState.models.cast(),
-                articles: articlesState.models.cast(),
-                currentNpub: profile.npub,
+                currentProfile: profile,
                 // TODO: This stuff should be derived from relationships
                 mainCount: 21,
-                contentCounts: {
-                  'chat': messagesState.models.length,
-                  'article': articlesState.models.length,
-                  'post': notesState.models.length,
+                contentTypes: {
+                  'chat': (count: 2, feed: AppLoadingDots()),
+                  'article': (count: 2, feed: AppLoadingDots()),
+                  'post': (count: 2, feed: AppLoadingDots()),
                 },
                 // Callbacks
                 onHomeTap: () => context.pop(),
@@ -62,34 +57,35 @@ final goRouter = GoRouter(
                 onReactionTap: (eventId) {},
                 onZapTap: (eventId) {},
                 onLinkTap: (url) {},
-                onResolveEvent: (id) async {
-                  final events = await ref.read(storageProvider).queryAsync(
-                        RequestFilter(
-                          kinds: {30023},
-                          authors: {
-                            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'
-                          },
-                          limit: 1,
-                        ),
-                      );
-                  return events.cast<Article>().first;
+                onResolveEvent: (nevent) async {
+                  // Simulate network delay
+                  await Future.delayed(const Duration(seconds: 1));
+                  final post = await PartialNote(
+                    'Test post content',
+                    createdAt: DateTime.now(),
+                  ).signWith(DummySigner(),
+                      withPubkey:
+                          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+                  await ref.read(storageNotifierProvider.notifier).save({post});
+                  return (event: post, onTap: null);
                 },
-                onResolveProfile: (id) async {
-                  final profiles = await ref.read(storageProvider).queryAsync(
-                        RequestFilter(
-                          kinds: {0},
-                          authors: {
-                            'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2'
-                          },
-                          limit: 1,
-                        ),
-                      );
-                  return profiles.cast<Profile>().first;
+                onResolveProfile: (npub) async {
+                  await Future.delayed(const Duration(seconds: 1));
+                  return (
+                    profile: await PartialProfile(
+                      name: 'Pip',
+                      pictureUrl: 'https://m.primal.net/IfSZ.jpg',
+                    ).signWith(DummySigner()),
+                    onTap: null
+                  );
                 },
-                onResolveEmoji: (id) async =>
-                    'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
-                onResolveHashtag: (id) async => () {
-                  print('Hashtag #$id tapped');
+                onResolveEmoji: (identifier) async {
+                  await Future.delayed(const Duration(seconds: 1));
+                  return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
+                },
+                onResolveHashtag: (identifier) async {
+                  await Future.delayed(const Duration(seconds: 1));
+                  return () {};
                 },
               );
             },
@@ -137,54 +133,52 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/actions/:nevent',
       pageBuilder: (context, state) {
-        final nevent = state.pathParameters['nevent']!;
         return AppSlideInModal(
           child: Consumer(
             builder: (context, ref, _) {
               return AppActionsModal(
-                nevent: nevent,
-                contentType: 'message',
-                profileName: 'User',
-                profilePicUrl: '',
-                recentReactions: DefaultData.defaultReactions,
+                event: event,
+                onEventTap: (event) {},
+                recentEmoji: DefaultData.defaultEmoji,
                 recentAmounts: DefaultData.defaultAmounts,
-                onReactionTap: (eventId) {},
-                onMoreReactionsTap: () {},
-                onZapTap: (eventId) {},
-                onMoreZapsTap: () {},
-                onReportTap: () {},
-                onAddProfileTap: () {},
-                onOpenWithTap: () {},
-                onLabelTap: () {},
-                onShareTap: () {},
-                onResolveEvent: (id) async {
-                  final events = await ref.read(storageProvider).queryAsync(
-                        RequestFilter(
-                          kinds: {30023},
-                          authors: {
-                            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'
-                          },
-                          limit: 1,
-                        ),
-                      );
-                  return events.cast<Article>().first;
+                onEmojiTap: (eventId) {},
+                onMoreEmojiTap: () {},
+                onZapTap: (event) {},
+                onMoreZapsTap: (event) {},
+                onReportTap: (event) {},
+                onAddProfileTap: (event) {},
+                onOpenWithTap: (event) {},
+                onLabelTap: (event) {},
+                onShareTap: (event) {},
+                onResolveEvent: (nevent) async {
+                  // Simulate network delay
+                  await Future.delayed(const Duration(seconds: 1));
+                  final post = await PartialNote(
+                    'Test post content',
+                    createdAt: DateTime.now(),
+                  ).signWith(DummySigner(),
+                      withPubkey:
+                          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+                  await ref.read(storageNotifierProvider.notifier).save({post});
+                  return (event: post, onTap: null);
                 },
-                onResolveProfile: (id) async {
-                  final profiles = await ref.read(storageProvider).queryAsync(
-                        RequestFilter(
-                          kinds: {0},
-                          authors: {
-                            'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2'
-                          },
-                          limit: 1,
-                        ),
-                      );
-                  return profiles.cast<Profile>().first;
+                onResolveProfile: (npub) async {
+                  await Future.delayed(const Duration(seconds: 1));
+                  return (
+                    profile: await PartialProfile(
+                      name: 'Pip',
+                      pictureUrl: 'https://m.primal.net/IfSZ.jpg',
+                    ).signWith(DummySigner()),
+                    onTap: null
+                  );
                 },
-                onResolveEmoji: (id) async =>
-                    'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
-                onResolveHashtag: (id) async => () {
-                  print('Hashtag #$id tapped');
+                onResolveEmoji: (identifier) async {
+                  await Future.delayed(const Duration(seconds: 1));
+                  return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
+                },
+                onResolveHashtag: (identifier) async {
+                  await Future.delayed(const Duration(seconds: 1));
+                  return () {};
                 },
               );
             },
@@ -249,12 +243,12 @@ final goRouter = GoRouter(
         return AppSlideInScreen(
           child: Consumer(
             builder: (context, ref, _) {
-              final currentProfile = ref.watch(signedInProfile);
+              final currentProfile = ref.watch(currentProfile);
               return AppSettingsScreen(
                 currentNpub: currentProfile!.npub,
                 profiles: [],
                 onSelect: (profile) {
-                  ref.read(signedInProfile.notifier).state = profile;
+                  ref.read(currentProfile.notifier).state = profile;
                 },
                 onHomeTap: () => context.pop(),
                 onHistoryTap: () => context.push('/settings/history'),

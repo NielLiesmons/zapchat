@@ -1,6 +1,6 @@
-import 'package:zapchat/src/providers/signed_in_profile.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
+import 'providers/current_profile.dart';
 
 import 'tabs/apps.dart';
 import 'tabs/articles.dart';
@@ -39,12 +39,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
-  // Home page content
+// Home page content
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-
-    final currentProfile = ref.watch(signedInProfile);
 
     return Stack(
       children: [
@@ -61,11 +59,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                         horizontal: AppGapSize.s12),
                     child: Row(
                       children: [
-                        if (currentProfile != null)
-                          AppProfilePic.s48(
-                            currentProfile.pictureUrl ?? '',
-                            onTap: () => context.push('/settings'),
-                          ),
+                        AppProfilePic.s48(
+                          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png', // TODO: Make it the acyual current profile
+                          onTap: () => context.push('/settings'),
+                        ),
                         const AppGap.s12(),
                         Expanded(
                           child: AppContainer(
@@ -101,7 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const AppGap.s16(),
                   AppTabView(
                     tabs: [
-                      const ChatTab().tabData(context, ref),
+                      ChatTab.tabData(context, ref),
                       const PostsTab().tabData(context),
                       const AppsTab().tabData(context),
                       const WikisTab().tabData(context),

@@ -1,120 +1,199 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
-  // Initialize models
-  await ref.read(initializationProvider.future);
+  try {
+    print('Starting initialization...');
+    // Initialize models
+    print('Initializing models...');
+    await ref.read(initializationProvider(const StorageConfiguration()).future);
+    print('Models initialized');
 
-  final dummyProfiles = <Profile>[];
-  final dummyNotes = <Note>[];
-  final dummyChatMessages = <ChatMessage>[];
-  final dummyArticles = <Article>[];
+    final dummyProfiles = <Profile>[];
+    final dummyNotes = <Note>[];
+    final dummyChatMessages = <ChatMessage>[];
+    final dummyArticles = <Article>[];
+    final dummyCommunikeys = <Communikey>[];
 
-  final signer = DummySigner();
+    print('Creating signer...');
+    final signer = DummySigner();
+    print('Signer created');
 
-  final niel = await PartialProfile(
-    name: 'Niel Liesmons',
-    pictureUrl:
-        'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-  ).signWith(signer,
-      withPubkey:
-          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+    print('Creating profiles...');
+    final zapchat = await PartialProfile(
+      name: 'Zapchat',
+      pictureUrl:
+          'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+    ).signWith(signer,
+        withPubkey:
+            'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004');
+    print('Zapchat profile created');
 
-  final zapchat = await PartialProfile(
-    name: 'Zapchat',
-    pictureUrl:
-        'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
-  ).signWith(signer,
-      withPubkey:
-          'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004');
+    // Add the profile to the list
+    dummyProfiles.add(zapchat);
+    print('Added Zapchat profile to list');
 
-  final proof = await PartialProfile(
-    name: 'Proof Of Reign',
-    pictureUrl:
-        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
-  ).signWith(signer,
-      withPubkey:
-          '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
+    final zapstore = await PartialProfile(
+      name: 'Zapstore',
+      pictureUrl:
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
+    ).signWith(signer,
+        withPubkey:
+            '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
 
-  final pip = await PartialProfile(
-    name: 'Pip',
-    pictureUrl:
-        'https://primal.b-cdn.net/media-upload?u=https%3A%2F%2Fmedia.primal.net%2Fuploads%2F5%2F23%2F5d%2F5235d240286bc5ebd3f663631eec7b48d8ff2918e7a1c81edb9c4295f37a6af0.jpg',
-  ).signWith(signer,
-      withPubkey:
-          'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
+    final niel = await PartialProfile(
+      name: 'Niel Liesmons',
+      pictureUrl:
+          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+    ).signWith(signer,
+        withPubkey:
+            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
 
-  final franzap = await PartialProfile(
-    name: 'franzap',
-    pictureUrl:
-        'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
-  ).signWith(signer,
-      withPubkey:
-          'npub1wf4pufsucer5va8g9p0rj5dnhvfeh6d8w0g6eayaep5dhps6rsgs43dgh9');
-  final verbiricha = await PartialProfile(
-    name: 'verbiricha',
-    pictureUrl:
-        'https://cdn.satellite.earth/da67840aae6720f5e5fb9e4c8ce25a85f6d8cbf22f4a04fd44babd58a9badfc6.png',
-  ).signWith(signer,
-      withPubkey:
-          '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
+    final cypherchads = await PartialProfile(
+      name: 'Cypher Chads',
+      pictureUrl:
+          'https://primal.b-cdn.net/media-upload?u=https%3A%2F%2Fmedia.primal.net%2Fuploads%2F5%2F23%2F5d%2F5235d240286bc5ebd3f663631eec7b48d8ff2918e7a1c81edb9c4295f37a6af0.jpg',
+    ).signWith(signer,
+        withPubkey:
+            'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
 
-  dummyProfiles.addAll([niel, zapchat, proof, pip, franzap, verbiricha]);
+    final franzap = await PartialProfile(
+      name: 'franzap',
+      pictureUrl:
+          'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
+    ).signWith(signer,
+        withPubkey:
+            'npub1wf4pufsucer5va8g9p0rj5dnhvfeh6d8w0g6eayaep5dhps6rsgs43dgh9');
 
-  dummyNotes.addAll([
-    await PartialNote(
-      'A new study on swipe actions shows that it cleans up interfaces like nothing else',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-    ).signWith(signer, withPubkey: niel.pubkey),
-    await PartialNote(
-      'I love Zaplab',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
-    ).signWith(signer, withPubkey: niel.pubkey),
-    await PartialNote(
-      'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-    ).signWith(signer, withPubkey: zapchat.pubkey),
-    await PartialNote(
-      'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
-    ).signWith(signer, withPubkey: zapchat.pubkey),
-    await PartialNote(
-      'Test Poast',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
-    ).signWith(signer, withPubkey: proof.pubkey),
-  ]);
+    final verbiricha = await PartialProfile(
+      name: 'verbiricha',
+      pictureUrl:
+          'https://cdn.satellite.earth/da67840aae6720f5e5fb9e4c8ce25a85f6d8cbf22f4a04fd44babd58a9badfc6.png',
+    ).signWith(signer,
+        withPubkey:
+            '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
 
-  // Chat messages
+    dummyProfiles.addAll([niel, zapstore, cypherchads, franzap, verbiricha]);
 
-  dummyChatMessages.addAll([
-    await PartialChatMessage(
-      'Ow, I see. This is not just a chat app, is it?',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-    ).signWith(signer, withPubkey: pip.pubkey),
-    await PartialChatMessage(
-      '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
-                    https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
-                    https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-    ).signWith(signer, withPubkey: pip.pubkey),
-    await PartialChatMessage(
-      'Yeah, loving the UX',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
-    ).signWith(signer, withPubkey: verbiricha.pubkey),
-    await PartialChatMessage(
-      'This is awesome!',
-      createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-    ).signWith(signer, withPubkey: verbiricha.pubkey),
-  ]);
+    dummyNotes.addAll([
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer, withPubkey: niel.pubkey),
+      await PartialNote(
+        'I love Zaplab',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+      ).signWith(signer, withPubkey: niel.pubkey),
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+      await PartialNote(
+        'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+      await PartialNote(
+        'Test Poast',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+    ]);
 
-  await ref.read(storageNotifierProvider.notifier).save([
-    ...dummyProfiles,
-    ...dummyNotes,
-    ...dummyArticles,
-    ...dummyChatMessages
-  ]);
+    // Chat messages
 
-  return true;
+    dummyChatMessages.addAll([
+      await PartialChatMessage(
+        'Ow, I see. This is not just a chat app, is it?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+      ).signWith(signer, withPubkey: cypherchads.pubkey),
+      await PartialChatMessage(
+        '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
+                      https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
+                      https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+      await PartialChatMessage(
+        'Yeah, loving the UX',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+      ).signWith(signer, withPubkey: verbiricha.pubkey),
+      await PartialChatMessage(
+        'This is awesome!',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer, withPubkey: verbiricha.pubkey),
+    ]);
+
+    // Communikeys
+    dummyCommunikeys.addAll([
+      await PartialCommunikey(
+        content: 'Zapchat',
+        contentTypes: {
+          'chat',
+          'post',
+          'article',
+          'wiki',
+          'book',
+          'repo',
+          'doc',
+          'app',
+          'task',
+          'image',
+          'video'
+        },
+        location: 'Buffalo, NY',
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+      await PartialCommunikey(
+        content: 'Cypher Chads',
+        contentTypes: {
+          'chat',
+          'post',
+          'article',
+          'wiki',
+          'book',
+          'repo',
+          'doc',
+          'app',
+          'task',
+          'image',
+          'video'
+        },
+        location: 'Buffalo, NY',
+      ).signWith(signer, withPubkey: cypherchads.pubkey),
+      await PartialCommunikey(
+        content: 'Zapstore',
+        contentTypes: {
+          'chat',
+          'post',
+          'article',
+          'wiki',
+          'book',
+          'repo',
+          'doc',
+          'app',
+          'task',
+          'image',
+          'video'
+        },
+        location: null,
+      ).signWith(signer, withPubkey: zapstore.pubkey),
+    ]);
+
+    // Save all data
+    print('Saving data to storage...');
+    await ref.read(storageNotifierProvider.notifier).save(Set.from([
+          ...dummyProfiles,
+          ...dummyNotes,
+          ...dummyArticles,
+          ...dummyChatMessages,
+          ...dummyCommunikeys
+        ]));
+    print('Data saved successfully');
+
+    return true;
+  } catch (e, stackTrace) {
+    print('Error during initialization: $e');
+    print('Stack trace: $stackTrace');
+    rethrow;
+  }
 });
 
 // ***
@@ -181,7 +260,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
 //           emojiUrl:
 //               'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
 //           emojiName: '👍',
-//           timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+//           timestamp: DateTime.now(),
 //         ),
 //         Reaction(
 //           nevent: 'nevent2',
@@ -192,7 +271,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
 //           emojiUrl:
 //               'https://cdn.satellite.earth/60a5e73bfa6dfd35bd0b144f38f6ed2aaab0606b2bd68b623f419ae0709fa10a.png',
 //           emojiName: '👍',
-//           timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+//           timestamp: DateTime.now(),
 //         ),
 //       ],
 //       zaps: [
