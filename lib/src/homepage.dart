@@ -98,7 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const AppGap.s16(),
                   AppTabView(
                     tabs: [
-                      ChatTab.tabData(context, ref),
+                      const ChatTab().tabData(context),
                       const PostsTab().tabData(context),
                       const AppsTab().tabData(context),
                       const WikisTab().tabData(context),
@@ -130,6 +130,20 @@ class _HomePageState extends ConsumerState<HomePage> {
       case 0: // Chat tab
         return AppBottomBarHome();
       case 1: // Posts tab
+        return AppBottomBarContentFeed();
+      case 2: // Apps tab
+        return AppBottomBarContentFeed();
+      case 3: // Wikis tab
+        return AppBottomBarContentFeed();
+      case 4: // Articles tab
+        return AppBottomBarContentFeed();
+      case 5: // Books tab
+        return AppBottomBarContentFeed();
+      case 6: // Images tab
+        return AppBottomBarContentFeed();
+      case 7: // Repos tab
+        return AppBottomBarContentFeed();
+      case 8: // Videos tab
         return AppBottomBarContentFeed();
       default:
         return const SizedBox.shrink();

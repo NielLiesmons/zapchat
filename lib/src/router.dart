@@ -32,6 +32,14 @@ final goRouter = GoRouter(
 
               final articlesState =
                   ref.watch(query(kinds: {30023}, authors: {npub}));
+              final communitiesState =
+                  ref.watch(query(kinds: {10222}, authors: {npub}));
+
+              if (communitiesState case StorageLoading()) {
+                return Center(child: AppLoadingDots());
+              }
+
+              final community = communitiesState.models.first as Community;
 
               if (profilesState case StorageLoading()) {
                 return Center(child: AppLoadingDots());
@@ -46,9 +54,21 @@ final goRouter = GoRouter(
                 // TODO: This stuff should be derived from relationships
                 mainCount: 21,
                 contentTypes: {
-                  'chat': (count: 2, feed: AppLoadingDots()),
-                  'article': (count: 2, feed: AppLoadingDots()),
-                  'post': (count: 2, feed: AppLoadingDots()),
+                  'chat': (
+                    count: 2,
+                    feed: AppLoadingFeed(type: LoadingFeedType.chat),
+                    bottomBar: const AppBottomBarChat()
+                  ),
+                  'article': (
+                    count: 2,
+                    feed: AppLoadingFeed(type: LoadingFeedType.content),
+                    bottomBar: const AppBottomBarContentFeed()
+                  ),
+                  'post': (
+                    count: 2,
+                    feed: AppLoadingFeed(type: LoadingFeedType.content),
+                    bottomBar: const AppBottomBarContentFeed()
+                  ),
                 },
                 // Callbacks
                 onHomeTap: () => context.pop(),
@@ -130,62 +150,63 @@ final goRouter = GoRouter(
       },
     ),
     // Add the new actions modal route
-    GoRoute(
-      path: '/actions/:nevent',
-      pageBuilder: (context, state) {
-        return AppSlideInModal(
-          child: Consumer(
-            builder: (context, ref, _) {
-              return AppActionsModal(
-                event: event,
-                onEventTap: (event) {},
-                recentEmoji: DefaultData.defaultEmoji,
-                recentAmounts: DefaultData.defaultAmounts,
-                onEmojiTap: (eventId) {},
-                onMoreEmojiTap: () {},
-                onZapTap: (event) {},
-                onMoreZapsTap: (event) {},
-                onReportTap: (event) {},
-                onAddProfileTap: (event) {},
-                onOpenWithTap: (event) {},
-                onLabelTap: (event) {},
-                onShareTap: (event) {},
-                onResolveEvent: (nevent) async {
-                  // Simulate network delay
-                  await Future.delayed(const Duration(seconds: 1));
-                  final post = await PartialNote(
-                    'Test post content',
-                    createdAt: DateTime.now(),
-                  ).signWith(DummySigner(),
-                      withPubkey:
-                          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-                  await ref.read(storageNotifierProvider.notifier).save({post});
-                  return (event: post, onTap: null);
-                },
-                onResolveProfile: (npub) async {
-                  await Future.delayed(const Duration(seconds: 1));
-                  return (
-                    profile: await PartialProfile(
-                      name: 'Pip',
-                      pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-                    ).signWith(DummySigner()),
-                    onTap: null
-                  );
-                },
-                onResolveEmoji: (identifier) async {
-                  await Future.delayed(const Duration(seconds: 1));
-                  return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
-                },
-                onResolveHashtag: (identifier) async {
-                  await Future.delayed(const Duration(seconds: 1));
-                  return () {};
-                },
-              );
-            },
-          ),
-        );
-      },
-    ),
+    // GoRoute(
+    //   path: '/actions/nevent',
+    //   pageBuilder: (context, state) {
+    //     final event = state.pathParameters['nevent']!;
+    //     return AppSlideInModal(
+    //       child: Consumer(
+    //         builder: (context, ref, _) {
+    //           return AppActionsModal(
+    //             event: event,
+    //             onEventTap: (event) {},
+    //             recentEmoji: DefaultData.defaultEmoji,
+    //             recentAmounts: DefaultData.defaultAmounts,
+    //             onEmojiTap: (eventId) {},
+    //             onMoreEmojiTap: () {},
+    //             onZapTap: (event) {},
+    //             onMoreZapsTap: (event) {},
+    //             onReportTap: (event) {},
+    //             onAddProfileTap: (event) {},
+    //             onOpenWithTap: (event) {},
+    //             onLabelTap: (event) {},
+    //             onShareTap: (event) {},
+    //             onResolveEvent: (nevent) async {
+    //               // Simulate network delay
+    //               await Future.delayed(const Duration(seconds: 1));
+    //               final post = await PartialNote(
+    //                 'Test post content',
+    //                 createdAt: DateTime.now(),
+    //               ).signWith(DummySigner(),
+    //                   withPubkey:
+    //                       'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+    //               await ref.read(storageNotifierProvider.notifier).save({post});
+    //               return (event: post, onTap: null);
+    //             },
+    //             onResolveProfile: (npub) async {
+    //               await Future.delayed(const Duration(seconds: 1));
+    //               return (
+    //                 profile: await PartialProfile(
+    //                   name: 'Pip',
+    //                   pictureUrl: 'https://m.primal.net/IfSZ.jpg',
+    //                 ).signWith(DummySigner()),
+    //                 onTap: null
+    //               );
+    //             },
+    //             onResolveEmoji: (identifier) async {
+    //               await Future.delayed(const Duration(seconds: 1));
+    //               return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
+    //             },
+    //             onResolveHashtag: (identifier) async {
+    //               await Future.delayed(const Duration(seconds: 1));
+    //               return () {};
+    //             },
+    //           );
+    //         },
+    //       ),
+    //     );
+    //   },
+    // ),
     // Add new settings route
     GoRoute(
       path: '/settings',
@@ -193,12 +214,12 @@ final goRouter = GoRouter(
         return AppSlideInScreen(
           child: Consumer(
             builder: (context, ref, _) {
-              final pstate = ref.watch(query(kinds: {0}));
-              final currentProfile = pstate.models.first as Profile;
+              final profilesState = ref.watch(query(kinds: {0}));
+              final currentProfile = profilesState.models.first as Profile;
 
               return AppSettingsScreen(
-                currentNpub: currentProfile.npub,
-                profiles: List.castFrom(pstate.models),
+                currentProfile: currentProfile,
+                profiles: List.castFrom(profilesState.models),
                 onSelect: (profile) {
                   // TODO
                   // ref
@@ -237,43 +258,7 @@ final goRouter = GoRouter(
         );
       },
     ),
-    GoRoute(
-      path: '/settings/history',
-      pageBuilder: (context, state) {
-        return AppSlideInScreen(
-          child: Consumer(
-            builder: (context, ref, _) {
-              final currentProfile = ref.watch(currentProfile);
-              return AppSettingsScreen(
-                currentNpub: currentProfile!.npub,
-                profiles: [],
-                onSelect: (profile) {
-                  ref.read(currentProfile.notifier).state = profile;
-                },
-                onHomeTap: () => context.pop(),
-                onHistoryTap: () => context.push('/settings/history'),
-                historyDescription: 'Last activity 12m ago',
-                onDraftsTap: () => context.push('/settings/drafts'),
-                draftsDescription: '21 Drafts',
-                onLabelsTap: () => context.push('/settings/labels'),
-                labelsDescription: '21 Public, 34 Private',
-                onAppearanceTap: () => context.push('/settings/appearance'),
-                appearanceDescription: 'Dark theme, Normal text',
-                onHostingTap: () => context.push('/settings/hosting'),
-                hostingDescription: '21 GB on 3 Relays, 2 Servers',
-                onSecurityTap: () => context.push('/settings/security'),
-                securityDescription: 'Secure mode, Keys are backed up',
-                onOtherDevicesTap: () =>
-                    context.push('/settings/other-devices'),
-                otherDevicesDescription: 'Last activity 12m ago',
-                onInviteTap: () => context.push('/settings/invite'),
-                onDisconnectTap: () => context.push('/settings/disconnect'),
-              );
-            },
-          ),
-        );
-      },
-    ),
+
     // TODO: Implement content screen
   ],
 );

@@ -1,6 +1,7 @@
 import 'package:zapchat/src/initialization.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'src/router.dart';
 import 'src/providers/theme_settings.dart';
 
@@ -14,27 +15,53 @@ class App extends ConsumerWidget {
         builder: (context, ref, _) {
           final value = ref.watch(zapchatInitializationProvider);
           return switch (value) {
-            AsyncLoading() => AppScaffold(
-                body: AppContainer(
-                  alignment: Alignment.center,
-                  child: const AppLoadingDots(),
-                ),
-              ),
-            AsyncError(:final error, :final stackTrace) => AppScaffold(
-                body: AppContainer(
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppText.h2('Error during initialization:'),
-                      const AppGap.s8(),
-                      AppText.med14(error.toString()),
-                      if (stackTrace != null) ...[
-                        const AppGap.s8(),
-                        AppText.reg12(stackTrace.toString()),
-                      ],
+            AsyncLoading() => AppResponsiveTheme(
+                child: AppBase(
+                  title: 'Zapchat',
+                  routerConfig: GoRouter(
+                    routes: [
+                      GoRoute(
+                        path: '/',
+                        builder: (context, state) => AppScaffold(
+                          body: AppContainer(
+                            alignment: Alignment.center,
+                            child: const AppLoadingDots(),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
+                  colorMode: null,
+                  textScale: AppTextScale.normal,
+                  systemScale: AppSystemScale.normal,
+                ),
+              ),
+            AsyncError(:final error, :final stackTrace) => AppResponsiveTheme(
+                child: AppBase(
+                  title: 'Zapchat',
+                  routerConfig: GoRouter(
+                    routes: [
+                      GoRoute(
+                        path: '/',
+                        builder: (context, state) => AppScaffold(
+                          body: AppContainer(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppText.h2('Error during initialization:'),
+                                const AppGap.s8(),
+                                AppText.med14(error.toString()),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  colorMode: null,
+                  textScale: AppTextScale.normal,
+                  systemScale: AppSystemScale.normal,
                 ),
               ),
             AsyncValue() => _AppWithTheme(),

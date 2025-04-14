@@ -6,12 +6,12 @@ part of 'theme_settings.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeSettingsHash() => r'34a923f7f7a188bb89425f88c79c6d7764ac138a';
+String _$themeSettingsHash() => r'17e6804ff82c4b27e2bc009fa24e43b14a37cf35';
 
 /// See also [ThemeSettings].
 @ProviderFor(ThemeSettings)
 final themeSettingsProvider =
-    AsyncNotifierProvider<ThemeSettings, ThemeState>.internal(
+    AutoDisposeAsyncNotifierProvider<ThemeSettings, ThemeState>.internal(
   ThemeSettings.new,
   name: r'themeSettingsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final themeSettingsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$ThemeSettings = AsyncNotifier<ThemeState>;
+typedef _$ThemeSettings = AutoDisposeAsyncNotifier<ThemeState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

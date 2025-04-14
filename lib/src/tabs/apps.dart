@@ -10,12 +10,7 @@ class AppsTab extends StatelessWidget {
       content: Builder(
         builder: (context) {
           return AppContainer(
-            padding: const AppEdgeInsets.all(AppGapSize.s12),
-            child: Column(
-              children: [
-                AppText.h1('Apps'),
-              ],
-            ),
+            child: const AppLoadingFeed(type: LoadingFeedType.chat),
           );
         },
       ),

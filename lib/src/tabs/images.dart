@@ -10,12 +10,7 @@ class ImagesTab extends StatelessWidget {
       content: Builder(
         builder: (context) {
           return AppContainer(
-            padding: AppEdgeInsets.all(AppGapSize.s16),
-            child: Column(
-              children: [
-                AppText.h1('Images'),
-              ],
-            ),
+            child: const AppLoadingFeed(),
           );
         },
       ),

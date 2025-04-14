@@ -10,12 +10,7 @@ class ArticlesTab extends StatelessWidget {
       content: Builder(
         builder: (context) {
           return AppContainer(
-            padding: AppEdgeInsets.all(AppGapSize.s16),
-            child: Column(
-              children: [
-                AppText.h1('Articles'),
-              ],
-            ),
+            child: const AppLoadingFeed(),
           );
         },
       ),

@@ -12,21 +12,7 @@ class WikisTab extends StatelessWidget {
           final theme = AppTheme.of(context);
 
           return AppContainer(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
-            child: Column(
-              children: [
-                AppButton(
-                  children: [
-                    AppLoadingDots(),
-                  ],
-                  onTap: () {},
-                  inactiveGradient: theme.colors.blurple66,
-                  pressedGradient: theme.colors.blurple66,
-                ),
-                const AppGap.s16(),
-                const AppLoadBar(progress: 0.72),
-              ],
-            ),
+            child: const AppLoadingFeed(),
           );
         },
       ),

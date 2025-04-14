@@ -10,12 +10,7 @@ class VideosTab extends StatelessWidget {
       content: Builder(
         builder: (context) {
           return AppContainer(
-            padding: AppEdgeInsets.all(AppGapSize.s16),
-            child: Column(
-              children: [
-                AppText.h1('Videos'),
-              ],
-            ),
+            child: const AppLoadingFeed(),
           );
         },
       ),
