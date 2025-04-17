@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class CommunityPricingModal extends ConsumerWidget {
+  final Community community;
+
   const CommunityPricingModal({
     super.key,
+    required this.community,
   });
 
   @override
@@ -40,7 +44,7 @@ class CommunityPricingModal extends ConsumerWidget {
         AppPanel(
             padding: const AppEdgeInsets.all(AppGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "thread", size: 20),
+              const AppEmojiContentType(contentType: "post", size: 20),
               const AppGap.s16(),
               AppText.reg14("Post", color: theme.colors.white66),
               const Spacer(),
@@ -124,7 +128,7 @@ class CommunityPricingModal extends ConsumerWidget {
         AppPanel(
             padding: const AppEdgeInsets.all(AppGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "documentation", size: 20),
+              const AppEmojiContentType(contentType: "doc", size: 20),
               const AppGap.s16(),
               AppText.reg14("Docs", color: theme.colors.white66),
               const Spacer(),
@@ -145,9 +149,9 @@ class CommunityPricingModal extends ConsumerWidget {
         AppPanel(
             padding: const AppEdgeInsets.all(AppGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "wiki", size: 20),
+              const AppEmojiContentType(contentType: "poll", size: 20),
               const AppGap.s16(),
-              AppText.reg14("Wiki", color: theme.colors.white66),
+              AppText.reg14("Poll", color: theme.colors.white66),
               const Spacer(),
               AppIcon.s14(
                 theme.icons.characters.profile,

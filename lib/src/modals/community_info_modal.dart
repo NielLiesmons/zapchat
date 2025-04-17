@@ -1,28 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
+import 'package:models/models.dart';
 
 class CommunityInfoModal extends ConsumerWidget {
-  final String profilePicUrl;
-  final String title;
-  final String description;
-  final String npub;
+  final Community community;
+
   const CommunityInfoModal({
     super.key,
-    required this.profilePicUrl,
-    required this.title,
-    required this.description,
-    required this.npub,
+    required this.community,
   });
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = AppTheme.of(context);
 
     return AppModal(
-      title: title,
-      profilePicUrl: profilePicUrl,
+      title: community.name,
+      profilePicUrl: community.author.value?.pictureUrl ?? '',
       children: [
-        AppText.reg14(description,
+        AppText.reg14(community.description ?? '',
             color: theme.colors.white66,
             maxLines: 3,
             textOverflow: TextOverflow.ellipsis,
@@ -37,7 +34,8 @@ class CommunityInfoModal extends ConsumerWidget {
                   top: AppGapSize.s20,
                   bottom: AppGapSize.s14,
                 ),
-                onTap: () => context.push('/chat/$npub/info/pricing'),
+                onTap: () => context.push(
+                    '/chat/${community.author.value?.pubkey}/info/pricing'),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,

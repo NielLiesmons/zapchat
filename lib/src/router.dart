@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:zapchat/src/providers/current_profile.dart';
@@ -8,6 +10,12 @@ import 'modals/preferences_modal.dart';
 import 'modals/community_info_modal.dart';
 import 'modals/community_pricing_modal.dart';
 import 'modals/community_notifications_modal.dart';
+import 'feeds/community_chat_feed.dart';
+import 'feeds/community_posts_feed.dart';
+import 'resolvers.dart';
+import 'search.dart';
+import 'screens/community_screen.dart';
+import 'package:zapchat/src/screens/settings_screen.dart';
 
 final goRouter = GoRouter(
   routes: [
@@ -16,93 +24,89 @@ final goRouter = GoRouter(
       builder: (context, state) => HomePage(),
     ),
     GoRoute(
-      path: '/chat/:npub',
+      path: '/community/:npub',
+      pageBuilder: (context, state) {
+        if (state.extra == null) {
+          throw Exception('Community object is required');
+        }
+        final community = state.extra as Community;
+        return AppSlideInScreen(
+          child: CommunityScreen(community: community),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info',
+      pageBuilder: (context, state) {
+        if (state.extra == null) {
+          throw Exception('Community object is required');
+        }
+        final community = state.extra as Community;
+        return AppSlideInModal(
+          child: CommunityInfoModal(community: community),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info/pricing',
       pageBuilder: (context, state) {
         final npub = state.pathParameters['npub']!;
-        return AppSlideInScreen(
+        return AppSlideInModal(
           child: Consumer(
             builder: (context, ref, _) {
-              // TODO: This data should not be loaded here, but in corresponding widgets
+              final communityState =
+                  ref.watch(query<Community>(authors: {npub}));
 
-              final messagesState =
-                  ref.watch(query(kinds: {9}, authors: {npub}));
-              final notesState =
-                  ref.watch(query(kinds: {1}, authors: {npub}, limit: 5));
-              final profilesState = ref.watch(query(kinds: {0}));
-
-              final articlesState =
-                  ref.watch(query(kinds: {30023}, authors: {npub}));
-              final communitiesState =
-                  ref.watch(query(kinds: {10222}, authors: {npub}));
-
-              if (communitiesState case StorageLoading()) {
-                return Center(child: AppLoadingDots());
+              if (communityState case StorageLoading()) {
+                return const Center(child: AppLoadingDots());
               }
 
-              final community = communitiesState.models.first as Community;
-
-              if (profilesState case StorageLoading()) {
-                return Center(child: AppLoadingDots());
-              }
-
-              final profile = profilesState.models.first as Profile;
-
-              return AppCommunityScreen(
-                community: community,
-                onProfileTap: () => context.push('/chat/$npub/info'),
-                currentProfile: profile,
-                // TODO: This stuff should be derived from relationships
-                mainCount: 21,
-                contentTypes: {
-                  'chat': (
-                    count: 2,
-                    feed: AppLoadingFeed(type: LoadingFeedType.chat),
-                    bottomBar: const AppBottomBarChat()
-                  ),
-                  'article': (
-                    count: 2,
-                    feed: AppLoadingFeed(type: LoadingFeedType.content),
-                    bottomBar: const AppBottomBarContentFeed()
-                  ),
-                  'post': (
-                    count: 2,
-                    feed: AppLoadingFeed(type: LoadingFeedType.content),
-                    bottomBar: const AppBottomBarContentFeed()
-                  ),
+              final community = communityState.models.first;
+              return CommunityPricingModal(community: community);
+            },
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/chat/:npub/info/notifications',
+      pageBuilder: (context, state) {
+        final npub = state.pathParameters['npub']!;
+        return AppSlideInModal(
+          child: const CommunityNotificationsModal(),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/actions/:eventId',
+      pageBuilder: (context, state) {
+        if (state.extra == null) {
+          throw Exception('Event object is required to open actions modal');
+        }
+        final event = state.extra as Event;
+        return AppSlideInModal(
+          child: Consumer(
+            builder: (context, ref, _) {
+              return AppActionsModal(
+                event: event,
+                onEventTap: (event) {},
+                onReplyTap: (event) {
+                  context.replace('/reply/${event.id}', extra: event);
                 },
-                // Callbacks
-                onHomeTap: () => context.pop(),
-                onActions: (nevent) => context.push('/actions/$nevent'),
-                onReply: (eventId) {},
-                onReactionTap: (eventId) {},
-                onZapTap: (eventId) {},
-                onLinkTap: (url) {},
-                onResolveEvent: (nevent) async {
-                  // Simulate network delay
-                  await Future.delayed(const Duration(seconds: 1));
-                  final post = await PartialNote(
-                    'Test post content',
-                    createdAt: DateTime.now(),
-                  ).signWith(DummySigner(),
-                      withPubkey:
-                          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-                  await ref.read(storageNotifierProvider.notifier).save({post});
-                  return (event: post, onTap: null);
-                },
-                onResolveProfile: (npub) async {
-                  await Future.delayed(const Duration(seconds: 1));
-                  return (
-                    profile: await PartialProfile(
-                      name: 'Pip',
-                      pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-                    ).signWith(DummySigner()),
-                    onTap: null
-                  );
-                },
-                onResolveEmoji: (identifier) async {
-                  await Future.delayed(const Duration(seconds: 1));
-                  return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
-                },
+                recentEmoji: DefaultData.defaultEmoji,
+                recentAmounts: DefaultData.defaultAmounts,
+                onEmojiTap: (emoji) {},
+                onMoreEmojiTap: () {},
+                onZapTap: (event) {},
+                onMoreZapsTap: (event) {},
+                onReportTap: (event) {},
+                onAddProfileTap: (event) {},
+                onOpenWithTap: (event) {},
+                onLabelTap: (event) {},
+                onShareTap: (event) {},
+                onResolveEvent: ref.read(resolversProvider).eventResolver,
+                onResolveProfile: ref.read(resolversProvider).profileResolver,
+                onResolveEmoji: ref.read(resolversProvider).emojiResolver,
                 onResolveHashtag: (identifier) async {
                   await Future.delayed(const Duration(seconds: 1));
                   return () {};
@@ -114,139 +118,39 @@ final goRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/chat/:npub/info',
+      path: '/reply/:eventId',
       pageBuilder: (context, state) {
-        final npub = state.pathParameters['npub']!;
+        if (state.extra == null) {
+          throw Exception('Event object is required to open actions modal');
+        }
+        final event = state.extra as Event;
         return AppSlideInModal(
           child: Consumer(
             builder: (context, ref, _) {
-              final profileState =
-                  ref.watch(query(kinds: {0}, authors: {npub}));
-
-              if (profileState case StorageLoading()) {
-                return Center(child: AppLoadingDots());
-              }
-
-              if (profileState.models.isEmpty) {
-                return Center(
-                  child: AppText.reg14(
-                    'Profile not found',
-                    color: AppTheme.of(context).colors.white66,
-                  ),
-                );
-              }
-
-              final profile = profileState.models.first as Profile;
-              return CommunityInfoModal(
-                profilePicUrl: profile.pictureUrl ?? '',
-                title: profile.nameOrNpub,
-                description:
-                    '${profile.nameOrNpub} is a lorem ipsum and then some more info on this specific community that we are talking about here and although we are pretty sure we can come with better examples in the future this will have to dod for now',
-                npub: npub,
+              return AppReplyModal(
+                event: event,
+                onResolveEvent: ref.read(resolversProvider).eventResolver,
+                onResolveProfile: ref.read(resolversProvider).profileResolver,
+                onResolveEmoji: ref.read(resolversProvider).emojiResolver,
+                onSearchProfiles: ref.read(searchProvider).profileSearch,
+                onSearchEmojis: ref.read(searchProvider).emojiSearch,
+                onCameraTap: () {},
+                onEmojiTap: () {},
+                onGifTap: () {},
+                onAddTap: () {},
+                onSendTap: () {},
+                onChevronTap: () {},
               );
             },
           ),
         );
       },
     ),
-    // Add the new actions modal route
-    // GoRoute(
-    //   path: '/actions/nevent',
-    //   pageBuilder: (context, state) {
-    //     final event = state.pathParameters['nevent']!;
-    //     return AppSlideInModal(
-    //       child: Consumer(
-    //         builder: (context, ref, _) {
-    //           return AppActionsModal(
-    //             event: event,
-    //             onEventTap: (event) {},
-    //             recentEmoji: DefaultData.defaultEmoji,
-    //             recentAmounts: DefaultData.defaultAmounts,
-    //             onEmojiTap: (eventId) {},
-    //             onMoreEmojiTap: () {},
-    //             onZapTap: (event) {},
-    //             onMoreZapsTap: (event) {},
-    //             onReportTap: (event) {},
-    //             onAddProfileTap: (event) {},
-    //             onOpenWithTap: (event) {},
-    //             onLabelTap: (event) {},
-    //             onShareTap: (event) {},
-    //             onResolveEvent: (nevent) async {
-    //               // Simulate network delay
-    //               await Future.delayed(const Duration(seconds: 1));
-    //               final post = await PartialNote(
-    //                 'Test post content',
-    //                 createdAt: DateTime.now(),
-    //               ).signWith(DummySigner(),
-    //                   withPubkey:
-    //                       'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-    //               await ref.read(storageNotifierProvider.notifier).save({post});
-    //               return (event: post, onTap: null);
-    //             },
-    //             onResolveProfile: (npub) async {
-    //               await Future.delayed(const Duration(seconds: 1));
-    //               return (
-    //                 profile: await PartialProfile(
-    //                   name: 'Pip',
-    //                   pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-    //                 ).signWith(DummySigner()),
-    //                 onTap: null
-    //               );
-    //             },
-    //             onResolveEmoji: (identifier) async {
-    //               await Future.delayed(const Duration(seconds: 1));
-    //               return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
-    //             },
-    //             onResolveHashtag: (identifier) async {
-    //               await Future.delayed(const Duration(seconds: 1));
-    //               return () {};
-    //             },
-    //           );
-    //         },
-    //       ),
-    //     );
-    //   },
-    // ),
-    // Add new settings route
     GoRoute(
       path: '/settings',
       pageBuilder: (context, state) {
         return AppSlideInScreen(
-          child: Consumer(
-            builder: (context, ref, _) {
-              final profilesState = ref.watch(query(kinds: {0}));
-              final currentProfile = profilesState.models.first as Profile;
-
-              return AppSettingsScreen(
-                currentProfile: currentProfile,
-                profiles: List.castFrom(profilesState.models),
-                onSelect: (profile) {
-                  // TODO
-                  // ref
-                  //     .read(currentProfileProvider.notifier)
-                  //     .setCurrentProfile(profile);
-                },
-                onHomeTap: () => context.pop(),
-                onHistoryTap: () => context.push('/settings/history'),
-                historyDescription: 'Last activity 12m ago',
-                onDraftsTap: () => context.push('/settings/drafts'),
-                draftsDescription: '21 Drafts',
-                onLabelsTap: () => context.push('/settings/labels'),
-                labelsDescription: '21 Public, 34 Private',
-                onAppearanceTap: () => context.push('/settings/appearance'),
-                appearanceDescription: 'Dark theme, Normal text',
-                onHostingTap: () => context.push('/settings/hosting'),
-                hostingDescription: '21 GB on 3 Relays, 2 Servers',
-                onSecurityTap: () => context.push('/settings/security'),
-                securityDescription: 'Secure mode, Keys are backed up',
-                onOtherDevicesTap: () =>
-                    context.push('/settings/other-devices'),
-                otherDevicesDescription: 'Last activity 12m ago',
-                onInviteTap: () => context.push('/settings/invite'),
-                onDisconnectTap: () => context.push('/settings/disconnect'),
-              );
-            },
-          ),
+          child: const SettingsScreen(),
         );
       },
     ),
@@ -255,6 +159,33 @@ final goRouter = GoRouter(
       pageBuilder: (context, state) {
         return AppSlideInModal(
           child: const PreferencesModal(),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/slotMachine',
+      pageBuilder: (context, state) {
+        final profileName = state.extra as String;
+
+        return AppSlideInModal(
+          child: AppSlotMachineModal(
+            profileName: profileName,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/settings/get-started',
+      pageBuilder: (context, state) {
+        return AppSlideInModal(
+          child: AppAddProfileModal(
+            onStart: (profileName) {
+              context.replace('/slotMachine', extra: profileName);
+            },
+            onAlreadyHaveKey: () {
+              // Handle already have key case
+            },
+          ),
         );
       },
     ),

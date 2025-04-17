@@ -15,7 +15,7 @@ class ChatTab extends StatelessWidget {
       icon: const AppEmojiContentType(contentType: 'chat'),
       content: HookConsumer(
         builder: (context, ref, _) {
-          final state = ref.watch(queryType<Community>());
+          final state = ref.watch(query<Community>());
 
           final communities = state.models.cast<Community>();
 
@@ -30,11 +30,13 @@ class ChatTab extends StatelessWidget {
                     'post': 2,
                     'article': 1,
                   },
-                  onNavigateToChat: (communikey) {
-                    context
-                        .push('/community/${community.author.value?.pubkey}');
+                  onNavigateToChat: (community) {
+                    context.push(
+                      '/community/${community.author.value?.pubkey}',
+                      extra: community,
+                    );
                   },
-                  onNavigateToContent: (communikey, contentType) {
+                  onNavigateToContent: (community, contentType) {
                     context.push(
                         '/content/${community.author.value?.pubkey}/$contentType');
                   },

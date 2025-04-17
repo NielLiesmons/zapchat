@@ -43,6 +43,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final (currentProfile) = ref.watch(currentProfileProvider);
 
     return Stack(
       children: [
@@ -60,7 +61,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Row(
                       children: [
                         AppProfilePic.s48(
-                          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png', // TODO: Make it the acyual current profile
+                          currentProfile?.pictureUrl ?? '',
                           onTap: () => context.push('/settings'),
                         ),
                         const AppGap.s12(),
