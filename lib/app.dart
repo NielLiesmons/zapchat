@@ -2,7 +2,7 @@ import 'package:zapchat/src/initialization.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'src/router.dart';
+import 'src/router/router.dart';
 import 'src/providers/theme_settings.dart';
 
 class App extends ConsumerWidget {

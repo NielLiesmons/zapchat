@@ -1,9 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
+
+// TODO: Get actual notifications from the specific community
 
 class CommunityNotificationsModal extends ConsumerWidget {
+  final Community community;
+
   const CommunityNotificationsModal({
     super.key,
+    required this.community,
   });
 
   @override

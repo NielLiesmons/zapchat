@@ -4,7 +4,7 @@ import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../feeds/community_chat_feed.dart';
 import '../feeds/community_posts_feed.dart';
-import '../resolvers.dart';
+import '../providers/resolvers.dart';
 import '../providers/user_profiles.dart';
 
 class CommunityScreen extends ConsumerWidget {

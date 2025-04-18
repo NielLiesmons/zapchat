@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
-import '../resolvers.dart';
+import '../providers/resolvers.dart';
 
 class PostsTab extends StatelessWidget {
   const PostsTab({super.key});
