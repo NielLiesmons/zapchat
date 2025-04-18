@@ -4,8 +4,24 @@ import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zapchat/src/providers/resolvers.dart';
 import 'package:zapchat/src/providers/search.dart';
+import 'package:zapchat/src/screens/post_screen.dart';
 
 List<GoRoute> get eventRoutes => [
+      GoRoute(
+        path: '/post/:eventId',
+        pageBuilder: (context, state) {
+          final event = state.extra as Event;
+          return AppSlideInModal(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return PostScreen(
+                  post: event as Note,
+                );
+              },
+            ),
+          );
+        },
+      ),
       GoRoute(
         path: '/actions/:eventId',
         pageBuilder: (context, state) {

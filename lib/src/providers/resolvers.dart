@@ -14,41 +14,57 @@ class Resolvers {
     required this.emojiResolver,
     required this.hashtagResolver,
   });
+}
 
-  static Resolvers create(Ref<Resolvers> ref) {
-    return Resolvers(
-      eventResolver: (nevent) async {
-        // Simulate network delay
-        await Future.delayed(const Duration(seconds: 1));
-        final post = await PartialNote(
-          'Test post content',
-          createdAt: DateTime.now(),
-        ).signWith(DummySigner(),
-            withPubkey:
-                'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-        await ref.read(storageNotifierProvider.notifier).save({post});
-        return (event: post, onTap: null);
-      },
-      profileResolver: (npub) async {
-        await Future.delayed(const Duration(seconds: 1));
-        final profile = await PartialProfile(
-          name: 'Pip',
-          pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-        ).signWith(DummySigner());
-        return (profile: profile, onTap: null);
-      },
-      emojiResolver: (identifier) async {
-        await Future.delayed(const Duration(seconds: 1));
-        return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
-      },
-      hashtagResolver: (identifier) async {
-        await Future.delayed(const Duration(seconds: 1));
-        return () {};
-      },
-    );
+// Add cache classes
+class _ResolverCache<T> {
+  final Map<String, Future<T>> _cache = {};
+
+  Future<T> getOrCreate(String key, Future<T> Function() create) {
+    return _cache.putIfAbsent(key, create);
+  }
+
+  void clear() {
+    _cache.clear();
   }
 }
 
 final resolversProvider = Provider<Resolvers>((ref) {
-  return Resolvers.create(ref);
+  final eventCache = _ResolverCache<({Event event, VoidCallback? onTap})>();
+  final profileCache =
+      _ResolverCache<({Profile profile, VoidCallback? onTap})>();
+  final emojiCache = _ResolverCache<String>();
+  final hashtagCache = _ResolverCache<void Function()?>();
+
+  return Resolvers(
+    eventResolver: (identifier) => eventCache.getOrCreate(identifier, () async {
+      await Future.delayed(const Duration(seconds: 1));
+      final post = await PartialNote(
+        'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+        createdAt: DateTime.now(),
+      ).signWith(DummySigner(),
+          withPubkey:
+              'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+      await ref.read(storageNotifierProvider.notifier).save({post});
+      return (event: post, onTap: null);
+    }),
+    profileResolver: (identifier) =>
+        profileCache.getOrCreate(identifier, () async {
+      await Future.delayed(const Duration(seconds: 1));
+      final profile = await PartialProfile(
+        name: 'Pip',
+        pictureUrl: 'https://m.primal.net/IfSZ.jpg',
+      ).signWith(DummySigner());
+      return (profile: profile, onTap: null);
+    }),
+    emojiResolver: (identifier) => emojiCache.getOrCreate(identifier, () async {
+      await Future.delayed(const Duration(seconds: 1));
+      return 'https://cdn.satellite.earth/cbcd50ec769b65c03bc780f0b2d0967f893d10a29f7666d7df8f2d7614d493d4.png';
+    }),
+    hashtagResolver: (identifier) =>
+        hashtagCache.getOrCreate(identifier, () async {
+      await Future.delayed(const Duration(seconds: 1));
+      return () {};
+    }),
+  );
 });

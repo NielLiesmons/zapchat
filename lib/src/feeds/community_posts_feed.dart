@@ -18,7 +18,7 @@ class CommunityPostsFeed extends ConsumerWidget {
     final state = ref.watch(queryType<Note>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed();
+      return const AppLoadingFeed(type: LoadingFeedType.post);
     }
 
     final posts = state.models.cast<Note>();
@@ -28,6 +28,7 @@ class CommunityPostsFeed extends ConsumerWidget {
         for (final post in posts)
           AppFeedPost(
             post: post,
+            onTap: (event) => context.push('/post/${event.id}', extra: event),
             onReply: (event) =>
                 context.push('/reply/${event.id}', extra: event),
             onActions: (event) =>
