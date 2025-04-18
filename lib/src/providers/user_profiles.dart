@@ -18,9 +18,10 @@ class UserProfiles extends _$UserProfiles {
 
       // Load profiles from storage
       final profiles =
-          await ref.read(storageNotifierProvider.notifier).querySync<Profile>(
-                RequestFilter<Profile>(kinds: {0}), // Kind 0 is for profiles
-              );
+          (await ref.read(storageNotifierProvider.notifier).querySync(
+                    RequestFilter(kinds: {0}), // Kind 0 is for profiles
+                  ))
+              .cast<Profile>();
 
       // Set current profile if we have a pubkey
       Profile? currentProfile;

@@ -15,7 +15,7 @@ class CommunityPostsFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(query<Note>());
+    final state = ref.watch(queryType<Note>());
 
     if (state case StorageLoading()) {
       return const AppLoadingFeed();

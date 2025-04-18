@@ -15,7 +15,7 @@ class ChatTab extends StatelessWidget {
       icon: const AppEmojiContentType(contentType: 'chat'),
       content: HookConsumer(
         builder: (context, ref, _) {
-          final state = ref.watch(query<Community>());
+          final state = ref.watch(queryType<Community>());
 
           final communities = state.models.cast<Community>();
 

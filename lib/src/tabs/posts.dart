@@ -14,7 +14,7 @@ class PostsTab extends StatelessWidget {
       icon: const AppEmojiContentType(contentType: 'post'),
       content: HookConsumer(
         builder: (context, ref, _) {
-          final state = ref.watch(query<Note>());
+          final state = ref.watch(queryType<Note>());
 
           if (state case StorageLoading()) {
             return const AppLoadingFeed();

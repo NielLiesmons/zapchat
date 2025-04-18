@@ -50,7 +50,7 @@ final goRouter = GoRouter(
           child: Consumer(
             builder: (context, ref, _) {
               final communityState =
-                  ref.watch(query<Community>(authors: {npub}));
+                  ref.watch(queryType<Community>(authors: {npub}));
 
               if (communityState case StorageLoading()) {
                 return const Center(child: AppLoadingDots());
