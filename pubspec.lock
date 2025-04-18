@@ -580,8 +580,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "333f853"
-      resolved-ref: "333f853b4b51bf92e4b769d26cd74ca10e26601d"
+      ref: models-3
+      resolved-ref: "745841de68ab9b7720ee80e0371064362ff89b68"
       url: "https://github.com/purplebase/models.git"
     source: git
     version: "0.0.1"

@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
-import 'package:zapchat/src/providers/current_profile.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'homepage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +7,6 @@ import 'modals/preferences_modal.dart';
 import 'modals/community_info_modal.dart';
 import 'modals/community_pricing_modal.dart';
 import 'modals/community_notifications_modal.dart';
-import 'feeds/community_chat_feed.dart';
-import 'feeds/community_posts_feed.dart';
 import 'resolvers.dart';
 import 'search.dart';
 import 'screens/community_screen.dart';
@@ -71,7 +66,6 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/chat/:npub/info/notifications',
       pageBuilder: (context, state) {
-        final npub = state.pathParameters['npub']!;
         return AppSlideInModal(
           child: const CommunityNotificationsModal(),
         );

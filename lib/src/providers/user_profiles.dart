@@ -1,121 +1,118 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:collection/collection.dart';
 
-class UserProfile {
-  final Profile profile;
-  final String? nsec; // Store the nsec for signing
+part 'user_profiles.g.dart';
 
-  UserProfile({required this.profile, this.nsec});
+@riverpod
+class UserProfiles extends _$UserProfiles {
+  static const String _currentProfileKey = 'current_profile_pubkey';
 
-  Map<String, dynamic> toJson() => {
-        'profile': {
-          'name': profile.name,
-          'pictureUrl': profile.pictureUrl,
-          'pubkey': profile.pubkey,
-          'npub': profile.npub,
-        },
-        'nsec': nsec,
-      };
-
-  static Future<UserProfile> fromJson(Map<String, dynamic> json) async {
-    try {
-      final profileData = json['profile'] as Map<String, dynamic>;
-      final partialProfile = PartialProfile(
-        name: profileData['name'] as String? ?? '',
-        pictureUrl: profileData['pictureUrl'] as String? ?? '',
-      );
-      final profile = await partialProfile.signWith(
-        DummySigner(),
-        withPubkey: profileData['pubkey'] as String,
-      );
-      return UserProfile(
-        profile: profile,
-        nsec: json['nsec'] as String?,
-      );
-    } catch (e) {
-      print('Error creating UserProfile from JSON: $e');
-      print('JSON data: $json');
-      rethrow;
-    }
-  }
-}
-
-final userProfilesProvider =
-    StateNotifierProvider<UserProfilesNotifier, List<UserProfile>>((ref) {
-  return UserProfilesNotifier();
-});
-
-class UserProfilesNotifier extends StateNotifier<List<UserProfile>> {
-  UserProfilesNotifier() : super([]) {
-    _loadProfiles();
-  }
-
-  static const String _profilesKey = 'user_profiles';
-
-  Future<void> _loadProfiles() async {
-    final prefs = await SharedPreferences.getInstance();
-    final profilesJson = prefs.getString(_profilesKey);
-    if (profilesJson != null && profilesJson.isNotEmpty) {
-      try {
-        print('Loading profiles from JSON: $profilesJson');
-        final List<dynamic> profilesList = json.decode(profilesJson);
-        print('Decoded profiles list: $profilesList');
-        final loadedProfiles = await Future.wait(
-          profilesList.map(
-            (json) => UserProfile.fromJson(json as Map<String, dynamic>),
-          ),
-        );
-        state = loadedProfiles;
-        print('Successfully loaded ${loadedProfiles.length} profiles');
-      } catch (e) {
-        print('Error loading profiles: $e');
-        print('Raw JSON data: $profilesJson');
-        await prefs.remove(_profilesKey);
-      }
-    } else {
-      print('No profiles found in SharedPreferences');
-    }
-  }
-
-  Future<void> _saveProfiles() async {
+  @override
+  Future<(List<Profile>, Profile?)> build() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final profilesJson = json.encode(state.map((p) => p.toJson()).toList());
-      print('Saving profiles to JSON: $profilesJson');
-      await prefs.setString(_profilesKey, profilesJson);
+      final pubkey = prefs.getString(_currentProfileKey);
+
+      // Load profiles from storage
+      final profiles =
+          await ref.read(storageNotifierProvider.notifier).querySync<Profile>(
+                RequestFilter<Profile>(kinds: {0}), // Kind 0 is for profiles
+              );
+
+      // Set current profile if we have a pubkey
+      Profile? currentProfile;
+      if (profiles.isNotEmpty) {
+        currentProfile = pubkey != null
+            ? profiles.firstWhereOrNull((p) => p.pubkey == pubkey) ??
+                profiles.first
+            : profiles.first;
+      }
+
+      return (profiles, currentProfile);
     } catch (e) {
-      print('Error saving profiles: $e');
-      rethrow;
+      // If anything fails, throw the error to let Riverpod handle it
+      throw e;
     }
   }
 
-  Future<void> addProfile(UserProfile profile) async {
-    state = [...state, profile];
-    await _saveProfiles();
+  Future<void> addProfile(Profile profile) async {
+    if (!state.hasValue) {
+      state = AsyncData(([profile], profile));
+      return;
+    }
+
+    final (profiles, currentProfile) = state.value!;
+    if (!profiles.any((p) => p.pubkey == profile.pubkey)) {
+      state = AsyncData(([...profiles, profile], currentProfile));
+    }
   }
 
-  Future<void> removeProfile(String pubkey) async {
-    state = state.where((p) => p.profile.pubkey != pubkey).toList();
-    await _saveProfiles();
+  Future<void> removeProfile(Profile profile) async {
+    if (!state.hasValue) return;
+
+    final (profiles, currentProfile) = state.value!;
+    final newProfiles =
+        profiles.where((p) => p.pubkey != profile.pubkey).toList();
+    Profile? newCurrentProfile = currentProfile;
+
+    if (currentProfile?.pubkey == profile.pubkey) {
+      newCurrentProfile = newProfiles.isNotEmpty ? newProfiles.first : null;
+      if (newCurrentProfile != null) {
+        await setCurrentProfile(newCurrentProfile);
+      }
+    }
+
+    state = AsyncData((newProfiles, newCurrentProfile));
   }
 
   Future<void> reorderProfiles(int oldIndex, int newIndex) async {
+    if (!state.hasValue) return;
+
+    final (profiles, currentProfile) = state.value!;
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final List<UserProfile> newList = List.from(state);
-    final UserProfile item = newList.removeAt(oldIndex);
+    final List<Profile> newList = List.from(profiles);
+    final Profile item = newList.removeAt(oldIndex);
     newList.insert(newIndex, item);
-    state = newList;
-    await _saveProfiles();
+    state = AsyncData((newList, currentProfile));
   }
 
-  Future<void> updateProfile(UserProfile profile) async {
-    state = state
-        .map((p) => p.profile.pubkey == profile.profile.pubkey ? profile : p)
-        .toList();
-    await _saveProfiles();
+  Future<void> updateProfile(Profile profile) async {
+    if (!state.hasValue) return;
+
+    final (profiles, currentProfile) = state.value!;
+    final newProfiles =
+        profiles.map((p) => p.pubkey == profile.pubkey ? profile : p).toList();
+    Profile? newCurrentProfile = currentProfile;
+
+    if (currentProfile?.pubkey == profile.pubkey) {
+      newCurrentProfile = profile;
+    }
+
+    state = AsyncData((newProfiles, newCurrentProfile));
+  }
+
+  Future<void> setCurrentProfile(Profile profile) async {
+    if (!state.hasValue) return;
+
+    final (profiles, _) = state.value!;
+    if (profiles.any((p) => p.pubkey == profile.pubkey)) {
+      state = AsyncData((profiles, profile));
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_currentProfileKey, profile.pubkey);
+    }
+  }
+
+  Future<void> clearCurrentProfile() async {
+    if (!state.hasValue) return;
+
+    final (profiles, _) = state.value!;
+    state = AsyncData((profiles, null));
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_currentProfileKey);
   }
 }

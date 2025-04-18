@@ -3,7 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../resolvers.dart';
-import '../providers/current_profile.dart';
+import '../providers/user_profiles.dart';
 
 class CommunityChatFeed extends ConsumerWidget {
   final Community community;

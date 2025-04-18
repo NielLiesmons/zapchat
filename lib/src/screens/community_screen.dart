@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../feeds/community_chat_feed.dart';
 import '../feeds/community_posts_feed.dart';
 import '../resolvers.dart';
-import '../providers/current_profile.dart';
+import '../providers/user_profiles.dart';
 
 class CommunityScreen extends ConsumerWidget {
   final Community community;
@@ -17,7 +17,7 @@ class CommunityScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentProfile = ref.watch(currentProfileProvider);
+    final (_, currentProfile) = ref.watch(userProfilesProvider).value!;
     final resolvers = ref.read(resolversProvider);
 
     // Get available content types from the community

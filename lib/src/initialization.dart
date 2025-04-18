@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
-import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/providers/current_profile.dart';
 import 'package:zapchat/src/providers/user_profiles.dart';
 
 final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
@@ -33,7 +31,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004');
-    print('Zapchat profile created');
+    print(
+        'Zapchat profile created - name: ${zapchat.name}, pubkey: ${zapchat.pubkey}, pictureUrl: ${zapchat.pictureUrl}');
 
     final zapstore = await PartialProfile(
       name: 'Zapstore',
@@ -42,6 +41,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
+    print(
+        'Zapstore profile created - name: ${zapstore.name}, pubkey: ${zapstore.pubkey}, pictureUrl: ${zapstore.pictureUrl}');
 
     final niel = await PartialProfile(
       name: 'Niel Liesmons',
@@ -50,6 +51,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+    print(
+        'Niel profile created - name: ${niel.name}, pubkey: ${niel.pubkey}, pictureUrl: ${niel.pictureUrl}');
 
     final cypherchads = await PartialProfile(
       name: 'Cypher Chads',
@@ -58,6 +61,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
+    print(
+        'Cypherchads profile created - name: ${cypherchads.name}, pubkey: ${cypherchads.pubkey}, pictureUrl: ${cypherchads.pictureUrl}');
 
     final franzap = await PartialProfile(
       name: 'franzap',
@@ -66,6 +71,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
+    print(
+        'Franzap profile created - name: ${franzap.name}, pubkey: ${franzap.pubkey}, pictureUrl: ${franzap.pictureUrl}');
 
     final verbiricha = await PartialProfile(
       name: 'verbiricha',
@@ -74,12 +81,16 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             '7fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
+    print(
+        'Verbiricha profile created - name: ${verbiricha.name}, pubkey: ${verbiricha.pubkey}, pictureUrl: ${verbiricha.pictureUrl}');
 
     dummyProfiles
         .addAll([zapchat, niel, zapstore, cypherchads, franzap, verbiricha]);
 
     // Save profiles first and wait for them to be indexed
     print('Saving profiles to storage...');
+    print(
+        'Profiles to save: ${dummyProfiles.map((p) => '${p.name} (${p.pubkey})').join(', ')}');
     await ref
         .read(storageNotifierProvider.notifier)
         .save(Set.from(dummyProfiles));
@@ -87,21 +98,24 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
 
     // Set initial user profiles and current profile
     print('Setting initial user profiles and current profile...');
-    final userProfiles = dummyProfiles
-        .map((profile) => UserProfile(
-              profile: profile,
-              nsec: null, // We don't have the nsec for these dummy profiles
-            ))
-        .toList();
+    try {
+      // Add profiles to userProfilesProvider
+      for (final profile in dummyProfiles) {
+        await ref.read(userProfilesProvider.notifier).addProfile(profile);
+      }
 
-    // Add profiles to userProfilesProvider
-    for (final userProfile in userProfiles) {
-      await ref.read(userProfilesProvider.notifier).addProfile(userProfile);
+      // Set current profile
+      if (dummyProfiles.isNotEmpty) {
+        await ref
+            .read(userProfilesProvider.notifier)
+            .setCurrentProfile(dummyProfiles.first);
+      }
+      print('Initial user profiles and current profile set');
+    } catch (e, stackTrace) {
+      print('Error setting initial profiles: $e');
+      print('Stack trace: $stackTrace');
+      rethrow;
     }
-
-    // Set current profile
-    ref.read(currentProfileProvider.notifier).setProfile(niel);
-    print('Initial user profiles and current profile set');
 
     // Wait a bit to ensure profiles are indexed
     await Future.delayed(const Duration(milliseconds: 100));

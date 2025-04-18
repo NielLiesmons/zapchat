@@ -1,7 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
-import 'providers/current_profile.dart';
-
+import 'package:zapchat/src/providers/user_profiles.dart';
 import 'tabs/apps.dart';
 import 'tabs/articles.dart';
 import 'tabs/books.dart';
@@ -43,7 +42,21 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final (currentProfile) = ref.watch(currentProfileProvider);
+    final userProfilesState = ref.watch(userProfilesProvider);
+
+    if (userProfilesState.isLoading) {
+      return const Center(
+        child: AppLoadingDots(),
+      );
+    }
+
+    final (_, currentProfile) = userProfilesState.value!;
+
+    if (currentProfile == null) {
+      return const Center(
+        child: AppLoadingDots(),
+      );
+    }
 
     return Stack(
       children: [
@@ -61,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Row(
                       children: [
                         AppProfilePic.s48(
-                          currentProfile?.pictureUrl ?? '',
+                          currentProfile.pictureUrl ?? ' ',
                           onTap: () => context.push('/settings'),
                         ),
                         const AppGap.s12(),

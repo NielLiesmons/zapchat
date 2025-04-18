@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/providers/current_profile.dart';
 import 'package:zapchat/src/providers/user_profiles.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -9,13 +8,19 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentProfile = ref.watch(currentProfileProvider);
-    final userProfiles = ref.watch(userProfilesProvider);
+    final userProfilesState = ref.watch(userProfilesProvider);
 
-    if (currentProfile == null && userProfiles.isNotEmpty) {
-      ref
-          .read(currentProfileProvider.notifier)
-          .setProfile(userProfiles.first.profile);
+    if (userProfilesState.isLoading) {
+      return const Center(
+        child: AppLoadingDots(),
+      );
+    }
+
+    final (profiles, currentProfile) = userProfilesState.value!;
+
+    if (currentProfile == null && profiles.isNotEmpty) {
+      // If no current profile but we have user profiles, set the first one
+      ref.read(userProfilesProvider.notifier).setCurrentProfile(profiles.first);
     }
 
     if (currentProfile == null) {
@@ -26,9 +31,9 @@ class SettingsScreen extends ConsumerWidget {
 
     return AppSettingsScreen(
       currentProfile: currentProfile,
-      profiles: userProfiles.map((up) => up.profile).toList(),
+      profiles: profiles,
       onSelect: (profile) {
-        ref.read(currentProfileProvider.notifier).setProfile(profile);
+        ref.read(userProfilesProvider.notifier).setCurrentProfile(profile);
       },
       onAddProfile: () => context.push('/settings/get-started'),
       onHomeTap: () => context.pop(),
