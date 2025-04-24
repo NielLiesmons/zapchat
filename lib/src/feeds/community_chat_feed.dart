@@ -41,64 +41,63 @@ class CommunityChatFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // print('Building CommunityChatFeed for community: ${community.name}');
+    print('Building CommunityChatFeed for community: ${community.name}');
 
-    // final currentProfile = ref.watch(currentProfileProvider);
-    // print('Current profile: ${currentProfile?.name ?? 'null'}');
+    final resolvers = ref.read(resolversProvider);
+    print('Got resolvers');
 
-    // final resolvers = ref.read(resolversProvider);
-    // print('Got resolvers');
+    final state = ref.watch(query<ChatMessage>());
+    print('Query state: ${state.runtimeType}');
 
-    // final state = ref.watch(query<ChatMessage>());
-    // print('Query state: ${state.runtimeType}');
+    if (state case StorageLoading()) {
+      print('Loading messages...');
+      return const Center(child: AppLoadingFeed(type: LoadingFeedType.chat));
+    }
 
-    // if (state case StorageLoading()) {
-    //   print('Loading messages...');
-    //   return const Center(child: AppLoadingFeed(type: LoadingFeedType.chat));
-    // }
+    final messages = state.models;
+    print('Got ${messages.length} messages');
 
-    // final messages = state.models;
-    // print('Got ${messages.length} messages');
+    if (messages.isEmpty) {
+      print('No messages found for community ${community.name}');
+      return const Center(
+        child: Text('No messages yet'),
+      );
+    }
 
-    // if (messages.isEmpty) {
-    //   print('No messages found for community ${community.name}');
-    //   return const Center(
-    //     child: Text('No messages yet'),
-    //   );
-    // }
+    final messageGroups = _groupMessages(messages);
+    print('Built message groups');
 
-    // final messageGroups = _groupMessages(messages);
-    // print('Built message groups');
+    final currentProfile = ref.watch(userProfilesProvider).value?.$2;
 
     return AppContainer(
       padding: const AppEdgeInsets.all(AppGapSize.s6),
       child: Column(
         children: [
-          // for (final group in messageGroups)
-          //   Column(
-          //     children: [
-          //       AppMessageStack(
-          //         messages: group,
-          //         onResolveEvent: resolvers.eventResolver,
-          //         onResolveProfile: resolvers.profileResolver,
-          //         onResolveEmoji: resolvers.emojiResolver,
-          //         onResolveHashtag: (identifier) async {
-          //           await Future.delayed(const Duration(seconds: 1));
-          //           return () {};
-          //         },
-          //         isOutgoing: group.first.author.value?.pubkey ==
-          //             currentProfile?.pubkey,
-          //         onReply: (event) =>
-          //             context.push('/reply/${event.id}', extra: event),
-          //         onActions: (event) =>
-          //             context.push('/actions/${event.id}', extra: event),
-          //         onReactionTap: (reaction) {},
-          //         onZapTap: (zap) {},
-          //         onLinkTap: (url) {},
-          //       ),
-          //       const AppGap.s8(),
-          //     ],
-          //   ),
+          for (final group in messageGroups)
+            Column(
+              children: [
+                AppMessageStack(
+                  messages: group,
+                  onResolveEvent: resolvers.eventResolver,
+                  onResolveProfile: resolvers.profileResolver,
+                  onResolveEmoji: resolvers.emojiResolver,
+                  onResolveHashtag: (identifier) async {
+                    await Future.delayed(const Duration(seconds: 1));
+                    return () {};
+                  },
+                  isOutgoing: group.first.author.value?.pubkey ==
+                      currentProfile?.pubkey,
+                  onReply: (event) =>
+                      context.push('/reply/${event.id}', extra: event),
+                  onActions: (event) =>
+                      context.push('/actions/${event.id}', extra: event),
+                  onReactionTap: (reaction) {},
+                  onZapTap: (zap) {},
+                  onLinkTap: (url) {},
+                ),
+                const AppGap.s8(),
+              ],
+            ),
           const AppGap.s8(),
         ],
       ),

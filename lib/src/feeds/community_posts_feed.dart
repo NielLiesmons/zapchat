@@ -15,7 +15,7 @@ class CommunityPostsFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(queryType<Note>());
+    final state = ref.watch(query<Note>());
 
     if (state case StorageLoading()) {
       return const AppLoadingFeed(type: LoadingFeedType.post);
@@ -28,11 +28,11 @@ class CommunityPostsFeed extends ConsumerWidget {
         for (final post in posts)
           AppFeedPost(
             post: post,
-            onTap: (event) => context.push('/post/${event.id}', extra: event),
-            onReply: (event) =>
-                context.push('/reply/${event.id}', extra: event),
-            onActions: (event) =>
-                context.push('/actions/${event.id}', extra: event),
+            onTap: (model) => context.push('/post/${model.id}', extra: model),
+            onReply: (model) =>
+                context.push('/reply/${model.id}', extra: model),
+            onActions: (model) =>
+                context.push('/actions/${model.id}', extra: model),
             onReactionTap: (reaction) {},
             onZapTap: (zap) {},
             onResolveEvent: ref.read(resolversProvider).eventResolver,

@@ -17,7 +17,7 @@ class PreferencesModal extends ConsumerWidget {
           Navigator.pop(context);
         },
         children: [
-          AppText.med14('Done', color: AppColorsData.dark().white),
+          AppText.med14('Done', color: theme.colors.whiteEnforced),
         ],
       ),
       children: [
@@ -28,7 +28,7 @@ class PreferencesModal extends ConsumerWidget {
                 ? 0
                 : state.colorMode == AppThemeColorMode.light
                     ? 1
-                    : state.colorMode == AppThemeColorMode.grey
+                    : state.colorMode == AppThemeColorMode.gray
                         ? 2
                         : 3,
             loading: () => 0,
@@ -60,12 +60,12 @@ class PreferencesModal extends ConsumerWidget {
               onTap: () {},
             ),
             AppSelectorButton(
-              selectedContent: [AppText.med14('Grey')],
+              selectedContent: [AppText.med14('Gray')],
               unselectedContent: [
-                AppText.med14('Grey', color: theme.colors.white33)
+                AppText.med14('Gray', color: theme.colors.white33)
               ],
               isSelected: themeState.when(
-                data: (state) => state.colorMode == AppThemeColorMode.grey,
+                data: (state) => state.colorMode == AppThemeColorMode.gray,
                 loading: () => false,
                 error: (_, __) => false,
               ),
@@ -99,10 +99,10 @@ class PreferencesModal extends ConsumerWidget {
                 break;
               case 2:
                 AppResponsiveTheme.of(context)
-                    .setColorMode(AppThemeColorMode.grey);
+                    .setColorMode(AppThemeColorMode.gray);
                 ref
                     .read(themeSettingsProvider.notifier)
-                    .setTheme(AppThemeColorMode.grey);
+                    .setTheme(AppThemeColorMode.gray);
                 break;
               case 3:
                 AppResponsiveTheme.of(context)

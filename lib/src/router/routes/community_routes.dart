@@ -17,7 +17,7 @@ List<GoRoute> get communityRoutes => [
         },
       ),
       GoRoute(
-        path: '/chat/:npub/info',
+        path: '/community/:npub/info',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           return AppSlideInModal(
@@ -26,7 +26,7 @@ List<GoRoute> get communityRoutes => [
         },
       ),
       GoRoute(
-        path: '/chat/:npub/info/pricing',
+        path: '/community/:npub/info/pricing',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           return AppSlideInModal(
@@ -35,11 +35,24 @@ List<GoRoute> get communityRoutes => [
         },
       ),
       GoRoute(
-        path: '/chat/:npub/info/notifications',
+        path: '/community/:npub/notifications',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           return AppSlideInModal(
             child: CommunityNotificationsModal(community: community),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/community/:npub/:contentType',
+        pageBuilder: (context, state) {
+          final community = state.extra as Community;
+          final contentType = state.pathParameters['contentType'];
+          return AppSlideInScreen(
+            child: CommunityScreen(
+              community: community,
+              initialContentType: contentType,
+            ),
           );
         },
       ),

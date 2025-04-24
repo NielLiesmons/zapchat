@@ -92,7 +92,7 @@ class CommunityPricingModal extends ConsumerWidget {
               const Spacer(),
               AppIcon.s14(
                 theme.icons.characters.profile,
-                gradient: theme.colors.greydient66,
+                gradient: theme.colors.graydient66,
               ),
               const AppGap.s8(),
               const AppText.med14("Team"),
@@ -113,7 +113,7 @@ class CommunityPricingModal extends ConsumerWidget {
               const Spacer(),
               AppIcon.s14(
                 theme.icons.characters.profile,
-                gradient: theme.colors.greydient66,
+                gradient: theme.colors.graydient66,
               ),
               const AppGap.s8(),
               const AppText.med14("Team"),
@@ -134,7 +134,7 @@ class CommunityPricingModal extends ConsumerWidget {
               const Spacer(),
               AppIcon.s14(
                 theme.icons.characters.profile,
-                gradient: theme.colors.greydient66,
+                gradient: theme.colors.graydient66,
               ),
               const AppGap.s8(),
               const AppText.med14("Team"),
@@ -155,7 +155,7 @@ class CommunityPricingModal extends ConsumerWidget {
               const Spacer(),
               AppIcon.s14(
                 theme.icons.characters.profile,
-                gradient: theme.colors.greydient66,
+                gradient: theme.colors.graydient66,
               ),
               const AppGap.s8(),
               const AppText.med14("Team"),

@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../feeds/community_welcome_feed.dart';
 import '../feeds/community_chat_feed.dart';
 import '../feeds/community_posts_feed.dart';
 import '../providers/resolvers.dart';
@@ -9,10 +10,12 @@ import '../providers/user_profiles.dart';
 
 class CommunityScreen extends ConsumerWidget {
   final Community community;
+  final String? initialContentType;
 
   const CommunityScreen({
     super.key,
     required this.community,
+    this.initialContentType,
   });
 
   @override
@@ -38,13 +41,13 @@ class CommunityScreen extends ConsumerWidget {
             feed: AppCommunityWelcomeFeed(
               community: community,
               onProfileTap: () => context.push(
-                  '/chat/${community.author.value?.pubkey}/info',
+                  '/community/${community.author.value?.npub}/info',
                   extra: community),
             ),
             bottomBar: const AppBottomBarWelcome()
           );
           contentTypes['chat'] = (
-            count: 12,
+            count: 2,
             feed: CommunityChatFeed(community: community),
             bottomBar: AppBottomBarChat(
               onAddTap: () {},
@@ -60,7 +63,7 @@ class CommunityScreen extends ConsumerWidget {
         case 'Posts':
           print('Found Posts section');
           contentTypes['post'] = (
-            count: 0,
+            count: 2,
             feed: CommunityPostsFeed(community: community),
             bottomBar: const AppBottomBarContentFeed()
           );
@@ -74,7 +77,7 @@ class CommunityScreen extends ConsumerWidget {
           break;
         case 'Articles':
           contentTypes['article'] = (
-            count: 0,
+            count: 1,
             feed: AppLoadingFeed(type: LoadingFeedType.content),
             bottomBar: const AppBottomBarContentFeed()
           );
@@ -138,20 +141,29 @@ class CommunityScreen extends ConsumerWidget {
         feed: AppCommunityWelcomeFeed(
           community: community,
           onProfileTap: () => context.push(
-              '/chat/${community.author.value?.pubkey}/info',
+              '/community/${community.author.value?.npub}/info',
               extra: community),
         ),
         bottomBar: const AppBottomBarWelcome()
       );
     }
 
+    // Find the index of the initial content type
+    final contentTypesList = contentTypes.keys.toList();
+    final initialTab = initialContentType != null
+        ? contentTypesList.indexOf(initialContentType!)
+        : null;
+
     return AppCommunityScreen(
       community: community,
       onProfileTap: () => context.push(
-          '/chat/${community.author.value?.pubkey}/info',
+          '/community/${community.author.value?.npub}/info',
           extra: community),
       currentProfile: currentProfile!,
-      mainCount: 0,
+      onNotificationsTap: () => context.push(
+          '/community/${community.author.value?.npub}/notifications',
+          extra: community),
+      mainCount: 21,
       contentTypes: contentTypes,
       onHomeTap: () => context.pop(),
       onActions: (event) => context.push('/actions/${event.id}', extra: event),
@@ -166,6 +178,7 @@ class CommunityScreen extends ConsumerWidget {
         await Future.delayed(const Duration(seconds: 1));
         return () {};
       },
+      initialTab: initialTab,
     );
   }
 }

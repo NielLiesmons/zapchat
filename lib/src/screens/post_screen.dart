@@ -1,9 +1,10 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
+import '../tabs/details/details.dart';
 
-class PostScreen extends ConsumerWidget {
+class PostScreen extends ConsumerStatefulWidget {
   final Note post;
 
   const PostScreen({
@@ -12,10 +13,30 @@ class PostScreen extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PostScreen> createState() => _PostScreenState();
+}
+
+class _PostScreenState extends ConsumerState<PostScreen>
+    with SingleTickerProviderStateMixin {
+  late AppTabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = AppTabController(length: 4);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final resolvers = ref.read(resolversProvider);
-    final state = ref.watch(queryType<Community>());
+    final state = ref.watch(query<Community>());
     final communities = state.models.cast<Community>().toList();
 
     return AppScreen(
@@ -24,7 +45,7 @@ class PostScreen extends ConsumerWidget {
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(post.author.value?.pictureUrl ?? ''),
+          AppProfilePic.s40(widget.post.author.value?.pictureUrl ?? ''),
           const AppGap.s12(),
           Expanded(
             child: Column(
@@ -34,7 +55,7 @@ class PostScreen extends ConsumerWidget {
                 Row(
                   children: [
                     AppEmojiContentType(
-                      contentType: getEventContentType(post),
+                      contentType: getModelContentType(widget.post),
                       size: 16,
                     ),
                     const AppGap.s10(),
@@ -42,7 +63,7 @@ class PostScreen extends ConsumerWidget {
                       child: AppCompactTextRenderer(
                         isMedium: true,
                         isWhite: true,
-                        content: getEventDisplayText(post),
+                        content: getModelDisplayText(widget.post),
                         onResolveEvent: resolvers.eventResolver,
                         onResolveProfile: resolvers.profileResolver,
                         onResolveEmoji: resolvers.emojiResolver,
@@ -52,8 +73,8 @@ class PostScreen extends ConsumerWidget {
                 ),
                 const AppGap.s2(),
                 AppText.reg12(
-                  post.author.value?.name ??
-                      formatNpub(post.author.value?.npub ?? ''),
+                  widget.post.author.value?.name ??
+                      formatNpub(widget.post.author.value?.npub ?? ''),
                   color: theme.colors.white66,
                 ),
               ],
@@ -65,7 +86,7 @@ class PostScreen extends ConsumerWidget {
         child: Column(
           children: [
             AppPost(
-              post: post,
+              post: widget.post,
               communities: communities,
               onResolveEvent: resolvers.eventResolver,
               onResolveProfile: resolvers.profileResolver,
@@ -75,9 +96,9 @@ class PostScreen extends ConsumerWidget {
                 print(url);
               },
             ),
-            Expanded(
+            AppContainer(
               child: AppTabView(
-                controller: AppTabController(length: 4),
+                controller: _tabController,
                 tabs: [
                   TabData(
                     label: 'Replies',
@@ -115,7 +136,7 @@ class PostScreen extends ConsumerWidget {
                       outlineColor: theme.colors.white66,
                       outlineThickness: LineThicknessData.normal().medium,
                     ),
-                    content: const AppText.reg14('Details content'),
+                    content: DetailsTab(post: widget.post),
                   ),
                 ],
               ),

@@ -1,15 +1,15 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zapchat/src/providers/user_profiles.dart';
-import 'tabs/apps.dart';
-import 'tabs/articles.dart';
-import 'tabs/books.dart';
-import 'tabs/chat.dart';
-import 'tabs/images.dart';
-import 'tabs/posts.dart';
-import 'tabs/repos.dart';
-import 'tabs/videos.dart';
-import 'tabs/wikis.dart';
+import 'tabs/home/apps.dart';
+import 'tabs/home/articles.dart';
+import 'tabs/home/books.dart';
+import 'tabs/home/home.dart';
+import 'tabs/home/images.dart';
+import 'tabs/home/posts.dart';
+import 'tabs/home/repos.dart';
+import 'tabs/home/videos.dart';
+import 'tabs/home/wikis.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -84,11 +84,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                             padding: const AppEdgeInsets.symmetric(
                                 horizontal: AppGapSize.s12),
                             decoration: BoxDecoration(
-                              color: theme.colors.grey33,
+                              color: theme.colors.gray33,
                               borderRadius:
                                   BorderRadius.circular(theme.sizes.s24),
                               border: Border.all(
-                                color: theme.colors.grey,
+                                color: theme.colors.gray,
                                 width: LineThicknessData.normal().medium,
                               ),
                             ),

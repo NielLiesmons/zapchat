@@ -11,34 +11,50 @@ class ChatTab extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return TabData(
-      label: 'Chats',
-      icon: const AppEmojiContentType(contentType: 'chat'),
+      label: 'Home',
+      icon: AppIcon.s32(
+        theme.icons.characters.home,
+        gradient: theme.colors.graydient66,
+      ),
       content: HookConsumer(
         builder: (context, ref, _) {
-          final state = ref.watch(queryType<Community>());
+          final state = ref.watch(query<Community>());
 
           final communities = state.models.cast<Community>();
+
+          final chatMessages =
+              ref.watch(query<ChatMessage>()).models.cast<ChatMessage>();
 
           return Column(
             children: [
               for (final community in communities)
                 AppCommunityHomePanel(
                   community: community,
-                  mainCount: 5,
+                  lastModel:
+                      chatMessages.isNotEmpty ? chatMessages.first : null,
+                  mainCount: 21,
                   contentCounts: {
                     'chat': 2,
                     'post': 2,
                     'article': 1,
                   },
-                  onNavigateToChat: (community) {
+                  onNavigateToCommunity: (community) {
                     context.push(
-                      '/community/${community.author.value?.pubkey}',
+                      '/community/${community.author.value?.npub}',
                       extra: community,
                     );
                   },
                   onNavigateToContent: (community, contentType) {
                     context.push(
-                        '/content/${community.author.value?.pubkey}/$contentType');
+                      '/community/${community.author.value?.npub}/$contentType',
+                      extra: community,
+                    );
+                  },
+                  onNavigateToNotifications: (community) {
+                    context.push(
+                      '/community/${community.author.value?.npub}/notifications',
+                      extra: community,
+                    );
                   },
                   onResolveEvent: (nevent) async {
                     // Simulate network delay
@@ -46,13 +62,11 @@ class ChatTab extends StatelessWidget {
                     final post = await PartialNote(
                       'Test post content',
                       createdAt: DateTime.now(),
-                    ).signWith(DummySigner(),
-                        withPubkey:
-                            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+                    ).dummySign();
                     await ref
                         .read(storageNotifierProvider.notifier)
                         .save({post});
-                    return (event: post, onTap: null);
+                    return (model: post, onTap: null);
                   },
                   onResolveProfile: (npub) async {
                     await Future.delayed(const Duration(seconds: 1));
@@ -60,13 +74,16 @@ class ChatTab extends StatelessWidget {
                       profile: await PartialProfile(
                         name: 'Pip',
                         pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-                      ).signWith(DummySigner()),
-                      onTap: null
+                      ).dummySign(),
+                      onTap: null,
                     );
                   },
                   onResolveEmoji: (identifier) async {
                     await Future.delayed(const Duration(seconds: 1));
                     return 'https://cdn.satellite.earth/eb0122af34cf27ba7c8248d72294c32a956209f157aa9d697c7cdd6b054f9ea9.png';
+                  },
+                  onCreateNewPublication: (community) {
+                    context.push('/create/', extra: community);
                   },
                 ),
             ],

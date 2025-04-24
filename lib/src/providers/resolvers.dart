@@ -30,7 +30,7 @@ class _ResolverCache<T> {
 }
 
 final resolversProvider = Provider<Resolvers>((ref) {
-  final eventCache = _ResolverCache<({Event event, VoidCallback? onTap})>();
+  final eventCache = _ResolverCache<({Model model, VoidCallback? onTap})>();
   final profileCache =
       _ResolverCache<({Profile profile, VoidCallback? onTap})>();
   final emojiCache = _ResolverCache<String>();
@@ -42,11 +42,9 @@ final resolversProvider = Provider<Resolvers>((ref) {
       final post = await PartialNote(
         'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
         createdAt: DateTime.now(),
-      ).signWith(DummySigner(),
-          withPubkey:
-              'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+      ).signWith(DummySigner(ref));
       await ref.read(storageNotifierProvider.notifier).save({post});
-      return (event: post, onTap: null);
+      return (model: post, onTap: null);
     }),
     profileResolver: (identifier) =>
         profileCache.getOrCreate(identifier, () async {
@@ -54,7 +52,7 @@ final resolversProvider = Provider<Resolvers>((ref) {
       final profile = await PartialProfile(
         name: 'Pip',
         pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-      ).signWith(DummySigner());
+      ).signWith(DummySigner(ref));
       return (profile: profile, onTap: null);
     }),
     emojiResolver: (identifier) => emojiCache.getOrCreate(identifier, () async {

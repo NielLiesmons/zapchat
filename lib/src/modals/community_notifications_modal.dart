@@ -18,6 +18,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
 
     return AppModal(
       title: "Notifications",
+      description: "For ${community.name}",
       children: [
         const AppGap.s8(),
         AppSelector(
@@ -27,10 +28,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
               selectedContent: [
                 AppIcon.s16(
                   theme.icons.characters.bell,
-                  color: AppColorsData.dark().white,
+                  color: theme.colors.whiteEnforced,
                 ),
                 AppGap.s8(),
-                AppText.med14('21', color: AppColorsData.dark().white),
+                AppText.med14('21', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
                 AppIcon.s16(
@@ -48,13 +49,13 @@ class CommunityNotificationsModal extends ConsumerWidget {
               selectedContent: [
                 AppIcon.s16(
                   theme.icons.characters.reply,
-                  outlineColor: AppColorsData.dark().white,
+                  outlineColor: theme.colors.whiteEnforced,
                   outlineThickness: LineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14(
                   '12',
-                  color: AppColorsData.dark().white,
+                  color: theme.colors.whiteEnforced,
                 ),
               ],
               unselectedContent: [
@@ -73,10 +74,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
               selectedContent: [
                 AppIcon.s18(
                   theme.icons.characters.zap,
-                  color: AppColorsData.dark().white,
+                  color: theme.colors.whiteEnforced,
                 ),
                 AppGap.s8(),
-                AppText.med14('5', color: AppColorsData.dark().white),
+                AppText.med14('5', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
                 AppIcon.s18(
@@ -94,11 +95,11 @@ class CommunityNotificationsModal extends ConsumerWidget {
               selectedContent: [
                 AppIcon.s18(
                   theme.icons.characters.at,
-                  outlineColor: AppColorsData.dark().white,
+                  outlineColor: theme.colors.whiteEnforced,
                   outlineThickness: LineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
-                AppText.med14('2', color: AppColorsData.dark().white),
+                AppText.med14('2', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
                 AppIcon.s18(
@@ -116,10 +117,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
               selectedContent: [
                 AppIcon.s18(
                   theme.icons.characters.emojiFill,
-                  color: AppColorsData.dark().white,
+                  color: theme.colors.whiteEnforced,
                 ),
                 AppGap.s8(),
-                AppText.med14('2', color: AppColorsData.dark().white),
+                AppText.med14('2', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
                 AppIcon.s18(
@@ -138,7 +139,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const AppGap.s12(),
         AppNotificationCard(
-          nevent: "fghjk",
+          model: PartialNote(
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            createdAt: DateTime.now(),
+          ).dummySign(),
           onActions: (nevent) {
             print(nevent);
           },
@@ -148,7 +152,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const AppGap.s8(),
         AppNotificationCard(
-          nevent: "fghjk",
+          model: PartialNote(
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            createdAt: DateTime.now(),
+          ).dummySign(),
           onActions: (nevent) {
             print(nevent);
           },
@@ -158,7 +165,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const AppGap.s8(),
         AppNotificationCard(
-          nevent: "fghjk",
+          model: PartialNote(
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            createdAt: DateTime.now(),
+          ).dummySign(),
           onActions: (nevent) {
             print(nevent);
           },
@@ -168,7 +178,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const AppGap.s8(),
         AppNotificationCard(
-          nevent: "fghjk",
+          model: PartialNote(
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            createdAt: DateTime.now(),
+          ).dummySign(),
           onActions: (nevent) {
             print(nevent);
           },
@@ -178,7 +191,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const AppGap.s8(),
         AppNotificationCard(
-          nevent: "fghjk",
+          model: PartialNote(
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            createdAt: DateTime.now(),
+          ).dummySign(),
           onActions: (nevent) {
             print(nevent);
           },
@@ -188,7 +204,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const AppGap.s8(),
         AppNotificationCard(
-          nevent: "fghjk",
+          model: PartialNote(
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            createdAt: DateTime.now(),
+          ).dummySign(),
           onActions: (nevent) {
             print(nevent);
           },

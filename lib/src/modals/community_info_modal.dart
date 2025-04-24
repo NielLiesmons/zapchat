@@ -42,7 +42,7 @@ class CommunityInfoModal extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppIcon.s20(theme.icons.characters.pricing,
-                        gradient: theme.colors.greydient66),
+                        gradient: theme.colors.graydient66),
                     const AppGap.s10(),
                     AppText.med14("Pricing"),
                   ],
@@ -62,7 +62,7 @@ class CommunityInfoModal extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppIcon.s20(theme.icons.characters.openBook,
-                        gradient: theme.colors.greydient66),
+                        gradient: theme.colors.graydient66),
                     const AppGap.s10(),
                     AppText.med14("Guidelines"),
                   ],
@@ -150,13 +150,14 @@ class CommunityInfoModal extends ConsumerWidget {
           children: [
             AppIcon(
               theme.icons.characters.check,
-              outlineColor: AppColorsData.dark().white,
+              outlineColor: theme.colors.whiteEnforced,
               outlineThickness: LineThicknessData.normal().thick,
             ),
             const AppGap.s12(),
-            AppText.med14("Added", color: AppColorsData.dark().white),
+            AppText.med14("Added", color: theme.colors.whiteEnforced),
             const AppGap.s8(),
-            AppText.med14("2 Labels", color: AppColorsData.dark().white66),
+            AppText.med14("2 Labels",
+                color: theme.colors.whiteEnforced.withValues(alpha: 0.66)),
           ],
         ),
         const AppGap.s16(),

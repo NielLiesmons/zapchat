@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/resolvers.dart';
+import '../../providers/resolvers.dart';
 
 class PostsTab extends StatelessWidget {
   const PostsTab({super.key});
@@ -14,7 +14,7 @@ class PostsTab extends StatelessWidget {
       icon: const AppEmojiContentType(contentType: 'post'),
       content: HookConsumer(
         builder: (context, ref, _) {
-          final state = ref.watch(queryType<Note>());
+          final state = ref.watch(query<Note>());
 
           if (state case StorageLoading()) {
             return const AppLoadingFeed(type: LoadingFeedType.post);

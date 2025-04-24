@@ -10,7 +10,7 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/post/:eventId',
         pageBuilder: (context, state) {
-          final event = state.extra as Event;
+          final event = state.extra as Model;
           return AppSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
@@ -25,30 +25,30 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/actions/:eventId',
         pageBuilder: (context, state) {
-          final event = state.extra as Event;
+          final model = state.extra as Model;
           return AppSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return AppActionsModal(
-                  event: event,
-                  onEventTap: (event) {},
-                  onReplyTap: (event) {
-                    context.replace('/reply/${event.id}', extra: event);
+                  model: model,
+                  onModelTap: (model) {},
+                  onReplyTap: (model) {
+                    context.replace('/reply/${model.id}', extra: model);
                   },
                   recentEmoji: DefaultData.defaultEmoji,
                   recentAmounts: DefaultData.defaultAmounts,
                   onEmojiTap: (emoji) {},
                   onMoreEmojiTap: () {},
-                  onZapTap: (event) {},
-                  onMoreZapsTap: (event) {
+                  onZapTap: (model) {},
+                  onMoreZapsTap: (model) {
                     return () =>
-                        context.replace('/zap/${event.id}', extra: event);
+                        context.replace('/zap/${model.id}', extra: model);
                   },
-                  onReportTap: (event) {},
-                  onAddProfileTap: (event) {},
-                  onOpenWithTap: (event) {},
-                  onLabelTap: (event) {},
-                  onShareTap: (event) {},
+                  onReportTap: (model) {},
+                  onAddProfileTap: (model) {},
+                  onOpenWithTap: (model) {},
+                  onLabelTap: (model) {},
+                  onShareTap: (model) {},
                   onResolveEvent: ref.read(resolversProvider).eventResolver,
                   onResolveProfile: ref.read(resolversProvider).profileResolver,
                   onResolveEmoji: ref.read(resolversProvider).emojiResolver,
@@ -65,12 +65,12 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/zap/:eventId',
         pageBuilder: (context, state) {
-          final event = state.extra as Event;
+          final model = state.extra as Model;
           return AppSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return AppZapModal(
-                  event: event,
+                  model: model,
                   otherZaps: [],
                   recentAmounts: DefaultData.defaultAmounts,
                   onResolveEvent: ref.read(resolversProvider).eventResolver,
@@ -91,12 +91,12 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/reply/:eventId',
         pageBuilder: (context, state) {
-          final event = state.extra as Event;
+          final model = state.extra as Model;
           return AppSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return AppReplyModal(
-                  event: event,
+                  model: model,
                   onResolveEvent: ref.read(resolversProvider).eventResolver,
                   onResolveProfile: ref.read(resolversProvider).profileResolver,
                   onResolveEmoji: ref.read(resolversProvider).emojiResolver,
