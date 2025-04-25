@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'src/router/router.dart';
 import 'src/providers/theme_settings.dart';
+import 'src/providers/user_profiles.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -36,7 +37,7 @@ class App extends ConsumerWidget {
                   systemScale: AppSystemScale.normal,
                 ),
               ),
-            AsyncError(:final error, :final stackTrace) => AppResponsiveTheme(
+            AsyncError(:final error) => AppResponsiveTheme(
                 child: AppBase(
                   title: 'Zapchat',
                   routerConfig: GoRouter(
@@ -99,6 +100,14 @@ class _AppWithTheme extends ConsumerWidget {
           },
           onSearchTap: () {},
           onAddTap: () {},
+          onProfilesTap: () {
+            goRouter.push('/settings');
+          },
+          currentProfile: ref.watch(userProfilesProvider).when(
+                data: (data) => data.$2,
+                loading: () => null,
+                error: (_, __) => null,
+              ),
           historyMenu: Column(
             children: [
               for (var i = 0; i < 10; i++)
