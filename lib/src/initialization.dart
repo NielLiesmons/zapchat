@@ -277,12 +277,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
 
     // dummyArticles.addAll([
     //   await (PartialArticle(
-    //     'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
-    //     'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
+    //     'Title Of The Article',
+    //     'Content of the article',
     //     publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-    //   )..event.addTagValue('image',
-    //           'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png'))
-    //       .signWith(signer, withPubkey: verbiricha.pubkey),
+    //   )).signWith(signer, withPubkey: verbiricha.pubkey),
     // ]);
 
     // Save all data

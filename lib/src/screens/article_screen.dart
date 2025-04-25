@@ -4,19 +4,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
 import '../tabs/details/details.dart';
 
-class PostScreen extends ConsumerStatefulWidget {
-  final Note post;
+class ArticleScreen extends ConsumerStatefulWidget {
+  final Article article;
 
-  const PostScreen({
+  const ArticleScreen({
     super.key,
-    required this.post,
+    required this.article,
   });
 
   @override
-  ConsumerState<PostScreen> createState() => _PostScreenState();
+  ConsumerState<ArticleScreen> createState() => _ArticleScreenState();
 }
 
-class _PostScreenState extends ConsumerState<PostScreen>
+class _ArticleScreenState extends ConsumerState<ArticleScreen>
     with SingleTickerProviderStateMixin {
   late AppTabController _tabController;
 
@@ -45,7 +45,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(widget.post.author.value?.pictureUrl ?? ''),
+          AppProfilePic.s40(widget.article.author.value?.pictureUrl ?? ''),
           const AppGap.s12(),
           Expanded(
             child: Column(
@@ -55,7 +55,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                 Row(
                   children: [
                     AppEmojiContentType(
-                      contentType: getModelContentType(widget.post),
+                      contentType: getModelContentType(widget.article),
                       size: 16,
                     ),
                     const AppGap.s10(),
@@ -63,7 +63,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                       child: AppCompactTextRenderer(
                         isMedium: true,
                         isWhite: true,
-                        content: getModelDisplayText(widget.post),
+                        content: getModelDisplayText(widget.article),
                         onResolveEvent: resolvers.eventResolver,
                         onResolveProfile: resolvers.profileResolver,
                         onResolveEmoji: resolvers.emojiResolver,
@@ -73,8 +73,8 @@ class _PostScreenState extends ConsumerState<PostScreen>
                 ),
                 const AppGap.s2(),
                 AppText.reg12(
-                  widget.post.author.value?.name ??
-                      formatNpub(widget.post.author.value?.npub ?? ''),
+                  widget.article.author.value?.name ??
+                      formatNpub(widget.article.author.value?.npub ?? ''),
                   color: theme.colors.white66,
                 ),
               ],
@@ -85,21 +85,24 @@ class _PostScreenState extends ConsumerState<PostScreen>
       child: IntrinsicHeight(
         child: Column(
           children: [
-            AppPost(
-              post: widget.post,
+            AppArticleHeader(
+              article: widget.article,
               communities: communities,
-              onResolveEvent: resolvers.eventResolver,
-              onResolveProfile: resolvers.profileResolver,
-              onResolveEmoji: resolvers.emojiResolver,
-              onResolveHashtag: resolvers.hashtagResolver,
-              onLinkTap: (url) {
-                print(url);
-              },
             ),
             AppContainer(
               child: AppTabView(
                 controller: _tabController,
                 tabs: [
+                  TabData(
+                    label: 'Article',
+                    icon: AppEmojiContentType(
+                      contentType: getModelContentType(widget.article),
+                      size: 20,
+                    ),
+                    content: const AppLoadingFeed(
+                      type: LoadingFeedType.post,
+                    ),
+                  ),
                   TabData(
                     label: 'Replies',
                     icon: AppIcon.s20(
@@ -136,7 +139,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                       outlineColor: theme.colors.white66,
                       outlineThickness: LineThicknessData.normal().medium,
                     ),
-                    content: DetailsTab(model: widget.post),
+                    content: DetailsTab(model: widget.article),
                   ),
                 ],
               ),

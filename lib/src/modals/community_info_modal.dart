@@ -35,7 +35,7 @@ class CommunityInfoModal extends ConsumerWidget {
                   bottom: AppGapSize.s14,
                 ),
                 onTap: () => context.push(
-                    '/chat/${community.author.value?.pubkey}/info/pricing',
+                    '/community/${community.author.value?.pubkey}/info/pricing',
                     extra: community),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

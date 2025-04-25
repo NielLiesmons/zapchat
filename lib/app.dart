@@ -87,6 +87,31 @@ class _AppWithTheme extends ConsumerWidget {
           colorMode: state.colorMode,
           textScale: state.textScale,
           systemScale: state.systemScale,
+          onHomeTap: () {
+            goRouter.go('/');
+          },
+          onBackTap: () {
+            if (goRouter.canPop()) {
+              goRouter.pop();
+            } else {
+              goRouter.go('/');
+            }
+          },
+          onSearchTap: () {},
+          onAddTap: () {},
+          historyMenu: Column(
+            children: [
+              for (var i = 0; i < 10; i++)
+                Column(
+                  children: [
+                    AppPanel(
+                      child: AppText.reg12('History Item $i'),
+                    ),
+                    const AppGap.s8(),
+                  ],
+                ),
+            ],
+          ),
         );
       },
       loading: () => AppBase(

@@ -142,7 +142,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget _buildBottomBar() {
     switch (_tabController.index) {
       case 0: // Chat tab
-        return AppBottomBarHome();
+        return PlatformUtils.isMobile
+            ? const AppBottomBarHome()
+            : const SizedBox.shrink();
       case 1: // Posts tab
         return AppBottomBarContentFeed();
       case 2: // Apps tab

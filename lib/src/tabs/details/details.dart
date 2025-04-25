@@ -4,11 +4,11 @@ import 'package:models/models.dart';
 import 'dart:convert';
 
 class DetailsTab extends StatefulWidget {
-  final Note post;
+  final Model model;
 
   const DetailsTab({
     super.key,
-    required this.post,
+    required this.model,
   });
 
   @override
@@ -50,7 +50,7 @@ class _DetailsTabState extends State<DetailsTab>
   }
 
   void _handleEventIdCopy() {
-    Clipboard.setData(ClipboardData(text: widget.post.event.id ?? ''));
+    Clipboard.setData(ClipboardData(text: widget.model.event.id ?? ''));
     setState(() => _showEventIdCheckmark = true);
     _scaleController.forward(from: 0.0);
     Future.delayed(const Duration(milliseconds: 1500), () {
@@ -60,7 +60,7 @@ class _DetailsTabState extends State<DetailsTab>
 
   void _handleProfileIdCopy() {
     Clipboard.setData(
-        ClipboardData(text: widget.post.author.value?.npub ?? ''));
+        ClipboardData(text: widget.model.author.value?.npub ?? ''));
     setState(() => _showProfileIdCheckmark = true);
     _scaleController.forward(from: 0.0);
     Future.delayed(const Duration(milliseconds: 1500), () {
@@ -97,7 +97,7 @@ class _DetailsTabState extends State<DetailsTab>
                           const AppGap.s40(),
                           Expanded(
                             child: AppText.reg14(
-                              widget.post.event.shareableId,
+                              widget.model.event.shareableId,
                               textOverflow: TextOverflow.ellipsis,
                               color: theme.colors.white66,
                             ),
@@ -151,7 +151,7 @@ class _DetailsTabState extends State<DetailsTab>
                                     color: Color(
                                       int.parse(
                                             profileToColor(
-                                                    widget.post.author.value!)
+                                                    widget.model.author.value!)
                                                 .substring(1),
                                             radix: 16,
                                           ) +
@@ -167,7 +167,7 @@ class _DetailsTabState extends State<DetailsTab>
                                 const AppGap.s8(),
                                 AppText.reg14(
                                   formatNpub(
-                                      widget.post.author.value?.npub ?? ''),
+                                      widget.model.author.value?.npub ?? ''),
                                   textOverflow: TextOverflow.ellipsis,
                                   color: theme.colors.white66,
                                 ),
@@ -211,7 +211,7 @@ class _DetailsTabState extends State<DetailsTab>
         AppContainer(
           padding: const AppEdgeInsets.all(AppGapSize.s12),
           child: AppCodeBlock(
-            code: jsonEncode(widget.post.toMap()),
+            code: jsonEncode(widget.model.toMap()),
             language: 'JSON',
           ),
         ),

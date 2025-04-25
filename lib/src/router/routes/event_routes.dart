@@ -11,7 +11,7 @@ List<GoRoute> get eventRoutes => [
         path: '/post/:eventId',
         pageBuilder: (context, state) {
           final event = state.extra as Model;
-          return AppSlideInModal(
+          return AppSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
                 return PostScreen(
