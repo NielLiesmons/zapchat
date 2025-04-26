@@ -81,6 +81,7 @@ class _DetailsTabState extends State<DetailsTab>
               AppSectionTitle(
                 'IDENTIFIERS',
               ),
+              const AppGap.s2(),
               AppPanel(
                 padding: const AppEdgeInsets.all(AppGapSize.none),
                 child: Column(
@@ -210,9 +211,17 @@ class _DetailsTabState extends State<DetailsTab>
         const AppDivider(),
         AppContainer(
           padding: const AppEdgeInsets.all(AppGapSize.s12),
-          child: AppCodeBlock(
-            code: jsonEncode(widget.model.toMap()),
-            language: 'JSON',
+          child: Column(
+            children: [
+              AppSectionTitle(
+                'RAW DATA',
+              ),
+              const AppGap.s2(),
+              AppCodeBlock(
+                code: jsonEncode(widget.model.toMap()),
+                language: 'JSON',
+              ),
+            ],
           ),
         ),
       ],

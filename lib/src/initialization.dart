@@ -28,9 +28,11 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       name: 'Zapchat',
       pictureUrl:
           'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+      banner:
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
     ).signWith(signer,
         withPubkey:
-            'edb470271297ac5a61f277f3cd14de54c67eb5ccd20ef0d9df29be18685bb004');
+            '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
     print(
         'Zapchat profile created - name: ${zapchat.name}, pubkey: ${zapchat.pubkey}, pictureUrl: ${zapchat.pictureUrl}');
 
@@ -48,6 +50,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       name: 'Niel Liesmons',
       pictureUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+      banner:
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
     ).signWith(signer,
         withPubkey:
             'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
@@ -100,6 +104,18 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         withPubkey:
             'afa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac197');
 
+    final metabolism = await PartialProfile(
+      name: 'Metabolism Go Up',
+      pictureUrl:
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsaraichinwag.com%2Fwp-content%2Fuploads%2F2023%2F12%2Fwhy-am-i-craving-oranges.jpeg',
+      about:
+          'We discuss and research ways to improve your metabolism. We are not doctors, but we are passionate about health and fitness.',
+      banner:
+          'https://cdn.satellite.earth/5b8e0002026a4bd0804d0470295dfd209ef9c461957a85f62e00e2923ff18bf1.png',
+    ).signWith(signer,
+        withPubkey:
+            '1203456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
+
     dummyProfiles.addAll([
       zapchat,
       niel,
@@ -108,7 +124,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       franzap,
       verbiricha,
       communikeys,
-      nipsout
+      nipsout,
+      metabolism,
     ]);
 
     // Save profiles first and wait for them to be indexed
@@ -237,11 +254,33 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         ),
       },
     ).signWith(signer, withPubkey: nipsout.pubkey);
+    final metabolismCommunity = await PartialCommunity(
+      name: 'Metabolism Go Up',
+      relayUrls: {'wss://relay.damus.io'},
+      description:
+          'We discuss research and fund lab work around optimizing our human metabolism. We are not doctors or staet funded, on purpose. We are just a group of people who want to improve our health and fitness.',
+      contentSections: {
+        CommunityContentSection(
+          content: 'Chat',
+          kinds: {9},
+          feeInSats: 100,
+        ),
+        CommunityContentSection(
+          content: 'Posts',
+          kinds: {1},
+        ),
+        CommunityContentSection(
+          content: 'Wikis',
+          kinds: {30818},
+        ),
+      },
+    ).signWith(signer, withPubkey: metabolism.pubkey);
     dummyCommunities.addAll([
       zapchatCommunity,
       cypherchadsCommunity,
       communikeysCommunity,
-      nipsoutCommunity
+      nipsoutCommunity,
+      metabolismCommunity,
     ]);
 
     // Chat messages

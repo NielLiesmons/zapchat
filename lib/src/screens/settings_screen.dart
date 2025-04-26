@@ -41,6 +41,8 @@ class SettingsScreen extends ConsumerWidget {
       onSelect: (profile) {
         ref.read(userProfilesProvider.notifier).setCurrentProfile(profile);
       },
+      onViewProfile: (profile) =>
+          context.push('/profile/${profile.npub}', extra: profile),
       onAddProfile: () => context.push('/settings/get-started'),
       onHomeTap: () => context.pop(),
       onHistoryTap: () => context.push('/settings/history'),

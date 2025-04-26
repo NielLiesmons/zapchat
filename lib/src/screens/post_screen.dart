@@ -51,7 +51,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppGap.s8(),
+                const AppGap.s2(),
                 Row(
                   children: [
                     AppEmojiContentType(
