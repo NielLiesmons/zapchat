@@ -108,7 +108,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     icon: AppIcon.s20(
                       theme.icons.characters.reply,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     content: const AppLoadingFeed(
                       type: LoadingFeedType.post,
@@ -119,7 +119,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     icon: AppIcon.s20(
                       theme.icons.characters.share,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     content: const AppText.reg14('Shares content'),
                   ),
@@ -128,7 +128,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     icon: AppIcon.s20(
                       theme.icons.characters.label,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     content: const AppText.reg14('Labels content'),
                   ),
@@ -137,7 +137,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     icon: AppIcon.s20(
                       theme.icons.characters.info,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     content: DetailsTab(model: widget.article),
                   ),

@@ -73,12 +73,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                         horizontal: AppGapSize.s12),
                     child: Row(
                       children: [
-                        if (PlatformUtils.isMobile)
+                        if (AppPlatformUtils.isMobile)
                           AppProfilePic.s48(
                             currentProfile.pictureUrl ?? ' ',
                             onTap: () => context.push('/settings'),
                           ),
-                        if (PlatformUtils.isMobile) const AppGap.s12(),
+                        if (AppPlatformUtils.isMobile) const AppGap.s12(),
                         Expanded(
                           child: AppContainer(
                             height: theme.sizes.s48,
@@ -90,7 +90,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   BorderRadius.circular(theme.sizes.s24),
                               border: Border.all(
                                 color: theme.colors.gray,
-                                width: LineThicknessData.normal().medium,
+                                width: AppLineThicknessData.normal().medium,
                               ),
                             ),
                             child: Row(
@@ -143,7 +143,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget _buildBottomBar() {
     switch (_tabController.index) {
       case 0: // Home tab
-        return PlatformUtils.isMobile
+        return AppPlatformUtils.isMobile
             ? const AppBottomBarHome()
             : const SizedBox.shrink();
       case 1: // Posts tab

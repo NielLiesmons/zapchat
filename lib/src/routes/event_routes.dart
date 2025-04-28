@@ -35,8 +35,8 @@ List<GoRoute> get eventRoutes => [
                   onReplyTap: (model) {
                     context.replace('/reply/${model.id}', extra: model);
                   },
-                  recentEmoji: DefaultData.defaultEmoji,
-                  recentAmounts: DefaultData.defaultAmounts,
+                  recentEmoji: AppDefaultData.defaultEmoji,
+                  recentAmounts: AppDefaultData.defaultAmounts,
                   onEmojiTap: (emoji) {},
                   onMoreEmojiTap: () {},
                   onZapTap: (model) {},
@@ -72,7 +72,7 @@ List<GoRoute> get eventRoutes => [
                 return AppZapModal(
                   model: model,
                   otherZaps: [],
-                  recentAmounts: DefaultData.defaultAmounts,
+                  recentAmounts: AppDefaultData.defaultAmounts,
                   onResolveEvent: ref.read(resolversProvider).eventResolver,
                   onResolveProfile: ref.read(resolversProvider).profileResolver,
                   onResolveEmoji: ref.read(resolversProvider).emojiResolver,

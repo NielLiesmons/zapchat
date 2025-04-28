@@ -37,7 +37,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s16(
                   theme.icons.characters.bell,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14('21', color: theme.colors.white33),
@@ -50,7 +50,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s16(
                   theme.icons.characters.reply,
                   outlineColor: theme.colors.whiteEnforced,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14(
@@ -62,7 +62,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s16(
                   theme.icons.characters.reply,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14('12', color: theme.colors.white33),
@@ -83,7 +83,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s18(
                   theme.icons.characters.zap,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14('5', color: theme.colors.white33),
@@ -96,7 +96,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s18(
                   theme.icons.characters.at,
                   outlineColor: theme.colors.whiteEnforced,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14('2', color: theme.colors.whiteEnforced),
@@ -105,7 +105,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s18(
                   theme.icons.characters.at,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14('2', color: theme.colors.white33),
@@ -126,7 +126,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
                 AppIcon.s18(
                   theme.icons.characters.emojiLine,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
                 AppGap.s8(),
                 AppText.med14('2', color: theme.colors.white33),

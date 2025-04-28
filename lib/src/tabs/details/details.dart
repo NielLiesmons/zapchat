@@ -116,14 +116,14 @@ class _DetailsTabState extends State<DetailsTab>
                                         theme.icons.characters.check,
                                         outlineColor: theme.colors.white66,
                                         outlineThickness:
-                                            LineThicknessData.normal().thick,
+                                            AppLineThicknessData.normal().thick,
                                       ),
                                     )
                                   : AppIcon.s18(
                                       theme.icons.characters.copy,
                                       outlineColor: theme.colors.white66,
                                       outlineThickness:
-                                          LineThicknessData.normal().medium,
+                                          AppLineThicknessData.normal().medium,
                                     )
                             ],
                           ),
@@ -161,7 +161,7 @@ class _DetailsTabState extends State<DetailsTab>
                                     borderRadius: BorderRadius.circular(100),
                                     border: Border.all(
                                       color: theme.colors.white16,
-                                      width: LineThicknessData.normal().thin,
+                                      width: AppLineThicknessData.normal().thin,
                                     ),
                                   ),
                                 ),
@@ -188,14 +188,14 @@ class _DetailsTabState extends State<DetailsTab>
                                         theme.icons.characters.check,
                                         outlineColor: theme.colors.white66,
                                         outlineThickness:
-                                            LineThicknessData.normal().thick,
+                                            AppLineThicknessData.normal().thick,
                                       ),
                                     )
                                   : AppIcon.s18(
                                       theme.icons.characters.copy,
                                       outlineColor: theme.colors.white66,
                                       outlineThickness:
-                                          LineThicknessData.normal().medium,
+                                          AppLineThicknessData.normal().medium,
                                     )
                             ],
                           ),

@@ -18,7 +18,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Scope(
+    return AppScope(
       isInsideScope: true,
       child: AppContainer(
         padding: const AppEdgeInsets.all(AppGapSize.s12),
@@ -97,7 +97,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                       AppIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: LineThicknessData.normal().medium,
+                        outlineThickness: AppLineThicknessData.normal().medium,
                       ),
                       const AppGap.s4(),
                     ],
@@ -147,7 +147,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                       AppIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: LineThicknessData.normal().medium,
+                        outlineThickness: AppLineThicknessData.normal().medium,
                       ),
                       const AppGap.s4(),
                     ],
@@ -207,7 +207,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                       AppIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: LineThicknessData.normal().medium,
+                        outlineThickness: AppLineThicknessData.normal().medium,
                       ),
                       const AppGap.s4(),
                     ],
@@ -249,6 +249,65 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                       ),
                     ],
                   ),
+                ],
+              ),
+            ),
+            const AppGap.s12(),
+            AppContainer(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: const AppEdgeInsets.only(
+                top: AppGapSize.s10,
+                bottom: AppGapSize.s12,
+                left: AppGapSize.s12,
+                right: AppGapSize.s12,
+              ),
+              decoration: BoxDecoration(
+                color: theme.colors.gray66,
+                borderRadius: theme.radius.asBorderRadius().rad16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const AppGap.s4(),
+                      AppText.med14(
+                        'Supporters',
+                        color: theme.colors.white66,
+                      ),
+                      const Spacer(),
+                      AppIcon.s14(
+                        theme.icons.characters.chevronRight,
+                        outlineColor: theme.colors.white33,
+                        outlineThickness: AppLineThicknessData.normal().medium,
+                      ),
+                      const AppGap.s4(),
+                    ],
+                  ),
+                  const AppGap.s8(),
+                  AppSupportersStage(
+                    topThreeSupporters: [
+                      PartialProfile(
+                        name: 'John C.',
+                        pictureUrl:
+                            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fe1.pxfuel.com%2Fdesktop-wallpaper%2F903%2F679%2Fdesktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg',
+                      ).dummySign(
+                          '8fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195'),
+                      PartialProfile(
+                        name: 'Niel Liesmons',
+                        pictureUrl:
+                            'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+                      ).dummySign(
+                          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'),
+                      PartialProfile(
+                        name: 'franzap',
+                        pictureUrl:
+                            'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
+                      ).dummySign(
+                          '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194'),
+                    ],
+                  )
                 ],
               ),
             ),

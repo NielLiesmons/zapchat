@@ -37,7 +37,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
         const AppGap.s8(),
@@ -58,7 +58,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
         const AppGap.s8(),
@@ -79,7 +79,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
         const AppGap.s8(),
@@ -100,7 +100,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
         const AppGap.s8(),
@@ -121,7 +121,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
         const AppGap.s8(),
@@ -142,7 +142,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
         const AppGap.s8(),
@@ -163,7 +163,7 @@ class CommunityPricingModal extends ConsumerWidget {
               AppIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ])),
       ],

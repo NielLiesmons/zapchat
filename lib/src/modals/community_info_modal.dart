@@ -89,7 +89,7 @@ class CommunityInfoModal extends ConsumerWidget {
                     AppIcon.s20(
                       theme.icons.characters.counter,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     const AppGap.s10(),
                     AppText.med14("Alerts"),
@@ -112,7 +112,7 @@ class CommunityInfoModal extends ConsumerWidget {
                     AppIcon.s20(
                       theme.icons.characters.pin,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     const AppGap.s10(),
                     AppText.med14("Pin"),
@@ -135,7 +135,7 @@ class CommunityInfoModal extends ConsumerWidget {
                     AppIcon.s20(
                       theme.icons.characters.share,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     const AppGap.s10(),
                     AppText.med14("Share"),
@@ -151,7 +151,7 @@ class CommunityInfoModal extends ConsumerWidget {
             AppIcon(
               theme.icons.characters.check,
               outlineColor: theme.colors.whiteEnforced,
-              outlineThickness: LineThicknessData.normal().thick,
+              outlineThickness: AppLineThicknessData.normal().thick,
             ),
             const AppGap.s12(),
             AppText.med14("Added", color: theme.colors.whiteEnforced),
