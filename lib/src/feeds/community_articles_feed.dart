@@ -15,21 +15,22 @@ class CommunityArticlesFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(query<Article>());
+    final state = ref.watch(query<Article>());
 
-    // if (state case StorageLoading()) {
-    //   return const AppLoadingFeed();
-    // }
+    if (state case StorageLoading()) {
+      return const AppLoadingFeed();
+    }
 
-    // final articles = state.models.cast<Article>();
+    final articles = state.models.cast<Article>();
 
     return Column(
       children: [
-        // for (final article in articles)
-        //   AppArticleCard(
-        //     article: article,
-        //     onTap: () => context.push('/article/${article.id}'),
-        //   ),
+        for (final article in articles)
+          AppFeedArticle(
+            article: article,
+            isUnread: true,
+            onTap: () => context.push('/article/${article.id}'),
+          ),
       ],
     );
   }

@@ -5,8 +5,8 @@ class ImagesTab extends StatelessWidget {
 
   TabData tabData(BuildContext context) {
     return TabData(
-      label: 'Images',
-      icon: const AppEmojiContentType(contentType: 'image'),
+      label: 'Albums',
+      icon: const AppEmojiContentType(contentType: 'album'),
       content: Builder(
         builder: (context) {
           return AppContainer(

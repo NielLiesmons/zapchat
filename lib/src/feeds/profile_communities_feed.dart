@@ -41,6 +41,7 @@ class ProfileCommunitiesFeed extends ConsumerWidget {
                   profile: profile,
                   profileLabel: "Dictator",
                   relevantProfiles: relevantProfiles,
+                  relevantProfilesDescription: "Followers in\nyour network",
                   onProfilesTap: () {},
                 ),
                 const AppGap.s12(),

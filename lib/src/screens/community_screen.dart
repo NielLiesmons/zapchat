@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../feeds/community_welcome_feed.dart';
 import '../feeds/community_chat_feed.dart';
 import '../feeds/community_posts_feed.dart';
+import '../feeds/community_articles_feed.dart';
 import '../providers/resolvers.dart';
 import '../providers/user_profiles.dart';
 
@@ -78,7 +79,7 @@ class CommunityScreen extends ConsumerWidget {
         case 'Articles':
           contentTypes['article'] = (
             count: 1,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
+            feed: CommunityArticlesFeed(community: community),
             bottomBar: const AppBottomBarContentFeed()
           );
           break;
@@ -117,8 +118,8 @@ class CommunityScreen extends ConsumerWidget {
             bottomBar: const AppBottomBarContentFeed()
           );
           break;
-        case 'Images':
-          contentTypes['image'] = (
+        case 'Albums':
+          contentTypes['album'] = (
             count: 0,
             feed: AppLoadingFeed(type: LoadingFeedType.content),
             bottomBar: const AppBottomBarContentFeed()

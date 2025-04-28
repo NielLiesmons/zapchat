@@ -77,16 +77,16 @@ class CreateNewStuffModal extends ConsumerWidget {
     final contentTypes = [
       'article',
       'post',
+      'app',
       'poll',
-      'wiki',
+      'work-out',
+      'doc',
       'video',
-      'image',
+      'wiki',
+      'album',
       'repo',
       'book',
       'task',
-      'work-out',
-      'event',
-      'note',
     ];
 
     final rows = <Widget>[];

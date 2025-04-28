@@ -204,6 +204,22 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           content: 'Articles',
           kinds: {30023},
         ),
+        CommunityContentSection(
+          content: 'Apps',
+          kinds: {32267},
+        ),
+        CommunityContentSection(
+          content: 'Docs',
+          kinds: {30040},
+        ),
+        CommunityContentSection(
+          content: 'Albums',
+          kinds: {20},
+        ),
+        CommunityContentSection(
+          content: 'Tasks',
+          kinds: {30123},
+        ),
       },
     ).signWith(signer, withPubkey: zapchat.pubkey);
     final cypherchadsCommunity = await PartialCommunity(
@@ -314,20 +330,42 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       ).signWith(signer, withPubkey: niel.pubkey),
     ]);
 
-    // dummyArticles.addAll([
-    //   await (PartialArticle(
-    //     'Title Of The Article',
-    //     'Content of the article',
-    //     publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-    //   )).signWith(signer, withPubkey: verbiricha.pubkey),
-    // ]);
+    dummyArticles.addAll([
+      await (PartialArticle(
+        'Zapchat For Dummies',
+        'Content of the article',
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        imageUrl:
+            'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+        summary:
+            'A brief introduction to a daily driver for Communities and Groups.',
+      )).signWith(signer, withPubkey: zapchat.pubkey),
+      await (PartialArticle(
+        'How the Bible has been altered by the Kabbalah',
+        'Content of the second article',
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        imageUrl:
+            'https://cdn.satellite.earth/0b06fe9501ae674d57e6154bdb5fa55b1a1f181c5149153682310fc5748efd7b.png',
+        summary:
+            'A look into the history of the Bible and how it has been altered by the Mystery Babylon cult(s).',
+      )).signWith(signer, withPubkey: verbiricha.pubkey),
+      await (PartialArticle(
+        'Metabolic Health Foods You Can Find in Any Store',
+        'Content of the third article',
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        imageUrl:
+            'https://cdn.satellite.earth/5b8e0002026a4bd0804d0470295dfd209ef9c461957a85f62e00e2923ff18bf1.png',
+        summary:
+            'A deep dive into foods that are good for your metabolic health and you can actually find in stores.',
+      )).signWith(signer, withPubkey: metabolism.pubkey),
+    ]);
 
     // Save all data
     print('Saving data to storage...');
     await ref.read(storageNotifierProvider.notifier).save(Set.from([
           ...dummyProfiles,
           ...dummyNotes,
-          // ...dummyArticles,
+          ...dummyArticles,
           ...dummyChatMessages,
           ...dummyCommunities,
         ]));

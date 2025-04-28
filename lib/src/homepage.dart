@@ -5,7 +5,7 @@ import 'tabs/home/apps.dart';
 import 'tabs/home/articles.dart';
 import 'tabs/home/books.dart';
 import 'tabs/home/home.dart';
-import 'tabs/home/images.dart';
+import 'tabs/home/albums.dart';
 import 'tabs/home/posts.dart';
 import 'tabs/home/repos.dart';
 import 'tabs/home/videos.dart';
