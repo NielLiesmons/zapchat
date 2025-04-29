@@ -5,6 +5,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zapchat/src/providers/resolvers.dart';
 import 'package:zapchat/src/providers/search.dart';
 import 'package:zapchat/src/screens/post_screen.dart';
+import 'package:zapchat/src/screens/article_screen.dart';
 
 List<GoRoute> get eventRoutes => [
       GoRoute(
@@ -16,6 +17,21 @@ List<GoRoute> get eventRoutes => [
               builder: (context, ref, _) {
                 return PostScreen(
                   post: event as Note,
+                );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/article/:eventId',
+        pageBuilder: (context, state) {
+          final event = state.extra as Model;
+          return AppSlideInScreen(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return ArticleScreen(
+                  article: event as Article,
                 );
               },
             ),

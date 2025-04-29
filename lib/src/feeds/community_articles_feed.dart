@@ -29,7 +29,8 @@ class CommunityArticlesFeed extends ConsumerWidget {
           AppFeedArticle(
             article: article,
             isUnread: true,
-            onTap: () => context.push('/article/${article.id}'),
+            onTap: (event) =>
+                context.push('/article/${event.id}', extra: event),
           ),
       ],
     );

@@ -82,70 +82,85 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
           ),
         ],
       ),
-      child: IntrinsicHeight(
-        child: Column(
-          children: [
-            AppArticleHeader(
-              article: widget.article,
-              communities: communities,
+      bottomBarContent: AppBottomBarLongText(
+        model: widget.article,
+        onZapTap: (model) {},
+        onPlayTap: (model) {},
+        onReplyTap: (model) {},
+        onVoiceTap: (model) {},
+        onActions: (model) {},
+        // onResolveEvent: resolvers.eventResolver,
+        // onResolveProfile: resolvers.profileResolver,
+        // onResolveEmoji: resolvers.emojiResolver,
+      ),
+      child: Column(
+        children: [
+          AppArticleHeader(
+            article: widget.article,
+            communities: communities,
+          ),
+          AppContainer(
+            child: AppTabView(
+              controller: _tabController,
+              tabs: [
+                TabData(
+                  label: 'Article',
+                  icon: AppEmojiContentType(
+                    contentType: getModelContentType(widget.article),
+                    size: 20,
+                  ),
+                  content: AppLongTextRenderer(
+                    language: "ndown",
+                    content: widget.article.content,
+                    onResolveEvent: resolvers.eventResolver,
+                    onResolveProfile: resolvers.profileResolver,
+                    onResolveEmoji: resolvers.emojiResolver,
+                    onResolveHashtag: resolvers.hashtagResolver,
+                    onLinkTap: (url) {},
+                  ),
+                ),
+                TabData(
+                  label: 'Replies',
+                  icon: AppIcon.s20(
+                    theme.icons.characters.reply,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: const AppLoadingFeed(
+                    type: LoadingFeedType.post,
+                  ),
+                ),
+                TabData(
+                  label: 'Shares',
+                  icon: AppIcon.s20(
+                    theme.icons.characters.share,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: const AppText.reg14('Shares content'),
+                ),
+                TabData(
+                  label: 'Labels',
+                  icon: AppIcon.s20(
+                    theme.icons.characters.label,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: const AppText.reg14('Labels content'),
+                ),
+                TabData(
+                  label: 'Details',
+                  icon: AppIcon.s20(
+                    theme.icons.characters.info,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: DetailsTab(model: widget.article),
+                ),
+              ],
             ),
-            AppContainer(
-              child: AppTabView(
-                controller: _tabController,
-                tabs: [
-                  TabData(
-                    label: 'Article',
-                    icon: AppEmojiContentType(
-                      contentType: getModelContentType(widget.article),
-                      size: 20,
-                    ),
-                    content: const AppLoadingFeed(
-                      type: LoadingFeedType.post,
-                    ),
-                  ),
-                  TabData(
-                    label: 'Replies',
-                    icon: AppIcon.s20(
-                      theme.icons.characters.reply,
-                      outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
-                    ),
-                    content: const AppLoadingFeed(
-                      type: LoadingFeedType.post,
-                    ),
-                  ),
-                  TabData(
-                    label: 'Shares',
-                    icon: AppIcon.s20(
-                      theme.icons.characters.share,
-                      outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
-                    ),
-                    content: const AppText.reg14('Shares content'),
-                  ),
-                  TabData(
-                    label: 'Labels',
-                    icon: AppIcon.s20(
-                      theme.icons.characters.label,
-                      outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
-                    ),
-                    content: const AppText.reg14('Labels content'),
-                  ),
-                  TabData(
-                    label: 'Details',
-                    icon: AppIcon.s20(
-                      theme.icons.characters.info,
-                      outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
-                    ),
-                    content: DetailsTab(model: widget.article),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

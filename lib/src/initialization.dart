@@ -116,6 +116,14 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         withPubkey:
             '1203456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
 
+    final hzrd149 = await PartialProfile(
+      name: 'hzrd149',
+      pictureUrl:
+          'https://cdn.hzrd149.com/5ed3fe5df09a74e8c126831eac999364f9eb7624e2b86d521521b8021de20bdc.png',
+    ).signWith(signer,
+        withPubkey:
+            '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+
     dummyProfiles.addAll([
       zapchat,
       niel,
@@ -126,6 +134,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       communikeys,
       nipsout,
       metabolism,
+      hzrd149,
     ]);
 
     // Save profiles first and wait for them to be indexed
@@ -341,14 +350,68 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
             'A brief introduction to a daily driver for Communities and Groups.',
       )).signWith(signer, withPubkey: zapchat.pubkey),
       await (PartialArticle(
-        'How the Bible has been altered by the Kabbalah',
-        'Content of the second article',
-        publishedAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        'Communi-keys',
+        """# The Key Pair
+What a Nostr key pair has by default:
+
+* A unique ID 
+* A name 
+* A description 
+* An ability to sign stuff
+
+# The Relay
+What a Nostr relay has (or should have) by default:
+
+* Permissions, Moderation, AUTH, ...
+* Pricing & other costs to make the above work (cost per content type, subscriptions, xx publications per xx timeframe, ...)
+* List of accepted content types
+* (to add) Guidelines
+
+# The Community
+Since I need Communities to have all the above mentioned properties too, the simplest solution seems to be to just combine them. And when you already have a key pair and a relay, you just need the third basic Nostr building block to bring them together...
+
+# The Event
+To create a #communikey, a key pair (The Profile) needs to sign a (kind 30XXX) event that lays out the Community's :
+1. Main relay + backup relays
+2. Main blossom server + backup servers
+3. (optional) Roles for specific npubs (admin, CEO, dictator, customer service, design lead, ...)
+4. (optional) Community mint
+5. (optional) "Welcome" Publication that serves as an introduction to the community 
+
+This way: 
+* **any existing npub** can become a Community
+* Communities are not tied to one relay and have a truly unique ID
+* Things are waaaaaay easier for relay operators/services to be compatible (relative to existing community proposals)
+* Running one relay per community works an order of magnitude better, but isn't a requirement
+
+# The Publishers
+What the Community enjoyers need to chat in one specific #communikey :
+* Tag the npub in the (kind 9) chat message
+
+What they needs to publish anything else in one or multiple #communikeys :
+* Publish a (kind 32222 - Targeted publication) event that lists the npubs of the targeted Communities
+* If the event is found on the main relay = The event is accepted
+
+This way: 
+* **any existing publication** can be targeted at a Community
+* Communities can #interop on content and bring their members together in reply sections, etc...
+* Your publication isn't tied **forever** to a specific relay
+
+## Ncommunity
+If nprofile = npub + relay hints, for profiles   
+Then ncommunity = npub + relay hints, for communities
+""",
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
         imageUrl:
-            'https://cdn.satellite.earth/0b06fe9501ae674d57e6154bdb5fa55b1a1f181c5149153682310fc5748efd7b.png',
-        summary:
-            'A look into the history of the Bible and how it has been altered by the Mystery Babylon cult(s).',
-      )).signWith(signer, withPubkey: verbiricha.pubkey),
+            'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
+        summary: 'Npub + Relay + 2 new event kinds = Ncommunity',
+      )).signWith(signer, withPubkey: niel.pubkey),
+      await (PartialArticle(
+        """Don't build on social, its a trap""",
+        """To all existing nostr developers and new nostr developers, stop using kind 1 events... just stop whatever your doing and switch the kind to `Math.round(Math.random() * 10000)` trust me it will be better\n\n## What are kind 1 events\n\nkind 1 events are defined in [NIP-10](https://github.com/nostr-protocol/nips/blob/master/10.md) as \"simple plaintext notes\" or in other words social posts.\n\n## Don't trick your users\n\nMost users are joining nostr for the social experience, and secondly to find all the cool \"other stuff\" apps\nThey find friends, browse social posts, and reply to them. If a user signs into a new nostr client and it starts asking them to sign kind 1 events with blobs of JSON, they will sign it without thinking too much about it.\n\nThen when they return to their comfy social apps they will see that they made 10+ posts with massive amounts of gibberish that they don't remember posting. then they probably will go looking for the delete button and realize there isn't one...\n\nEven if those kind 1 posts don't contain JSON and have a nice fancy human readable syntax. they will still confuse users because they won't remember writing those social posts\n\n## What about \"discoverability\"\n\nIf your goal is to make your \"other stuff\" app visible to more users, then I would suggest using [NIP-19](https://github.com/nostr-protocol/nips/blob/master/19.md) and [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)\nThe first allows users to embed any other event kind into social posts as `nostr:nevent1` or `nostr:naddr1` links, and the second allows social clients to redirect users to an app that knows how to handle that specific kind of event\n\nSo instead of saving your apps data into kind 1 events. you can pick any kind you want, then give users a \"share on nostr\" button that allows them to compose a social post (kind 1) with a `nostr:` link to your special kind of event and by extension you app\n\n## Why its a trap\n\nOnce users start using your app it becomes a lot more difficult to migrate to a new event kind or data format.\nThis sounds obvious, but If your app is built on kind 1 events that means you will be stuck with their limitations forever. \n\nFor example, here are some of the limitations of using kind 1\n - Querying for your apps data becomes much more difficult. You have to filter through all of a users kind 1 events to find which ones are created by your app\n - Discovering your apps data is more difficult for the same reason, you have to sift through all the social posts just to find the ones with you special tag or that contain JSON\n - Users get confused. as mentioned above users don't expect \"other stuff\" apps to be creating special social posts\n - Other nostr clients won't understand your data and will show it as a social post with no option for users to learn about your app""",
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        summary: 'As a developer, why you should not use kind 1 events.',
+      )).signWith(signer, withPubkey: hzrd149.pubkey),
       await (PartialArticle(
         'Metabolic Health Foods You Can Find in Any Store',
         'Content of the third article',

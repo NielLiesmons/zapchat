@@ -55,7 +55,7 @@ class CreateNewStuffModal extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppEmojiContentType(
-                      contentType: 'private_group',
+                      contentType: 'group',
                       size: 32,
                     ),
                     const AppGap.s10(),

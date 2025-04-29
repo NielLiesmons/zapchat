@@ -273,6 +273,51 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                     children: [
                       const AppGap.s4(),
                       AppText.med14(
+                        'Recommended Apps',
+                        color: theme.colors.white66,
+                      ),
+                      const Spacer(),
+                      AppIcon.s14(
+                        theme.icons.characters.chevronRight,
+                        outlineColor: theme.colors.white33,
+                        outlineThickness: AppLineThicknessData.normal().medium,
+                      ),
+                      const AppGap.s4(),
+                    ],
+                  ),
+                  const AppGap.s8(),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: [
+                      AppProfilePicSquare.s48("profilePicUrl"),
+                      AppProfilePicSquare.s48("profilePicUrl")
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const AppGap.s12(),
+            AppContainer(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: const AppEdgeInsets.only(
+                top: AppGapSize.s10,
+                bottom: AppGapSize.s12,
+                left: AppGapSize.s12,
+                right: AppGapSize.s12,
+              ),
+              decoration: BoxDecoration(
+                color: theme.colors.gray66,
+                borderRadius: theme.radius.asBorderRadius().rad16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const AppGap.s4(),
+                      AppText.med14(
                         'Supporters',
                         color: theme.colors.white66,
                       ),

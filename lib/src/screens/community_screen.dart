@@ -51,10 +51,11 @@ class CommunityScreen extends ConsumerWidget {
             count: 2,
             feed: CommunityChatFeed(community: community),
             bottomBar: AppBottomBarChat(
-              onAddTap: () {},
-              onMessageTap: () {},
-              onVoiceTap: () {},
-              onActions: () {},
+              model: community,
+              onAddTap: (model) {},
+              onMessageTap: (model) {},
+              onVoiceTap: (model) {},
+              onActions: (model) {},
               onResolveEvent: resolvers.eventResolver,
               onResolveProfile: resolvers.profileResolver,
               onResolveEmoji: resolvers.emojiResolver,
@@ -64,7 +65,7 @@ class CommunityScreen extends ConsumerWidget {
         case 'Posts':
           print('Found Posts section');
           contentTypes['post'] = (
-            count: 2,
+            count: 6,
             feed: CommunityPostsFeed(community: community),
             bottomBar: const AppBottomBarContentFeed()
           );
@@ -78,7 +79,7 @@ class CommunityScreen extends ConsumerWidget {
           break;
         case 'Articles':
           contentTypes['article'] = (
-            count: 1,
+            count: 4,
             feed: CommunityArticlesFeed(community: community),
             bottomBar: const AppBottomBarContentFeed()
           );

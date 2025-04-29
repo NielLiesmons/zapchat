@@ -34,9 +34,9 @@ class ChatTab extends StatelessWidget {
                       chatMessages.isNotEmpty ? chatMessages.first : null,
                   mainCount: 21,
                   contentCounts: {
-                    'chat': 2,
-                    'post': 2,
-                    'article': 1,
+                    'chat': 8,
+                    'post': 6,
+                    'article': 4,
                   },
                   onNavigateToCommunity: (community) {
                     context.push(
