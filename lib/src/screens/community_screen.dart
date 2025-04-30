@@ -126,6 +126,13 @@ class CommunityScreen extends ConsumerWidget {
             bottomBar: const AppBottomBarContentFeed()
           );
           break;
+        case 'Tasks':
+          contentTypes['task'] = (
+            count: 0,
+            feed: AppLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const AppBottomBarContentFeed()
+          );
+          break;
         default:
           // For unknown content types, use the original string
           contentTypes[section.content] = (
