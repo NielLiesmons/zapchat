@@ -40,7 +40,7 @@ class ChatTab extends StatelessWidget {
                   },
                   onNavigateToCommunity: (community) {
                     context.push(
-                      '/community/${community.author.value?.npub}',
+                      '/community/${community.author.value?.npub}/chat',
                       extra: community,
                     );
                   },

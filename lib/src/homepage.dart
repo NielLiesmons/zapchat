@@ -144,7 +144,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     switch (_tabController.index) {
       case 0: // Home tab
         return AppPlatformUtils.isMobile
-            ? const AppBottomBarHome()
+            ? AppBottomBarHome(
+                onAddTap: () => context.push('/create'),
+              )
             : const SizedBox.shrink();
       case 1: // Posts tab
         return AppBottomBarContentFeed();

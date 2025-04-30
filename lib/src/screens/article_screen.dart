@@ -84,10 +84,8 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     padding: const AppEdgeInsets.symmetric(
                       vertical: AppGapSize.s4,
                     ),
-                    child: Expanded(
-                      child: AppProgressBar(
-                        progress: _scrollProgress,
-                      ),
+                    child: AppProgressBar(
+                      progress: _scrollProgress,
                     ),
                   ),
                 ],

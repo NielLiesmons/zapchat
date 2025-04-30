@@ -24,6 +24,18 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     print('Signer created');
 
     print('Creating profiles...');
+
+    final niel = await PartialProfile(
+      name: 'Niel Liesmons',
+      pictureUrl:
+          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+      banner:
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+    ).signWith(signer,
+        withPubkey:
+            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+    print(
+        'Niel profile created - name: ${niel.name}, pubkey: ${niel.pubkey}, pictureUrl: ${niel.pictureUrl}');
     final zapchat = await PartialProfile(
       name: 'Zapchat',
       pictureUrl:
@@ -45,18 +57,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
             '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
     print(
         'Zapstore profile created - name: ${zapstore.name}, pubkey: ${zapstore.pubkey}, pictureUrl: ${zapstore.pictureUrl}');
-
-    final niel = await PartialProfile(
-      name: 'Niel Liesmons',
-      pictureUrl:
-          'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-      banner:
-          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-    ).signWith(signer,
-        withPubkey:
-            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-    print(
-        'Niel profile created - name: ${niel.name}, pubkey: ${niel.pubkey}, pictureUrl: ${niel.pictureUrl}');
 
     final cypherchads = await PartialProfile(
       name: 'Cypher Chads',
@@ -125,8 +125,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
             '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
     dummyProfiles.addAll([
-      zapchat,
       niel,
+      zapchat,
       zapstore,
       cypherchads,
       franzap,
@@ -323,8 +323,18 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: verbiricha.pubkey),
       await PartialChatMessage(
+        'https://cdn.satellite.earth/ce1ada957054c84e7dc95ecaa6b14ddb452f4ab31632903d74ffe83bc6c8ff38.mp3',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: zapchatCommunity,
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+      await PartialChatMessage(
         'Awesome!',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: zapchatCommunity,
+      ).signWith(signer, withPubkey: niel.pubkey),
+      await PartialChatMessage(
+        ':beautiful:',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
@@ -333,7 +343,12 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: franzap.pubkey),
       await PartialChatMessage(
-        'I was just about to say you that.',
+        'I was just about to say that.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: zapchatCommunity,
+      ).signWith(signer, withPubkey: niel.pubkey),
+      await PartialChatMessage(
+        'Here\'s some more on that thing I said: nostr:nevent1blablabla',
         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),

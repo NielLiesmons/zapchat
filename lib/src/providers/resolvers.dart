@@ -38,7 +38,12 @@ final resolversProvider = Provider<Resolvers>((ref) {
 
   return Resolvers(
     eventResolver: (identifier) => eventCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 50));
+      final state = ref.watch(query<Note>());
+      if (state is StorageState<Note> && state.models.isNotEmpty) {
+        return (model: state.models.first, onTap: null);
+      }
+      // Fallback to creating a new note if no articles are available
       final post = await PartialNote(
         'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
         createdAt: DateTime.now(),
@@ -48,7 +53,7 @@ final resolversProvider = Provider<Resolvers>((ref) {
     }),
     profileResolver: (identifier) =>
         profileCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 50));
       final profile = await PartialProfile(
         name: 'Pip',
         pictureUrl: 'https://m.primal.net/IfSZ.jpg',
@@ -56,12 +61,19 @@ final resolversProvider = Provider<Resolvers>((ref) {
       return (profile: profile, onTap: null);
     }),
     emojiResolver: (identifier) => emojiCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(seconds: 1));
-      return 'https://cdn.satellite.earth/cbcd50ec769b65c03bc780f0b2d0967f893d10a29f7666d7df8f2d7614d493d4.png';
+      await Future.delayed(const Duration(milliseconds: 50));
+      return switch (identifier.toLowerCase()) {
+        'nostr' =>
+          'https://cdn.satellite.earth/cbcd50ec769b65c03bc780f0b2d0967f893d10a29f7666d7df8f2d7614d493d4.png',
+        'beautiful' =>
+          'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif', // Replace with actual URL
+        _ =>
+          'https://cdn.satellite.earth/cbcd50ec769b65c03bc780f0b2d0967f893d10a29f7666d7df8f2d7614d493d4.png', // Default fallback
+      };
     }),
     hashtagResolver: (identifier) =>
         hashtagCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 50));
       return () {};
     }),
   );
