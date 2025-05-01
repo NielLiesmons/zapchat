@@ -6,6 +6,7 @@ import '../feeds/community_welcome_feed.dart';
 import '../feeds/community_chat_feed.dart';
 import '../feeds/community_threads_feed.dart';
 import '../feeds/community_articles_feed.dart';
+import '../feeds/community_books_feed.dart';
 import '../providers/resolvers.dart';
 import '../providers/user_profiles.dart';
 
@@ -108,7 +109,7 @@ class CommunityScreen extends ConsumerWidget {
         case 'Books':
           contentTypes['book'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
+            feed: CommunityBooksFeed(community: community),
             bottomBar: const AppBottomBarContentFeed()
           );
           break;

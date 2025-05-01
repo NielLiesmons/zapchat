@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateNewStuffModal extends ConsumerWidget {
   const CreateNewStuffModal({
@@ -47,7 +47,7 @@ class CreateNewStuffModal extends ConsumerWidget {
                   top: AppGapSize.s20,
                   bottom: AppGapSize.s14,
                 ),
-                onTap: () {},
+                onTap: () => context.replace('/create/group'),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,

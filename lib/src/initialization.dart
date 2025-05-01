@@ -15,6 +15,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
 
     // Register the Book model with kind 1055
     Model.register(kind: 1055, constructor: Book.fromMap);
+    Model.register(kind: 10456, constructor: Group.fromMap);
+
     print('Models initialized with Book model registered');
 
     final dummyProfiles = <Profile>[];
@@ -22,6 +24,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyChatMessages = <ChatMessage>[];
     final dummyArticles = <Article>[];
     final dummyCommunities = <Community>[];
+    final dummyGroups = <Group>[];
     final dummyBooks = <Book>[];
 
     print('Creating signer...');
@@ -49,19 +52,19 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
     ).signWith(signer,
         withPubkey:
-            '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
+            '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
     print(
         'Zapchat profile created - name: ${zapchat.name}, pubkey: ${zapchat.pubkey}, pictureUrl: ${zapchat.pictureUrl}');
 
-    final zapstore = await PartialProfile(
-      name: 'Zapstore',
+    final proof = await PartialProfile(
+      name: 'Proof Of Reign',
       pictureUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
     ).signWith(signer,
         withPubkey:
-            '27487c9600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
+            'F954B79600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
     print(
-        'Zapstore profile created - name: ${zapstore.name}, pubkey: ${zapstore.pubkey}, pictureUrl: ${zapstore.pictureUrl}');
+        'Zapstore profile created - name: ${proof.name}, pubkey: ${proof.pubkey}, pictureUrl: ${proof.pictureUrl}');
 
     final cypherchads = await PartialProfile(
       name: 'Cypher Chads',
@@ -89,7 +92,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           'https://npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg.blossom.band/3d84787d7284c879429eb0c8e6dcae0bf94cc50456d4046adf33cf040f8f5504.jpg',
     ).signWith(signer,
         withPubkey:
-            '8fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195');
+            '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195');
     print(
         'Verbiricha profile created - name: ${verbiricha.name}, pubkey: ${verbiricha.pubkey}, pictureUrl: ${verbiricha.pictureUrl}');
 
@@ -129,10 +132,18 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         withPubkey:
             '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
+    final thegang = await PartialProfile(
+      name: 'The Gang',
+      pictureUrl:
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.fixthephoto.com%2Fblog%2Fimages%2Fgallery%2Fnews_preview_mob_image__preview_404.jpg',
+    ).signWith(signer,
+        withPubkey:
+            '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+
     dummyProfiles.addAll([
       niel,
       zapchat,
-      zapstore,
+      proof,
       cypherchads,
       franzap,
       verbiricha,
@@ -140,6 +151,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       nipsout,
       metabolism,
       hzrd149,
+      thegang,
     ]);
 
     // Save profiles first and wait for them to be indexed
@@ -221,6 +233,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         CommunityContentSection(
           content: 'Apps',
           kinds: {32267},
+        ),
+        CommunityContentSection(
+          content: 'Books',
+          kinds: {30040},
         ),
         CommunityContentSection(
           content: 'Docs',
@@ -311,6 +327,52 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       communikeysCommunity,
       nipsoutCommunity,
       metabolismCommunity,
+    ]);
+    // Create groups
+    final theGangGroup = await PartialGroup(
+      name: 'The Guys',
+      relayUrls: {'wss://relay.damus.io'},
+      description:
+          'Where The Guys meet. A place to discuss, collaborate and  publish relevant content.',
+      contentSections: {
+        GroupContentSection(
+          content: 'Chat',
+          kinds: {9},
+          feeInSats: 100,
+        ),
+        GroupContentSection(
+          content: 'Threads',
+          kinds: {1},
+        ),
+        GroupContentSection(
+          content: 'Articles',
+          kinds: {30023},
+        ),
+        GroupContentSection(
+          content: 'Apps',
+          kinds: {32267},
+        ),
+        GroupContentSection(
+          content: 'Books',
+          kinds: {30040},
+        ),
+        GroupContentSection(
+          content: 'Docs',
+          kinds: {30040},
+        ),
+        GroupContentSection(
+          content: 'Albums',
+          kinds: {20},
+        ),
+        GroupContentSection(
+          content: 'Tasks',
+          kinds: {30123},
+        ),
+      },
+    ).signWith(signer, withPubkey: thegang.pubkey);
+
+    dummyGroups.addAll([
+      theGangGroup,
     ]);
 
     // Chat messages
@@ -445,14 +507,6 @@ Then ncommunity = npub + relay hints, for communities
 
     dummyBooks.addAll([
       await (PartialBook(
-        'En quête d\'amour',
-        'Content of the book',
-        writer: 'Anneke Lucas',
-        imageUrl:
-            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F59ab4dedc027d8465d8c085c%2F07cc0908-7279-4dcf-a85f-cca89fc8a245%2FGUQyi3xWoAAIAW3.jpg',
-        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: niel.pubkey),
-      await (PartialBook(
         'Eat Like A Human',
         'Content of the book',
         writer: 'Bill Schindler',
@@ -467,6 +521,14 @@ Then ncommunity = npub + relay hints, for communities
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fnwf-bucket.s3.me-south-1.amazonaws.com%2Fimages%2Fae%2Fabookstore%2Fcovers%2Fnormal%2F315%2F315121.jpg',
       )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'En quête d\'amour',
+        'Content of the book',
+        writer: 'Anneke Lucas',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F59ab4dedc027d8465d8c085c%2F07cc0908-7279-4dcf-a85f-cca89fc8a245%2FGUQyi3xWoAAIAW3.jpg',
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: niel.pubkey),
       await (PartialBook(
         'A Book with a surprsingly long title that is here to test text overflow',
         'Content of the book',
@@ -512,6 +574,7 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyArticles,
           ...dummyChatMessages,
           ...dummyCommunities,
+          ...dummyGroups,
           ...dummyBooks,
         ]));
     print('Data saved successfully');
