@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/resolvers.dart';
 import '../providers/user_profiles.dart';
 
-class CommunityPostsFeed extends ConsumerWidget {
+class CommunityThreadsFeed extends ConsumerWidget {
   final Community community;
 
-  const CommunityPostsFeed({
+  const CommunityThreadsFeed({
     super.key,
     required this.community,
   });
@@ -18,17 +18,17 @@ class CommunityPostsFeed extends ConsumerWidget {
     final state = ref.watch(query<Note>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed(type: LoadingFeedType.post);
+      return const AppLoadingFeed(type: LoadingFeedType.thread);
     }
 
-    final posts = state.models.cast<Note>();
+    final threads = state.models.cast<Note>();
 
     return Column(
       children: [
-        for (final post in posts)
-          AppFeedPost(
-            post: post,
-            onTap: (model) => context.push('/post/${model.id}', extra: model),
+        for (final thread in threads)
+          AppFeedThread(
+            thread: thread,
+            onTap: (model) => context.push('/thread/${model.id}', extra: model),
             onReply: (model) =>
                 context.push('/reply/${model.id}', extra: model),
             onActions: (model) =>

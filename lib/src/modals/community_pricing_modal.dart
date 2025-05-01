@@ -44,9 +44,9 @@ class CommunityPricingModal extends ConsumerWidget {
         AppPanel(
             padding: const AppEdgeInsets.all(AppGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "post", size: 20),
+              const AppEmojiContentType(contentType: "thread", size: 20),
               const AppGap.s16(),
-              AppText.reg14("Post", color: theme.colors.white66),
+              AppText.reg14("Thread", color: theme.colors.white66),
               const Spacer(),
               AppIcon.s12(
                 theme.icons.characters.zap,

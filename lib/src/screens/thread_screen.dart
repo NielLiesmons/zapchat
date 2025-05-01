@@ -4,19 +4,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
 import '../tabs/details/details.dart';
 
-class PostScreen extends ConsumerStatefulWidget {
-  final Note post;
+class ThreadScreen extends ConsumerStatefulWidget {
+  final Note thread;
 
-  const PostScreen({
+  const ThreadScreen({
     super.key,
-    required this.post,
+    required this.thread,
   });
 
   @override
-  ConsumerState<PostScreen> createState() => _PostScreenState();
+  ConsumerState<ThreadScreen> createState() => _ThreadScreenState();
 }
 
-class _PostScreenState extends ConsumerState<PostScreen>
+class _ThreadScreenState extends ConsumerState<ThreadScreen>
     with SingleTickerProviderStateMixin {
   late AppTabController _tabController;
 
@@ -45,7 +45,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(widget.post.author.value?.pictureUrl ?? ''),
+          AppProfilePic.s40(widget.thread.author.value?.pictureUrl ?? ''),
           const AppGap.s12(),
           Expanded(
             child: Column(
@@ -55,7 +55,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                 Row(
                   children: [
                     AppEmojiContentType(
-                      contentType: getModelContentType(widget.post),
+                      contentType: getModelContentType(widget.thread),
                       size: 16,
                     ),
                     const AppGap.s10(),
@@ -63,7 +63,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                       child: AppCompactTextRenderer(
                         isMedium: true,
                         isWhite: true,
-                        content: getModelDisplayText(widget.post),
+                        content: getModelDisplayText(widget.thread),
                         onResolveEvent: resolvers.eventResolver,
                         onResolveProfile: resolvers.profileResolver,
                         onResolveEmoji: resolvers.emojiResolver,
@@ -73,8 +73,8 @@ class _PostScreenState extends ConsumerState<PostScreen>
                 ),
                 const AppGap.s2(),
                 AppText.reg12(
-                  widget.post.author.value?.name ??
-                      formatNpub(widget.post.author.value?.npub ?? ''),
+                  widget.thread.author.value?.name ??
+                      formatNpub(widget.thread.author.value?.npub ?? ''),
                   color: theme.colors.white66,
                 ),
               ],
@@ -85,8 +85,8 @@ class _PostScreenState extends ConsumerState<PostScreen>
       child: IntrinsicHeight(
         child: Column(
           children: [
-            AppPost(
-              post: widget.post,
+            AppThread(
+              thread: widget.thread,
               communities: communities,
               onResolveEvent: resolvers.eventResolver,
               onResolveProfile: resolvers.profileResolver,
@@ -108,7 +108,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                       outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     content: const AppLoadingFeed(
-                      type: LoadingFeedType.post,
+                      type: LoadingFeedType.thread,
                     ),
                   ),
                   TabData(
@@ -136,7 +136,7 @@ class _PostScreenState extends ConsumerState<PostScreen>
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,
                     ),
-                    content: DetailsTab(model: widget.post),
+                    content: DetailsTab(model: widget.thread),
                   ),
                 ],
               ),

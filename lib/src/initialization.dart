@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zapchat/src/providers/user_profiles.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
   try {
@@ -11,13 +12,17 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         defaultRelayGroup: '',
       ),
     ).future);
-    print('Models initialized');
+
+    // Register the Book model with kind 1055
+    Model.register(kind: 1055, constructor: Book.fromMap);
+    print('Models initialized with Book model registered');
 
     final dummyProfiles = <Profile>[];
     final dummyNotes = <Note>[];
     final dummyChatMessages = <ChatMessage>[];
     final dummyArticles = <Article>[];
     final dummyCommunities = <Community>[];
+    final dummyBooks = <Book>[];
 
     print('Creating signer...');
     final signer = DummySigner(ref);
@@ -206,7 +211,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           feeInSats: 100,
         ),
         CommunityContentSection(
-          content: 'Posts',
+          content: 'Threads',
           kinds: {1},
         ),
         CommunityContentSection(
@@ -242,7 +247,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           feeInSats: 100,
         ),
         CommunityContentSection(
-          content: 'Posts',
+          content: 'Threads',
           kinds: {1},
         ),
       },
@@ -258,7 +263,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           feeInSats: 100,
         ),
         CommunityContentSection(
-          content: 'Posts',
+          content: 'Threads',
           kinds: {1},
         ),
       },
@@ -291,7 +296,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           feeInSats: 100,
         ),
         CommunityContentSection(
-          content: 'Posts',
+          content: 'Threads',
           kinds: {1},
         ),
         CommunityContentSection(
@@ -423,7 +428,7 @@ Then ncommunity = npub + relay hints, for communities
       )).signWith(signer, withPubkey: niel.pubkey),
       await (PartialArticle(
         """Don't build on social, its a trap""",
-        """To all existing nostr developers and new nostr developers, stop using kind 1 events... just stop whatever your doing and switch the kind to `Math.round(Math.random() * 10000)` trust me it will be better\n\n## What are kind 1 events\n\nkind 1 events are defined in [NIP-10](https://github.com/nostr-protocol/nips/blob/master/10.md) as \"simple plaintext notes\" or in other words social posts.\n\n## Don't trick your users\n\nMost users are joining nostr for the social experience, and secondly to find all the cool \"other stuff\" apps\nThey find friends, browse social posts, and reply to them. If a user signs into a new nostr client and it starts asking them to sign kind 1 events with blobs of JSON, they will sign it without thinking too much about it.\n\nThen when they return to their comfy social apps they will see that they made 10+ posts with massive amounts of gibberish that they don't remember posting. then they probably will go looking for the delete button and realize there isn't one...\n\nEven if those kind 1 posts don't contain JSON and have a nice fancy human readable syntax. they will still confuse users because they won't remember writing those social posts\n\n## What about \"discoverability\"\n\nIf your goal is to make your \"other stuff\" app visible to more users, then I would suggest using [NIP-19](https://github.com/nostr-protocol/nips/blob/master/19.md) and [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)\nThe first allows users to embed any other event kind into social posts as `nostr:nevent1` or `nostr:naddr1` links, and the second allows social clients to redirect users to an app that knows how to handle that specific kind of event\n\nSo instead of saving your apps data into kind 1 events. you can pick any kind you want, then give users a \"share on nostr\" button that allows them to compose a social post (kind 1) with a `nostr:` link to your special kind of event and by extension you app\n\n## Why its a trap\n\nOnce users start using your app it becomes a lot more difficult to migrate to a new event kind or data format.\nThis sounds obvious, but If your app is built on kind 1 events that means you will be stuck with their limitations forever. \n\nFor example, here are some of the limitations of using kind 1\n - Querying for your apps data becomes much more difficult. You have to filter through all of a users kind 1 events to find which ones are created by your app\n - Discovering your apps data is more difficult for the same reason, you have to sift through all the social posts just to find the ones with you special tag or that contain JSON\n - Users get confused. as mentioned above users don't expect \"other stuff\" apps to be creating special social posts\n - Other nostr clients won't understand your data and will show it as a social post with no option for users to learn about your app""",
+        """To all existing nostr developers and new nostr developers, stop using kind 1 events... just stop whatever your doing and switch the kind to `Math.round(Math.random() * 10000)` trust me it will be better\n\n## What are kind 1 events\n\nkind 1 events are defined in [NIP-10](https://github.com/nostr-protocol/nips/blob/master/10.md) as \"simple plaintext notes\" or in other words social threads.\n\n## Don't trick your users\n\nMost users are joining nostr for the social experience, and secondly to find all the cool \"other stuff\" apps\nThey find friends, browse social threads, and reply to them. If a user signs into a new nostr client and it starts asking them to sign kind 1 events with blobs of JSON, they will sign it without thinking too much about it.\n\nThen when they return to their comfy social apps they will see that they made 10+ threads with massive amounts of gibberish that they don't remember threading. then they probably will go looking for the delete button and realize there isn't one...\n\nEven if those kind 1 threads don't contain JSON and have a nice fancy human readable syntax. they will still confuse users because they won't remember writing those social threads\n\n## What about \"discoverability\"\n\nIf your goal is to make your \"other stuff\" app visible to more users, then I would suggest using [NIP-19](https://github.com/nostr-protocol/nips/blob/master/19.md) and [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)\nThe first allows users to embed any other event kind into social threads as `nostr:nevent1` or `nostr:naddr1` links, and the second allows social clients to redirect users to an app that knows how to handle that specific kind of event\n\nSo instead of saving your apps data into kind 1 events. you can pick any kind you want, then give users a \"share on nostr\" button that allows them to compose a social thread (kind 1) with a `nostr:` link to your special kind of event and by extension you app\n\n## Why its a trap\n\nOnce users start using your app it becomes a lot more difficult to migrate to a new event kind or data format.\nThis sounds obvious, but If your app is built on kind 1 events that means you will be stuck with their limitations forever. \n\nFor example, here are some of the limitations of using kind 1\n - Querying for your apps data becomes much more difficult. You have to filter through all of a users kind 1 events to find which ones are created by your app\n - Discovering your apps data is more difficult for the same reason, you have to sift through all the social threads just to find the ones with you special tag or that contain JSON\n - Users get confused. as mentioned above users don't expect \"other stuff\" apps to be creating special social threads\n - Other nostr clients won't understand your data and will show it as a social thread with no option for users to learn about your app""",
         publishedAt: DateTime.now().subtract(const Duration(minutes: 20)),
         summary: 'As a developer, why you should not use kind 1 events.',
       )).signWith(signer, withPubkey: hzrd149.pubkey),
@@ -438,6 +443,67 @@ Then ncommunity = npub + relay hints, for communities
       )).signWith(signer, withPubkey: metabolism.pubkey),
     ]);
 
+    dummyBooks.addAll([
+      await (PartialBook(
+        'En quête d\'amour',
+        'Content of the book',
+        writer: 'Anneke Lucas',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F59ab4dedc027d8465d8c085c%2F07cc0908-7279-4dcf-a85f-cca89fc8a245%2FGUQyi3xWoAAIAW3.jpg',
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: niel.pubkey),
+      await (PartialBook(
+        'Eat Like A Human',
+        'Content of the book',
+        writer: 'Bill Schindler',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.hachettebookgroup.com%2Fwp-content%2Fuploads%2F2021%2F09%2F9780316244886.jpg',
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'In Search Of The Physical Basis Of Life',
+        'Content of the book',
+        writer: 'Gilbert Ling',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fnwf-bucket.s3.me-south-1.amazonaws.com%2Fimages%2Fae%2Fabookstore%2Fcovers%2Fnormal%2F315%2F315121.jpg',
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'A Book with a surprsingly long title that is here to test text overflow',
+        'Content of the book',
+        writer: 'Author Name',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'Bokk Title One',
+        'Content of the book',
+        writer: 'Author Name',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'Book Title Two',
+        'Content of the book',
+        writer: 'Author Name',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'Book Title Three',
+        'Content of the book',
+        writer: 'Author Name',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialBook(
+        'Book Title Four',
+        'Content of the book',
+        writer: 'Author Name',
+        imageUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
+      )).signWith(signer, withPubkey: franzap.pubkey),
+    ]);
+
     // Save all data
     print('Saving data to storage...');
     await ref.read(storageNotifierProvider.notifier).save(Set.from([
@@ -446,6 +512,7 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyArticles,
           ...dummyChatMessages,
           ...dummyCommunities,
+          ...dummyBooks,
         ]));
     print('Data saved successfully');
 

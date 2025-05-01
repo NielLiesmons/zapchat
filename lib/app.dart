@@ -52,7 +52,7 @@ class App extends ConsumerWidget {
                               children: [
                                 AppText.h2('Error during initialization:'),
                                 const AppGap.s8(),
-                                AppText.med14(error.toString()),
+                                AppSelectableText(text: error.toString()),
                               ],
                             ),
                           ),

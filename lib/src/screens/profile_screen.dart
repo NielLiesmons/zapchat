@@ -79,8 +79,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 content: const SizedBox(),
               ),
               TabData(
-                label: 'Posts',
-                icon: AppEmojiContentType(contentType: 'post'),
+                label: 'Threads',
+                icon: AppEmojiContentType(contentType: 'thread'),
                 content: const SizedBox(),
               ),
               TabData(

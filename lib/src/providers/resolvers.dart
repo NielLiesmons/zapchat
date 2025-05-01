@@ -44,12 +44,12 @@ final resolversProvider = Provider<Resolvers>((ref) {
         return (model: state.models.first, onTap: null);
       }
       // Fallback to creating a new note if no articles are available
-      final post = await PartialNote(
+      final thread = await PartialNote(
         'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
         createdAt: DateTime.now(),
       ).signWith(DummySigner(ref));
-      await ref.read(storageNotifierProvider.notifier).save({post});
-      return (model: post, onTap: null);
+      await ref.read(storageNotifierProvider.notifier).save({thread});
+      return (model: thread, onTap: null);
     }),
     profileResolver: (identifier) =>
         profileCache.getOrCreate(identifier, () async {

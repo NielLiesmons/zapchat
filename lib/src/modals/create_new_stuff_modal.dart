@@ -10,8 +10,6 @@ class CreateNewStuffModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
-
     return AppModal(
       title: 'Create New',
       description: 'Choose what you want to create',
@@ -76,7 +74,7 @@ class CreateNewStuffModal extends ConsumerWidget {
   List<Widget> _buildContentTypeRows() {
     final contentTypes = [
       'article',
-      'post',
+      'thread',
       'app',
       'poll',
       'work-out',

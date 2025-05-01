@@ -4,30 +4,30 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/resolvers.dart';
 
-class PostsTab extends StatelessWidget {
-  const PostsTab({super.key});
+class ThreadsTab extends StatelessWidget {
+  const ThreadsTab({super.key});
 
   TabData tabData(BuildContext context) {
     return TabData(
-      label: 'Posts',
-      icon: const AppEmojiContentType(contentType: 'post'),
+      label: 'Threads',
+      icon: const AppEmojiContentType(contentType: 'thread'),
       content: HookConsumer(
         builder: (context, ref, _) {
           final state = ref.watch(query<Note>());
 
           if (state case StorageLoading()) {
-            return const AppLoadingFeed(type: LoadingFeedType.post);
+            return const AppLoadingFeed(type: LoadingFeedType.thread);
           }
 
-          final posts = state.models.cast<Note>();
+          final threads = state.models.cast<Note>();
 
           return Column(
             children: [
-              for (final post in posts)
-                AppFeedPost(
-                  post: post,
+              for (final thread in threads)
+                AppFeedThread(
+                  thread: thread,
                   onTap: (event) =>
-                      context.push('/post/${event.id}', extra: event),
+                      context.push('/thread/${event.id}', extra: event),
                   onReply: (event) =>
                       context.push('/reply/${event.id}', extra: event),
                   onActions: (event) =>

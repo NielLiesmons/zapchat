@@ -18,7 +18,7 @@ class ProfileCommunitiesFeed extends ConsumerWidget {
     final state2 = ref.watch(query<Profile>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed(type: LoadingFeedType.post);
+      return const AppLoadingFeed(type: LoadingFeedType.thread);
     }
 
     final communities = state.models.cast<Community>();

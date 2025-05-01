@@ -6,7 +6,7 @@ import 'tabs/home/articles.dart';
 import 'tabs/home/books.dart';
 import 'tabs/home/home.dart';
 import 'tabs/home/albums.dart';
-import 'tabs/home/posts.dart';
+import 'tabs/home/threads.dart';
 import 'tabs/home/repos.dart';
 import 'tabs/home/videos.dart';
 import 'tabs/home/wikis.dart';
@@ -114,7 +114,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   AppTabView(
                     tabs: [
                       const ChatTab().tabData(context),
-                      const PostsTab().tabData(context),
+                      const ThreadsTab().tabData(context),
                       const AppsTab().tabData(context),
                       const WikisTab().tabData(context),
                       const ArticlesTab().tabData(context),
@@ -148,7 +148,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 onAddTap: () => context.push('/create'),
               )
             : const SizedBox.shrink();
-      case 1: // Posts tab
+      case 1: // Threads tab
         return AppBottomBarContentFeed();
       case 2: // Apps tab
         return AppBottomBarContentFeed();

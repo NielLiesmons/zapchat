@@ -135,7 +135,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                       outlineThickness: AppLineThicknessData.normal().medium,
                     ),
                     content: const AppLoadingFeed(
-                      type: LoadingFeedType.post,
+                      type: LoadingFeedType.thread,
                     ),
                   ),
                   TabData(

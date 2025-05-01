@@ -10,7 +10,7 @@ class AppsTab extends StatelessWidget {
       content: Builder(
         builder: (context) {
           return AppContainer(
-            child: const AppLoadingFeed(type: LoadingFeedType.post),
+            child: const AppLoadingFeed(type: LoadingFeedType.thread),
           );
         },
       ),

@@ -35,7 +35,7 @@ class ChatTab extends StatelessWidget {
                   mainCount: 21,
                   contentCounts: {
                     'chat': 8,
-                    'post': 6,
+                    'thread': 6,
                     'article': 4,
                   },
                   onNavigateToCommunity: (community) {
@@ -59,14 +59,14 @@ class ChatTab extends StatelessWidget {
                   onResolveEvent: (nevent) async {
                     // Simulate network delay
                     await Future.delayed(const Duration(seconds: 1));
-                    final post = await PartialNote(
-                      'Test post content',
+                    final thread = await PartialNote(
+                      'Test thread content',
                       createdAt: DateTime.now(),
                     ).dummySign();
                     await ref
                         .read(storageNotifierProvider.notifier)
-                        .save({post});
-                    return (model: post, onTap: null);
+                        .save({thread});
+                    return (model: thread, onTap: null);
                   },
                   onResolveProfile: (npub) async {
                     await Future.delayed(const Duration(seconds: 1));
