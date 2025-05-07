@@ -43,7 +43,7 @@ class SettingsScreen extends ConsumerWidget {
       },
       onViewProfile: (profile) =>
           context.push('/profile/${profile.npub}', extra: profile),
-      onAddProfile: () => context.push('/settings/get-started'),
+      onAddProfile: () => context.push('/start'),
       onHomeTap: () => context.pop(),
       onHistoryTap: () => context.push('/settings/history'),
       historyDescription: 'Last activity 12m ago',

@@ -1,24 +1,16 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/screens/settings_screen.dart';
-import 'package:zapchat/src/modals/preferences_modal.dart';
 
-List<GoRoute> get settingsRoutes => [
+List<GoRoute> get startRoutes => [
       GoRoute(
-        path: '/settings',
-        pageBuilder: (context, state) {
-          return AppSlideInScreen(
-            child: const SettingsScreen(),
-          );
-        },
-      ),
-      GoRoute(
-        path: '/settings/add-profile',
+        path: '/start',
         pageBuilder: (context, state) {
           return AppSlideInModal(
-            child: AppAddProfileModal(
+            child: AppStartModal(
+              logoImageUrl: 'assets/images/Zapchat-Blurple-Transparent.png',
+              title: 'Welcome to Zapchat',
               onStart: (profileName) {
-                context.replace('/settings/spin-up-key', extra: profileName);
+                context.replace('/start/spin-up-key', extra: profileName);
               },
               onAlreadyHaveKey: () {
                 // Handle already have key case
@@ -28,14 +20,14 @@ List<GoRoute> get settingsRoutes => [
         },
       ),
       GoRoute(
-        path: '/settings/spin-up-key',
+        path: '/start/spin-up-key',
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
           return AppSlideInModal(
             child: AppSpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
-                context.replace('/settings/your-key', extra: {
+                context.push('/start/your-key', extra: {
                   'secretKey': secretKey,
                   'profileName': profileName,
                 });
@@ -45,10 +37,20 @@ List<GoRoute> get settingsRoutes => [
         },
       ),
       GoRoute(
-        path: '/settings/appearance',
+        path: '/start/your-key',
         pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
           return AppSlideInModal(
-            child: const PreferencesModal(),
+            child: AppYourKeyModal(
+              secretKey: extra['secretKey'] as String,
+              profileName: extra['profileName'] as String,
+              onUseThisKey: () {
+                context.replace('/start/spin-up-key');
+              },
+              onUSpinAgain: () {
+                context.replace('/start/spin-up-key');
+              },
+            ),
           );
         },
       ),

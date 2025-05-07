@@ -114,7 +114,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     label: 'Article',
                     icon: AppEmojiContentType(
                       contentType: getModelContentType(widget.article),
-                      size: 20,
+                      size: 24,
                     ),
                     content: AppLongTextRenderer(
                       language: "ndown",
@@ -128,7 +128,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                   ),
                   TabData(
                     label: 'Replies',
-                    icon: AppIcon.s20(
+                    icon: AppIcon.s24(
                       theme.icons.characters.reply,
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,
@@ -139,7 +139,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                   ),
                   TabData(
                     label: 'Shares',
-                    icon: AppIcon.s20(
+                    icon: AppIcon.s24(
                       theme.icons.characters.share,
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,
@@ -148,7 +148,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                   ),
                   TabData(
                     label: 'Labels',
-                    icon: AppIcon.s20(
+                    icon: AppIcon.s24(
                       theme.icons.characters.label,
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,
@@ -157,7 +157,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                   ),
                   TabData(
                     label: 'Details',
-                    icon: AppIcon.s20(
+                    icon: AppIcon.s24(
                       theme.icons.characters.details,
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,

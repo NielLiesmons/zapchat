@@ -138,7 +138,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.fixthephoto.com%2Fblog%2Fimages%2Fgallery%2Fnews_preview_mob_image__preview_404.jpg',
     ).signWith(signer,
         withPubkey:
-            '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+            '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
     dummyProfiles.addAll([
       niel,

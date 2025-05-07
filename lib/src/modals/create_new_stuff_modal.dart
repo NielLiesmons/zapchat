@@ -25,7 +25,7 @@ class CreateNewStuffModal extends ConsumerWidget {
                   top: AppGapSize.s20,
                   bottom: AppGapSize.s14,
                 ),
-                onTap: () {},
+                onTap: () => context.replace('/create/community'),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
