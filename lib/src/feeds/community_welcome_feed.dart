@@ -2,8 +2,9 @@ import 'dart:ui';
 
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AppCommunityWelcomeFeed extends StatelessWidget {
+class AppCommunityWelcomeFeed extends ConsumerWidget {
   final Community community;
 
   final VoidCallback onProfileTap;
@@ -15,8 +16,15 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = AppTheme.of(context);
+    final state = ref.watch(query<Profile>());
+
+    if (state case StorageLoading()) {
+      return const AppLoadingFeed();
+    }
+
+    final profiles = state.models.cast<Profile>();
 
     return AppScope(
       isInsideScope: true,
@@ -28,15 +36,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
             AppCommunityWelcomeHeader(
               community: community,
               onProfileTap: onProfileTap,
-              profileImageUrls: [
-                'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-                'https://npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg.blossom.band/3d84787d7284c879429eb0c8e6dcae0bf94cc50456d4046adf33cf040f8f5504.jpg',
-                'https://m.primal.net/Mihk.jpg',
-                'https://i.nostr.build/MGAFjgFvpIoFjZ09.jpg',
-                'https://files.sovbit.host/media/0689df5847a8d3376892da29622d7c0fdc1ef1958f4bc4471d90966aa1eca9f2/cfba34d66cd67339aca14389b367c02f36fec87c325ab0415143ed8db45c2c74.webp',
-                'https://i.nostr.build/MVIJ6OOFSUzzjVEc.jpg',
-                'https://m.primal.net/HibA.png',
-              ],
+              profiles: profiles,
               emojiImageUrls: [
                 'https://cdn.satellite.earth/f388f24d87d9d96076a53773c347a79767402d758edd3b2ac21da51db5ce6e73.png',
                 'https://cdn.satellite.earth/503809a3c13a45b79506034e767dc693cc87566cf06263be0e28a5e15f3f8711.png',

@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class ChatTab extends StatelessWidget {
-  const ChatTab({super.key});
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
 
   TabData tabData(BuildContext context) {
     final theme = AppTheme.of(context);

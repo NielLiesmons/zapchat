@@ -73,6 +73,8 @@ class CreateNewStuffModal extends ConsumerWidget {
 
   List<Widget> _buildContentTypeRows() {
     final contentTypes = [
+      'mail',
+      'task',
       'article',
       'thread',
       'app',
@@ -84,7 +86,7 @@ class CreateNewStuffModal extends ConsumerWidget {
       'album',
       'repo',
       'book',
-      'task',
+      'job',
     ];
 
     final rows = <Widget>[];

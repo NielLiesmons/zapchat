@@ -172,7 +172,9 @@ class CommunityInfoModal extends ConsumerWidget {
                             horizontal: AppGapSize.s16,
                             vertical: AppGapSize.s12),
                         child: Row(children: [
-                          AppProfilePic.s32("fghj"),
+                          AppProfilePic.fromUrl("fghj",
+                              size: AppProfilePicSize
+                                  .s32), //TODO: get actual active members
                           const AppGap.s12(),
                           AppText.med14("Profile Name"),
                           const AppGap.s12(),

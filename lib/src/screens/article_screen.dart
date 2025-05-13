@@ -52,7 +52,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
         topBarContent: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppProfilePic.s40(widget.article.author.value?.pictureUrl ?? ''),
+            AppProfilePic.s40(widget.article.author.value),
             const AppGap.s12(),
             Expanded(
               child: Column(

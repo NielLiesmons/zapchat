@@ -45,7 +45,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       noTopGap: true,
       topBarContent: Row(
         children: [
-          AppProfilePic.s38(widget.profile.pictureUrl ?? ''),
+          AppProfilePic.s38(widget.profile),
           const AppGap.s10(),
           AppText.reg14(widget.profile.name ?? formatNpub(widget.profile.npub)),
         ],

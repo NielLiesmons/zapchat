@@ -29,7 +29,7 @@ class ThreadsTab extends StatelessWidget {
                   onTap: (event) =>
                       context.push('/thread/${event.id}', extra: event),
                   onReply: (event) =>
-                      context.push('/reply/${event.id}', extra: event),
+                      context.push('/reply-to/${event.id}', extra: event),
                   onActions: (event) =>
                       context.push('/actions/${event.id}', extra: event),
                   onReactionTap: (reaction) {},

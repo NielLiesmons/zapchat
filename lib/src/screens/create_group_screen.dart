@@ -113,7 +113,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                                 inactiveColor: theme.colors.white8,
                                 onTap: () => _toggleProfileSelection(profile),
                                 children: [
-                                  AppProfilePic.s18(profile.pictureUrl ?? ''),
+                                  AppProfilePic.s18(profile),
                                   const AppGap.s6(),
                                   ConstrainedBox(
                                     constraints: const BoxConstraints(
@@ -162,7 +162,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                   children: [
                     Row(
                       children: [
-                        AppProfilePic.s56(profile.pictureUrl ?? ''),
+                        AppProfilePic.s56(profile),
                         const AppGap.s12(),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

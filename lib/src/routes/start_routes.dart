@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zapchat/src/modals/start_add_existing_key_modal.dart';
 
 List<GoRoute> get startRoutes => [
       GoRoute(
@@ -8,12 +9,13 @@ List<GoRoute> get startRoutes => [
           return AppSlideInModal(
             child: AppStartModal(
               logoImageUrl: 'assets/images/Zapchat-Blurple-Transparent.png',
-              title: 'Welcome to Zapchat',
+              title: 'Zapchat',
+              description: "Chat & Other Stuff",
               onStart: (profileName) {
                 context.replace('/start/spin-up-key', extra: profileName);
               },
               onAlreadyHaveKey: () {
-                // Handle already have key case
+                context.replace('/start/existing-profile');
               },
             ),
           );
@@ -48,9 +50,17 @@ List<GoRoute> get startRoutes => [
                 context.replace('/start/spin-up-key');
               },
               onUSpinAgain: () {
-                context.replace('/start/spin-up-key');
+                context.pop();
               },
             ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/start/existing-profile',
+        pageBuilder: (context, state) {
+          return AppSlideInModal(
+            child: AddExistingKeyModal(),
           );
         },
       ),

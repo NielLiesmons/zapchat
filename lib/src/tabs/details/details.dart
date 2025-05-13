@@ -150,13 +150,8 @@ class _DetailsTabState extends State<DetailsTab>
                                   width: theme.sizes.s8,
                                   decoration: BoxDecoration(
                                     color: Color(
-                                      int.parse(
-                                            profileToColor(
-                                                    widget.model.author.value!)
-                                                .substring(1),
-                                            radix: 16,
-                                          ) +
-                                          0xFF000000,
+                                      profileToColor(
+                                          widget.model.author.value!),
                                     ),
                                     borderRadius: BorderRadius.circular(100),
                                     border: Border.all(

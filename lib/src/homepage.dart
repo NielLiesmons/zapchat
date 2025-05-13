@@ -10,6 +10,8 @@ import 'tabs/home/threads.dart';
 import 'tabs/home/repos.dart';
 import 'tabs/home/videos.dart';
 import 'tabs/home/wikis.dart';
+import 'tabs/home/mail.dart';
+import 'tabs/home/tasks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -26,7 +28,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 9);
+    _tabController = AppTabController(length: 11);
     _tabController.addListener(() {
       setState(() {});
     });
@@ -75,7 +77,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       children: [
                         if (AppPlatformUtils.isMobile)
                           AppProfilePic.s48(
-                            currentProfile.pictureUrl ?? ' ',
+                            currentProfile,
                             onTap: () => context.push('/settings'),
                           ),
                         if (AppPlatformUtils.isMobile) const AppGap.s12(),
@@ -113,7 +115,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const AppGap.s16(),
                   AppTabView(
                     tabs: [
-                      const ChatTab().tabData(context),
+                      const HomeTab().tabData(context),
+                      const MailTab().tabData(context),
+                      const TasksTab().tabData(context),
                       const ThreadsTab().tabData(context),
                       const AppsTab().tabData(context),
                       const WikisTab().tabData(context),

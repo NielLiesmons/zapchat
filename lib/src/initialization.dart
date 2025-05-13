@@ -16,6 +16,9 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     // Register the Book model with kind 1055
     Model.register(kind: 1055, constructor: Book.fromMap);
     Model.register(kind: 10456, constructor: Group.fromMap);
+    Model.register(kind: 145, constructor: Mail.fromMap);
+    Model.register(kind: 35000, constructor: Task.fromMap);
+    Model.register(kind: 30617, constructor: Repository.fromMap);
 
     print('Models initialized with Book model registered');
 
@@ -26,12 +29,23 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyCommunities = <Community>[];
     final dummyGroups = <Group>[];
     final dummyBooks = <Book>[];
+    final dummyMails = <Mail>[];
+    final dummyTasks = <Task>[];
 
     print('Creating signer...');
     final signer = DummySigner(ref);
     print('Signer created');
 
     print('Creating profiles...');
+    final jane = await PartialProfile(
+      name: 'Jane C.',
+      pictureUrl:
+          'https://cdn.satellite.earth/4b544d33c594e132b8ee1d278665632a4a3abfc30d249afb733b19fe1806522a.png',
+      banner:
+          'https://cdn.satellite.earth/4b544d33c594e132b8ee1d278665632a4a3abfc30d249afb733b19fe1806522a.png',
+    ).signWith(signer,
+        withPubkey:
+            'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be');
 
     final niel = await PartialProfile(
       name: 'Niel Liesmons',
@@ -140,7 +154,16 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         withPubkey:
             '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
+    final zapcloud = await PartialProfile(
+      name: 'Zapcloud',
+      pictureUrl:
+          'https://cdn.satellite.earth/8225a8244d1d65157adb58b1f7d16424cde1ea3f1b018a933d777ecec0959899.png',
+    ).signWith(signer,
+        withPubkey:
+            '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+
     dummyProfiles.addAll([
+      jane,
       niel,
       zapchat,
       proof,
@@ -152,6 +175,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       metabolism,
       hzrd149,
       thegang,
+      zapcloud,
     ]);
 
     // Save profiles first and wait for them to be indexed
@@ -183,32 +207,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       print('Stack trace: $stackTrace');
       rethrow;
     }
-
-    // Wait a bit to ensure profiles are indexed
-    await Future.delayed(const Duration(milliseconds: 100));
-
-    dummyNotes.addAll([
-      await PartialNote(
-        'A new study on swipe actions shows that it cleans up interfaces like nothing else nostr:nevent1blablabla',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      ).signWith(signer, withPubkey: niel.pubkey),
-      await PartialNote(
-        'I love Zaplab',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
-      ).signWith(signer, withPubkey: franzap.pubkey),
-      await PartialNote(
-        'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      ).signWith(signer, withPubkey: verbiricha.pubkey),
-      await PartialNote(
-        'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
-      ).signWith(signer, withPubkey: zapchat.pubkey),
-      await PartialNote(
-        'Test Poast',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
-      ).signWith(signer, withPubkey: zapchat.pubkey),
-    ]);
 
     // Create community after profiles are saved and indexed
     final zapchatCommunity = await PartialCommunity(
@@ -375,6 +373,29 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       theGangGroup,
     ]);
 
+    dummyNotes.addAll([
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else nostr:nevent1blablabla',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer, withPubkey: niel.pubkey),
+      await PartialNote(
+        'I love Zaplab',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+      ).signWith(signer, withPubkey: franzap.pubkey),
+      await PartialNote(
+        'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      ).signWith(signer, withPubkey: verbiricha.pubkey),
+      await PartialNote(
+        'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+      await PartialNote(
+        'Test Poast',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+      ).signWith(signer, withPubkey: zapchat.pubkey),
+    ]);
+
     // Chat messages
     dummyChatMessages.addAll([
       await PartialChatMessage(
@@ -382,6 +403,11 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: franzap.pubkey),
+      await PartialChatMessage(
+        'nostr:nevent1blablabla Yes! Let me check.',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: zapchatCommunity,
+      ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
         '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
                       https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
@@ -415,10 +441,15 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
-        'Here\'s some more on that thing I said: nostr:nevent1blablabla',
+        'This is a test message with a link: https://zapchat.com',
         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: niel.pubkey),
+      ).signWith(signer, withPubkey: hzrd149.pubkey),
+      await PartialChatMessage(
+        'This is a test message with a some ~~strike-through~~ text',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: zapchatCommunity,
+      ).signWith(signer, withPubkey: cypherchads.pubkey),
     ]);
 
     dummyArticles.addAll([
@@ -465,6 +496,8 @@ This way:
 * Communities are not tied to one relay and have a truly unique ID
 * Things are waaaaaay easier for relay operators/services to be compatible (relative to existing community proposals)
 * Running one relay per community works an order of magnitude better, but isn't a requirement
+
+**bold**
 
 # The Publishers
 What the Community enjoyers need to chat in one specific #communikey :
@@ -566,6 +599,51 @@ Then ncommunity = npub + relay hints, for communities
       )).signWith(signer, withPubkey: franzap.pubkey),
     ]);
 
+    dummyMails.addAll([
+      await PartialMail(
+        'Marriage Invitation',
+        'Chicos & Chicas, \nMe and nostr:npub1blablabla are getting married and would love for you to be there. \nPlease let me know if you can make it. \n\nBest regards, \n\n**Fran**',
+        recipientPubkeys: {
+          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be', // jane
+          '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', // zapchat
+          '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
+          'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2', // cypherchads
+          '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194', // franzap
+          '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195', // verbiricha
+          '9fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac196', // communikeys
+          'afa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac197', // nipsout
+          '1203456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', // metabolism
+          '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // hzrd149
+          '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // thegang
+          '266813e0cff10dfa324c6cba357b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
+        },
+      ).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialMail(
+        'Re: Job Listing - Branding & Corprate Identity for Zapcloud',
+        'Hey Zacloud, \nI think I might be a good fit for this job. \nI have a lot of experience in branding and corporate identity, in the Nostr space specifically. \n\nI think I would be a good fit for this job. \n\nHere\'s my [Portfolio](https://zapchat.com/portfolio) \n\nBest regards, \n\n**Niel**',
+        recipientPubkeys: {
+          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be', // jane
+          '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
+        },
+      )).signWith(signer, withPubkey: niel.pubkey),
+      await (PartialMail(
+        'Top-Up Time!',
+        'Hey Jane! \n# Reminder \nYour Zapcloud budget is running low. \n\n[Top Up Here](https://zapchat.com/top-up) to avoid service disruption. \n\nList test: \n- Item 1 \n- Item 2 \n- Item 3 \n\nBest regards, \n\n**Zapcloud**',
+        recipientPubkeys: {
+          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be'
+        },
+      )).signWith(signer, withPubkey: zapcloud.pubkey),
+    ]);
+
+    dummyTasks.addAll([
+      await (PartialTask(
+        'Task Title',
+        'Task Content',
+        slug: Utils.generateRandomHex64(),
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: niel.pubkey),
+    ]);
+
     // Save all data
     print('Saving data to storage...');
     await ref.read(storageNotifierProvider.notifier).save(Set.from([
@@ -576,6 +654,8 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyCommunities,
           ...dummyGroups,
           ...dummyBooks,
+          ...dummyMails,
+          ...dummyTasks,
         ]));
     print('Data saved successfully');
 

@@ -88,7 +88,7 @@ class CommunityChatFeed extends ConsumerWidget {
                   isOutgoing: group.first.author.value?.pubkey ==
                       currentProfile?.pubkey,
                   onReply: (event) =>
-                      context.push('/reply/${event.id}', extra: event),
+                      context.push('/reply-to/${event.id}', extra: event),
                   onActions: (event) =>
                       context.push('/actions/${event.id}', extra: event),
                   onReactionTap: (reaction) {},

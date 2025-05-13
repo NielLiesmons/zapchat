@@ -1,6 +1,7 @@
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zapchat/src/providers/user_profiles.dart';
 
 class Resolvers {
   final NostrEventResolver eventResolver;
@@ -39,26 +40,50 @@ final resolversProvider = Provider<Resolvers>((ref) {
   return Resolvers(
     eventResolver: (identifier) => eventCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
-      final state = ref.watch(query<Note>());
-      if (state is StorageState<Note> && state.models.isNotEmpty) {
+      final state = ref.watch(query<ChatMessage>());
+      if (state is StorageState<ChatMessage> && state.models.isNotEmpty) {
         return (model: state.models.first, onTap: null);
       }
       // Fallback to creating a new note if no articles are available
-      final thread = await PartialNote(
-        'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+      final message = await PartialChatMessage(
+        'This is a :emeoji: Nostr message. Just for testing, nothing special. \n\nIt\'s mainly to test the profile colors in chat widgets.',
         createdAt: DateTime.now(),
       ).signWith(DummySigner(ref));
-      await ref.read(storageNotifierProvider.notifier).save({thread});
-      return (model: thread, onTap: null);
+      await ref.read(storageNotifierProvider.notifier).save({message});
+      return (model: message, onTap: null);
     }),
     profileResolver: (identifier) =>
         profileCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
-      final profile = await PartialProfile(
-        name: 'Pip',
-        pictureUrl: 'https://m.primal.net/IfSZ.jpg',
-      ).signWith(DummySigner(ref));
-      return (profile: profile, onTap: null);
+      print('Resolving profile for identifier: $identifier');
+      final userProfilesState = ref.watch(userProfilesProvider);
+      print('User profiles state: $userProfilesState');
+      final profile = userProfilesState.value?.$2;
+      print('Current profile: $profile');
+
+      if (profile == null) {
+        print('Creating dummy profile for: $identifier');
+        // Create a dummy profile instead of throwing
+        final dummyProfile = Profile.fromMap({
+          'pubkey': identifier,
+          'content': '{}',
+          'created_at': DateTime.now().toSeconds(),
+        }, ref);
+        return (
+          profile: dummyProfile,
+          onTap: () {
+            // Dummy function - you can implement actual navigation later
+            print('Profile tapped: $identifier');
+          }
+        );
+      }
+      return (
+        profile: profile,
+        onTap: () {
+          // Dummy function - you can implement actual navigation later
+          print('Profile tapped: ${profile.name}');
+        }
+      );
     }),
     emojiResolver: (identifier) => emojiCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));

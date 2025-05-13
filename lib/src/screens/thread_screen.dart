@@ -45,7 +45,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(widget.thread.author.value?.pictureUrl ?? ''),
+          AppProfilePic.s40(widget.thread.author.value),
           const AppGap.s12(),
           Expanded(
             child: Column(

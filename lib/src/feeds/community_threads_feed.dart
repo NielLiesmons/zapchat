@@ -30,7 +30,7 @@ class CommunityThreadsFeed extends ConsumerWidget {
             thread: thread,
             onTap: (model) => context.push('/thread/${model.id}', extra: model),
             onReply: (model) =>
-                context.push('/reply/${model.id}', extra: model),
+                context.push('/reply-to/${model.id}', extra: model),
             onActions: (model) =>
                 context.push('/actions/${model.id}', extra: model),
             onReactionTap: (reaction) {},
