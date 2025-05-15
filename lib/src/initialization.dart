@@ -19,6 +19,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     Model.register(kind: 145, constructor: Mail.fromMap);
     Model.register(kind: 35000, constructor: Task.fromMap);
     Model.register(kind: 30617, constructor: Repository.fromMap);
+    Model.register(kind: 32767, constructor: Job.fromMap);
 
     print('Models initialized with Book model registered');
 
@@ -31,6 +32,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyBooks = <Book>[];
     final dummyMails = <Mail>[];
     final dummyTasks = <Task>[];
+    final dummyJobs = <Job>[];
 
     print('Creating signer...');
     final signer = DummySigner(ref);
@@ -620,7 +622,7 @@ Then ncommunity = npub + relay hints, for communities
       ).signWith(signer, withPubkey: franzap.pubkey),
       await (PartialMail(
         'Re: Job Listing - Branding & Corprate Identity for Zapcloud',
-        'Hey Zacloud, \nI think I might be a good fit for this job. \nI have a lot of experience in branding and corporate identity, in the Nostr space specifically. \n\nI think I would be a good fit for this job. \n\nHere\'s my [Portfolio](https://zapchat.com/portfolio) \n\nBest regards, \n\n**Niel**',
+        'Hey Zapcloud Team, \n\nI think I might be a good fit for this job. \n\nI have a lot of experience in branding and corporate identity, in the Nostr space specifically. \n\nHere\'s my [Portfolio](https://zapchat.com/portfolio) \n\nBest regards, \n\n**Niel**',
         recipientPubkeys: {
           'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be', // jane
           '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
@@ -628,7 +630,7 @@ Then ncommunity = npub + relay hints, for communities
       )).signWith(signer, withPubkey: niel.pubkey),
       await (PartialMail(
         'Top-Up Time!',
-        'Hey Jane! \n# Reminder \nYour Zapcloud budget is running low. \n\n[Top Up Here](https://zapchat.com/top-up) to avoid service disruption. \n\nList test: \n- Item 1 \n- Item 2 \n- Item 3 \n\nBest regards, \n\n**Zapcloud**',
+        'Hey Jane! \n\n## Reminder \nYour Zapcloud budget is running low. \n\n[Top Up Here](https://zapchat.com/top-up) to avoid service disruption. \n\nList test: \n- Item 1 \n- Item 2 \n- Item 3 \n\nBest regards, \n\n**Zapcloud**',
         recipientPubkeys: {
           'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be'
         },
@@ -639,9 +641,68 @@ Then ncommunity = npub + relay hints, for communities
       await (PartialTask(
         'Task Title',
         'Task Content',
+        status: 'open',
+        slug: Utils.generateRandomHex64(),
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: franzap.pubkey),
+      await (PartialTask(
+        'Task Title',
+        'Task Content',
+        status: 'inProgress',
+        slug: Utils.generateRandomHex64(),
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: zapcloud.pubkey),
+      await (PartialTask(
+        'Task Title',
+        'Task Content',
+        status: 'inReview',
         slug: Utils.generateRandomHex64(),
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
       )).signWith(signer, withPubkey: niel.pubkey),
+      await (PartialTask(
+        'Task Title',
+        'Task Content',
+        status: 'closed',
+        slug: Utils.generateRandomHex64(),
+        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+      )).signWith(signer, withPubkey: zapchat.pubkey),
+    ]);
+
+    dummyJobs.addAll([
+      await (PartialJob(
+        'Logo & Branding Design',
+        '''Zapcloud Brand Design \n## Project Overview\nZapcloud is an **all-in-one** hosting solution for Nostr and we need branding and bla bla bla.''',
+        labels: {
+          'Branding',
+          'Design',
+          'Logo',
+          'Marketing',
+        },
+        location: 'Remote',
+        employment: 'Task Based',
+      )).signWith(signer, withPubkey: zapcloud.pubkey),
+      await (PartialJob(
+        'Community Manager',
+        '''Zapchat Community Manager \n## Project Overview\nZapchat is a Nostr community for the Zapchat project and we need a community manager to help us grow the community.''',
+        labels: {
+          'Community',
+          'Moderation',
+          'Content',
+        },
+        location: 'Remote',
+        employment: 'Full-Time',
+      )).signWith(signer, withPubkey: metabolism.pubkey),
+      await (PartialJob(
+        'Food Forest Design',
+        '''Food Forest Design \n## Project Overview\nFood Forest is a permaculture project in Winsconsin, USA and we need a design to help us grow plants and trees.''',
+        labels: {
+          'Permaculture',
+          'Gardening',
+          'Design',
+        },
+        location: 'Winsconsin, USA',
+        employment: 'Task Based',
+      )).signWith(signer, withPubkey: jane.pubkey),
     ]);
 
     // Save all data
@@ -656,6 +717,7 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyBooks,
           ...dummyMails,
           ...dummyTasks,
+          ...dummyJobs,
         ]));
     print('Data saved successfully');
 

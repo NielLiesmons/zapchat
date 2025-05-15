@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:go_router/go_router.dart';
 
 class AddExistingKeyModal extends StatelessWidget {
   const AddExistingKeyModal({super.key});
@@ -25,7 +26,7 @@ class AddExistingKeyModal extends StatelessWidget {
                 ),
               ),
               AppText.reg14(
-                "Checking for Nostr Signers...",
+                "Checking for Nostr Signer Apps...",
                 color: theme.colors.white33,
               ),
             ],
@@ -36,7 +37,9 @@ class AddExistingKeyModal extends StatelessWidget {
           children: [
             Expanded(
               child: AppPanelButton(
-                onTap: () {},
+                onTap: () {
+                  context.replace('/start/paste-key');
+                },
                 isLight: true,
                 child: Column(
                   children: [

@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zapchat/src/modals/start_add_existing_key_modal.dart';
+import 'package:zapchat/src/modals/start_paste_key._modal.dart';
 
 List<GoRoute> get startRoutes => [
       GoRoute(
@@ -61,6 +62,18 @@ List<GoRoute> get startRoutes => [
         pageBuilder: (context, state) {
           return AppSlideInModal(
             child: AddExistingKeyModal(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/start/paste-key',
+        pageBuilder: (context, state) {
+          return AppSlideInModal(
+            child: AppPasteKeyModal(
+              onUseThisKey: () {
+                context.pop(); // TODO: Add logic to use the key
+              },
+            ),
           );
         },
       ),

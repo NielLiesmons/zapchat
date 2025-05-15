@@ -12,6 +12,7 @@ import 'tabs/home/videos.dart';
 import 'tabs/home/wikis.dart';
 import 'tabs/home/mail.dart';
 import 'tabs/home/tasks.dart';
+import 'tabs/home/jobs.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -28,7 +29,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 11);
+    _tabController = AppTabController(length: 12);
     _tabController.addListener(() {
       setState(() {});
     });
@@ -118,13 +119,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                       const HomeTab().tabData(context),
                       const MailTab().tabData(context),
                       const TasksTab().tabData(context),
-                      const ThreadsTab().tabData(context),
+                      const JobsTab().tabData(context),
+                      const ReposTab().tabData(context),
                       const AppsTab().tabData(context),
                       const WikisTab().tabData(context),
-                      const ArticlesTab().tabData(context),
                       const BooksTab().tabData(context),
+                      const ArticlesTab().tabData(context),
+                      const ThreadsTab().tabData(context),
                       const ImagesTab().tabData(context),
-                      const ReposTab().tabData(context),
                       const VideosTab().tabData(context),
                     ],
                     controller: _tabController,
@@ -152,24 +154,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 onAddTap: () => context.push('/create'),
               )
             : const SizedBox.shrink();
-      case 1: // Threads tab
-        return AppBottomBarContentFeed();
-      case 2: // Apps tab
-        return AppBottomBarContentFeed();
-      case 3: // Wikis tab
-        return AppBottomBarContentFeed();
-      case 4: // Articles tab
-        return AppBottomBarContentFeed();
-      case 5: // Books tab
-        return AppBottomBarContentFeed();
-      case 6: // Images tab
-        return AppBottomBarContentFeed();
-      case 7: // Repos tab
-        return AppBottomBarContentFeed();
-      case 8: // Videos tab
-        return AppBottomBarContentFeed();
+      // TODO: Match bottom bar with according tab
       default:
-        return const SizedBox.shrink();
+        return AppBottomBarContentFeed();
     }
   }
 }

@@ -33,14 +33,17 @@ dependencies:
     # git:
     #   url: https://github.com/NielLiesmons/zaplab_design.git
     #   ref: d53bd119b4b0bf8712343d8425249efc230444f2
-  flutter:
-    sdk: flutter
-  flutter_svg: ^2.0.14
-  audio_waveforms: ^1.3.0
   models:
     git:
       url: https://github.com/purplebase/models.git
       ref: "6d096b1"
+  # amber_signer:
+  #   git:
+  #     url: https://github.com/purplebase/amber_signer.git
+  #     ref: "6cbc113"
+  flutter:
+    sdk: flutter
+  audio_waveforms: ^1.3.0
 
   go_router: ^14.6.2
   riverpod: ^2.6.1
