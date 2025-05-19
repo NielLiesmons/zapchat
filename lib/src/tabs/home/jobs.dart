@@ -1,16 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import '../../providers/resolvers.dart';
 
 class JobsTab extends StatelessWidget {
   const JobsTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Jobs',
       icon: const AppEmojiContentType(contentType: 'job'),
@@ -29,12 +25,6 @@ class JobsTab extends StatelessWidget {
                         job: job,
                         onTap: (model) => context.push('/job/${model.id}'),
                         isUnread: true,
-                        onResolveEvent:
-                            ref.read(resolversProvider).eventResolver,
-                        onResolveProfile:
-                            ref.read(resolversProvider).profileResolver,
-                        onResolveEmoji:
-                            ref.read(resolversProvider).emojiResolver,
                       ),
                       const AppGap.s12(),
                     ],

@@ -2,6 +2,8 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zapchat/src/screens/settings_screen.dart';
 import 'package:zapchat/src/modals/preferences_modal.dart';
+import 'package:zapchat/src/modals/start_add_existing_key_modal.dart';
+import 'package:zapchat/src/modals/settings_history_modal.dart';
 
 List<GoRoute> get settingsRoutes => [
       GoRoute(
@@ -21,7 +23,7 @@ List<GoRoute> get settingsRoutes => [
                 context.replace('/settings/spin-up-key', extra: profileName);
               },
               onAlreadyHaveKey: () {
-                // Handle already have key case
+                context.replace('/settings/existing-profile');
               },
             ),
           );
@@ -41,6 +43,22 @@ List<GoRoute> get settingsRoutes => [
                 });
               },
             ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/settings/existing-profile',
+        pageBuilder: (context, state) {
+          return AppSlideInModal(
+            child: StartAddExistingKeyModal(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/settings/history',
+        pageBuilder: (context, state) {
+          return AppSlideInModal(
+            child: const SettingsHistoryModal(),
           );
         },
       ),

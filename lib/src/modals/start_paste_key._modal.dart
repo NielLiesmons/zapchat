@@ -57,7 +57,7 @@ class _AppPasteKeyModalState extends State<AppPasteKeyModal> {
             AppInputTextField(
               placeholder: 'Nsec, Ncryptsec, 12 words or 12 emoji',
               title: "Your Key",
-              // warning: "This is not a valid secret key", // TODO: Add warning if the nsec is not valid
+              // warning: "This is not a valid secret key",  TODO: Add warning if the nsec is not valid
               controller: _controller,
               focusNode: _focusNode,
               singleLine: true,

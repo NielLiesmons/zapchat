@@ -2,9 +2,11 @@ import 'package:zapchat/src/initialization.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:models/models.dart';
 import 'src/router.dart';
 import 'src/providers/theme_settings.dart';
-import 'src/providers/user_profiles.dart';
+import 'src/providers/history.dart';
+import 'src/widgets/history/history_content.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -106,24 +108,8 @@ class _AppWithTheme extends ConsumerWidget {
           onProfilesTap: () {
             goRouter.push('/settings');
           },
-          currentProfile: ref.watch(userProfilesProvider).when(
-                data: (data) => data.$2,
-                loading: () => null,
-                error: (_, __) => null,
-              ),
-          historyMenu: Column(
-            children: [
-              for (var i = 0; i < 10; i++)
-                Column(
-                  children: [
-                    AppPanel(
-                      child: AppText.reg12('History Item $i'),
-                    ),
-                    const AppGap.s8(),
-                  ],
-                ),
-            ],
-          ),
+          currentProfile: ref.watch(Profile.signedInProfileProvider),
+          historyMenu: const HistoryContent(),
         );
       },
       loading: () => AppBase(

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
-import 'package:zapchat/src/providers/user_profiles.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zapchat/src/providers/signer.dart';
 
 final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
   try {
@@ -21,8 +21,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     Model.register(kind: 30617, constructor: Repository.fromMap);
     Model.register(kind: 32767, constructor: Job.fromMap);
 
-    print('Models initialized with Book model registered');
-
     final dummyProfiles = <Profile>[];
     final dummyNotes = <Note>[];
     final dummyChatMessages = <ChatMessage>[];
@@ -34,11 +32,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyTasks = <Task>[];
     final dummyJobs = <Job>[];
 
-    print('Creating signer...');
     final signer = DummySigner(ref);
-    print('Signer created');
 
-    print('Creating profiles...');
     final jane = await PartialProfile(
       name: 'Jane C.',
       pictureUrl:
@@ -58,8 +53,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-    print(
-        'Niel profile created - name: ${niel.name}, pubkey: ${niel.pubkey}, pictureUrl: ${niel.pictureUrl}');
     final zapchat = await PartialProfile(
       name: 'Zapchat',
       pictureUrl:
@@ -69,8 +62,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
-    print(
-        'Zapchat profile created - name: ${zapchat.name}, pubkey: ${zapchat.pubkey}, pictureUrl: ${zapchat.pictureUrl}');
 
     final proof = await PartialProfile(
       name: 'Proof Of Reign',
@@ -79,8 +70,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             'F954B79600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
-    print(
-        'Zapstore profile created - name: ${proof.name}, pubkey: ${proof.pubkey}, pictureUrl: ${proof.pictureUrl}');
 
     final cypherchads = await PartialProfile(
       name: 'Cypher Chads',
@@ -89,8 +78,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
-    print(
-        'Cypherchads profile created - name: ${cypherchads.name}, pubkey: ${cypherchads.pubkey}, pictureUrl: ${cypherchads.pictureUrl}');
 
     final franzap = await PartialProfile(
       name: 'franzap',
@@ -99,8 +86,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
-    print(
-        'Franzap profile created - name: ${franzap.name}, pubkey: ${franzap.pubkey}, pictureUrl: ${franzap.pictureUrl}');
 
     final verbiricha = await PartialProfile(
       name: 'verbiricha',
@@ -109,8 +94,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).signWith(signer,
         withPubkey:
             '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195');
-    print(
-        'Verbiricha profile created - name: ${verbiricha.name}, pubkey: ${verbiricha.pubkey}, pictureUrl: ${verbiricha.pictureUrl}');
 
     final communikeys = await PartialProfile(
       name: 'Communikeys',
@@ -180,33 +163,20 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       zapcloud,
     ]);
 
-    // Save profiles first and wait for them to be indexed
-    print('Saving profiles to storage...');
-    print(
-        'Profiles to save: ${dummyProfiles.map((p) => '${p.name} (${p.pubkey})').join(', ')}');
-    await ref
-        .read(storageNotifierProvider.notifier)
-        .save(Set.from(dummyProfiles));
-    print('Profiles saved successfully');
-
     // Set initial user profiles and current profile
-    print('Setting initial user profiles and current profile...');
     try {
-      // Add profiles to userProfilesProvider
-      for (final profile in dummyProfiles) {
-        await ref.read(userProfilesProvider.notifier).addProfile(profile);
-      }
+      // Add profiles to storage
+      await ref
+          .read(storageNotifierProvider.notifier)
+          .save(Set.from(dummyProfiles));
 
-      // Set current profile
+      // Set current profile and add to signed in profiles
       if (dummyProfiles.isNotEmpty) {
-        await ref
-            .read(userProfilesProvider.notifier)
-            .setCurrentProfile(dummyProfiles.first);
+        final profile = dummyProfiles.first;
+        profile.setAsActive();
+        signer.addSignedInPubkey(profile.pubkey);
       }
-      print('Initial user profiles and current profile set');
     } catch (e, stackTrace) {
-      print('Error setting initial profiles: $e');
-      print('Stack trace: $stackTrace');
       rethrow;
     }
 
@@ -229,6 +199,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         CommunityContentSection(
           content: 'Articles',
           kinds: {30023},
+        ),
+        CommunityContentSection(
+          content: 'Jobs',
+          kinds: {32767},
         ),
         CommunityContentSection(
           content: 'Apps',
@@ -706,7 +680,6 @@ Then ncommunity = npub + relay hints, for communities
     ]);
 
     // Save all data
-    print('Saving data to storage...');
     await ref.read(storageNotifierProvider.notifier).save(Set.from([
           ...dummyProfiles,
           ...dummyNotes,
@@ -719,7 +692,6 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyTasks,
           ...dummyJobs,
         ]));
-    print('Data saved successfully');
 
     return true;
   } catch (e, stackTrace) {

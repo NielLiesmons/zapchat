@@ -2,8 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/resolvers.dart';
-import '../providers/user_profiles.dart';
 
 class CommunityArticlesFeed extends ConsumerWidget {
   final Community community;

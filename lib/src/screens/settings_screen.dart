@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/providers/user_profiles.dart';
+import 'package:models/models.dart';
 import 'package:zapchat/src/providers/theme_settings.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -9,20 +9,35 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userProfilesState = ref.watch(userProfilesProvider);
+    final signedInPubkeys = ref.watch(Profile.signedInPubkeysProvider);
+    final currentProfile = ref.watch(Profile.signedInProfileProvider);
     final themeState = ref.watch(themeSettingsProvider);
 
-    if (userProfilesState.isLoading) {
+    if (signedInPubkeys.isEmpty) {
       return const Center(
         child: AppLoadingDots(),
       );
     }
 
-    final (profiles, currentProfile) = userProfilesState.value!;
+    final state = ref.watch(query<Profile>(authors: signedInPubkeys));
+
+    if (state case StorageLoading()) {
+      return const Center(
+        child: AppLoadingDots(),
+      );
+    }
+
+    final profiles = state.models.cast<Profile>();
+
+    if (profiles.isEmpty) {
+      return const Center(
+        child: AppLoadingDots(),
+      );
+    }
 
     if (currentProfile == null && profiles.isNotEmpty) {
       // If no current profile but we have user profiles, set the first one
-      ref.read(userProfilesProvider.notifier).setCurrentProfile(profiles.first);
+      profiles.first.setAsActive();
     }
 
     if (currentProfile == null) {
@@ -39,11 +54,11 @@ class SettingsScreen extends ConsumerWidget {
       currentProfile: currentProfile,
       profiles: profiles,
       onSelect: (profile) {
-        ref.read(userProfilesProvider.notifier).setCurrentProfile(profile);
+        profile.setAsActive();
       },
       onViewProfile: (profile) =>
           context.push('/profile/${profile.npub}', extra: profile),
-      onAddProfile: () => context.push('/start'),
+      onAddProfile: () => context.push('/settings/add-profile'),
       onHomeTap: () => context.pop(),
       onHistoryTap: () => context.push('/settings/history'),
       historyDescription: 'Last activity 12m ago',

@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
+import '../providers/history.dart';
 import '../tabs/details/details.dart';
 
 class ThreadScreen extends ConsumerStatefulWidget {
@@ -35,11 +36,19 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
+    // Record in history
+    ref.read(historyProvider.notifier).addEntry(widget.thread);
+    final recentHistory = ref.watch(recentHistoryItemsProvider(
+        context, widget.thread.id)); // Get latest 3 history entries
+
+    // Get data
     final resolvers = ref.read(resolversProvider);
     final state = ref.watch(query<Community>());
     final communities = state.models.cast<Community>().toList();
 
     return AppScreen(
+      history: recentHistory,
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: false,
       topBarContent: Row(

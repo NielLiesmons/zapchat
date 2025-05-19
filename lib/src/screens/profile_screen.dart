@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
+import '../providers/history.dart';
 import '../feeds/profile_communities_feed.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -35,6 +36,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
+    // Record in history
+    ref.read(historyProvider.notifier).addEntry(widget.profile);
+
+    // Get data
     final resolvers = ref.read(resolversProvider);
     final state = ref.watch(query<Community>());
     final communities = state.models.cast<Community>().toList();

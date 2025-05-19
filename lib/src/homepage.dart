@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zapchat/src/providers/user_profiles.dart';
+import 'package:models/models.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'tabs/home/apps.dart';
 import 'tabs/home/articles.dart';
 import 'tabs/home/books.dart';
@@ -13,7 +14,6 @@ import 'tabs/home/wikis.dart';
 import 'tabs/home/mail.dart';
 import 'tabs/home/tasks.dart';
 import 'tabs/home/jobs.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -45,17 +45,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final userProfilesState = ref.watch(userProfilesProvider);
+    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
 
-    if (userProfilesState.isLoading) {
-      return const Center(
-        child: AppLoadingDots(),
-      );
-    }
-
-    final (_, currentProfile) = userProfilesState.value!;
-
-    if (currentProfile == null) {
+    if (signedInProfile == null) {
       return const Center(
         child: AppLoadingDots(),
       );
@@ -78,7 +70,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       children: [
                         if (AppPlatformUtils.isMobile)
                           AppProfilePic.s48(
-                            currentProfile,
+                            signedInProfile,
                             onTap: () => context.push('/settings'),
                           ),
                         if (AppPlatformUtils.isMobile) const AppGap.s12(),

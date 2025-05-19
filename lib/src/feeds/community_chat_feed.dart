@@ -3,7 +3,6 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/resolvers.dart';
-import '../providers/user_profiles.dart';
 
 class CommunityChatFeed extends ConsumerWidget {
   final Community community;
@@ -14,7 +13,6 @@ class CommunityChatFeed extends ConsumerWidget {
   });
 
   List<List<ChatMessage>> _groupMessages(List<ChatMessage> messages) {
-    print('Grouping ${messages.length} messages');
     final groups = <List<ChatMessage>>[];
     List<ChatMessage>? currentGroup;
     String? currentPubkey;
@@ -35,39 +33,30 @@ class CommunityChatFeed extends ConsumerWidget {
       lastMessageTime = message.createdAt;
     }
 
-    print('Created ${groups.length} message groups');
     return groups;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('Building CommunityChatFeed for community: ${community.name}');
-
     final resolvers = ref.read(resolversProvider);
-    print('Got resolvers');
 
     final state = ref.watch(query<ChatMessage>());
-    print('Query state: ${state.runtimeType}');
 
     if (state case StorageLoading()) {
-      print('Loading messages...');
       return const Center(child: AppLoadingFeed(type: LoadingFeedType.chat));
     }
 
     final messages = state.models;
-    print('Got ${messages.length} messages');
 
     if (messages.isEmpty) {
-      print('No messages found for community ${community.name}');
       return const Center(
         child: Text('No messages yet'),
       );
     }
 
     final messageGroups = _groupMessages(messages);
-    print('Built message groups');
 
-    final currentProfile = ref.watch(userProfilesProvider).value?.$2;
+    final currentProfile = ref.watch(Profile.signedInProfileProvider);
 
     return AppContainer(
       padding: const AppEdgeInsets.all(AppGapSize.s6),

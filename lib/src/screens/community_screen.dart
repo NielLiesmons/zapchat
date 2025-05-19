@@ -1,16 +1,17 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../feeds/community_welcome_feed.dart';
 import '../feeds/community_chat_feed.dart';
 import '../feeds/community_threads_feed.dart';
 import '../feeds/community_articles_feed.dart';
+import '../feeds/community_jobs_feed.dart';
 import '../feeds/community_books_feed.dart';
 import '../providers/resolvers.dart';
-import '../providers/user_profiles.dart';
+import '../providers/history.dart';
 
-class CommunityScreen extends ConsumerWidget {
+class CommunityScreen extends HookConsumerWidget {
   final Community community;
   final String? initialContentType;
 
@@ -22,17 +23,21 @@ class CommunityScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final (_, currentProfile) = ref.watch(userProfilesProvider).value!;
+    // history
+    ref.read(historyProvider.notifier).addEntry(community); // Record in history
+    final recentHistory = ref.watch(recentHistoryItemsProvider(
+        context, community.id)); // Get latest 3 history entries
+
+    // Resolvers
     final resolvers = ref.read(resolversProvider);
 
-    // Get available content types from the community
+    // Get data
+    final currentProfile = ref.watch(Profile.signedInProfileProvider);
+
     final contentTypes =
         <String, ({int count, Widget feed, Widget bottomBar})>{};
 
-    print('Community content sections: ${community.contentSections}');
-
     for (final section in community.contentSections) {
-      print('Processing section: ${section.content}');
       // Convert community content type to design system format
       final contentType = section.content;
 
@@ -64,10 +69,23 @@ class CommunityScreen extends ConsumerWidget {
           );
           break;
         case 'Threads':
-          print('Found Threads section');
           contentTypes['thread'] = (
             count: 6,
             feed: CommunityThreadsFeed(community: community),
+            bottomBar: const AppBottomBarContentFeed()
+          );
+          break;
+        case 'Tasks':
+          contentTypes['task'] = (
+            count: 0,
+            feed: AppLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const AppBottomBarContentFeed()
+          );
+          break;
+        case 'Jobs':
+          contentTypes['job'] = (
+            count: 0,
+            feed: CommunityJobsFeed(community: community),
             bottomBar: const AppBottomBarContentFeed()
           );
           break;
@@ -127,13 +145,7 @@ class CommunityScreen extends ConsumerWidget {
             bottomBar: const AppBottomBarContentFeed()
           );
           break;
-        case 'Tasks':
-          contentTypes['task'] = (
-            count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
-          );
-          break;
+
         default:
           // For unknown content types, use the original string
           contentTypes[section.content] = (
@@ -170,25 +182,21 @@ class CommunityScreen extends ConsumerWidget {
           '/community/${community.author.value?.npub}/info',
           extra: community),
       currentProfile: currentProfile!,
-      onNotificationsTap: () => context.push(
-          '/community/${community.author.value?.npub}/notifications',
-          extra: community),
-      mainCount: 21,
       contentTypes: contentTypes,
-      onHomeTap: () => context.pop(),
-      onActions: (event) => context.push('/actions/${event.id}', extra: event),
-      onReply: (event) {},
-      onReactionTap: (event) {},
-      onZapTap: (event) {},
-      onLinkTap: (url) {},
+      mainCount: contentTypes.values.first.count,
+      onHomeTap: () => context.push('/'),
+      onNotificationsTap: () {},
       onResolveEvent: resolvers.eventResolver,
       onResolveProfile: resolvers.profileResolver,
       onResolveEmoji: resolvers.emojiResolver,
-      onResolveHashtag: (identifier) async {
-        await Future.delayed(const Duration(seconds: 1));
-        return () {};
-      },
+      onResolveHashtag: resolvers.hashtagResolver,
+      onLinkTap: (url) {},
+      onActions: (model) {},
+      onReply: (model) {},
+      onReactionTap: (reaction) {},
+      onZapTap: (zap) {},
       initialTab: initialTab,
+      history: recentHistory,
     );
   }
 }

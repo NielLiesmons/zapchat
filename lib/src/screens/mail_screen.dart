@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
-import '../providers/user_profiles.dart';
+import '../providers/history.dart';
 
 class MailScreen extends ConsumerStatefulWidget {
   final Mail mail;
@@ -20,6 +20,11 @@ class _MailScreenState extends ConsumerState<MailScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
+    // Record in history
+    ref.read(historyProvider.notifier).addEntry(widget.mail);
+
+    // Get data
     final resolvers = ref.read(resolversProvider);
     final state = ref.watch(query<Profile>());
     final recipients = widget.mail.recipientPubkeys
@@ -124,7 +129,7 @@ class _MailScreenState extends ConsumerState<MailScreen> {
                   AppMail(
                     mail: widget.mail,
                     recipients: recipients,
-                    currentProfile: ref.watch(userProfilesProvider).value?.$2,
+                    currentProfile: ref.watch(Profile.signedInProfileProvider),
                     onSwipeLeft: (mail) {
                       print('swipe left');
                     },

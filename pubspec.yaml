@@ -37,10 +37,8 @@ dependencies:
     git:
       url: https://github.com/purplebase/models.git
       ref: "6d096b1"
-  # amber_signer:
-  #   git:
-  #     url: https://github.com/purplebase/amber_signer.git
-  #     ref: "6cbc113"
+  amber_signer:
+    path: ../amber_signer
   flutter:
     sdk: flutter
   audio_waveforms: ^1.3.0
@@ -49,7 +47,7 @@ dependencies:
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
   window_manager: ^0.4.3
-  riverpod_annotation: ^2.3.3
+  riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
   flutter_hooks: ^0.21.2
   hooks_riverpod: ^2.6.1
@@ -63,9 +61,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^3.0.1
   flutter_launcher_icons: ^0.13.1
-  riverpod_generator: ^2.3.9
+  riverpod_generator: ^2.3.11
   build_runner: ^2.4.8
 
 # For information on the generic Dart part of this file, see the

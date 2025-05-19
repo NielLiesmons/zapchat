@@ -1,7 +1,6 @@
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/providers/user_profiles.dart';
 
 class Resolvers {
   final NostrEventResolver eventResolver;
@@ -56,9 +55,7 @@ final resolversProvider = Provider<Resolvers>((ref) {
         profileCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
       print('Resolving profile for identifier: $identifier');
-      final userProfilesState = ref.watch(userProfilesProvider);
-      print('User profiles state: $userProfilesState');
-      final profile = userProfilesState.value?.$2;
+      final profile = ref.watch(Profile.signedInProfileProvider);
       print('Current profile: $profile');
 
       if (profile == null) {

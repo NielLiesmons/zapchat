@@ -84,7 +84,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             ),
             const AppGap.s12(),
             AppSearchField(
-              placeholder: [
+              placeholderWidget: [
                 AppText.reg16('Search Members', color: theme.colors.white33),
               ],
               controller: _searchController,

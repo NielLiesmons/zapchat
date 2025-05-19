@@ -61,7 +61,7 @@ List<GoRoute> get startRoutes => [
         path: '/start/existing-profile',
         pageBuilder: (context, state) {
           return AppSlideInModal(
-            child: AddExistingKeyModal(),
+            child: StartAddExistingKeyModal(),
           );
         },
       ),

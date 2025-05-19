@@ -2,7 +2,9 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
+import '../providers/history.dart';
 import '../tabs/details/details.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/src/notifications/scroll_progress_notification.dart';
 
 class ArticleScreen extends ConsumerStatefulWidget {
@@ -37,6 +39,13 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
+    // History
+    ref.read(historyProvider.notifier).addEntry(widget.article);
+    final recentHistory = ref.watch(recentHistoryItemsProvider(
+        context, widget.article.id)); // Get latest 3 history entries
+
+    // Get Data
     final resolvers = ref.read(resolversProvider);
     final state = ref.watch(query<Community>());
     final communities = state.models.cast<Community>().toList();
@@ -47,8 +56,9 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
         return true;
       },
       child: AppScreen(
-        onHomeTap: () => Navigator.of(context).pop(),
+        onHomeTap: () => context.push('/'),
         alwaysShowTopBar: false,
+        history: recentHistory,
         topBarContent: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

@@ -7,6 +7,7 @@ import 'package:zapchat/src/providers/search.dart';
 import 'package:zapchat/src/screens/thread_screen.dart';
 import 'package:zapchat/src/screens/article_screen.dart';
 import 'package:zapchat/src/screens/mail_screen.dart';
+import 'package:zapchat/src/modals/reply_modal.dart';
 
 List<GoRoute> get eventRoutes => [
       GoRoute(
@@ -82,7 +83,7 @@ List<GoRoute> get eventRoutes => [
           return AppSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
-                return AppReplyModal(
+                return ReplyModal(
                   model: model,
                   onResolveEvent: ref.read(resolversProvider).eventResolver,
                   onResolveProfile: ref.read(resolversProvider).profileResolver,
@@ -93,8 +94,12 @@ List<GoRoute> get eventRoutes => [
                   onEmojiTap: () {},
                   onGifTap: () {},
                   onAddTap: () {},
-                  onSendTap: () {},
-                  onChevronTap: () {},
+                  onSendTap: () {
+                    context.pop();
+                  },
+                  onChevronTap: () {
+                    context.pop();
+                  },
                 );
               },
             ),

@@ -2,35 +2,41 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/resolvers.dart';
 
-class CommunityBooksFeed extends ConsumerWidget {
+class CommunityJobsFeed extends ConsumerWidget {
   final Community community;
 
-  const CommunityBooksFeed({
+  const CommunityJobsFeed({
     super.key,
     required this.community,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(query<Book>());
+    final state = ref.watch(query<Job>());
 
     if (state case StorageLoading()) {
       return const AppLoadingFeed();
     }
 
-    final books = state.models.cast<Book>();
+    final jobs = state.models.cast<Job>();
 
     return AppContainer(
       padding: const AppEdgeInsets.all(AppGapSize.s12),
-      child: Wrap(
-        spacing: 12,
-        runSpacing: 12,
+      child: Column(
         children: [
-          for (final book in books)
-            AppBookCard(
-              book: book,
-              onTap: () => context.push('/book/${book.id}', extra: book),
+          for (final job in jobs)
+            Column(
+              children: [
+                AppJobCard(
+                  job: job,
+                  isUnread: true,
+                  onTap: (event) =>
+                      context.push('/job/${event.id}', extra: event),
+                ),
+                const AppGap.s12(),
+              ],
             ),
         ],
       ),
