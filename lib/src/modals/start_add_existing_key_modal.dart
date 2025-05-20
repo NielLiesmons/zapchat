@@ -36,10 +36,12 @@ class _StartAddExistingKeyModalState
             Duration(milliseconds: 2000 - elapsed.inMilliseconds));
       }
 
-      setState(() {
-        _isAmberAvailable = signer.isAvailable;
-        _isChecking = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isAmberAvailable = signer.isAvailable;
+          _isChecking = false;
+        });
+      }
     } catch (e) {
       print('Error checking for signers: $e');
       // Ensure minimum loading time even on error
@@ -48,9 +50,11 @@ class _StartAddExistingKeyModalState
         await Future.delayed(
             Duration(milliseconds: 2000 - elapsed.inMilliseconds));
       }
-      setState(() {
-        _isChecking = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isChecking = false;
+        });
+      }
     }
   }
 
