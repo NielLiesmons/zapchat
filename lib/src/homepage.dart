@@ -47,12 +47,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     final theme = AppTheme.of(context);
     final signedInProfile = ref.watch(Profile.signedInProfileProvider);
 
-    if (signedInProfile == null) {
-      return const Center(
-        child: AppLoadingDots(),
-      );
-    }
-
     return Stack(
       children: [
         AppScaffold(
@@ -66,44 +60,69 @@ class _HomePageState extends ConsumerState<HomePage> {
                   AppContainer(
                     padding: const AppEdgeInsets.symmetric(
                         horizontal: AppGapSize.s12),
-                    child: Row(
-                      children: [
-                        if (AppPlatformUtils.isMobile)
-                          AppProfilePic.s48(
-                            signedInProfile,
-                            onTap: () => context.push('/settings'),
-                          ),
-                        if (AppPlatformUtils.isMobile) const AppGap.s12(),
-                        Expanded(
-                          child: AppContainer(
-                            height: theme.sizes.s48,
-                            padding: const AppEdgeInsets.symmetric(
-                                horizontal: AppGapSize.s12),
-                            decoration: BoxDecoration(
-                              color: theme.colors.gray33,
-                              borderRadius:
-                                  BorderRadius.circular(theme.sizes.s24),
-                              border: Border.all(
-                                color: theme.colors.gray,
-                                width: AppLineThicknessData.normal().medium,
+                    child: signedInProfile == null
+                        ? Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/Zapchat-Blurple-Transparent.png',
+                                width: theme.sizes.s32,
+                                height: theme.sizes.s32,
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                AppIcon.s16(
-                                  theme.icons.characters.zap,
-                                  gradient: theme.colors.blurple,
+                              const AppGap.s8(),
+                              AppText.h1('Zapchat'),
+                              const Spacer(),
+                              AppButton(
+                                onTap: () => context.push('/start'),
+                                children: [
+                                  AppIcon.s12(
+                                    theme.icons.characters.play,
+                                    color: theme.colors.whiteEnforced,
+                                  ),
+                                  const AppGap.s12(),
+                                  AppText.med14('Start'),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              if (AppPlatformUtils.isMobile)
+                                AppProfilePic.s48(
+                                  signedInProfile,
+                                  onTap: () => context.push('/settings'),
                                 ),
-                                const AppGap.s4(),
-                                AppAmount(124608,
-                                    color: theme.colors.white,
-                                    level: AppTextLevel.h2),
-                              ],
-                            ),
+                              if (AppPlatformUtils.isMobile) const AppGap.s12(),
+                              Expanded(
+                                child: AppContainer(
+                                  height: theme.sizes.s48,
+                                  padding: const AppEdgeInsets.symmetric(
+                                      horizontal: AppGapSize.s12),
+                                  decoration: BoxDecoration(
+                                    color: theme.colors.gray33,
+                                    borderRadius:
+                                        BorderRadius.circular(theme.sizes.s24),
+                                    border: Border.all(
+                                      color: theme.colors.gray,
+                                      width:
+                                          AppLineThicknessData.normal().medium,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      AppIcon.s16(
+                                        theme.icons.characters.zap,
+                                        gradient: theme.colors.blurple,
+                                      ),
+                                      const AppGap.s4(),
+                                      AppAmount(124608,
+                                          color: theme.colors.white,
+                                          level: AppTextLevel.h2),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
-                    ),
                   ),
                   const AppGap.s16(),
                   AppTabView(

@@ -5,6 +5,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../routes/event_routes.dart';
 
 part 'history.g.dart';
 
@@ -70,7 +71,7 @@ class History extends _$History {
 
   Future<void> addEntry(Model model) async {
     final entry = HistoryEntry(
-      modelType: getModelContentType(model),
+      modelType: getModelName(model),
       modelId: model.id,
       displayText: getModelDisplayText(model),
       timestamp: DateTime.now(),
@@ -134,6 +135,17 @@ class History extends _$History {
               onTap: () {
                 // Get the model from storage using querySync
                 final storage = ref.read(storageNotifierProvider.notifier);
+                final models = storage.querySync(
+                  RequestFilter(
+                    ids: {entry.modelId},
+                    remote: false,
+                  ),
+                );
+                if (models.isNotEmpty) {
+                  final model = models.first;
+                  final route = getModelRoute(entry.modelType);
+                  context.push('$route/${model.id}', extra: model);
+                }
               },
             ))
         .toList()

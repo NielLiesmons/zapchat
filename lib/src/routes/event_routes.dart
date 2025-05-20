@@ -9,7 +9,29 @@ import 'package:zapchat/src/screens/article_screen.dart';
 import 'package:zapchat/src/screens/mail_screen.dart';
 import 'package:zapchat/src/modals/reply_modal.dart';
 
+String getModelRoute(String modelType) {
+  return switch (modelType.toLowerCase()) {
+    'thread' => '/thread',
+    'article' => '/article',
+    'mail' => '/mail',
+    'book' => '/book',
+    'task' => '/task',
+    'job' => '/job',
+    'group' => '/group',
+    'community' => '/community',
+    _ => '/nostr-publication', // Default to nostr-publication if unknown
+  };
+}
+
 List<GoRoute> get eventRoutes => [
+      GoRoute(
+        path: '/:eventId',
+        redirect: (context, state) {
+          final model = state.extra as Model;
+          final route = getModelRoute(model.runtimeType.toString());
+          return '$route/${state.pathParameters['eventId']}';
+        },
+      ),
       GoRoute(
         path: '/actions/:eventId',
         pageBuilder: (context, state) {
@@ -85,22 +107,21 @@ List<GoRoute> get eventRoutes => [
               builder: (context, ref, _) {
                 return ReplyModal(
                   model: model,
-                  onResolveEvent: ref.read(resolversProvider).eventResolver,
-                  onResolveProfile: ref.read(resolversProvider).profileResolver,
-                  onResolveEmoji: ref.read(resolversProvider).emojiResolver,
-                  onSearchProfiles: ref.read(searchProvider).profileSearch,
-                  onSearchEmojis: ref.read(searchProvider).emojiSearch,
-                  onCameraTap: () {},
-                  onEmojiTap: () {},
-                  onGifTap: () {},
-                  onAddTap: () {},
-                  onSendTap: () {
-                    context.pop();
-                  },
-                  onChevronTap: () {
-                    context.pop();
-                  },
                 );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/nostr-publication/:eventId',
+        pageBuilder: (context, state) {
+          final model = state.extra as Model;
+          // TODO: Implement general nostr publication screen
+          return AppSlideInScreen(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return AppText.h1('Nostr publication');
               },
             ),
           );

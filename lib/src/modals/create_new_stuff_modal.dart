@@ -86,6 +86,7 @@ class CreateNewStuffModal extends ConsumerWidget {
       'album',
       'repo',
       'book',
+      'service',
       'job',
     ];
 

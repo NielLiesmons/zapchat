@@ -13,6 +13,7 @@ class CommunityBooksFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = AppTheme.of(context);
     final state = ref.watch(query<Book>());
 
     if (state case StorageLoading()) {
@@ -24,8 +25,8 @@ class CommunityBooksFeed extends ConsumerWidget {
     return AppContainer(
       padding: const AppEdgeInsets.all(AppGapSize.s12),
       child: Wrap(
-        spacing: 12,
-        runSpacing: 12,
+        spacing: theme.sizes.s16,
+        runSpacing: theme.sizes.s16,
         children: [
           for (final book in books)
             AppBookCard(

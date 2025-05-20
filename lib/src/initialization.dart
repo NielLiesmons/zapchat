@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/providers/signer.dart';
 
 final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
   try {
@@ -13,7 +12,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       ),
     ).future);
 
-    // Register the Book model with kind 1055
     Model.register(kind: 1055, constructor: Book.fromMap);
     Model.register(kind: 10456, constructor: Group.fromMap);
     Model.register(kind: 145, constructor: Mail.fromMap);
@@ -162,23 +160,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       thegang,
       zapcloud,
     ]);
-
-    // Set initial user profiles and current profile
-    try {
-      // Add profiles to storage
-      await ref
-          .read(storageNotifierProvider.notifier)
-          .save(Set.from(dummyProfiles));
-
-      // Set current profile and add to signed in profiles
-      if (dummyProfiles.isNotEmpty) {
-        final profile = dummyProfiles.first;
-        profile.setAsActive();
-        signer.addSignedInPubkey(profile.pubkey);
-      }
-    } catch (e, stackTrace) {
-      rethrow;
-    }
 
     // Create community after profiles are saved and indexed
     final zapchatCommunity = await PartialCommunity(

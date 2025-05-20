@@ -50,7 +50,7 @@ class _DetailsTabState extends State<DetailsTab>
   }
 
   void _handleEventIdCopy() {
-    Clipboard.setData(ClipboardData(text: widget.model.event.id ?? ''));
+    Clipboard.setData(ClipboardData(text: widget.model.event.id));
     setState(() => _showEventIdCheckmark = true);
     _scaleController.forward(from: 0.0);
     Future.delayed(const Duration(milliseconds: 1500), () {

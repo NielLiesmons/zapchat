@@ -59,7 +59,9 @@ class CommunityScreen extends HookConsumerWidget {
             bottomBar: AppBottomBarChat(
               model: community,
               onAddTap: (model) {},
-              onMessageTap: (model) {},
+              onMessageTap: (model) {
+                context.push('/create/message', extra: model);
+              },
               onVoiceTap: (model) {},
               onActions: (model) {},
               onResolveEvent: resolvers.eventResolver,

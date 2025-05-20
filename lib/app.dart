@@ -5,8 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'src/router.dart';
 import 'src/providers/theme_settings.dart';
-import 'src/providers/history.dart';
-import 'src/widgets/history/history_content.dart';
+import 'src/modals/settings_history_modal.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -115,14 +114,14 @@ class _AppWithTheme extends ConsumerWidget {
       loading: () => AppBase(
         title: 'Zapchat',
         routerConfig: goRouter,
-        colorMode: null, // Use system theme
+        colorMode: null,
         textScale: AppTextScale.normal,
         systemScale: AppSystemScale.normal,
       ),
       error: (_, __) => AppBase(
         title: 'Zapchat',
         routerConfig: goRouter,
-        colorMode: null, // Use system theme
+        colorMode: null,
         textScale: AppTextScale.normal,
         systemScale: AppSystemScale.normal,
       ),

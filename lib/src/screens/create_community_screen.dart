@@ -79,21 +79,10 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
           child: Column(
             children: [
               const AppGap.s64(),
-              AppSlotMachine(),
-              AppContainer(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  gradient: theme.colors.blurple66,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: AppIcon.s24(
-                    theme.icons.characters.camera,
-                    gradient: theme.colors.graydient66,
-                  ),
-                ),
-              ),
+              AppText.h1('// TODO'),
+              const AppGap.s12(),
+              AppText.med14(
+                  'We should have 1) use existing profile 2) spin up new profile'),
             ],
           ),
         ));

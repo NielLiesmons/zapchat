@@ -5,19 +5,18 @@ import '../providers/signer.dart';
 import '../providers/resolvers.dart';
 import '../providers/search.dart';
 
-class ReplyModal extends ConsumerStatefulWidget {
-  final Model model;
-
-  const ReplyModal({
+class CreateMessageModal extends ConsumerStatefulWidget {
+  final Model target;
+  const CreateMessageModal({
+    required this.target,
     super.key,
-    required this.model,
   });
 
   @override
-  ConsumerState<ReplyModal> createState() => _ReplyModalState();
+  ConsumerState<CreateMessageModal> createState() => _CreateMessageModalState();
 }
 
-class _ReplyModalState extends ConsumerState<ReplyModal> {
+class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
   late PartialChatMessage _partialMessage;
@@ -68,90 +67,15 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (widget.model is! ChatMessage)
-                Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AppProfilePic.s40(widget.model.author.value),
-                        const AppGap.s12(),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  AppEmojiImage(
-                                    emojiUrl:
-                                        'assets/emoji/${getModelContentType(widget.model)}.png',
-                                    emojiName:
-                                        getModelContentType(widget.model),
-                                    size: 16,
-                                  ),
-                                  const AppGap.s10(),
-                                  Expanded(
-                                    child: AppCompactTextRenderer(
-                                      content:
-                                          getModelDisplayText(widget.model),
-                                      onResolveEvent: ref
-                                          .read(resolversProvider)
-                                          .eventResolver,
-                                      onResolveProfile: ref
-                                          .read(resolversProvider)
-                                          .profileResolver,
-                                      onResolveEmoji: ref
-                                          .read(resolversProvider)
-                                          .emojiResolver,
-                                      isWhite: true,
-                                      isMedium: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const AppGap.s2(),
-                              AppText.reg12(
-                                widget.model.author.value?.name ??
-                                    formatNpub(
-                                        widget.model.author.value?.pubkey ??
-                                            ''),
-                                color: theme.colors.white66,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const AppGap.s8(),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        AppContainer(
-                          width: theme.sizes.s38,
-                          child: Center(
-                            child: AppContainer(
-                              decoration:
-                                  BoxDecoration(color: theme.colors.white33),
-                              width: AppLineThicknessData.normal().medium,
-                              height: theme.sizes.s16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               AppShortTextField(
                 controller: _controller,
                 focusNode: _focusNode,
                 placeholder: [
                   AppText.reg16(
-                    'Your Reply',
+                    'Your Message',
                     color: theme.colors.white33,
                   ),
                 ],
-                quotedChatMessage: widget.model is ChatMessage
-                    ? (widget.model as ChatMessage)
-                    : null,
                 onSearchProfiles: ref.read(searchProvider).profileSearch,
                 onSearchEmojis: ref.read(searchProvider).emojiSearch,
                 onResolveEvent: ref.read(resolversProvider).eventResolver,

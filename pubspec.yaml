@@ -29,10 +29,10 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   zaplab_design:
-    path: ../zaplab_design
-    # git:
-    #   url: https://github.com/NielLiesmons/zaplab_design.git
-    #   ref: d53bd119b4b0bf8712343d8425249efc230444f2
+    # path: ../zaplab_design
+    git:
+      url: https://github.com/NielLiesmons/zaplab_design.git
+      ref: b8a944e
   models:
     git:
       url: https://github.com/purplebase/models.git
