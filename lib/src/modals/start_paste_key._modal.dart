@@ -1,18 +1,18 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppPasteKeyModal extends StatefulWidget {
+class StartPasteKeyModal extends StatefulWidget {
   final VoidCallback onUseThisKey;
 
-  const AppPasteKeyModal({
+  const StartPasteKeyModal({
     super.key,
     required this.onUseThisKey,
   });
 
   @override
-  State<AppPasteKeyModal> createState() => _AppPasteKeyModalState();
+  State<StartPasteKeyModal> createState() => _StartPasteKeyModalState();
 }
 
-class _AppPasteKeyModalState extends State<AppPasteKeyModal> {
+class _StartPasteKeyModalState extends State<StartPasteKeyModal> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
 

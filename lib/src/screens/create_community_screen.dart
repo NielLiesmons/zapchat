@@ -1,7 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tap_builder/tap_builder.dart';
 
 class CreateCommunityScreen extends ConsumerStatefulWidget {
   const CreateCommunityScreen({
@@ -36,11 +34,6 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-
-    final state = ref.watch(query<Profile>());
-    final profiles = state.models.cast<Profile>().toList();
-
     return AppScreen(
         onHomeTap: () => Navigator.of(context).pop(),
         alwaysShowTopBar: true,

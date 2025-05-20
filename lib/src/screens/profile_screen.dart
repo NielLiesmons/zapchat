@@ -35,15 +35,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     // Record in history
     ref.read(historyProvider.notifier).addEntry(widget.profile);
 
     // Get data
     final resolvers = ref.read(resolversProvider);
-    final state = ref.watch(query<Community>());
-    final communities = state.models.cast<Community>().toList();
 
     return AppScreen(
       onHomeTap: () => Navigator.of(context).pop(),
