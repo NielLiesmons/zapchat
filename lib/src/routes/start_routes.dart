@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zapchat/src/modals/start_add_existing_key_modal.dart';
-import 'package:zapchat/src/modals/start_paste_key._modal.dart';
+import 'package:zapchat/src/modals/start_paste_key_modal.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zapchat/src/providers/signer.dart';

@@ -25,11 +25,27 @@ String getModelRoute(String modelType) {
 
 List<GoRoute> get eventRoutes => [
       GoRoute(
-        path: '/:eventId',
+        path: '/nostr-publication/:eventId',
         redirect: (context, state) {
-          final model = state.extra as Model;
-          final route = getModelRoute(model.runtimeType.toString());
-          return '$route/${state.pathParameters['eventId']}';
+          // If a model is provided, redirect to the appropriate route
+          if (state.extra != null) {
+            final model = state.extra as Model;
+            final route = getModelRoute(model.runtimeType.toString());
+            return '$route/${state.pathParameters['eventId']}';
+          }
+          // If no model is provided, return null to use the pageBuilder
+          return null;
+        },
+        pageBuilder: (context, state) {
+          // Show the default nostr publication view
+          return AppSlideInScreen(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return AppText.h1(
+                    'Nostr publication ${state.pathParameters['eventId']}');
+              },
+            ),
+          );
         },
       ),
       GoRoute(
@@ -108,20 +124,6 @@ List<GoRoute> get eventRoutes => [
                 return ReplyModal(
                   model: model,
                 );
-              },
-            ),
-          );
-        },
-      ),
-      GoRoute(
-        path: '/nostr-publication/:eventId',
-        pageBuilder: (context, state) {
-          final model = state.extra as Model;
-          // TODO: Implement general nostr publication screen
-          return AppSlideInScreen(
-            child: Consumer(
-              builder: (context, ref, _) {
-                return AppText.h1('Nostr publication');
               },
             ),
           );
