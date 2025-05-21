@@ -33,7 +33,7 @@ dependencies:
     git:
       url: https://github.com/NielLiesmons/zaplab_design.git
       ref: 7235cd1
- ·
+
   models:
     git:
       url: https://github.com/purplebase/models.git
