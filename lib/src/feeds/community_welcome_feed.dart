@@ -290,8 +290,14 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                     spacing: 12,
                     runSpacing: 12,
                     children: [
-                      AppProfilePicSquare.s48("profilePicUrl"),
-                      AppProfilePicSquare.s48("profilePicUrl")
+                      AppProfilePicSquare.fromUrl(
+                        'test',
+                        size: AppProfilePicSquareSize.s48,
+                      ),
+                      AppProfilePicSquare.fromUrl(
+                        'test',
+                        size: AppProfilePicSquareSize.s48,
+                      )
                     ],
                   ),
                 ],

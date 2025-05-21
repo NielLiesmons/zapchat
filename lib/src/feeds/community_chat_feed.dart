@@ -38,6 +38,7 @@ class CommunityChatFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = AppTheme.of(context);
     final resolvers = ref.read(resolversProvider);
 
     final state = ref.watch(query<ChatMessage>());
@@ -68,14 +69,15 @@ class CommunityChatFeed extends ConsumerWidget {
     allItems.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
     return AppContainer(
-      height: MediaQuery.of(context).size.height -
-          240 -
+      height: MediaQuery.of(context).size.height / theme.system.scale -
+          184 -
           (AppPlatformUtils.isMobile
-              ? MediaQuery.of(context).padding.top +
-                  MediaQuery.of(context).padding.bottom
-              : 20.0),
+              ? MediaQuery.of(context).padding.top / theme.system.scale +
+                  MediaQuery.of(context).padding.bottom / theme.system.scale
+              : 22.0),
       padding: const AppEdgeInsets.all(AppGapSize.s6),
       child: SingleChildScrollView(
+        clipBehavior: Clip.none,
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [

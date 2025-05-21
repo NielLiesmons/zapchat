@@ -294,7 +294,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           tabs: [
             for (final contentType in contentTypes)
               TabData(
-                label: contentType[0].toUpperCase() + contentType.substring(1),
+                label: ['chat', 'welcome', 'forum'].contains(contentType)
+                    ? '${contentType[0].toUpperCase()}${contentType.substring(1)}'
+                    : '${contentType[0].toUpperCase()}${contentType.substring(1)}s',
                 icon: AppEmojiContentType(contentType: contentType),
                 content: const SizedBox(),
                 count: _contentTypes[contentType]?.count ?? 0,

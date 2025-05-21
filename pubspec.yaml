@@ -32,7 +32,7 @@ dependencies:
     # path: ../zaplab_design
     git:
       url: https://github.com/NielLiesmons/zaplab_design.git
-      ref: 7235cd1
+      ref: 49722ad
 
   models:
     git:

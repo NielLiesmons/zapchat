@@ -68,7 +68,9 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (widget.model is! ChatMessage)
+              if (widget.model is! ChatMessage &&
+                  widget.model is! CashuZap &&
+                  widget.model is! Zap)
                 Column(
                   children: [
                     Row(
@@ -152,6 +154,10 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
                 quotedChatMessage: widget.model is ChatMessage
                     ? (widget.model as ChatMessage)
                     : null,
+                quotedCashuZap: widget.model is CashuZap
+                    ? (widget.model as CashuZap)
+                    : null,
+                quotedZap: widget.model is Zap ? (widget.model as Zap) : null,
                 onSearchProfiles: ref.read(searchProvider).profileSearch,
                 onSearchEmojis: ref.read(searchProvider).emojiSearch,
                 onResolveEvent: ref.read(resolversProvider).eventResolver,

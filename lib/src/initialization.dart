@@ -164,6 +164,23 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       zapcloud,
     ]);
 
+    // SignedInProfile for testing, to avoid signing in all the time
+    try {
+      // Add profiles to storage
+      await ref
+          .read(storageNotifierProvider.notifier)
+          .save(Set.from(dummyProfiles));
+
+      // Set current profile and add to signed in profiles
+      if (dummyProfiles.isNotEmpty) {
+        final profile = dummyProfiles.first;
+        profile.setAsActive();
+        signer.addSignedInPubkey(profile.pubkey);
+      }
+    } catch (e, stackTrace) {
+      rethrow;
+    }
+
     // Create community after profiles are saved and indexed
     final zapchatCommunity = await PartialCommunity(
       name: 'Zapchat',
@@ -360,7 +377,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     dummyChatMessages.addAll([
       await PartialChatMessage(
         'Do you guys have pics from the farm visit??',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: franzap.pubkey),
       await PartialChatMessage(
