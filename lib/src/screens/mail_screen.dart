@@ -90,6 +90,7 @@ class _MailScreenState extends ConsumerState<MailScreen> {
       child: IntrinsicHeight(
         child: Column(
           children: [
+            if (AppPlatformUtils.isMobile) const AppGap.s8(),
             AppContainer(
               padding: const AppEdgeInsets.only(
                 bottom: AppGapSize.s12,

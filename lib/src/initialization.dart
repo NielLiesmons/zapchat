@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'dart:convert';
 
 final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
   try {
@@ -18,6 +19,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     Model.register(kind: 35000, constructor: Task.fromMap);
     Model.register(kind: 30617, constructor: Repository.fromMap);
     Model.register(kind: 32767, constructor: Job.fromMap);
+    Model.register(kind: 9321, constructor: CashuZap.fromMap);
 
     final dummyProfiles = <Profile>[];
     final dummyNotes = <Note>[];
@@ -29,6 +31,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyMails = <Mail>[];
     final dummyTasks = <Task>[];
     final dummyJobs = <Job>[];
+    final dummyCashuZaps = <CashuZap>[];
 
     final signer = DummySigner(ref);
 
@@ -660,6 +663,26 @@ Then ncommunity = npub + relay hints, for communities
       )).signWith(signer, withPubkey: jane.pubkey),
     ]);
 
+    // Add dummy zap requests
+    dummyCashuZaps.addAll([
+      await (PartialCashuZap(
+        'Thanks for the great content!',
+        proof: jsonEncode({'amount': 1000}),
+        url: 'https://cashu.mint.example.com',
+        zappedEventId: '1234567890abcdef',
+        recipientPubkey: niel.pubkey,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+      )).signWith(signer, withPubkey: niel.pubkey),
+      await (PartialCashuZap(
+        "nostr:nevent1234567890abcdef No, but here's a zap",
+        proof: jsonEncode({'amount': 123}),
+        url: 'https://cashu.mint.example.com',
+        zappedEventId: '1234567890abcdef',
+        recipientPubkey: franzap.pubkey,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+      )).signWith(signer, withPubkey: verbiricha.pubkey),
+    ]);
+
     // Save all data
     await ref.read(storageNotifierProvider.notifier).save(Set.from([
           ...dummyProfiles,
@@ -672,6 +695,7 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyMails,
           ...dummyTasks,
           ...dummyJobs,
+          ...dummyCashuZaps,
         ]));
 
     return true;

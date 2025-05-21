@@ -32,7 +32,8 @@ dependencies:
     # path: ../zaplab_design
     git:
       url: https://github.com/NielLiesmons/zaplab_design.git
-      ref: b8a944e
+      ref: 7235cd1
+ ·
   models:
     git:
       url: https://github.com/purplebase/models.git
@@ -42,6 +43,7 @@ dependencies:
   flutter:
     sdk: flutter
   audio_waveforms: ^1.3.0
+  tap_builder: ^0.5.0
 
   go_router: ^14.6.2
   riverpod: ^2.6.1

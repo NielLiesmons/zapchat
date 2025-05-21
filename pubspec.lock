@@ -951,7 +951,7 @@ packages:
     source: hosted
     version: "1.4.1"
   tap_builder:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: tap_builder
       sha256: "10f00a5acb179aae7b22288042782bbca8624d8877ca425dcd3e87618ad88b09"
@@ -1081,11 +1081,9 @@ packages:
   zaplab_design:
     dependency: "direct main"
     description:
-      path: "."
-      ref: b8a944e
-      resolved-ref: b8a944e412c1523c7fd9251652b08c00b7e16c2d
-      url: "https://github.com/NielLiesmons/zaplab_design.git"
-    source: git
+      path: "../zaplab_design"
+      relative: true
+    source: path
     version: "0.0.1"
 sdks:
   dart: ">=3.7.0 <4.0.0"

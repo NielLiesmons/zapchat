@@ -41,12 +41,14 @@ class CommunityChatFeed extends ConsumerWidget {
     final resolvers = ref.read(resolversProvider);
 
     final state = ref.watch(query<ChatMessage>());
+    final cashuZapsState = ref.watch(query<CashuZap>());
 
     if (state case StorageLoading()) {
       return const Center(child: AppLoadingFeed(type: LoadingFeedType.chat));
     }
 
     final messages = state.models;
+    final cashuZaps = cashuZapsState.models;
 
     if (messages.isEmpty) {
       return const Center(
@@ -58,37 +60,86 @@ class CommunityChatFeed extends ConsumerWidget {
 
     final currentProfile = ref.watch(Profile.signedInProfileProvider);
 
+    // Sort all items by timestamp
+    final allItems = <({Model model, DateTime timestamp})>[
+      ...messages.map((m) => (model: m, timestamp: m.createdAt)),
+      ...cashuZaps.map((z) => (model: z, timestamp: z.createdAt)),
+    ];
+    allItems.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+
     return AppContainer(
+      height: MediaQuery.of(context).size.height -
+          240 -
+          (AppPlatformUtils.isMobile
+              ? MediaQuery.of(context).padding.top +
+                  MediaQuery.of(context).padding.bottom
+              : 20.0),
       padding: const AppEdgeInsets.all(AppGapSize.s6),
-      child: Column(
-        children: [
-          for (final group in messageGroups)
-            Column(
-              children: [
-                AppMessageStack(
-                  messages: group,
-                  onResolveEvent: resolvers.eventResolver,
-                  onResolveProfile: resolvers.profileResolver,
-                  onResolveEmoji: resolvers.emojiResolver,
-                  onResolveHashtag: (identifier) async {
-                    await Future.delayed(const Duration(seconds: 1));
-                    return () {};
-                  },
-                  isOutgoing: group.first.author.value?.pubkey ==
-                      currentProfile?.pubkey,
-                  onReply: (event) =>
-                      context.push('/reply-to/${event.id}', extra: event),
-                  onActions: (event) =>
-                      context.push('/actions/${event.id}', extra: event),
-                  onReactionTap: (reaction) {},
-                  onZapTap: (zap) {},
-                  onLinkTap: (url) {},
-                ),
-                const AppGap.s8(),
-              ],
-            ),
-          const AppGap.s8(),
-        ],
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            const AppNewMessagesDivider(text: '8 New Mssages'),
+            for (final group in messageGroups)
+              Column(
+                children: [
+                  AppMessageStack(
+                    messages: group,
+                    onResolveEvent: resolvers.eventResolver,
+                    onResolveProfile: resolvers.profileResolver,
+                    onResolveEmoji: resolvers.emojiResolver,
+                    onResolveHashtag: (identifier) async {
+                      await Future.delayed(const Duration(seconds: 1));
+                      return () {};
+                    },
+                    isOutgoing: group.first.author.value?.pubkey ==
+                        currentProfile?.pubkey,
+                    onReply: (event) =>
+                        context.push('/reply-to/${event.id}', extra: event),
+                    onActions: (event) =>
+                        context.push('/actions/${event.id}', extra: event),
+                    onReactionTap: (reaction) {},
+                    onZapTap: (zap) {},
+                    onLinkTap: (url) {},
+                  ),
+                  const AppGap.s8(),
+                ],
+              ),
+            // Add standalone zaps
+            for (final zap in cashuZaps.where(
+                (zap) => !messages.any((msg) => msg.id == zap.zappedEventId)))
+              Column(
+                children: [
+                  AppZapBubble(
+                    cashuZap: zap,
+                    onResolveEvent: resolvers.eventResolver,
+                    onResolveProfile: resolvers.profileResolver,
+                    onResolveEmoji: resolvers.emojiResolver,
+                    onResolveHashtag: (identifier) async {
+                      await Future.delayed(const Duration(seconds: 1));
+                      return () {};
+                    },
+                    isOutgoing:
+                        zap.author.value?.pubkey == currentProfile?.pubkey,
+                    onReply: (event) =>
+                        context.push('/reply-to/${event.id}', extra: event),
+                    onActions: (event) =>
+                        context.push('/actions/${event.id}', extra: event),
+                    onReactionTap: (reaction) {},
+                    onZapTap: (zap) {},
+                    onLinkTap: (url) {},
+                  ),
+                  const AppGap.s8(),
+                ],
+              ),
+            const AppGap.s8(),
+            if (messages.isNotEmpty)
+              AppTypingBubble(
+                profile: messages.first.author.value,
+              ),
+            const AppGap.s8(),
+          ],
+        ),
       ),
     );
   }
