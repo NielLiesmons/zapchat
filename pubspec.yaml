@@ -29,10 +29,10 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   zaplab_design:
-    # path: ../zaplab_design
-    git:
-      url: https://github.com/NielLiesmons/zaplab_design.git
-      ref: 49722ad
+    path: ../zaplab_design
+    # git:
+    #   url: https://github.com/NielLiesmons/zaplab_design.git
+    #   ref: 49722ad
 
   models:
     git:

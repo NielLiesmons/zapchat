@@ -9,6 +9,7 @@ import '../feeds/community_threads_feed.dart';
 import '../feeds/community_articles_feed.dart';
 import '../feeds/community_jobs_feed.dart';
 import '../feeds/community_books_feed.dart';
+import '../feeds/community_services_feed.dart';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
 
@@ -111,6 +112,13 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           contentTypes['job'] = (
             count: 0,
             feed: CommunityJobsFeed(community: widget.community),
+            bottomBar: const AppBottomBarContentFeed()
+          );
+          break;
+        case 'Services':
+          contentTypes['service'] = (
+            count: 0,
+            feed: CommunityServicesFeed(community: widget.community),
             bottomBar: const AppBottomBarContentFeed()
           );
           break;

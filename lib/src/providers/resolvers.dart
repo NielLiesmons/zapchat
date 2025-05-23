@@ -40,7 +40,7 @@ final resolversProvider = Provider<Resolvers>((ref) {
     eventResolver: (identifier) => eventCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
       final state = ref.watch(query<ChatMessage>());
-      if (state is StorageState<ChatMessage> && state.models.isNotEmpty) {
+      if (state.models.isNotEmpty) {
         return (model: state.models.first, onTap: null);
       }
       // Fallback to creating a new note if no articles are available

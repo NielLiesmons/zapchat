@@ -1,6 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
 import '../providers/signer.dart';
 import '../providers/resolvers.dart';
 import '../providers/search.dart';
@@ -30,6 +32,16 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
 
     // Request focus after modal is built
     Future.microtask(() => _focusNode.requestFocus());
+
+    // Add keyboard listener
+    _focusNode.onKeyEvent = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.enter &&
+          HardwareKeyboard.instance.isMetaPressed) {
+        _sendMessage();
+        return KeyEventResult.handled;
+      }
+      return KeyEventResult.ignored;
+    };
   }
 
   @override
@@ -50,6 +62,39 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
       _controller.selection = TextSelection.fromPosition(
         TextPosition(offset: content.length),
       );
+    }
+  }
+
+  void _sendMessage() async {
+    final text = _controller.text;
+    print('Text content: $text');
+    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
+    final signer = signedInProfile != null
+        ? ref.read(signersProvider.notifier).getSigner(signedInProfile.pubkey)
+        : null;
+
+    if (text.isNotEmpty && signedInProfile != null && signer != null) {
+      print('Using actual Signer');
+      final message = PartialChatMessage(
+        text,
+        createdAt: DateTime.now(),
+      );
+      final signedMessage = await message.signWith(
+        signer,
+        withPubkey: signedInProfile.pubkey,
+      );
+      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
+    } else {
+      // dummSign for testing
+      final message = PartialChatMessage(
+        text,
+        createdAt: DateTime.now(),
+      );
+      final signedMessage = message.dummySign(
+          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be');
+      print('Used dummySign');
+      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
+      context.pop();
     }
   }
 
@@ -85,32 +130,7 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
                 onEmojiTap: () {}, // TODO: Implement emoji tap
                 onGifTap: () {}, // TODO: Implement gif tap
                 onAddTap: () {}, // TODO: Implement add tap
-                onSendTap: () async {
-                  print('Send button tapped');
-                  final text = _controller.text;
-                  print('Text content: $text');
-                  print('Signed in profile: $signedInProfile');
-                  print('Signer: $signer');
-
-                  if (text.isNotEmpty &&
-                      signedInProfile != null &&
-                      signer != null) {
-                    print('Attempting to sign message');
-                    final message = PartialChatMessage(text);
-                    final signedMessage = await message.signWith(
-                      signer,
-                      withPubkey: signedInProfile.pubkey,
-                    );
-                    print('Message signed successfully');
-                    // TODO: Actually publish the message
-                    print('Would publish message: $signedMessage');
-                  } else {
-                    print('Conditions not met:');
-                    print('- Text empty: ${text.isEmpty}');
-                    print('- No profile: ${signedInProfile == null}');
-                    print('- No signer: ${signer == null}');
-                  }
-                },
+                onSendTap: _sendMessage,
                 onChevronTap: () {}, // TODO: Implement chevron tap
                 onChanged: _onContentChanged,
               ),

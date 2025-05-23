@@ -20,6 +20,9 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     Model.register(kind: 30617, constructor: Repository.fromMap);
     Model.register(kind: 32767, constructor: Job.fromMap);
     Model.register(kind: 9321, constructor: CashuZap.fromMap);
+    Model.register(
+        kind: 33333,
+        constructor: Service.fromMap); // TODO: Change to right kind
 
     final dummyProfiles = <Profile>[];
     final dummyNotes = <Note>[];
@@ -32,6 +35,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyTasks = <Task>[];
     final dummyJobs = <Job>[];
     final dummyCashuZaps = <CashuZap>[];
+    final dummyServices = <Service>[];
 
     final signer = DummySigner(ref);
 
@@ -206,6 +210,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {32767},
         ),
         CommunityContentSection(
+          content: 'Services',
+          kinds: {33333},
+        ),
+        CommunityContentSection(
           content: 'Apps',
           kinds: {32267},
         ),
@@ -240,6 +248,38 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         CommunityContentSection(
           content: 'Threads',
           kinds: {1},
+        ),
+        CommunityContentSection(
+          content: 'Articles',
+          kinds: {30023},
+        ),
+        CommunityContentSection(
+          content: 'Jobs',
+          kinds: {32767},
+        ),
+        CommunityContentSection(
+          content: 'Services',
+          kinds: {33333},
+        ),
+        CommunityContentSection(
+          content: 'Apps',
+          kinds: {32267},
+        ),
+        CommunityContentSection(
+          content: 'Books',
+          kinds: {30040},
+        ),
+        CommunityContentSection(
+          content: 'Docs',
+          kinds: {30040},
+        ),
+        CommunityContentSection(
+          content: 'Albums',
+          kinds: {20},
+        ),
+        CommunityContentSection(
+          content: 'Tasks',
+          kinds: {30123},
         ),
       },
     ).signWith(signer, withPubkey: cypherchads.pubkey);
@@ -377,54 +417,59 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     dummyChatMessages.addAll([
       await PartialChatMessage(
         'Do you guys have pics from the farm visit??',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: zapchatCommunity,
+      ).signWith(signer, withPubkey: franzap.pubkey),
+      await PartialChatMessage(
+        "I didn't have my phone",
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: franzap.pubkey),
       await PartialChatMessage(
         'nostr:nevent1blablabla Yes! Let me check.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
         '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
                       https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
                       https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: verbiricha.pubkey),
       await PartialChatMessage(
         'https://cdn.satellite.earth/ce1ada957054c84e7dc95ecaa6b14ddb452f4ab31632903d74ffe83bc6c8ff38.mp3',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: zapchat.pubkey),
       await PartialChatMessage(
         'Awesome!',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
         ':beautiful:',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
         'Yeah, this was a great way to get the families together.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: franzap.pubkey),
       await PartialChatMessage(
         'I was just about to say that.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: niel.pubkey),
       await PartialChatMessage(
         'This is a test message with a link: https://zapchat.com',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: hzrd149.pubkey),
       await PartialChatMessage(
         'This is a test message with a some ~~strike-through~~ text',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
         community: zapchatCommunity,
       ).signWith(signer, withPubkey: cypherchads.pubkey),
     ]);
@@ -700,6 +745,15 @@ Then ncommunity = npub + relay hints, for communities
       )).signWith(signer, withPubkey: verbiricha.pubkey),
     ]);
 
+    dummyServices.addAll([
+      await (PartialService(
+        'Nostr App Design',
+        'Pixel-perfect designs and front end builds for your Nostr app.',
+        imageUrl:
+            'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+      )).signWith(signer, withPubkey: niel.pubkey),
+    ]);
+
     // Save all data
     await ref.read(storageNotifierProvider.notifier).save(Set.from([
           ...dummyProfiles,
@@ -713,6 +767,7 @@ Then ncommunity = npub + relay hints, for communities
           ...dummyTasks,
           ...dummyJobs,
           ...dummyCashuZaps,
+          ...dummyServices,
         ]));
 
     return true;
