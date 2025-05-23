@@ -1081,9 +1081,11 @@ packages:
   zaplab_design:
     dependency: "direct main"
     description:
-      path: "../zaplab_design"
-      relative: true
-    source: path
+      path: "."
+      ref: "00b9438a920d3fa6a9ca65b1b627fa71b4752212"
+      resolved-ref: "00b9438a920d3fa6a9ca65b1b627fa71b4752212"
+      url: "https://github.com/NielLiesmons/zaplab_design.git"
+    source: git
     version: "0.0.1"
 sdks:
   dart: ">=3.7.0 <4.0.0"
