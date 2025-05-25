@@ -37,86 +37,76 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyCashuZaps = <CashuZap>[];
     final dummyServices = <Service>[];
 
-    final signer = DummySigner(ref);
-
-    final jane = await PartialProfile(
+    final jane = PartialProfile(
       name: 'Jane C.',
       pictureUrl:
           'https://cdn.satellite.earth/4b544d33c594e132b8ee1d278665632a4a3abfc30d249afb733b19fe1806522a.png',
       banner:
           'https://cdn.satellite.earth/4b544d33c594e132b8ee1d278665632a4a3abfc30d249afb733b19fe1806522a.png',
-    ).signWith(signer,
-        withPubkey:
-            'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be');
+    ).dummySign(
+        'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be');
 
-    final niel = await PartialProfile(
+    final niel = PartialProfile(
       name: 'Niel Liesmons',
       pictureUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       banner:
           'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-    ).signWith(signer,
-        withPubkey:
-            'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
-    final zapchat = await PartialProfile(
+    ).dummySign(
+        'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be');
+
+    final zapchat = PartialProfile(
       name: 'Zapchat',
       pictureUrl:
           'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
       banner:
           'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-    ).signWith(signer,
-        withPubkey:
-            '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
+    ).dummySign(
+        '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
 
-    final proof = await PartialProfile(
+    final proof = PartialProfile(
       name: 'Proof Of Reign',
       pictureUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.architecturaldigest.in%2Fwp-content%2Fuploads%2F2019%2F04%2FNorth-Rose-window-notre-dame-paris.jpg&f=1&nofb=1&ipt=b915d5a064b905567aa5fe9fbc8c38da207c4ba007316f5055e3e8cb1a009aa8&ipo=images',
-    ).signWith(signer,
-        withPubkey:
-            'F954B79600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
+    ).dummySign(
+        'F954B79600b16b24a1bfb0519cfe4a5d1ad84959e3cce5d6d7a99d48660a1f78');
 
-    final cypherchads = await PartialProfile(
+    final cypherchads = PartialProfile(
       name: 'Cypher Chads',
       pictureUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.imgflip.com%2F52wp8m.png',
-    ).signWith(signer,
-        withPubkey:
-            'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
+    ).dummySign(
+        'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2');
 
-    final franzap = await PartialProfile(
+    final franzap = PartialProfile(
       name: 'franzap',
       pictureUrl:
           'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
-    ).signWith(signer,
-        withPubkey:
-            '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
+    ).dummySign(
+        '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
 
-    final verbiricha = await PartialProfile(
+    final verbiricha = PartialProfile(
       name: 'verbiricha',
       pictureUrl:
           'https://npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg.blossom.band/3d84787d7284c879429eb0c8e6dcae0bf94cc50456d4046adf33cf040f8f5504.jpg',
-    ).signWith(signer,
-        withPubkey:
-            '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195');
+    ).dummySign(
+        '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195');
 
-    final communikeys = await PartialProfile(
+    final communikeys = PartialProfile(
       name: 'Communikeys',
       pictureUrl:
           'https://cdn.satellite.earth/7873557e975cf404d12c04cd3e4b4e0e252a34998edd04de0d24a4dc8c6bddbc.png',
-    ).signWith(signer,
-        withPubkey:
-            '9fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac196');
+    ).dummySign(
+        '9fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac196');
 
-    final nipsout = await PartialProfile(
+    final nipsout = PartialProfile(
       name: 'Nips Out',
       pictureUrl:
           'https://cdn.satellite.earth/1895487e0fcd0db92babfa58501fd7cd319620c818e01d7bb941c4d465e4d685.png',
-    ).signWith(signer,
-        withPubkey:
-            'afa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac197');
+    ).dummySign(
+        'afa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac197');
 
-    final metabolism = await PartialProfile(
+    final metabolism = PartialProfile(
       name: 'Metabolism Go Up',
       pictureUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsaraichinwag.com%2Fwp-content%2Fuploads%2F2023%2F12%2Fwhy-am-i-craving-oranges.jpeg',
@@ -124,35 +114,31 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           'We discuss and research ways to improve your metabolism. We are not doctors, but we are passionate about health and fitness.',
       banner:
           'https://cdn.satellite.earth/5b8e0002026a4bd0804d0470295dfd209ef9c461957a85f62e00e2923ff18bf1.png',
-    ).signWith(signer,
-        withPubkey:
-            '1203456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
+    ).dummySign(
+        '1203456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
 
-    final hzrd149 = await PartialProfile(
+    final hzrd149 = PartialProfile(
       name: 'hzrd149',
       pictureUrl:
           'https://cdn.hzrd149.com/5ed3fe5df09a74e8c126831eac999364f9eb7624e2b86d521521b8021de20bdc.png',
-    ).signWith(signer,
-        withPubkey:
-            '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+    ).dummySign(
+        '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
-    final thegang = await PartialProfile(
+    final thegang = PartialProfile(
       name: 'The Gang',
       pictureUrl:
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.fixthephoto.com%2Fblog%2Fimages%2Fgallery%2Fnews_preview_mob_image__preview_404.jpg',
-    ).signWith(signer,
-        withPubkey:
-            '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+    ).dummySign(
+        '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
-    final zapcloud = await PartialProfile(
+    final zapcloud = PartialProfile(
       name: 'Zapcloud',
       pictureUrl:
           'https://cdn.satellite.earth/8225a8244d1d65157adb58b1f7d16424cde1ea3f1b018a933d777ecec0959899.png',
-    ).signWith(signer,
-        withPubkey:
-            '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
+    ).dummySign(
+        '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5');
 
-    dummyProfiles.addAll([
+    dummyProfiles.addAll({
       jane,
       niel,
       zapchat,
@@ -166,27 +152,24 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       hzrd149,
       thegang,
       zapcloud,
-    ]);
+    });
 
     // SignedInProfile for testing, to avoid signing in all the time
-    try {
-      // Add profiles to storage
-      await ref
-          .read(storageNotifierProvider.notifier)
-          .save(Set.from(dummyProfiles));
 
-      // Set current profile and add to signed in profiles
-      if (dummyProfiles.isNotEmpty) {
-        final profile = dummyProfiles.first;
-        profile.setAsActive();
-        signer.addSignedInPubkey(profile.pubkey);
-      }
-    } catch (e, stackTrace) {
-      rethrow;
+    // Add profiles to storage
+    await ref
+        .read(storageNotifierProvider.notifier)
+        .save(dummyProfiles.toSet());
+
+    // Set current profile and add to signed in profiles
+    if (dummyProfiles.isNotEmpty) {
+      final signer = DummySigner(ref, pubkey: dummyProfiles.first.pubkey);
+      // TODO: Modify the active flag here to show Jane logged in, or no-one
+      await signer.initialize(active: true);
     }
 
     // Create community after profiles are saved and indexed
-    final zapchatCommunity = await PartialCommunity(
+    final zapchatCommunity = PartialCommunity(
       name: 'Zapchat',
       relayUrls: {'wss://relay.damus.io'},
       description:
@@ -234,8 +217,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {30123},
         ),
       },
-    ).signWith(signer, withPubkey: zapchat.pubkey);
-    final cypherchadsCommunity = await PartialCommunity(
+    ).dummySign(zapchat.pubkey);
+    final cypherchadsCommunity = PartialCommunity(
       name: 'Cypher Chads',
       relayUrls: {'wss://relay.damus.io'},
       description: 'A community for Cypher Chads',
@@ -282,8 +265,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {30123},
         ),
       },
-    ).signWith(signer, withPubkey: cypherchads.pubkey);
-    final communikeysCommunity = await PartialCommunity(
+    ).dummySign(cypherchads.pubkey);
+    final communikeysCommunity = PartialCommunity(
       name: 'Communikeys',
       relayUrls: {'wss://relay.damus.io'},
       description: 'A community for Communikeys',
@@ -298,8 +281,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {1},
         ),
       },
-    ).signWith(signer, withPubkey: communikeys.pubkey);
-    final nipsoutCommunity = await PartialCommunity(
+    ).dummySign(communikeys.pubkey);
+    final nipsoutCommunity = PartialCommunity(
       name: 'Nips Out',
       relayUrls: {'wss://relay.damus.io'},
       description: 'A community for Nips Out',
@@ -314,8 +297,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {30818},
         ),
       },
-    ).signWith(signer, withPubkey: nipsout.pubkey);
-    final metabolismCommunity = await PartialCommunity(
+    ).dummySign(nipsout.pubkey);
+    final metabolismCommunity = PartialCommunity(
       name: 'Metabolism Go Up',
       relayUrls: {'wss://relay.damus.io'},
       description:
@@ -335,7 +318,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {30818},
         ),
       },
-    ).signWith(signer, withPubkey: metabolism.pubkey);
+    ).dummySign(metabolism.pubkey);
     dummyCommunities.addAll([
       zapchatCommunity,
       cypherchadsCommunity,
@@ -344,7 +327,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       metabolismCommunity,
     ]);
     // Create groups
-    final theGangGroup = await PartialGroup(
+    final theGangGroup = PartialGroup(
       name: 'The Guys',
       relayUrls: {'wss://relay.damus.io'},
       description:
@@ -384,98 +367,98 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {30123},
         ),
       },
-    ).signWith(signer, withPubkey: thegang.pubkey);
+    ).dummySign(thegang.pubkey);
 
     dummyGroups.addAll([
       theGangGroup,
     ]);
 
     dummyNotes.addAll([
-      await PartialNote(
+      PartialNote(
         'A new study on swipe actions shows that it cleans up interfaces like nothing else nostr:nevent1blablabla',
         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      ).signWith(signer, withPubkey: niel.pubkey),
-      await PartialNote(
+      ).dummySign(niel.pubkey),
+      PartialNote(
         'I love Zaplab',
         createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
-      ).signWith(signer, withPubkey: franzap.pubkey),
-      await PartialNote(
+      ).dummySign(franzap.pubkey),
+      PartialNote(
         'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      ).signWith(signer, withPubkey: verbiricha.pubkey),
-      await PartialNote(
+      ).dummySign(verbiricha.pubkey),
+      PartialNote(
         'I love that the UX is the same for all conversations in here. Chat, replies, threads, ... you can just swipe on them.',
         createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
-      ).signWith(signer, withPubkey: zapchat.pubkey),
-      await PartialNote(
+      ).dummySign(zapchat.pubkey),
+      PartialNote(
         'Test Poast',
         createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
-      ).signWith(signer, withPubkey: zapchat.pubkey),
+      ).dummySign(zapchat.pubkey),
     ]);
 
     // Chat messages
     dummyChatMessages.addAll([
-      await PartialChatMessage(
+      PartialChatMessage(
         'Do you guys have pics from the farm visit??',
         createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: franzap.pubkey),
-      await PartialChatMessage(
+      ).dummySign(franzap.pubkey),
+      PartialChatMessage(
         "I didn't have my phone",
         createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: franzap.pubkey),
-      await PartialChatMessage(
+      ).dummySign(franzap.pubkey),
+      PartialChatMessage(
         'nostr:nevent1blablabla Yes! Let me check.',
         createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: niel.pubkey),
-      await PartialChatMessage(
+      ).dummySign(niel.pubkey),
+      PartialChatMessage(
         '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
                       https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
                       https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
         createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: verbiricha.pubkey),
-      await PartialChatMessage(
+      ).dummySign(verbiricha.pubkey),
+      PartialChatMessage(
         'https://cdn.satellite.earth/ce1ada957054c84e7dc95ecaa6b14ddb452f4ab31632903d74ffe83bc6c8ff38.mp3',
         createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: zapchat.pubkey),
-      await PartialChatMessage(
+      ).dummySign(zapchat.pubkey),
+      PartialChatMessage(
         'Awesome!',
         createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: niel.pubkey),
-      await PartialChatMessage(
+      ).dummySign(niel.pubkey),
+      PartialChatMessage(
         ':beautiful:',
         createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: niel.pubkey),
-      await PartialChatMessage(
+      ).dummySign(niel.pubkey),
+      PartialChatMessage(
         'Yeah, this was a great way to get the families together.',
         createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: franzap.pubkey),
-      await PartialChatMessage(
+      ).dummySign(franzap.pubkey),
+      PartialChatMessage(
         'I was just about to say that.',
         createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: niel.pubkey),
-      await PartialChatMessage(
+      ).dummySign(niel.pubkey),
+      PartialChatMessage(
         'This is a test message with a link: https://zapchat.com',
         createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: hzrd149.pubkey),
-      await PartialChatMessage(
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
         'This is a test message with a some ~~strike-through~~ text',
         createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
         community: zapchatCommunity,
-      ).signWith(signer, withPubkey: cypherchads.pubkey),
+      ).dummySign(cypherchads.pubkey),
     ]);
 
     dummyArticles.addAll([
-      await (PartialArticle(
+      (PartialArticle(
         'Zapchat For Dummies',
         'Content of the article',
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
@@ -483,8 +466,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
             'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
         summary:
             'A brief introduction to a daily driver for Communities and Groups.',
-      )).signWith(signer, withPubkey: zapchat.pubkey),
-      await (PartialArticle(
+      )).dummySign(zapchat.pubkey),
+      (PartialArticle(
         'Communi-keys',
         """# The Key Pair
 What a Nostr key pair has by default:
@@ -542,14 +525,14 @@ Then ncommunity = npub + relay hints, for communities
         imageUrl:
             'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
         summary: 'Npub + Relay + 2 new event kinds = Ncommunity',
-      )).signWith(signer, withPubkey: niel.pubkey),
-      await (PartialArticle(
+      )).dummySign(niel.pubkey),
+      (PartialArticle(
         """Don't build on social, its a trap""",
-        """To all existing nostr developers and new nostr developers, stop using kind 1 events... just stop whatever your doing and switch the kind to `Math.round(Math.random() * 10000)` trust me it will be better\n\n## What are kind 1 events\n\nkind 1 events are defined in [NIP-10](https://github.com/nostr-protocol/nips/blob/master/10.md) as \"simple plaintext notes\" or in other words social threads.\n\n## Don't trick your users\n\nMost users are joining nostr for the social experience, and secondly to find all the cool \"other stuff\" apps\nThey find friends, browse social threads, and reply to them. If a user signs into a new nostr client and it starts asking them to sign kind 1 events with blobs of JSON, they will sign it without thinking too much about it.\n\nThen when they return to their comfy social apps they will see that they made 10+ threads with massive amounts of gibberish that they don't remember threading. then they probably will go looking for the delete button and realize there isn't one...\n\nEven if those kind 1 threads don't contain JSON and have a nice fancy human readable syntax. they will still confuse users because they won't remember writing those social threads\n\n## What about \"discoverability\"\n\nIf your goal is to make your \"other stuff\" app visible to more users, then I would suggest using [NIP-19](https://github.com/nostr-protocol/nips/blob/master/19.md) and [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)\nThe first allows users to embed any other event kind into social threads as `nostr:nevent1` or `nostr:naddr1` links, and the second allows social clients to redirect users to an app that knows how to handle that specific kind of event\n\nSo instead of saving your apps data into kind 1 events. you can pick any kind you want, then give users a \"share on nostr\" button that allows them to compose a social thread (kind 1) with a `nostr:` link to your special kind of event and by extension you app\n\n## Why its a trap\n\nOnce users start using your app it becomes a lot more difficult to migrate to a new event kind or data format.\nThis sounds obvious, but If your app is built on kind 1 events that means you will be stuck with their limitations forever. \n\nFor example, here are some of the limitations of using kind 1\n - Querying for your apps data becomes much more difficult. You have to filter through all of a users kind 1 events to find which ones are created by your app\n - Discovering your apps data is more difficult for the same reason, you have to sift through all the social threads just to find the ones with you special tag or that contain JSON\n - Users get confused. as mentioned above users don't expect \"other stuff\" apps to be creating special social threads\n - Other nostr clients won't understand your data and will show it as a social thread with no option for users to learn about your app""",
+        """To all existing nostr developers and new nostr developers, stop using kind 1 events... just stop whatever your doing and switch the kind to `Math.round(Math.random() * 10000)` trust me it will be better\n\n## What are kind 1 events\n\nkind 1 events are defined in [NIP-10](https://github.com/nostr-protocol/nips/blob/master/10.md) as "simple plaintext notes" or in other words social threads.\n\n## Don't trick your users\n\nMost users are joining nostr for the social experience, and secondly to find all the cool "other stuff" apps\nThey find friends, browse social threads, and reply to them. If a user signs into a new nostr client and it starts asking them to sign kind 1 events with blobs of JSON, they will sign it without thinking too much about it.\n\nThen when they return to their comfy social apps they will see that they made 10+ threads with massive amounts of gibberish that they don't remember threading. then they probably will go looking for the delete button and realize there isn't one...\n\nEven if those kind 1 threads don't contain JSON and have a nice fancy human readable syntax. they will still confuse users because they won't remember writing those social threads\n\n## What about "discoverability"\n\nIf your goal is to make your "other stuff" app visible to more users, then I would suggest using [NIP-19](https://github.com/nostr-protocol/nips/blob/master/19.md) and [NIP-89](https://github.com/nostr-protocol/nips/blob/master/89.md)\nThe first allows users to embed any other event kind into social threads as `nostr:nevent1` or `nostr:naddr1` links, and the second allows social clients to redirect users to an app that knows how to handle that specific kind of event\n\nSo instead of saving your apps data into kind 1 events. you can pick any kind you want, then give users a "share on nostr" button that allows them to compose a social thread (kind 1) with a `nostr:` link to your special kind of event and by extension you app\n\n## Why its a trap\n\nOnce users start using your app it becomes a lot more difficult to migrate to a new event kind or data format.\nThis sounds obvious, but If your app is built on kind 1 events that means you will be stuck with their limitations forever. \n\nFor example, here are some of the limitations of using kind 1\n - Querying for your apps data becomes much more difficult. You have to filter through all of a users kind 1 events to find which ones are created by your app\n - Discovering your apps data is more difficult for the same reason, you have to sift through all the social threads just to find the ones with you special tag or that contain JSON\n - Users get confused. as mentioned above users don't expect "other stuff" apps to be creating special social threads\n - Other nostr clients won't understand your data and will show it as a social thread with no option for users to learn about your app""",
         publishedAt: DateTime.now().subtract(const Duration(minutes: 20)),
         summary: 'As a developer, why you should not use kind 1 events.',
-      )).signWith(signer, withPubkey: hzrd149.pubkey),
-      await (PartialArticle(
+      )).dummySign(hzrd149.pubkey),
+      (PartialArticle(
         'Metabolic Health Foods You Can Find in Any Store',
         'Content of the third article',
         publishedAt: DateTime.now().subtract(const Duration(minutes: 30)),
@@ -557,72 +540,72 @@ Then ncommunity = npub + relay hints, for communities
             'https://cdn.satellite.earth/5b8e0002026a4bd0804d0470295dfd209ef9c461957a85f62e00e2923ff18bf1.png',
         summary:
             'A deep dive into foods that are good for your metabolic health and you can actually find in stores.',
-      )).signWith(signer, withPubkey: metabolism.pubkey),
+      )).dummySign(metabolism.pubkey),
     ]);
 
     dummyBooks.addAll([
-      await (PartialBook(
+      (PartialBook(
         'Eat Like A Human',
         'Content of the book',
         writer: 'Bill Schindler',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.hachettebookgroup.com%2Fwp-content%2Fuploads%2F2021%2F09%2F9780316244886.jpg',
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialBook(
+      )).dummySign(franzap.pubkey),
+      (PartialBook(
         'In Search Of The Physical Basis Of Life',
         'Content of the book',
         writer: 'Gilbert Ling',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fnwf-bucket.s3.me-south-1.amazonaws.com%2Fimages%2Fae%2Fabookstore%2Fcovers%2Fnormal%2F315%2F315121.jpg',
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialBook(
+      )).dummySign(franzap.pubkey),
+      (PartialBook(
         'En quête d\'amour',
         'Content of the book',
         writer: 'Anneke Lucas',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F59ab4dedc027d8465d8c085c%2F07cc0908-7279-4dcf-a85f-cca89fc8a245%2FGUQyi3xWoAAIAW3.jpg',
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: niel.pubkey),
-      await (PartialBook(
+      )).dummySign(niel.pubkey),
+      (PartialBook(
         'A Book with a surprsingly long title that is here to test text overflow',
         'Content of the book',
         writer: 'Author Name',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialBook(
+      )).dummySign(franzap.pubkey),
+      (PartialBook(
         'Bokk Title One',
         'Content of the book',
         writer: 'Author Name',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialBook(
+      )).dummySign(franzap.pubkey),
+      (PartialBook(
         'Book Title Two',
         'Content of the book',
         writer: 'Author Name',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialBook(
+      )).dummySign(franzap.pubkey),
+      (PartialBook(
         'Book Title Three',
         'Content of the book',
         writer: 'Author Name',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialBook(
+      )).dummySign(franzap.pubkey),
+      (PartialBook(
         'Book Title Four',
         'Content of the book',
         writer: 'Author Name',
         imageUrl:
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F55%2Fb1%2Fb5%2F55b1b5dbf1488a572f8aa37b0388d321.jpg&f=1&nofb=1&ipt=43e93f320b6e77480745c65d2b398a1ea50160090f58fc662cf980b64fe76c87',
-      )).signWith(signer, withPubkey: franzap.pubkey),
+      )).dummySign(franzap.pubkey),
     ]);
 
     dummyMails.addAll([
-      await PartialMail(
+      PartialMail(
         'Marriage Invitation',
         'Chicos & Chicas, \nMe and nostr:npub1blablabla are getting married and would love for you to be there. \nPlease let me know if you can make it. \n\nBest regards, \n\n**Fran**',
         recipientPubkeys: {
@@ -639,57 +622,57 @@ Then ncommunity = npub + relay hints, for communities
           '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // thegang
           '266813e0cff10dfa324c6cba357b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
         },
-      ).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialMail(
+      ).dummySign(franzap.pubkey),
+      (PartialMail(
         'Re: Job Listing - Branding & Corprate Identity for Zapcloud',
         'Hey Zapcloud Team, \n\nI think I might be a good fit for this job. \n\nI have a lot of experience in branding and corporate identity, in the Nostr space specifically. \n\nHere\'s my [Portfolio](https://zapchat.com/portfolio) \n\nBest regards, \n\n**Niel**',
         recipientPubkeys: {
           'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be', // jane
           '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
         },
-      )).signWith(signer, withPubkey: niel.pubkey),
-      await (PartialMail(
+      )).dummySign(niel.pubkey),
+      (PartialMail(
         'Top-Up Time!',
         'Hey Jane! \n\n## Reminder \nYour Zapcloud budget is running low. \n\n[Top Up Here](https://zapchat.com/top-up) to avoid service disruption. \n\nList test: \n- Item 1 \n- Item 2 \n- Item 3 \n\nBest regards, \n\n**Zapcloud**',
         recipientPubkeys: {
           'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be'
         },
-      )).signWith(signer, withPubkey: zapcloud.pubkey),
+      )).dummySign(zapcloud.pubkey),
     ]);
 
     dummyTasks.addAll([
-      await (PartialTask(
+      (PartialTask(
         'Task Title',
         'Task Content',
         status: 'open',
         slug: Utils.generateRandomHex64(),
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: franzap.pubkey),
-      await (PartialTask(
+      )).dummySign(franzap.pubkey),
+      (PartialTask(
         'Task Title',
         'Task Content',
         status: 'inProgress',
         slug: Utils.generateRandomHex64(),
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: zapcloud.pubkey),
-      await (PartialTask(
+      )).dummySign(zapcloud.pubkey),
+      (PartialTask(
         'Task Title',
         'Task Content',
         status: 'inReview',
         slug: Utils.generateRandomHex64(),
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: niel.pubkey),
-      await (PartialTask(
+      )).dummySign(niel.pubkey),
+      (PartialTask(
         'Task Title',
         'Task Content',
         status: 'closed',
         slug: Utils.generateRandomHex64(),
         publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).signWith(signer, withPubkey: zapchat.pubkey),
+      )).dummySign(zapchat.pubkey),
     ]);
 
     dummyJobs.addAll([
-      await (PartialJob(
+      (PartialJob(
         'Logo & Branding Design',
         '''Zapcloud Brand Design \n## Project Overview\nZapcloud is an **all-in-one** hosting solution for Nostr and we need branding and bla bla bla.''',
         labels: {
@@ -700,8 +683,8 @@ Then ncommunity = npub + relay hints, for communities
         },
         location: 'Remote',
         employment: 'Task Based',
-      )).signWith(signer, withPubkey: zapcloud.pubkey),
-      await (PartialJob(
+      )).dummySign(zapcloud.pubkey),
+      (PartialJob(
         'Community Manager',
         '''Zapchat Community Manager \n## Project Overview\nZapchat is a Nostr community for the Zapchat project and we need a community manager to help us grow the community.''',
         labels: {
@@ -711,8 +694,8 @@ Then ncommunity = npub + relay hints, for communities
         },
         location: 'Remote',
         employment: 'Full-Time',
-      )).signWith(signer, withPubkey: metabolism.pubkey),
-      await (PartialJob(
+      )).dummySign(metabolism.pubkey),
+      (PartialJob(
         'Food Forest Design',
         '''Food Forest Design \n## Project Overview\nFood Forest is a permaculture project in Winsconsin, USA and we need a design to help us grow plants and trees.''',
         labels: {
@@ -722,53 +705,53 @@ Then ncommunity = npub + relay hints, for communities
         },
         location: 'Winsconsin, USA',
         employment: 'Task Based',
-      )).signWith(signer, withPubkey: jane.pubkey),
+      )).dummySign(jane.pubkey),
     ]);
 
     // Add dummy zap requests
     dummyCashuZaps.addAll([
-      await (PartialCashuZap(
+      (PartialCashuZap(
         'Thanks for the great content!',
         proof: jsonEncode({'amount': 1000}),
         url: 'https://cashu.mint.example.com',
         zappedEventId: '1234567890abcdef',
         recipientPubkey: niel.pubkey,
         createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-      )).signWith(signer, withPubkey: niel.pubkey),
-      await (PartialCashuZap(
+      )).dummySign(niel.pubkey),
+      (PartialCashuZap(
         "nostr:nevent1234567890abcdef No, but here's a zap",
         proof: jsonEncode({'amount': 123}),
         url: 'https://cashu.mint.example.com',
         zappedEventId: '1234567890abcdef',
         recipientPubkey: franzap.pubkey,
         createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
-      )).signWith(signer, withPubkey: verbiricha.pubkey),
+      )).dummySign(verbiricha.pubkey),
     ]);
 
     dummyServices.addAll([
-      await (PartialService(
+      (PartialService(
         'Nostr App Design',
         'Pixel-perfect designs and front end builds for your Nostr app.',
         imageUrl:
             'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-      )).signWith(signer, withPubkey: niel.pubkey),
+      )).dummySign(niel.pubkey),
     ]);
 
     // Save all data
-    await ref.read(storageNotifierProvider.notifier).save(Set.from([
-          ...dummyProfiles,
-          ...dummyNotes,
-          ...dummyArticles,
-          ...dummyChatMessages,
-          ...dummyCommunities,
-          ...dummyGroups,
-          ...dummyBooks,
-          ...dummyMails,
-          ...dummyTasks,
-          ...dummyJobs,
-          ...dummyCashuZaps,
-          ...dummyServices,
-        ]));
+    await ref.read(storageNotifierProvider.notifier).save({
+      ...dummyProfiles,
+      ...dummyNotes,
+      ...dummyArticles,
+      ...dummyChatMessages,
+      ...dummyCommunities,
+      ...dummyGroups,
+      ...dummyBooks,
+      ...dummyMails,
+      ...dummyTasks,
+      ...dummyJobs,
+      ...dummyCashuZaps,
+      ...dummyServices,
+    });
 
     return true;
   } catch (e, stackTrace) {

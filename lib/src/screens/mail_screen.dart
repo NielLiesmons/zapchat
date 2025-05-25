@@ -130,7 +130,8 @@ class _MailScreenState extends ConsumerState<MailScreen> {
                   AppMail(
                     mail: widget.mail,
                     recipients: recipients,
-                    currentProfile: ref.watch(Profile.signedInProfileProvider),
+                    // TODO: currentProfile could be read from zaplab
+                    currentProfile: ref.watch(Signer.activeProfileProvider),
                     onSwipeLeft: (mail) {
                       print('swipe left');
                     },

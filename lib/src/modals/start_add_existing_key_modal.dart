@@ -1,8 +1,7 @@
+import 'package:amber_signer/amber_signer.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:amber_signer/amber_signer.dart';
-import '../providers/signer.dart';
 
 class StartAddExistingKeyModal extends ConsumerStatefulWidget {
   const StartAddExistingKeyModal({super.key});
@@ -11,6 +10,8 @@ class StartAddExistingKeyModal extends ConsumerStatefulWidget {
   ConsumerState<StartAddExistingKeyModal> createState() =>
       _StartAddExistingKeyModalState();
 }
+
+final _refProvider = Provider((ref) => ref);
 
 class _StartAddExistingKeyModalState
     extends ConsumerState<StartAddExistingKeyModal> {
@@ -26,7 +27,7 @@ class _StartAddExistingKeyModalState
   Future<void> _checkSigners() async {
     final startTime = DateTime.now();
     try {
-      final signer = AmberSigner(ref.read(signersProvider.notifier).ref);
+      final signer = AmberSigner(ref.read(_refProvider));
       await signer.initialize();
 
       // Ensure we show loading for at least 2 seconds
@@ -38,7 +39,7 @@ class _StartAddExistingKeyModalState
 
       if (mounted) {
         setState(() {
-          _isAmberAvailable = signer.isAvailable;
+          _isAmberAvailable = signer.isInitialized;
           _isChecking = false;
         });
       }

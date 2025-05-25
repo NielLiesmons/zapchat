@@ -55,7 +55,7 @@ final resolversProvider = Provider<Resolvers>((ref) {
         profileCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
       print('Resolving profile for identifier: $identifier');
-      final profile = ref.watch(Profile.signedInProfileProvider);
+      final profile = ref.watch(Signer.activeProfileProvider);
       print('Current profile: $profile');
 
       if (profile == null) {

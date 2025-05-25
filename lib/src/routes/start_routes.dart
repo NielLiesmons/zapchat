@@ -68,30 +68,20 @@ List<GoRoute> get startRoutes => [
 
                     try {
                       // Convert nsec to hex
-                      final hexKey = AppKeyGenerator.nsecToHex(secretKey);
+                      final secretKeyHex = AppKeyGenerator.nsecToHex(secretKey);
 
                       // Get the signer from the provider
-                      final signer = ref.read(bip340SignerProvider(hexKey));
+                      final signer =
+                          ref.read(bip340SignerProvider(secretKeyHex));
                       await signer.initialize();
 
                       // Sign the profile with the signer
-                      final profile = await partialProfile.signWith(
-                        signer,
-                        withPubkey: secretKey,
-                      );
+                      final profile = await partialProfile.signWith(signer);
 
                       // Save the profile to storage
                       await ref
                           .read(storageNotifierProvider.notifier)
                           .save({profile});
-
-                      // Add the signer to the signers provider
-                      await ref
-                          .read(signersProvider.notifier)
-                          .addNsecSigner(profile.pubkey, secretKey);
-
-                      // Set as active profile
-                      profile.setAsActive();
 
                       context.go('/');
                     } catch (e) {

@@ -1,16 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import '../../providers/resolvers.dart';
 
 class TasksTab extends StatelessWidget {
   const TasksTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return TabData(
       label: 'Tasks',
       icon: const AppEmojiContentType(contentType: 'task'),

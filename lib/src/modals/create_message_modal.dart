@@ -3,7 +3,6 @@ import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
-import '../providers/signer.dart';
 import '../providers/resolvers.dart';
 import '../providers/search.dart';
 
@@ -68,21 +67,15 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   void _sendMessage() async {
     final text = _controller.text;
     print('Text content: $text');
-    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
-    final signer = signedInProfile != null
-        ? ref.read(signersProvider.notifier).getSigner(signedInProfile.pubkey)
-        : null;
+    final signer = ref.read(Signer.activeSignerProvider)!;
 
-    if (text.isNotEmpty && signedInProfile != null && signer != null) {
+    if (text.isNotEmpty) {
       print('Using actual Signer');
       final message = PartialChatMessage(
         text,
         createdAt: DateTime.now(),
       );
-      final signedMessage = await message.signWith(
-        signer,
-        withPubkey: signedInProfile.pubkey,
-      );
+      final signedMessage = await message.signWith(signer);
       await ref.read(storageNotifierProvider.notifier).save({signedMessage});
     } else {
       // dummSign for testing
@@ -101,10 +94,6 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
-    final signer = signedInProfile != null
-        ? ref.read(signersProvider.notifier).getSigner(signedInProfile.pubkey)
-        : null;
 
     return AppInputModal(
       children: [
