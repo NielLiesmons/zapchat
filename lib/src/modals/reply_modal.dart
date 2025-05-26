@@ -3,7 +3,6 @@ import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
-import '../providers/signer.dart';
 import '../providers/resolvers.dart';
 import '../providers/search.dart';
 
@@ -70,12 +69,10 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
     print('Send button tapped');
     final text = _controller.text;
     print('Text content: $text');
-    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
-    final signer = signedInProfile != null
-        ? ref.read(signersProvider.notifier).getSigner(signedInProfile.pubkey)
-        : null;
+    // final signedInProfile = ref.read(Profile.signedInActiveProfileProvider)!;
+    final signer = ref.read(Signer.activeSignerProvider)!;
 
-    if (text.isNotEmpty && signedInProfile != null && signer != null) {
+    if (text.isNotEmpty) {
       print('Using actual Signer');
       // Add the Nostr event reference to the message content
       final messageContent = 'nostrnevent1${widget.model.id} $text';
@@ -83,10 +80,7 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
         messageContent,
         createdAt: DateTime.now(),
       );
-      final signedMessage = await message.signWith(
-        signer,
-        withPubkey: signedInProfile.pubkey,
-      );
+      final signedMessage = await message.signWith(signer);
       await ref.read(storageNotifierProvider.notifier).save({signedMessage});
       context.pop();
     } else {
@@ -107,10 +101,6 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
-    final signer = signedInProfile != null
-        ? ref.read(signersProvider.notifier).getSigner(signedInProfile.pubkey)
-        : null;
 
     return AppInputModal(
       children: [

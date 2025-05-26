@@ -41,11 +41,11 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
-// Home page content
+  // Home page content
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final signedInProfile = ref.watch(Profile.signedInProfileProvider);
+    final signedInProfile = ref.watch(Signer.activeProfileProvider);
 
     return Stack(
       children: [

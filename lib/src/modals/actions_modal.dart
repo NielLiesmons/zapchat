@@ -138,21 +138,11 @@ class ActionsModal extends ConsumerWidget {
                                       padding: const AppEdgeInsets.only(
                                           right: AppGapSize.s14),
                                       child: Center(
-                                        child: emoji.emojiUrl != null
-                                            ? AppEmojiImage(
-                                                emojiUrl: emoji.emojiUrl ?? '',
-                                                emojiName: emoji.emojiName,
-                                                size: 28,
-                                              )
-                                            : SizedBox(
-                                                width: 28,
-                                                height: 28,
-                                                child: Center(
-                                                  child: AppText.h1(
-                                                    emoji.emojiName,
-                                                  ),
-                                                ),
-                                              ),
+                                        child: AppEmojiImage(
+                                          emojiUrl: emoji.emojiUrl,
+                                          emojiName: emoji.emojiName,
+                                          size: 28,
+                                        ),
                                       ),
                                     ),
                                   );

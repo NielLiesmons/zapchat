@@ -9,8 +9,8 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final signedInPubkeys = ref.watch(Profile.signedInPubkeysProvider);
-    final currentProfile = ref.watch(Profile.signedInProfileProvider);
+    final signedInPubkeys = ref.watch(Signer.signedInPubkeysProvider);
+    final currentProfile = ref.watch(Signer.activeProfileProvider);
     final themeState = ref.watch(themeSettingsProvider);
 
     if (signedInPubkeys.isEmpty) {
@@ -37,7 +37,7 @@ class SettingsScreen extends ConsumerWidget {
 
     if (currentProfile == null && profiles.isNotEmpty) {
       // If no current profile but we have user profiles, set the first one
-      profiles.first.setAsActive();
+      ref.read(Signer.signerProvider(profiles.first.pubkey))?.setActive();
     }
 
     if (currentProfile == null) {
@@ -54,7 +54,7 @@ class SettingsScreen extends ConsumerWidget {
       currentProfile: currentProfile,
       profiles: profiles,
       onSelect: (profile) {
-        profile.setAsActive();
+        ref.read(Signer.signerProvider(profile.pubkey))?.setActive();
       },
       onViewProfile: (profile) =>
           context.push('/profile/${profile.npub}', extra: profile),

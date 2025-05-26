@@ -107,7 +107,8 @@ class _AppWithTheme extends ConsumerWidget {
           onProfilesTap: () {
             goRouter.push('/settings');
           },
-          currentProfile: ref.watch(Profile.signedInProfileProvider),
+          // TODO: currentProfile could be read from zaplab
+          currentProfile: ref.watch(Signer.activeProfileProvider),
           historyMenu: const HistoryContent(),
         );
       },

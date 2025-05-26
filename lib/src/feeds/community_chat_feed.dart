@@ -122,7 +122,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     // Group messages by author and time
     final messageGroups = _groupMessages(messages);
 
-    final currentProfile = ref.watch(Profile.signedInProfileProvider);
+    final currentProfile = ref.watch(Signer.activeProfileProvider);
 
     // Create a single list of all events (messages and zaps) with their timestamps
     final allEvents = <({dynamic model, DateTime timestamp, bool isMessage})>[

@@ -9,8 +9,6 @@ class WikisTab extends StatelessWidget {
       icon: const AppEmojiContentType(contentType: 'wiki'),
       content: Builder(
         builder: (context) {
-          final theme = AppTheme.of(context);
-
           return AppContainer(
             child: const AppLoadingFeed(),
           );

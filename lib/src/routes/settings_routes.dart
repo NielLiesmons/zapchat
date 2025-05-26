@@ -5,8 +5,6 @@ import 'package:zapchat/src/modals/preferences_modal.dart';
 import 'package:zapchat/src/modals/start_add_existing_key_modal.dart';
 import 'package:zapchat/src/modals/settings_history_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:models/models.dart';
-import 'package:zapchat/src/providers/signer.dart';
 
 List<GoRoute> get settingsRoutes => [
       GoRoute(
@@ -60,46 +58,9 @@ List<GoRoute> get settingsRoutes => [
                   secretKey: extra['secretKey'] as String,
                   profileName: extra['profileName'] as String,
                   onUseThisKey: () async {
-                    final secretKey = extra['secretKey'] as String;
-                    final profileName = extra['profileName'] as String;
-
-                    // Create a PartialProfile with the provided name
-                    final partialProfile = PartialProfile(
-                      name: profileName,
-                    );
-
-                    // Verify nsec format
-                    if (!AppKeyGenerator.verifyNsecChecksum(secretKey)) {
-                      throw FormatException('Invalid nsec format: $secretKey');
-                    }
-
                     try {
-                      // Convert nsec to hex
-                      final hexKey = AppKeyGenerator.nsecToHex(secretKey);
-
-                      // Get the signer from the provider
-                      final signer = ref.read(bip340SignerProvider(hexKey));
-                      await signer.initialize();
-
-                      // Sign the profile with the signer
-                      final profile = await partialProfile.signWith(
-                        signer,
-                        withPubkey: secretKey,
-                      );
-
-                      // Save the profile to storage
-                      await ref
-                          .read(storageNotifierProvider.notifier)
-                          .save({profile});
-
-                      // Add the signer to the signers provider
-                      await ref
-                          .read(signersProvider.notifier)
-                          .addNsecSigner(profile.pubkey, secretKey);
-
-                      // Set as active profile
-                      profile.setAsActive();
-
+                      // TODO: Reuse nsec logic from sign in
+                      throw UnimplementedError();
                       context.go('/');
                     } catch (e) {
                       print('Error processing nsec: $e');
