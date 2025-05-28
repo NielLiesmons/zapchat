@@ -18,13 +18,15 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = AppTheme.of(context);
-    final state = ref.watch(query<Profile>());
+    final profilesState = ref.watch(query<Profile>());
+    final articleState = ref.watch(query<Article>(limit: 1));
+    final topSupportersState = ref.watch(query<Profile>(limit: 3));
 
-    if (state case StorageLoading()) {
+    if (profilesState case StorageLoading()) {
       return const AppLoadingFeed();
     }
 
-    final profiles = state.models.cast<Profile>();
+    final profiles = profilesState.models.cast<Profile>();
 
     return AppScope(
       isInsideScope: true,
@@ -103,19 +105,11 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                     ],
                   ),
                   const AppGap.s8(),
-                  AppArticleCard(
-                    article: (PartialArticle(
-                      'Zapchat For Dummies',
-                      'Content of the article',
-                      publishedAt:
-                          DateTime.now().subtract(const Duration(minutes: 10)),
-                      imageUrl:
-                          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-                      summary:
-                          'A brief introduction to a daily driver for Communities and Groups.',
-                    )).dummySign(
-                        "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"),
-                  )
+                  if (articleState case StorageData(:final models))
+                    if (models.isNotEmpty)
+                      AppArticleCard(
+                          article: models
+                              .first), // TODO: fetch actual pinned publications
                 ],
               ),
             ),
@@ -200,7 +194,7 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                     children: [
                       const AppGap.s4(),
                       AppText.med14(
-                        'Labels We Use',
+                        'Labels',
                         color: theme.colors.white66,
                       ),
                       const Spacer(),
@@ -337,28 +331,12 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                     ],
                   ),
                   const AppGap.s8(),
-                  AppSupportersStage(
-                    topThreeSupporters: [
-                      PartialProfile(
-                        name: 'John C.',
-                        pictureUrl:
-                            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fe1.pxfuel.com%2Fdesktop-wallpaper%2F903%2F679%2Fdesktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg',
-                      ).dummySign(
-                          '8fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195'),
-                      PartialProfile(
-                        name: 'Niel Liesmons',
-                        pictureUrl:
-                            'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-                      ).dummySign(
-                          'a9434ee165ed01b286becfc2771ef1705d3537d051b387288898cc00d5c885be'),
-                      PartialProfile(
-                        name: 'franzap',
-                        pictureUrl:
-                            'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
-                      ).dummySign(
-                          '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194'),
-                    ],
-                  )
+                  if (topSupportersState case StorageData(:final models)) ...[
+                    if (models.isNotEmpty)
+                      AppSupportersStage(
+                        topThreeSupporters: models,
+                      ), // TODO: fetch actual supporters
+                  ]
                 ],
               ),
             ),

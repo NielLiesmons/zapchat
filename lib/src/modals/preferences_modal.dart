@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import '../providers/theme_settings.dart';
+import 'package:models/models.dart';
 
 class PreferencesModal extends ConsumerWidget {
   const PreferencesModal({super.key});
@@ -9,9 +10,10 @@ class PreferencesModal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = AppTheme.of(context);
     final themeState = ref.watch(themeSettingsProvider);
+    final activeProfile = ref.watch(Signer.activeProfileProvider);
 
     return AppModal(
-      title: 'Appearance',
+      title: 'Preferences',
       bottomBar: AppButton(
         onTap: () {
           Navigator.pop(context);
@@ -183,19 +185,46 @@ class PreferencesModal extends ConsumerWidget {
           }),
         ),
         const AppGap.s12(),
-        const AppSectionTitle('Home Header'),
+        const AppSectionTitle('Show Others'),
         AppPanel(
+          padding: AppEdgeInsets.all(AppGapSize.none),
           child: Column(
             children: [
-              const AppGap.s12(),
-              AppText.reg14('// TODO', color: theme.colors.white33),
-              const AppGap.s12(),
+              AppContainer(
+                padding: AppEdgeInsets.symmetric(
+                  horizontal: AppGapSize.s16,
+                  vertical: AppGapSize.s12,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [AppText.reg14("When you are typing"), AppSwitch()],
+                ),
+              ),
+              const AppDivider(),
+              AppContainer(
+                padding: AppEdgeInsets.symmetric(
+                  horizontal: AppGapSize.s16,
+                  vertical: AppGapSize.s12,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppTypingBubble(profile: activeProfile),
+                    AppText.reg12(
+                      "This is what \nothers can see",
+                      color: theme.colors.white33,
+                      textAlign: TextAlign.right,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         const AppGap.s12(),
         const AppSectionTitle('Other'),
         AppPanel(
+          padding: AppEdgeInsets.all(AppGapSize.none),
           child: Column(
             children: [
               const AppGap.s12(),

@@ -21,6 +21,7 @@ class ReplyModal extends ConsumerStatefulWidget {
 class _ReplyModalState extends ConsumerState<ReplyModal> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
+  // ignore: unused_field
   late PartialChatMessage _partialMessage;
 
   @override
@@ -36,7 +37,8 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
     // Add keyboard listener
     _focusNode.onKeyEvent = (node, event) {
       if (event.logicalKey == LogicalKeyboardKey.enter &&
-          HardwareKeyboard.instance.isMetaPressed) {
+          (HardwareKeyboard.instance.isMetaPressed ||
+              HardwareKeyboard.instance.isControlPressed)) {
         _sendMessage();
         return KeyEventResult.handled;
       }
@@ -66,33 +68,18 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
   }
 
   void _sendMessage() async {
-    print('Send button tapped');
     final text = _controller.text;
-    print('Text content: $text');
     // final signedInProfile = ref.read(Profile.signedInActiveProfileProvider)!;
     final signer = ref.read(Signer.activeSignerProvider)!;
 
     if (text.isNotEmpty) {
-      print('Using actual Signer');
       // Add the Nostr event reference to the message content
-      final messageContent = 'nostrnevent1${widget.model.id} $text';
-      final message = PartialChatMessage(
-        messageContent,
-        createdAt: DateTime.now(),
-      );
-      final signedMessage = await message.signWith(signer);
-      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
-      context.pop();
-    } else {
-      // dummSign for testing
       final messageContent = 'nostr:nevent1${widget.model.id} $text';
       final message = PartialChatMessage(
         messageContent,
         createdAt: DateTime.now(),
       );
-      final signedMessage = message.dummySign(
-          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be');
-      print('Used dummySign');
+      final signedMessage = await message.signWith(signer);
       await ref.read(storageNotifierProvider.notifier).save({signedMessage});
       context.pop();
     }

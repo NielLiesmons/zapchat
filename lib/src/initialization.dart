@@ -165,7 +165,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     if (dummyProfiles.isNotEmpty) {
       final signer = DummySigner(ref, pubkey: dummyProfiles.first.pubkey);
       // TODO: Modify the active flag here to show Jane logged in, or no-one
-      await signer.initialize(active: true);
+      await signer.initialize(active: false);
     }
 
     // Create community after profiles are saved and indexed

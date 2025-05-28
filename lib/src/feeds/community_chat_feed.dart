@@ -122,7 +122,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     // Group messages by author and time
     final messageGroups = _groupMessages(messages);
 
-    final currentProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile = ref.watch(Signer.activeProfileProvider);
 
     // Create a single list of all events (messages and zaps) with their timestamps
     final allEvents = <({dynamic model, DateTime timestamp, bool isMessage})>[
@@ -136,12 +136,12 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     allEvents.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
     // Check for new outgoing messages
-    if (currentProfile != null) {
+    if (activeProfile != null) {
       for (final event in allEvents) {
         if (event.isMessage) {
           final messageGroup = event.model as List<ChatMessage>;
           final message = messageGroup.first;
-          if (message.author.value?.pubkey == currentProfile.pubkey &&
+          if (message.author.value?.pubkey == activeProfile.pubkey &&
               message.id != _lastOutgoingMessageId) {
             // Found a new outgoing message
             _lastOutgoingMessageId = message.id;
@@ -168,7 +168,6 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
           SingleChildScrollView(
             controller: _scrollController,
             clipBehavior: Clip.none,
-            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 const AppNewMessagesDivider(text: '8 New Mssages'),
@@ -200,7 +199,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                                       .author
                                       .value
                                       ?.pubkey ==
-                                  currentProfile?.pubkey,
+                                  activeProfile?.pubkey,
                               onReply: (event) => context
                                   .push('/reply-to/${event.id}', extra: event),
                               onActions: (event) => context
@@ -223,7 +222,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                           },
                           isOutgoing:
                               (event.model as CashuZap).author.value?.pubkey ==
-                                  currentProfile?.pubkey,
+                                  activeProfile?.pubkey,
                           onReply: (event) => context
                               .push('/reply-to/${event.id}', extra: event),
                           onActions: (event) => context

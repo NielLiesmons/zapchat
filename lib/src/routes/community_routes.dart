@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
-import 'package:zapchat/src/screens/community_screen.dart';
+import '../screens/community_screen.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import '../modals/community_info_modal.dart';
 import '../modals/community_pricing_modal.dart';

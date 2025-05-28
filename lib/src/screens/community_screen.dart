@@ -350,6 +350,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       onHomeTap: () => context.push('/'),
       history: recentHistory,
       child: AppContainer(
+        decoration: BoxDecoration(color: AppTheme.of(context).colors.black),
+        clipBehavior: Clip.hardEdge,
         width: double.infinity,
         child: Column(
           children: [

@@ -24,60 +24,212 @@ class ActionsModal extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Reply section
-            if (model is ChatMessage || model is CashuZap || model is Zap)
-              AppContainer(
-                decoration: BoxDecoration(
-                  color: theme.colors.black33,
-                  borderRadius: theme.radius.asBorderRadius().rad16,
-                  border: Border.all(
-                    color: theme.colors.white33,
-                    width: AppLineThicknessData.normal().thin,
-                  ),
-                ),
-                padding: const AppEdgeInsets.all(AppGapSize.s8),
-                child: Column(
-                  children: [
-                    model is CashuZap || model is Zap
-                        ? AppZapCard(
-                            zap: model is Zap ? model as Zap : null,
-                            cashuZap:
-                                model is CashuZap ? model as CashuZap : null,
-                            onResolveEvent: resolvers.eventResolver,
-                            onResolveProfile: resolvers.profileResolver,
-                            onResolveEmoji: resolvers.emojiResolver,
-                          )
-                        : AppQuotedMessage(
-                            chatMessage: model as ChatMessage,
-                            onResolveEvent: resolvers.eventResolver,
-                            onResolveProfile: resolvers.profileResolver,
-                            onResolveEmoji: resolvers.emojiResolver,
-                          ),
-                    AppContainer(
-                      padding: const AppEdgeInsets.only(
-                        left: AppGapSize.s8,
-                        right: AppGapSize.s8,
-                        top: AppGapSize.s12,
-                        bottom: AppGapSize.s4,
-                      ),
-                      child: Row(
-                        children: [
-                          AppText.med14(
-                            'Reply',
-                            color: theme.colors.white33,
-                          ),
-                          const Spacer(),
-                          AppIcon.s16(
-                            theme.icons.characters.voice,
-                            color: theme.colors.white33,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            TapBuilder(
+              onTap: () => context.push,
+              builder: (context, state, isFocused) {
+                double scaleFactor = 1.0;
+                if (state == TapState.pressed) {
+                  scaleFactor = 0.98;
+                } else if (state == TapState.hover) {
+                  scaleFactor = 1.00;
+                }
 
+                return AnimatedScale(
+                  scale: scaleFactor,
+                  duration: AppDurationsData.normal().fast,
+                  curve: Curves.easeInOut,
+                  child: model is ChatMessage ||
+                          model is CashuZap ||
+                          model is Zap
+                      ? TapBuilder(
+                          onTap: () => context.replace('/reply-to/${model.id}',
+                              extra: model),
+                          builder: (context, state, hasFocus) {
+                            return AppContainer(
+                              decoration: BoxDecoration(
+                                color: theme.colors.black33,
+                                borderRadius:
+                                    theme.radius.asBorderRadius().rad16,
+                                border: Border.all(
+                                  color: theme.colors.white33,
+                                  width: AppLineThicknessData.normal().thin,
+                                ),
+                              ),
+                              padding: const AppEdgeInsets.all(AppGapSize.s8),
+                              child: Column(
+                                children: [
+                                  model is CashuZap || model is Zap
+                                      ? AppZapCard(
+                                          zap: model is Zap
+                                              ? model as Zap
+                                              : null,
+                                          cashuZap: model is CashuZap
+                                              ? model as CashuZap
+                                              : null,
+                                          onResolveEvent:
+                                              resolvers.eventResolver,
+                                          onResolveProfile:
+                                              resolvers.profileResolver,
+                                          onResolveEmoji:
+                                              resolvers.emojiResolver,
+                                        )
+                                      : AppQuotedMessage(
+                                          chatMessage: model as ChatMessage,
+                                          onResolveEvent:
+                                              resolvers.eventResolver,
+                                          onResolveProfile:
+                                              resolvers.profileResolver,
+                                          onResolveEmoji:
+                                              resolvers.emojiResolver,
+                                        ),
+                                  AppContainer(
+                                    padding: const AppEdgeInsets.only(
+                                      left: AppGapSize.s8,
+                                      right: AppGapSize.s8,
+                                      top: AppGapSize.s12,
+                                      bottom: AppGapSize.s4,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        AppText.med14(
+                                          'Reply',
+                                          color: theme.colors.white33,
+                                        ),
+                                        const Spacer(),
+                                        AppIcon.s16(
+                                          theme.icons.characters.voice,
+                                          color: theme.colors.white33,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        )
+                      : Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                AppProfilePic.s40(model.author.value),
+                                const AppGap.s12(),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          AppEmojiImage(
+                                            emojiUrl:
+                                                'assets/emoji/${getModelContentType(model)}.png',
+                                            emojiName:
+                                                getModelContentType(model),
+                                            size: 16,
+                                          ),
+                                          const AppGap.s10(),
+                                          Expanded(
+                                            child: AppCompactTextRenderer(
+                                              content:
+                                                  getModelDisplayText(model),
+                                              onResolveEvent:
+                                                  resolvers.eventResolver,
+                                              onResolveProfile:
+                                                  resolvers.profileResolver,
+                                              onResolveEmoji:
+                                                  resolvers.emojiResolver,
+                                              isWhite: true,
+                                              isMedium: true,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const AppGap.s2(),
+                                      AppText.reg12(
+                                        model.author.value?.name ??
+                                            formatNpub(
+                                                model.author.value?.npub ?? ''),
+                                        color: theme.colors.white66,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const AppGap.s8(),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                AppContainer(
+                                  width: theme.sizes.s38,
+                                  child: Center(
+                                    child: AppContainer(
+                                      decoration: BoxDecoration(
+                                          color: theme.colors.white33),
+                                      width:
+                                          AppLineThicknessData.normal().medium,
+                                      height: theme.sizes.s16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TapBuilder(
+                              onTap: () => context.push('/reply/${model.id}',
+                                  extra: model),
+                              builder: (context, state, hasFocus) {
+                                double scaleFactor = 1.0;
+                                if (state == TapState.pressed) {
+                                  scaleFactor = 0.99;
+                                } else if (state == TapState.hover) {
+                                  scaleFactor = 1.005;
+                                }
+
+                                return Transform.scale(
+                                  scale: scaleFactor,
+                                  child: AppContainer(
+                                    height: theme.sizes.s40,
+                                    decoration: BoxDecoration(
+                                      color: theme.colors.black33,
+                                      borderRadius:
+                                          theme.radius.asBorderRadius().rad16,
+                                      border: Border.all(
+                                        color: theme.colors.white33,
+                                        width:
+                                            AppLineThicknessData.normal().thin,
+                                      ),
+                                    ),
+                                    padding:
+                                        const AppEdgeInsets.all(AppGapSize.s8),
+                                    child: AppContainer(
+                                      padding: const AppEdgeInsets.only(
+                                        left: AppGapSize.s8,
+                                        right: AppGapSize.s8,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          AppText.med14(
+                                            'Reply',
+                                            color: theme.colors.white33,
+                                          ),
+                                          const Spacer(),
+                                          AppIcon.s16(
+                                            theme.icons.characters.voice,
+                                            color: theme.colors.white33,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                );
+              },
+            ),
             const AppGap.s12(),
             const AppSectionTitle('React'),
             AppContainer(
@@ -193,7 +345,6 @@ class ActionsModal extends ConsumerWidget {
                 ],
               ),
             ),
-
             const AppGap.s12(),
             const AppSectionTitle('Zap'),
             AppContainer(
@@ -325,7 +476,6 @@ class ActionsModal extends ConsumerWidget {
                 ],
               ),
             ),
-
             const AppGap.s12(),
             const AppSectionTitle('Actions'),
             Row(
@@ -384,7 +534,6 @@ class ActionsModal extends ConsumerWidget {
                 ],
               ],
             ),
-
             const AppGap.s12(),
             AppButton(
               onTap: () {
@@ -395,7 +544,6 @@ class ActionsModal extends ConsumerWidget {
                 AppText.med14('Report', gradient: theme.colors.rouge),
               ],
             ),
-
             const AppGap.s12(),
             AppButton(
               onTap: () {

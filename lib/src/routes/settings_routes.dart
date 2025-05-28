@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/screens/settings_screen.dart';
-import 'package:zapchat/src/modals/preferences_modal.dart';
-import 'package:zapchat/src/modals/start_add_existing_key_modal.dart';
-import 'package:zapchat/src/modals/settings_history_modal.dart';
+import '../screens/settings_screen.dart';
+import '../modals/preferences_modal.dart';
+import '../modals/start_add_existing_key_modal.dart';
+import '../modals/settings_history_modal.dart';
+import '../modals/settings_hosting_modal.dart';
+import '../modals/start_your_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<GoRoute> get settingsRoutes => [
@@ -54,22 +56,9 @@ List<GoRoute> get settingsRoutes => [
             child: Consumer(
               builder: (context, ref, child) {
                 final extra = state.extra as Map<String, dynamic>;
-                return AppYourKeyModal(
+                return StartYourKeyModal(
                   secretKey: extra['secretKey'] as String,
                   profileName: extra['profileName'] as String,
-                  onUseThisKey: () async {
-                    try {
-                      // TODO: Reuse nsec logic from sign in
-                      throw UnimplementedError();
-                      context.go('/');
-                    } catch (e) {
-                      print('Error processing nsec: $e');
-                      rethrow;
-                    }
-                  },
-                  onUSpinAgain: () {
-                    context.pop();
-                  },
                 );
               },
             ),
@@ -97,6 +86,14 @@ List<GoRoute> get settingsRoutes => [
         pageBuilder: (context, state) {
           return AppSlideInModal(
             child: const PreferencesModal(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/settings/hosting',
+        pageBuilder: (context, state) {
+          return AppSlideInModal(
+            child: const SettingsHostingModal(),
           );
         },
       ),

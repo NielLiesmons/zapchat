@@ -15,7 +15,7 @@ packages:
       path: "../amber_signer"
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.0.1"
   analyzer:
     dependency: transitive
     description:
@@ -579,11 +579,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "6d096b1"
-      resolved-ref: "6d096b1b968ee1b3eaa0b9731e560398ab6e8b6d"
-      url: "https://github.com/purplebase/models.git"
+      ref: "833faa"
+      resolved-ref: "833faa1619a27e150da7540d9c958ad40eadffbb"
+      url: "https://github.com/purplebase/models"
     source: git
-    version: "0.1.0"
+    version: "0.1.1"
   package_config:
     dependency: transitive
     description:
@@ -1081,11 +1081,9 @@ packages:
   zaplab_design:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "00b9438a920d3fa6a9ca65b1b627fa71b4752212"
-      resolved-ref: "00b9438a920d3fa6a9ca65b1b627fa71b4752212"
-      url: "https://github.com/NielLiesmons/zaplab_design.git"
-    source: git
+      path: "../zaplab_design"
+      relative: true
+    source: path
     version: "0.0.1"
 sdks:
   dart: ">=3.7.0 <4.0.0"

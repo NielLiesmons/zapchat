@@ -20,6 +20,7 @@ class CreateMessageModal extends ConsumerStatefulWidget {
 class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
+  // ignore: unused_field
   late PartialChatMessage _partialMessage;
 
   @override
@@ -35,7 +36,8 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
     // Add keyboard listener
     _focusNode.onKeyEvent = (node, event) {
       if (event.logicalKey == LogicalKeyboardKey.enter &&
-          HardwareKeyboard.instance.isMetaPressed) {
+          (HardwareKeyboard.instance.isMetaPressed ||
+              HardwareKeyboard.instance.isControlPressed)) {
         _sendMessage();
         return KeyEventResult.handled;
       }
@@ -51,7 +53,6 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   }
 
   void _onContentChanged(String content) {
-    print('Content changed to: $content');
     setState(() {
       _partialMessage = PartialChatMessage(content);
     });
@@ -66,26 +67,14 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
 
   void _sendMessage() async {
     final text = _controller.text;
-    print('Text content: $text');
     final signer = ref.read(Signer.activeSignerProvider)!;
 
     if (text.isNotEmpty) {
-      print('Using actual Signer');
       final message = PartialChatMessage(
         text,
         createdAt: DateTime.now(),
       );
       final signedMessage = await message.signWith(signer);
-      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
-    } else {
-      // dummSign for testing
-      final message = PartialChatMessage(
-        text,
-        createdAt: DateTime.now(),
-      );
-      final signedMessage = message.dummySign(
-          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be');
-      print('Used dummySign');
       await ref.read(storageNotifierProvider.notifier).save({signedMessage});
       context.pop();
     }

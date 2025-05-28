@@ -1,4 +1,4 @@
-import 'package:zapchat/src/initialization.dart';
+import 'src/initialization.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -107,8 +107,8 @@ class _AppWithTheme extends ConsumerWidget {
           onProfilesTap: () {
             goRouter.push('/settings');
           },
-          // TODO: currentProfile could be read from zaplab
-          currentProfile: ref.watch(Signer.activeProfileProvider),
+          // TODO: activeProfile could be read from zaplab
+          activeProfile: ref.watch(Signer.activeProfileProvider),
           historyMenu: const HistoryContent(),
         );
       },

@@ -24,8 +24,12 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late final AppTabController _tabController;
+  double _topContainerHeight = 1.0;
 
-// Tab controller to switch bottom bar based on the tab that is selected.
+  static const double _heightWithProfile = 72.0;
+  static const double _heightWithoutProfile = 62.0;
+
+  // Tab controller to switch bottom bar based on the tab that is selected.
   @override
   void initState() {
     super.initState();
@@ -45,87 +49,94 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final signedInProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile = ref.watch(Signer.activeProfileProvider);
+    final containerHeight =
+        activeProfile == null ? _heightWithoutProfile : _heightWithProfile;
 
     return Stack(
       children: [
         AppScaffold(
-          body: SingleChildScrollView(
-            child: AppContainer(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const AppTopSafeArea(),
-                  const AppGap.s12(),
-                  AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s12),
-                    child: signedInProfile == null
-                        ? Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/Zapchat-Blurple-Transparent.png',
-                                width: theme.sizes.s32,
-                                height: theme.sizes.s32,
-                              ),
-                              const AppGap.s8(),
-                              AppText.h1('Zapchat'),
-                              const Spacer(),
-                              AppButton(
-                                onTap: () => context.push('/start'),
-                                children: [
-                                  AppIcon.s12(
-                                    theme.icons.characters.play,
-                                    color: theme.colors.whiteEnforced,
-                                  ),
-                                  const AppGap.s12(),
-                                  AppText.med14('Start'),
-                                ],
-                              ),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              if (AppPlatformUtils.isMobile)
-                                AppProfilePic.s48(
-                                  signedInProfile,
-                                  onTap: () => context.push('/settings'),
+          body: AppContainer(
+            child: Column(
+              children: <Widget>[
+                const AppTopSafeArea(),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  height: containerHeight * _topContainerHeight,
+                  child: Opacity(
+                    opacity: _topContainerHeight,
+                    child: AppContainer(
+                      height: containerHeight,
+                      padding: const AppEdgeInsets.all(AppGapSize.s12),
+                      child: activeProfile == null
+                          ? Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/Zapchat-Blurple-Transparent.png',
+                                  width: theme.sizes.s32,
+                                  height: theme.sizes.s32,
                                 ),
-                              if (AppPlatformUtils.isMobile) const AppGap.s12(),
-                              Expanded(
-                                child: AppContainer(
-                                  height: theme.sizes.s48,
-                                  padding: const AppEdgeInsets.symmetric(
-                                      horizontal: AppGapSize.s12),
-                                  decoration: BoxDecoration(
-                                    color: theme.colors.gray33,
-                                    borderRadius:
-                                        BorderRadius.circular(theme.sizes.s24),
-                                    border: Border.all(
-                                      color: theme.colors.gray,
-                                      width:
-                                          AppLineThicknessData.normal().medium,
+                                const AppGap.s8(),
+                                AppText.h1('Zapchat'),
+                                const Spacer(),
+                                AppButton(
+                                  onTap: () => context.push('/start'),
+                                  children: [
+                                    AppIcon.s12(
+                                      theme.icons.characters.play,
+                                      color: theme.colors.whiteEnforced,
+                                    ),
+                                    const AppGap.s12(),
+                                    AppText.med14('Start'),
+                                  ],
+                                ),
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                if (AppPlatformUtils.isMobile)
+                                  AppProfilePic.s48(
+                                    activeProfile,
+                                    onTap: () => context.push('/settings'),
+                                  ),
+                                if (AppPlatformUtils.isMobile)
+                                  const AppGap.s12(),
+                                Expanded(
+                                  child: AppContainer(
+                                    height: theme.sizes.s48,
+                                    padding: const AppEdgeInsets.symmetric(
+                                        horizontal: AppGapSize.s12),
+                                    decoration: BoxDecoration(
+                                      color: theme.colors.gray33,
+                                      borderRadius: BorderRadius.circular(
+                                          theme.sizes.s24),
+                                      border: Border.all(
+                                        color: theme.colors.gray,
+                                        width: AppLineThicknessData.normal()
+                                            .medium,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        AppIcon.s16(
+                                          theme.icons.characters.zap,
+                                          gradient: theme.colors.blurple,
+                                        ),
+                                        const AppGap.s4(),
+                                        AppAmount(124608,
+                                            color: theme.colors.white,
+                                            level: AppTextLevel.h2),
+                                      ],
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      AppIcon.s16(
-                                        theme.icons.characters.zap,
-                                        gradient: theme.colors.blurple,
-                                      ),
-                                      const AppGap.s4(),
-                                      AppAmount(124608,
-                                          color: theme.colors.white,
-                                          level: AppTextLevel.h2),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                                )
+                              ],
+                            ),
+                    ),
                   ),
-                  const AppGap.s16(),
-                  AppTabView(
+                ),
+                Expanded(
+                  child: AppTabView(
                     tabs: [
                       const HomeTab().tabData(context),
                       const MailTab().tabData(context),
@@ -141,33 +152,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                       const VideosTab().tabData(context),
                     ],
                     controller: _tabController,
+                    scrollableContent: true,
+                    onScroll: (position) {
+                      setState(() {
+                        _topContainerHeight =
+                            (1.0 - ((position * 2) / containerHeight))
+                                .clamp(0.0, 1.0);
+                      });
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: _buildBottomBar(),
-        ),
       ],
     );
-  }
-
-  Widget _buildBottomBar() {
-    switch (_tabController.index) {
-      case 0: // Home tab
-        return AppPlatformUtils.isMobile
-            ? AppBottomBarHome(
-                onAddTap: () => context.push('/create'),
-              )
-            : const SizedBox.shrink();
-      // TODO: Match bottom bar with according tab
-      default:
-        return AppBottomBarContentFeed();
-    }
   }
 }

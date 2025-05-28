@@ -7,6 +7,7 @@ class ReposTab extends StatelessWidget {
     return TabData(
       label: 'Repos',
       icon: const AppEmojiContentType(contentType: 'repo'),
+      bottomBar: AppBottomBarContentFeed(),
       content: Builder(
         builder: (context) {
           return AppContainer(

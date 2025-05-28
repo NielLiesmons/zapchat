@@ -30,10 +30,6 @@ class _MailScreenState extends ConsumerState<MailScreen> {
     final recipients = widget.mail.recipientPubkeys
         .map((pubkey) => state.models.cast<Profile>().firstWhere(
               (profile) => profile.pubkey == pubkey,
-              orElse: () => PartialProfile(
-                name: formatNpub(pubkey),
-                pictureUrl: null,
-              ).dummySign(),
             ))
         .toList();
 
@@ -130,8 +126,7 @@ class _MailScreenState extends ConsumerState<MailScreen> {
                   AppMail(
                     mail: widget.mail,
                     recipients: recipients,
-                    // TODO: currentProfile could be read from zaplab
-                    currentProfile: ref.watch(Signer.activeProfileProvider),
+                    activeProfile: ref.watch(Signer.activeProfileProvider),
                     onSwipeLeft: (mail) {
                       print('swipe left');
                     },

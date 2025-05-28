@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zapchat/src/providers/resolvers.dart';
+import '../../providers/resolvers.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -116,9 +116,20 @@ class HomeTab extends StatelessWidget {
                     context.push('/create/', extra: community);
                   },
                 ),
+              AppContainer(
+                height: 1000,
+              ),
             ],
           );
         },
+      ),
+      settingsDescription: "Filter your groups and communities",
+      settingsContent: AppContainer(
+        child: Column(
+          children: [
+            AppSectionTitle("Filter"),
+          ],
+        ),
       ),
     );
   }

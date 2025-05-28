@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:zapchat/src/homepage.dart';
+import 'homepage.dart';
 import 'routes/create_routes.dart';
 import 'routes/community_routes.dart';
 import 'routes/event_routes.dart';
