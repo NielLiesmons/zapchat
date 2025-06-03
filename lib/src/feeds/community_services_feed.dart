@@ -30,8 +30,10 @@ class CommunityServicesFeed extends ConsumerWidget {
                 AppFeedService(
                   service: service,
                   isUnread: true,
-                  onTap: (event) =>
-                      context.push('/service/${event.id}', extra: event),
+                  onTap: (model) =>
+                      context.push('/service/${model.id}', extra: model),
+                  onProfileTap: (profile) =>
+                      context.push('/service/${profile.npub}', extra: profile),
                 ),
                 const AppGap.s12(),
               ],

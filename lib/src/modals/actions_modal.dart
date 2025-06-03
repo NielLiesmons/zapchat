@@ -19,7 +19,7 @@ class ActionsModal extends ConsumerWidget {
     final theme = AppTheme.of(context);
     final resolvers = ref.read(resolversProvider);
 
-    return AppInputModal(
+    return AppModal(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +72,9 @@ class ActionsModal extends ConsumerWidget {
                                               resolvers.profileResolver,
                                           onResolveEmoji:
                                               resolvers.emojiResolver,
+                                          onProfileTap: (profile) => context
+                                              .push('/profile/${profile.npub}',
+                                                  extra: profile),
                                         )
                                       : AppQuotedMessage(
                                           chatMessage: model as ChatMessage,

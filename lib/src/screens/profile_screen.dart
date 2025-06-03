@@ -54,14 +54,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       ),
       bottomBarContent: AppBottomBarProfile(
         onAddLabelTap: (model) {},
-        onMessageTap: (model) {},
+        onMailTap: (model) {},
         onVoiceTap: (model) {},
         onActions: (model) {},
         profile: widget.profile,
-        draftMessage: null,
-        onResolveEvent: resolvers.eventResolver,
-        onResolveProfile: resolvers.profileResolver,
-        onResolveEmoji: resolvers.emojiResolver,
       ),
       child: Column(
         children: [

@@ -41,6 +41,8 @@ class ThreadsTab extends StatelessWidget {
                   onLinkTap: (url) {
                     print(url);
                   },
+                  onProfileTap: (profile) =>
+                      context.push('/profile/${profile.npub}', extra: profile),
                 ),
             ],
           );

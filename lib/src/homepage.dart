@@ -87,7 +87,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       color: theme.colors.whiteEnforced,
                                     ),
                                     const AppGap.s12(),
-                                    AppText.med14('Start'),
+                                    AppText.med14('Start',
+                                        color: theme.colors.whiteEnforced),
                                   ],
                                 ),
                               ],
@@ -160,6 +161,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 .clamp(0.0, 1.0);
                       });
                     },
+                    scrollOffsetHeight: containerHeight / 2,
                   ),
                 ),
               ],

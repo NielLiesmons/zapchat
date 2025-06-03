@@ -7,6 +7,7 @@ import '../providers/search.dart';
 import '../screens/thread_screen.dart';
 import '../screens/article_screen.dart';
 import '../screens/mail_screen.dart';
+import '../screens/service_screen.dart';
 import '../modals/reply_modal.dart';
 import '../modals/actions_modal.dart';
 
@@ -84,6 +85,8 @@ List<GoRoute> get eventRoutes => [
                   onEmojiTap: () {},
                   onGifTap: () {},
                   onAddTap: () {},
+                  onProfileTap: (profile) =>
+                      context.push('/profile/${profile.npub}', extra: profile),
                 );
               },
             ),
@@ -106,6 +109,21 @@ List<GoRoute> get eventRoutes => [
         },
       ),
       GoRoute(
+        path: '/article/:eventId',
+        pageBuilder: (context, state) {
+          final model = state.extra as Model;
+          return AppSlideInScreen(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return ArticleScreen(
+                  article: model as Article,
+                );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
         path: '/mail/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
@@ -121,14 +139,14 @@ List<GoRoute> get eventRoutes => [
         },
       ),
       GoRoute(
-        path: '/thread/:eventId',
+        path: '/service/:eventId',
         pageBuilder: (context, state) {
-          final event = state.extra as Model;
+          final model = state.extra as Model;
           return AppSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
-                return ThreadScreen(
-                  thread: event as Note,
+                return ServiceScreen(
+                  service: model as Service,
                 );
               },
             ),
@@ -136,14 +154,14 @@ List<GoRoute> get eventRoutes => [
         },
       ),
       GoRoute(
-        path: '/article/:eventId',
+        path: '/thread/:eventId',
         pageBuilder: (context, state) {
-          final event = state.extra as Model;
+          final model = state.extra as Model;
           return AppSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
-                return ArticleScreen(
-                  article: event as Article,
+                return ThreadScreen(
+                  thread: model as Note,
                 );
               },
             ),

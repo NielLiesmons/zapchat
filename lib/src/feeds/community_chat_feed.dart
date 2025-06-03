@@ -207,6 +207,9 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                               onReactionTap: (reaction) {},
                               onZapTap: (zap) {},
                               onLinkTap: (url) {},
+                              onProfileTap: (profile) => context.push(
+                                  '/profile/${profile.npub}',
+                                  extra: profile),
                             );
                           },
                         )
@@ -230,6 +233,8 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                           onReactionTap: (reaction) {},
                           onZapTap: (zap) {},
                           onLinkTap: (url) {},
+                          onProfileTap: (profile) => context
+                              .push('/profile/${profile.npub}', extra: profile),
                         ),
                       const AppGap.s8(),
                     ],
@@ -241,32 +246,19 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
             right: 10,
             bottom: 6,
             child: _showScrollButton
-                ? ClipRRect(
-                    borderRadius: theme.radius.asBorderRadius().rad16,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                      child: AppContainer(
-                        child: AppButton(
-                          onTap: () {
-                            _scrollController.animateTo(
-                              _scrollController.position.maxScrollExtent,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                          },
-                          inactiveColor: theme.colors.white16,
-                          square: true,
-                          children: [
-                            AppIcon.s12(
-                              theme.icons.characters.arrowDown,
-                              outlineThickness:
-                                  AppLineThicknessData.normal().medium,
-                              outlineColor: theme.colors.white66,
-                            ),
-                          ],
-                        ),
-                      ),
+                ? AppFloatingButton(
+                    icon: AppIcon.s12(
+                      theme.icons.characters.arrowDown,
+                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineColor: theme.colors.white66,
                     ),
+                    onTap: () {
+                      _scrollController.animateTo(
+                        _scrollController.position.maxScrollExtent,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                      );
+                    },
                   )
                 : const SizedBox.shrink(),
           ),

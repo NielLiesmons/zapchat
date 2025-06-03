@@ -4,30 +4,30 @@ import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/resolvers.dart';
 
-class CommunityThreadsFeed extends ConsumerWidget {
+class CommunityForumFeed extends ConsumerWidget {
   final Community community;
 
-  const CommunityThreadsFeed({
+  const CommunityForumFeed({
     super.key,
     required this.community,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(query<Note>());
+    final state = ref.watch(query<ForumPost>());
 
     if (state case StorageLoading()) {
       return const AppLoadingFeed(type: LoadingFeedType.thread);
     }
 
-    final threads = state.models.cast<Note>();
+    final forumPosts = state.models.cast<ForumPost>();
 
     return Column(
       children: [
-        for (final thread in threads)
-          AppFeedThread(
-            thread: thread,
-            onTap: (model) => context.push('/thread/${model.id}', extra: model),
+        for (final forumPost in forumPosts)
+          AppFeedForumPost(
+            forumPost: forumPost,
+            onTap: (model) => context.push('/forum/${model.id}', extra: model),
             onReply: (model) =>
                 context.push('/reply-to/${model.id}', extra: model),
             onActions: (model) =>

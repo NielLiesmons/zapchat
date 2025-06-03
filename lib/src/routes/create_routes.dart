@@ -3,8 +3,12 @@ import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import '../modals/create_new_stuff_modal.dart';
 import '../modals/create_message_modal.dart';
+import '../modals/spin_up_community_key_modal.dart';
 import '../screens/create_group_screen.dart';
 import '../screens/create_community_screen.dart';
+import '../screens/your_community_screen.dart';
+import '../modals/community_key_modal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<GoRoute> get createRoutes => [
       GoRoute(
@@ -28,6 +32,51 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return AppSlideInScreen(
             child: CreateCommunityScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/community/spin-up-community-key',
+        pageBuilder: (context, state) {
+          final profileName = state.extra as String;
+          return AppSlideInModal(
+            child: SpinUpCommunityKeyModal(
+              profileName: profileName,
+              onSpinComplete: (secretKey, profileName) {
+                context.push('/create/community/your-community-key', extra: {
+                  'secretKey': secretKey,
+                  'profileName': profileName,
+                });
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/community/your-community-key',
+        pageBuilder: (context, state) {
+          return AppSlideInModal(
+            child: Consumer(
+              builder: (context, ref, child) {
+                final extra = state.extra as Map<String, dynamic>;
+                return CommunityKeyModal(
+                  secretKey: extra['secretKey'] as String,
+                  profileName: extra['profileName'] as String,
+                );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/community/configure',
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return AppSlideInScreen(
+            child: YourCommunityScreen(
+              profile: extra['profile'] as Profile,
+              communityName: extra['communityName'] as String,
+            ),
           );
         },
       ),

@@ -1,18 +1,18 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import '../modals/start_modal.dart';
 import '../modals/start_add_existing_key_modal.dart';
 import '../modals/start_paste_key_modal.dart';
 import '../modals/start_your_key_modal.dart';
-import 'package:models/models.dart';
+import '../modals/spin_up_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/signer.dart';
 
 List<GoRoute> get startRoutes => [
       GoRoute(
         path: '/start',
         pageBuilder: (context, state) {
           return AppSlideInModal(
-            child: AppStartModal(
+            child: StartModal(
               logoImageUrl: 'assets/images/Zapchat-Blurple-Transparent.png',
               title: 'Zapchat',
               description: "Chat & Other Stuff",
@@ -31,7 +31,7 @@ List<GoRoute> get startRoutes => [
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
           return AppSlideInModal(
-            child: AppSpinUpKeyModal(
+            child: SpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
                 context.push('/start/your-key', extra: {

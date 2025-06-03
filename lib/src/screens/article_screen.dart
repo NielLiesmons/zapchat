@@ -115,6 +115,8 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
             AppArticleHeader(
               article: widget.article,
               communities: communities,
+              onProfileTap: (profile) =>
+                  context.push('/profile/${profile.npub}', extra: profile),
             ),
             AppContainer(
               child: AppTabView(
@@ -134,6 +136,8 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                       onResolveEmoji: resolvers.emojiResolver,
                       onResolveHashtag: resolvers.hashtagResolver,
                       onLinkTap: (url) {},
+                      onProfileTap: (profile) => context
+                          .push('/profile/${profile.npub}', extra: profile),
                     ),
                   ),
                   TabData(

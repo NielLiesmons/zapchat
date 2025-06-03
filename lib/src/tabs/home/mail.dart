@@ -23,6 +23,8 @@ class MailTab extends StatelessWidget {
                   mail: mail,
                   onTap: (event) =>
                       context.push('/mail/${event.id}', extra: event),
+                  onProfileTap: (profile) =>
+                      context.push('/profile/${profile.npub}', extra: profile),
                   onSwipeLeft: (model) => {},
                   onSwipeRight: (model) => {},
                   onResolveEvent: ref.read(resolversProvider).eventResolver,

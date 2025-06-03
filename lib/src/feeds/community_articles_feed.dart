@@ -29,6 +29,8 @@ class CommunityArticlesFeed extends ConsumerWidget {
             isUnread: true,
             onTap: (event) =>
                 context.push('/article/${event.id}', extra: event),
+            onProfileTap: (profile) =>
+                context.push('/profile/${profile.npub}', extra: profile),
           ),
       ],
     );

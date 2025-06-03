@@ -3,6 +3,7 @@ import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
+import 'package:go_router/go_router.dart';
 
 class MailScreen extends ConsumerStatefulWidget {
   final Mail mail;
@@ -140,6 +141,8 @@ class _MailScreenState extends ConsumerState<MailScreen> {
                     onLinkTap: (url) {
                       print(url);
                     },
+                    onProfileTap: (profile) => context
+                        .push('/profile/${profile.npub}', extra: profile),
                   ),
                 ],
               ),

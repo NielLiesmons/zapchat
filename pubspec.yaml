@@ -37,7 +37,7 @@ dependencies:
   models:
     git:
       url: https://github.com/purplebase/models
-      ref: 833faa
+      ref: 217fdc3
 
   amber_signer:
     path: ../amber_signer

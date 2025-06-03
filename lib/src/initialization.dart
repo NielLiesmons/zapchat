@@ -23,6 +23,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     Model.register(
         kind: 33333,
         constructor: Service.fromMap); // TODO: Change to right kind
+    Model.register(kind: 11, constructor: ForumPost.fromMap);
 
     final dummyProfiles = <Profile>[];
     final dummyNotes = <Note>[];
@@ -36,6 +37,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyJobs = <Job>[];
     final dummyCashuZaps = <CashuZap>[];
     final dummyServices = <Service>[];
+    final dummyForumPosts = <ForumPost>[];
 
     final jane = PartialProfile(
       name: 'Jane C.',
@@ -189,6 +191,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {30023},
         ),
         CommunityContentSection(
+          content: 'Forum',
+          kinds: {11},
+        ),
+        CommunityContentSection(
           content: 'Jobs',
           kinds: {32767},
         ),
@@ -231,6 +237,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         CommunityContentSection(
           content: 'Threads',
           kinds: {1},
+        ),
+        CommunityContentSection(
+          content: 'Forum',
+          kinds: {11},
         ),
         CommunityContentSection(
           content: 'Articles',
@@ -732,9 +742,29 @@ Then ncommunity = npub + relay hints, for communities
       (PartialService(
         'Nostr App Design',
         'Pixel-perfect designs and front end builds for your Nostr app.',
-        imageUrl:
-            'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+        summary:
+            'Pixel-perfect designs and front end builds for your Nostr app.',
+        images: {
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a7643795c95615d805dba0fd23c571.png',
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac7112676243795c95615d805dba0fd23c571.png',
+        },
       )).dummySign(niel.pubkey),
+    ]);
+
+    dummyForumPosts.addAll([
+      (PartialForumPost(
+        'Forum Post Title',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      )).dummySign(niel.pubkey),
+      (PartialForumPost(
+        'Forum Post Title',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      )).dummySign(franzap.pubkey),
+      (PartialForumPost(
+        'Forum Post Title',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      )).dummySign(zapchat.pubkey),
     ]);
 
     // Save all data
@@ -751,6 +781,7 @@ Then ncommunity = npub + relay hints, for communities
       ...dummyJobs,
       ...dummyCashuZaps,
       ...dummyServices,
+      ...dummyForumPosts,
     });
 
     return true;

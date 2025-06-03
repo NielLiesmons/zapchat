@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
 import '../tabs/details/details.dart';
@@ -104,6 +105,8 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
               onLinkTap: (url) {
                 print(url);
               },
+              onProfileTap: (profile) =>
+                  context.push('/profile/${profile.npub}', extra: profile),
             ),
             AppContainer(
               child: AppTabView(

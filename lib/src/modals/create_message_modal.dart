@@ -110,6 +110,8 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
                 onAddTap: () {}, // TODO: Implement add tap
                 onSendTap: _sendMessage,
                 onChevronTap: () {}, // TODO: Implement chevron tap
+                onProfileTap: (profile) =>
+                    context.push('/profile/${profile.npub}', extra: profile),
                 onChanged: _onContentChanged,
               ),
             ],

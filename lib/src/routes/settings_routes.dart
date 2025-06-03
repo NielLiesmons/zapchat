@@ -6,6 +6,7 @@ import '../modals/start_add_existing_key_modal.dart';
 import '../modals/settings_history_modal.dart';
 import '../modals/settings_hosting_modal.dart';
 import '../modals/start_your_key_modal.dart';
+import '../modals/spin_up_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<GoRoute> get settingsRoutes => [
@@ -37,7 +38,7 @@ List<GoRoute> get settingsRoutes => [
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
           return AppSlideInModal(
-            child: AppSpinUpKeyModal(
+            child: SpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
                 context.replace('/settings/your-key', extra: {

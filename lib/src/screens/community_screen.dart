@@ -10,6 +10,7 @@ import '../feeds/community_articles_feed.dart';
 import '../feeds/community_jobs_feed.dart';
 import '../feeds/community_books_feed.dart';
 import '../feeds/community_services_feed.dart';
+import '../feeds/community_forum_feed.dart';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
 
@@ -133,6 +134,13 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           contentTypes['article'] = (
             count: 4,
             feed: CommunityArticlesFeed(community: widget.community),
+            bottomBar: const AppBottomBarContentFeed()
+          );
+          break;
+        case 'Forum':
+          contentTypes['forum'] = (
+            count: 0,
+            feed: CommunityForumFeed(community: widget.community),
             bottomBar: const AppBottomBarContentFeed()
           );
           break;
@@ -306,7 +314,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                     ? '${contentType[0].toUpperCase()}${contentType.substring(1)}'
                     : '${contentType[0].toUpperCase()}${contentType.substring(1)}s',
                 icon: AppEmojiContentType(contentType: contentType),
-                content: const SizedBox(),
+                content: const SizedBox.shrink(),
                 count: _contentTypes[contentType]?.count ?? 0,
               ),
           ],

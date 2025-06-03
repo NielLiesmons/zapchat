@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class AppCommunityWelcomeFeed extends ConsumerWidget {
   final Community community;
@@ -108,8 +109,12 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                   if (articleState case StorageData(:final models))
                     if (models.isNotEmpty)
                       AppArticleCard(
-                          article: models
-                              .first), // TODO: fetch actual pinned publications
+                        article: models.first,
+                        onProfileTap: (profile) => context
+                            .push('/profile/${profile.npub}', extra: profile),
+                        onTap: (article) => context
+                            .push('/article/${article.id}', extra: article),
+                      ), // TODO: fetch actual pinned publications
                 ],
               ),
             ),

@@ -196,6 +196,8 @@ class _ReplyModalState extends ConsumerState<ReplyModal> {
                 onAddTap: () {}, // TODO: Implement add tap
                 onSendTap: _sendMessage,
                 onChevronTap: () {}, // TODO: Implement chevron tap
+                onProfileTap: (profile) =>
+                    context.push('/profile/${profile.npub}', extra: profile),
                 onChanged: _onContentChanged,
               ),
             ],
