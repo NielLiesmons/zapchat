@@ -16,28 +16,32 @@ class SettingsHostingModal extends ConsumerWidget {
         const AppGap.s8(),
         AppHostingCard(
           name: 'Zapcloud',
+          type: 'Pro',
           usedStorage: 45.7,
           totalStorage: 100.0,
           services: [
             HostingService(
-              name: 'Mailbox Relay',
+              name: 'Your Mailbox',
+              description: 'Nostr Relay',
               status: HostingStatus.online,
               onAdjust: () {
                 // Handle Mailbox Relay adjustment
               },
             ),
             HostingService(
-              name: 'Media Server',
-              status: HostingStatus.warning,
-              onAdjust: () {
-                // Handle Media Server adjustment
-              },
-            ),
-            HostingService(
-              name: 'Private Relay',
+              name: 'Your Content',
+              description: "Nostr Relay",
               status: HostingStatus.offline,
               onAdjust: () {
                 // Handle Private Relay adjustment
+              },
+            ),
+            HostingService(
+              name: 'Your Media',
+              description: 'Blossom Server',
+              status: HostingStatus.warning,
+              onAdjust: () {
+                // Handle Media Server adjustment
               },
             ),
           ],

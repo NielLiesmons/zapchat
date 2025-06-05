@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:models/models.dart';
+import 'dart:ui';
 
 class CreateNewStuffModal extends ConsumerWidget {
   const CreateNewStuffModal({
@@ -10,6 +12,9 @@ class CreateNewStuffModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = AppTheme.of(context);
+    final activeProfile = ref.watch(Signer.activeProfileProvider);
+
     return AppModal(
       title: 'Create New',
       description: 'Choose what you want to create',
@@ -41,32 +46,95 @@ class CreateNewStuffModal extends ConsumerWidget {
               ),
             ),
             const AppGap.s8(),
-            Expanded(
-              child: AppPanelButton(
-                padding: const AppEdgeInsets.only(
-                  top: AppGapSize.s20,
-                  bottom: AppGapSize.s14,
-                ),
-                onTap: () => context.replace('/create/group'),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppEmojiContentType(
-                      contentType: 'group',
-                      size: 32,
+            activeProfile != null
+                ? Expanded(
+                    child: AppPanelButton(
+                      padding: const AppEdgeInsets.only(
+                        top: AppGapSize.s20,
+                        bottom: AppGapSize.s14,
+                      ),
+                      onTap: () => context.replace('/create/group'),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppEmojiContentType(
+                            contentType: 'group',
+                            size: 32,
+                          ),
+                          const AppGap.s10(),
+                          AppText.med14("Private Group"),
+                        ],
+                      ),
                     ),
-                    const AppGap.s10(),
-                    AppText.med14("Private Group"),
-                  ],
+                  )
+                : SizedBox.shrink(),
+          ],
+        ),
+        activeProfile != null ? const AppGap.s8() : const AppGap.s12(),
+        // Content type buttons in rows of three
+        Stack(
+          children: [
+            AppContainer(
+              height: 240,
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Column(
+                  children: _buildContentTypeRows(),
+                ),
+              ),
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(theme.sizes.s16),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: AppContainer(
+                  height: 260,
+                  padding: AppEdgeInsets.all(AppGapSize.s24),
+                  child: Column(
+                    children: [
+                      const AppGap.s20(),
+                      AppContainer(
+                        width: theme.sizes.s96,
+                        height: theme.sizes.s96,
+                        decoration: BoxDecoration(
+                          color: theme.colors.gray66,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colors.black66,
+                              blurRadius: theme.sizes.s32,
+                            ),
+                          ],
+                          border: Border.all(
+                            color: theme.colors.white16,
+                            width: AppLineThicknessData.normal().thin,
+                          ),
+                        ),
+                        child: Center(
+                          child: AppIcon.s64(theme.icons.characters.profile,
+                              color: theme.colors.white33),
+                        ),
+                      ),
+                      const AppGap.s12(),
+                      AppText.med14("You need a Profile to publish content",
+                          color: theme.colors.white66),
+                      const AppGap.s16(),
+                      AppButton(
+                        children: [
+                          AppIcon.s12(theme.icons.characters.play,
+                              color: theme.colors.whiteEnforced),
+                          const AppGap.s12(),
+                          AppText.med14("Start"),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ],
         ),
-        const AppGap.s8(),
-        // Content type buttons in rows of three
-        ..._buildContentTypeRows(),
       ],
     );
   }

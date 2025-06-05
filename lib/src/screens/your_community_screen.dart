@@ -2,7 +2,6 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
-import 'package:flutter/material.dart' show Colors;
 
 class PartialCommunity {
   final List<CommunityContentSection> contentSections;
@@ -399,11 +398,84 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
             child: Column(
               children: [
                 AppSectionTitle(
-                  "HOSTING",
+                  "Guidelines",
                 ),
                 AppPanelButton(
                   onTap: () {},
-                  child: AppText.reg14("Free"),
+                  height: 160,
+                  padding: const AppEdgeInsets.all(AppGapSize.none),
+                  child: Stack(
+                    children: [
+                      ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              theme.colors.white.withValues(alpha: 1),
+                              theme.colors.white.withValues(alpha: 0),
+                            ],
+                          ).createShader(bounds);
+                        },
+                        blendMode: BlendMode.dstIn,
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              for (int i = 0; i < 3; i++) ...[
+                                AppContainer(
+                                  padding: const AppEdgeInsets.symmetric(
+                                      horizontal: AppGapSize.s12,
+                                      vertical: AppGapSize.s8),
+                                  child: Row(
+                                    children: [
+                                      AppText.reg16(
+                                        '${i + 1}',
+                                        color: theme.colors.blurpleColor66,
+                                      ),
+                                      const AppGap.s10(),
+                                      AppText.reg14(
+                                        "Title of Guideline ${i + 1}",
+                                        color: theme.colors.white66,
+                                      ),
+                                      const Spacer(),
+                                    ],
+                                  ),
+                                ),
+                                const AppDivider(),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 12,
+                        right: 12,
+                        bottom: 12,
+                        child: ClipRRect(
+                          borderRadius: theme.radius.asBorderRadius().rad16,
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                            child: AppButton(
+                              onTap: () {},
+                              inactiveColor: theme.colors.white8,
+                              children: [
+                                AppText.reg14(
+                                  'Guidelines',
+                                  color: theme.colors.white66,
+                                ),
+                                const AppGap.s12(),
+                                AppIcon.s14(
+                                  theme.icons.characters.pen,
+                                  color: theme.colors.white66,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -416,11 +488,77 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
             child: Column(
               children: [
                 AppSectionTitle(
-                  "GUIDELINES",
+                  "Hosting",
                 ),
                 AppPanelButton(
-                  onTap: () {},
-                  child: AppText.reg14("Free"),
+                    onTap: () {},
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            AppHostingIcon(
+                              hostingStatuses: [
+                                HostingStatus.none,
+                                HostingStatus.none,
+                                HostingStatus.none,
+                              ],
+                            ),
+                            const AppGap.s16(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppText.h2(
+                                  "No Hosting yet",
+                                  color: theme.colors.white33,
+                                ),
+                                const AppGap.s8(),
+                                AppContainer(
+                                  padding: const AppEdgeInsets.symmetric(
+                                    horizontal: AppGapSize.s8,
+                                    vertical: AppGapSize.s2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    gradient: theme.colors.rouge33,
+                                    borderRadius:
+                                        theme.radius.asBorderRadius().rad8,
+                                  ),
+                                  child: AppText.reg12("Required",
+                                      color: theme.colors.white66),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const AppGap.s16(),
+                        AppButton(
+                          onTap: () {},
+                          children: [
+                            AppIcon.s14(
+                              theme.icons.characters.plus,
+                              outlineColor: theme.colors.whiteEnforced,
+                              outlineThickness:
+                                  AppLineThicknessData.normal().thick,
+                            ),
+                            const AppGap.s12(),
+                            AppText.reg14("Add Hosting",
+                                color: theme.colors.whiteEnforced),
+                          ],
+                        ),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+          const AppDivider(),
+          AppContainer(
+            padding: const AppEdgeInsets.all(
+              AppGapSize.s12,
+            ),
+            child: Column(
+              children: [
+                AppSectionTitle(
+                  "MORE",
                 ),
               ],
             ),

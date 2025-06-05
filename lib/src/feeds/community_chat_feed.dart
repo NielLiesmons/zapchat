@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:ui';
 import '../providers/resolvers.dart';
 
 class CommunityChatFeed extends ConsumerStatefulWidget {
@@ -165,57 +164,30 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
       padding: const AppEdgeInsets.all(AppGapSize.s6),
       child: Stack(
         children: [
-          SingleChildScrollView(
+          ListView.builder(
             controller: _scrollController,
+            physics: ScrollPhysics(),
             clipBehavior: Clip.none,
-            child: Column(
-              children: [
-                const AppNewMessagesDivider(text: '8 New Mssages'),
-                for (final event in allEvents)
-                  Column(
-                    key: ValueKey(event.isMessage
-                        ? (event.model as List<ChatMessage>).first.id
-                        : (event.model as CashuZap).id),
-                    children: [
-                      if (event.isMessage)
-                        Builder(
-                          builder: (context) {
-                            final messageId =
-                                (event.model as List<ChatMessage>).first.id;
-                            _messageKeys[messageId] = GlobalKey();
-                            return AppMessageStack(
-                              key: _messageKeys[messageId],
-                              messages: event.model as List<ChatMessage>,
-                              onResolveEvent: resolvers.eventResolver,
-                              onResolveProfile: resolvers.profileResolver,
-                              onResolveEmoji: resolvers.emojiResolver,
-                              onResolveHashtag: (identifier) async {
-                                await Future.delayed(
-                                    const Duration(seconds: 1));
-                                return () {};
-                              },
-                              isOutgoing: (event.model as List<ChatMessage>)
-                                      .first
-                                      .author
-                                      .value
-                                      ?.pubkey ==
-                                  activeProfile?.pubkey,
-                              onReply: (event) => context
-                                  .push('/reply-to/${event.id}', extra: event),
-                              onActions: (event) => context
-                                  .push('/actions/${event.id}', extra: event),
-                              onReactionTap: (reaction) {},
-                              onZapTap: (zap) {},
-                              onLinkTap: (url) {},
-                              onProfileTap: (profile) => context.push(
-                                  '/profile/${profile.npub}',
-                                  extra: profile),
-                            );
-                          },
-                        )
-                      else
-                        AppZapBubble(
-                          cashuZap: event.model as CashuZap,
+            itemCount: allEvents.length + 1, // +1 for the divider
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const AppNewMessagesDivider(text: '8 New Mssages');
+              }
+              final event = allEvents[index - 1];
+              return Column(
+                key: ValueKey(event.isMessage
+                    ? (event.model as List<ChatMessage>).first.id
+                    : (event.model as CashuZap).id),
+                children: [
+                  if (event.isMessage)
+                    Builder(
+                      builder: (context) {
+                        final messageId =
+                            (event.model as List<ChatMessage>).first.id;
+                        _messageKeys[messageId] = GlobalKey();
+                        return AppMessageStack(
+                          key: _messageKeys[messageId],
+                          messages: event.model as List<ChatMessage>,
                           onResolveEvent: resolvers.eventResolver,
                           onResolveProfile: resolvers.profileResolver,
                           onResolveEmoji: resolvers.emojiResolver,
@@ -223,9 +195,12 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                             await Future.delayed(const Duration(seconds: 1));
                             return () {};
                           },
-                          isOutgoing:
-                              (event.model as CashuZap).author.value?.pubkey ==
-                                  activeProfile?.pubkey,
+                          isOutgoing: (event.model as List<ChatMessage>)
+                                  .first
+                                  .author
+                                  .value
+                                  ?.pubkey ==
+                              activeProfile?.pubkey,
                           onReply: (event) => context
                               .push('/reply-to/${event.id}', extra: event),
                           onActions: (event) => context
@@ -235,12 +210,36 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                           onLinkTap: (url) {},
                           onProfileTap: (profile) => context
                               .push('/profile/${profile.npub}', extra: profile),
-                        ),
-                      const AppGap.s8(),
-                    ],
-                  ),
-              ],
-            ),
+                        );
+                      },
+                    )
+                  else
+                    AppZapBubble(
+                      cashuZap: event.model as CashuZap,
+                      onResolveEvent: resolvers.eventResolver,
+                      onResolveProfile: resolvers.profileResolver,
+                      onResolveEmoji: resolvers.emojiResolver,
+                      onResolveHashtag: (identifier) async {
+                        await Future.delayed(const Duration(seconds: 1));
+                        return () {};
+                      },
+                      isOutgoing:
+                          (event.model as CashuZap).author.value?.pubkey ==
+                              activeProfile?.pubkey,
+                      onReply: (event) =>
+                          context.push('/reply-to/${event.id}', extra: event),
+                      onActions: (event) =>
+                          context.push('/actions/${event.id}', extra: event),
+                      onReactionTap: (reaction) {},
+                      onZapTap: (zap) {},
+                      onLinkTap: (url) {},
+                      onProfileTap: (profile) => context
+                          .push('/profile/${profile.npub}', extra: profile),
+                    ),
+                  const AppGap.s8(),
+                ],
+              );
+            },
           ),
           Positioned(
             right: 10,

@@ -40,7 +40,7 @@ class HistoryEntry {
 @riverpod
 class History extends _$History {
   static const String _historyKey = 'navigation_history';
-  static const int _maxEntries = 100;
+  static const int _maxEntries = 1000;
 
   @override
   Future<List<HistoryEntry>> build() async {
