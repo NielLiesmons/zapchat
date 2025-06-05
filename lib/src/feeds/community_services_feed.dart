@@ -35,7 +35,6 @@ class CommunityServicesFeed extends ConsumerWidget {
                   onProfileTap: (profile) =>
                       context.push('/service/${profile.npub}', extra: profile),
                 ),
-                const AppGap.s12(),
               ],
             ),
         ],

@@ -741,15 +741,24 @@ Then ncommunity = npub + relay hints, for communities
     dummyServices.addAll([
       (PartialService(
         'Nostr App Design',
-        'Pixel-perfect designs and front end builds for your Nostr app.',
+        "Here's some text to convince you that a dude that spent under two years of his life designing and building UIs can do a wonderful job for you.",
         summary:
             'Pixel-perfect designs and front end builds for your Nostr app.',
         images: {
           'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a7643795c95615d805dba0fd23c571.png',
-          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac7112676243795c95615d805dba0fd23c571.png',
+          'https://cdn.satellite.earth/723a6b2aaa7df2512da3e3858d70e0fbea01c0b2a43be91d3f6d42d3e004fd0a.png',
+          'https://cdn.satellite.earth/d2403b5242834573a3c19d9024dda0e61defc76442247c19082755f48bbf13e9.png',
         },
       )).dummySign(niel.pubkey),
+      (PartialService(
+        'Custom Micro App',
+        "Here's some text to convince you that we can build a decent app for you;",
+        summary:
+            'We build small custom Nostr apps for any platform, that can tap right into your existing Communities and Provate groups',
+        images: {
+          'https://cdn.satellite.earth/6375a73e1ee7b398c3910ac06cfd8fa79d5947fd898f68ba401960465d4e15bf.png',
+        },
+      )).dummySign(franzap.pubkey),
     ]);
 
     dummyForumPosts.addAll([

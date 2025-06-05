@@ -45,8 +45,8 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
 
     // Get Data
     final resolvers = ref.read(resolversProvider);
-    // final state = ref.watch(query<Service>());
-    // final services = state.models.cast<Service>().toList();
+    final state = ref.watch(query<Community>());
+    final communities = state.models.cast<Community>().toList();
 
     return AppScreen(
       onHomeTap: () => context.push('/'),
@@ -103,7 +103,7 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
         children: [
           AppServiceHeader(
             service: widget.service,
-            communities: [],
+            communities: communities,
             onProfileTap: (profile) => context.push(
               '/profile/${profile.npub}',
               extra: profile,

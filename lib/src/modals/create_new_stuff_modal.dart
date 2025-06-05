@@ -73,68 +73,74 @@ class CreateNewStuffModal extends ConsumerWidget {
         ),
         activeProfile != null ? const AppGap.s8() : const AppGap.s12(),
         // Content type buttons in rows of three
-        Stack(
-          children: [
-            AppContainer(
-              height: 240,
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Column(
-                  children: _buildContentTypeRows(),
-                ),
-              ),
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(theme.sizes.s16),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: AppContainer(
-                  height: 260,
-                  padding: AppEdgeInsets.all(AppGapSize.s24),
-                  child: Column(
-                    children: [
-                      const AppGap.s20(),
-                      AppContainer(
-                        width: theme.sizes.s96,
-                        height: theme.sizes.s96,
-                        decoration: BoxDecoration(
-                          color: theme.colors.gray66,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: theme.colors.black66,
-                              blurRadius: theme.sizes.s32,
+        activeProfile != null
+            ? Column(
+                children: _buildContentTypeRows(),
+              )
+            : Stack(
+                children: [
+                  AppContainer(
+                    height: 240,
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        children: _buildContentTypeRows(),
+                      ),
+                    ),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(theme.sizes.s16),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: AppContainer(
+                        height: 260,
+                        padding: AppEdgeInsets.all(AppGapSize.s24),
+                        child: Column(
+                          children: [
+                            const AppGap.s20(),
+                            AppContainer(
+                              width: theme.sizes.s96,
+                              height: theme.sizes.s96,
+                              decoration: BoxDecoration(
+                                color: theme.colors.gray66,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colors.black66,
+                                    blurRadius: theme.sizes.s32,
+                                  ),
+                                ],
+                                border: Border.all(
+                                  color: theme.colors.white16,
+                                  width: AppLineThicknessData.normal().thin,
+                                ),
+                              ),
+                              child: Center(
+                                child: AppIcon.s64(
+                                    theme.icons.characters.profile,
+                                    color: theme.colors.white33),
+                              ),
+                            ),
+                            const AppGap.s12(),
+                            AppText.med14(
+                                "You need a Profile to publish content",
+                                color: theme.colors.white66),
+                            const AppGap.s16(),
+                            AppButton(
+                              children: [
+                                AppIcon.s12(theme.icons.characters.play,
+                                    color: theme.colors.whiteEnforced),
+                                const AppGap.s12(),
+                                AppText.med14("Start"),
+                              ],
                             ),
                           ],
-                          border: Border.all(
-                            color: theme.colors.white16,
-                            width: AppLineThicknessData.normal().thin,
-                          ),
-                        ),
-                        child: Center(
-                          child: AppIcon.s64(theme.icons.characters.profile,
-                              color: theme.colors.white33),
                         ),
                       ),
-                      const AppGap.s12(),
-                      AppText.med14("You need a Profile to publish content",
-                          color: theme.colors.white66),
-                      const AppGap.s16(),
-                      AppButton(
-                        children: [
-                          AppIcon.s12(theme.icons.characters.play,
-                              color: theme.colors.whiteEnforced),
-                          const AppGap.s12(),
-                          AppText.med14("Start"),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
       ],
     );
   }

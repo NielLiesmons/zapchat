@@ -154,6 +154,8 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
       }
     }
 
+    // The Chat feed is placed inside a container with a fixed height
+    // This is needed because we're in an AppScreen widgetthat by default scroll in the other direction and cannot really allow for fine-grained scroll automation.
     return AppContainer(
       height: MediaQuery.of(context).size.height / theme.system.scale -
           184 -
