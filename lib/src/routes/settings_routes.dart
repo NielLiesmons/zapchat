@@ -3,6 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import '../screens/settings_screen.dart';
 import '../modals/preferences_modal.dart';
 import '../modals/start_add_existing_key_modal.dart';
+import '../modals/settings_add_profile_modal.dart';
 import '../modals/settings_history_modal.dart';
 import '../modals/settings_hosting_modal.dart';
 import '../modals/start_your_key_modal.dart';
@@ -22,7 +23,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/add-profile',
         pageBuilder: (context, state) {
           return AppSlideInModal(
-            child: AppAddProfileModal(
+            child: SettingsAddProfileModal(
               onStart: (profileName) {
                 context.replace('/settings/spin-up-key', extra: profileName);
               },
