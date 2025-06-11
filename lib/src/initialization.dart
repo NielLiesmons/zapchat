@@ -66,6 +66,15 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     ).dummySign(
         '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
 
+    final zaplab = PartialProfile(
+      name: 'Zaplab',
+      pictureUrl:
+          'https://cdn.satellite.earth/416712f308137c1f2b8e821f77284a15de47a14a3b3e19b32999102144492bd0.png',
+      banner:
+          'https://cdn.satellite.earth/3660906b78d3771f88368c76a5d48a19c1f87f272ab0554d986e13ec5d0e1a44.png',
+    ).dummySign(
+        '4239B36789abcdef0123456789abcdef0123456711abcdef0123456789abcdef');
+
     final proof = PartialProfile(
       name: 'Proof Of Reign',
       pictureUrl:
@@ -144,6 +153,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       jane,
       niel,
       zapchat,
+      zaplab,
       proof,
       cypherchads,
       franzap,
@@ -683,17 +693,17 @@ Then ncommunity = npub + relay hints, for communities
 
     dummyJobs.addAll([
       (PartialJob(
-        'Logo & Branding Design',
-        '''Zapcloud Brand Design \n## Project Overview\nZapcloud is an **all-in-one** hosting solution for Nostr and we need branding and bla bla bla.''',
+        'Codesigner',
+        '''We are looking for a coding designer \n## Project Overview\nZapcloud is an **all-in-one** hosting solution for Nostr and we need branding and bla bla bla.''',
         labels: {
-          'Branding',
-          'Design',
-          'Logo',
-          'Marketing',
+          'UX',
+          'UI',
+          'Design System',
+          'Flutter',
         },
         location: 'Remote',
-        employment: 'Task Based',
-      )).dummySign(zapcloud.pubkey),
+        employment: 'Part-Time',
+      )).dummySign(zaplab.pubkey),
       (PartialJob(
         'Community Manager',
         '''Zapchat Community Manager \n## Project Overview\nZapchat is a Nostr community for the Zapchat project and we need a community manager to help us grow the community.''',

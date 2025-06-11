@@ -3,6 +3,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 
+// TODO: get actual data
+
 class CommunityInfoModal extends ConsumerWidget {
   final Community community;
 
@@ -148,7 +150,7 @@ class CommunityInfoModal extends ConsumerWidget {
         const AppGap.s16(),
         AppButton(
           children: [
-            AppIcon(
+            AppIcon.s12(
               theme.icons.characters.check,
               outlineColor: theme.colors.whiteEnforced,
               outlineThickness: AppLineThicknessData.normal().thick,
@@ -161,27 +163,120 @@ class CommunityInfoModal extends ConsumerWidget {
           ],
         ),
         const AppGap.s16(),
+        // List of Profiles in the community
         AppPanel(
           padding: AppEdgeInsets.all(AppGapSize.none),
           child: Column(
-            children: List.generate(
-                20,
-                (index) => [
-                      AppContainer(
-                        padding: AppEdgeInsets.symmetric(
-                            horizontal: AppGapSize.s16,
-                            vertical: AppGapSize.s12),
-                        child: Row(children: [
-                          AppProfilePic.fromUrl("fghj",
-                              size: AppProfilePicSize
-                                  .s32), //TODO: get actual active members
-                          const AppGap.s12(),
-                          AppText.med14("Profile Name"),
-                          const AppGap.s12(),
-                        ]),
+            children: [
+              AppContainer(
+                padding: AppEdgeInsets.symmetric(
+                    horizontal: AppGapSize.s16, vertical: AppGapSize.s12),
+                child: Row(
+                  children: [
+                    AppProfilePic.fromUrl("fghj",
+                        size: AppProfilePicSize
+                            .s38), //TODO: get actual active members
+                    const AppGap.s12(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText.med14(
+                            "Profile Name",
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                          AppText.reg10(
+                            "Team, Zap Chad, Designer",
+                            color: theme.colors.white66,
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                      if (index < 19) const AppDivider(),
-                    ]).expand((e) => e).toList(),
+                    ),
+                    const AppGap.s12(),
+                    AppBadgeStack.small([
+                      'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+                      'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+                      'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+                    ]),
+                  ],
+                ),
+              ),
+              const AppDivider(),
+              AppContainer(
+                padding: AppEdgeInsets.symmetric(
+                    horizontal: AppGapSize.s16, vertical: AppGapSize.s12),
+                child: Row(
+                  children: [
+                    AppProfilePic.fromUrl("fghj",
+                        size: AppProfilePicSize
+                            .s38), //TODO: get actual active members
+                    const AppGap.s12(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText.med14(
+                            "Profile Name",
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                          AppText.reg10(
+                            "Team, Zap Chad",
+                            color: theme.colors.white66,
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const AppGap.s12(),
+                    AppBadgeStack.small([
+                      'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+                      'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+                    ]),
+                  ],
+                ),
+              ),
+              const AppDivider(),
+              AppContainer(
+                padding: AppEdgeInsets.symmetric(
+                    horizontal: AppGapSize.s16, vertical: AppGapSize.s12),
+                child: Row(
+                  children: [
+                    AppProfilePic.fromUrl("fghj",
+                        size: AppProfilePicSize
+                            .s38), //TODO: get actual active members
+                    const AppGap.s12(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText.med14(
+                            "Profile Name",
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                          AppText.reg10(
+                            "Zap Chad",
+                            color: theme.colors.white66,
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const AppGap.s12(),
+                    AppBadgeStack.small([
+                      'https://cdn.satellite.earth/307b087499ae5444de1033e62ac98db7261482c1531e741afad44a0f8f9871ee.png',
+                    ]),
+                  ],
+                ),
+              ),
+              const AppDivider(),
+            ],
           ),
         ),
       ],

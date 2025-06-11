@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
@@ -15,24 +17,35 @@ class MailTab extends StatelessWidget {
         builder: (context, ref, _) {
           final mails = ref.watch(query<Mail>()).models.cast<Mail>();
 
-          return Column(
-            children: [
-              for (final mail in mails)
-                AppFeedMail(
-                  isUnread: true,
-                  mail: mail,
-                  onTap: (event) =>
-                      context.push('/mail/${event.id}', extra: event),
-                  onProfileTap: (profile) =>
-                      context.push('/profile/${profile.npub}', extra: profile),
-                  onSwipeLeft: (model) => {},
-                  onSwipeRight: (model) => {},
-                  onResolveEvent: ref.read(resolversProvider).eventResolver,
-                  onResolveProfile: ref.read(resolversProvider).profileResolver,
-                  onResolveEmoji: ref.read(resolversProvider).emojiResolver,
-                ),
-            ],
-          );
+          return mails != null // TODO: actually check for empty state
+              ? Column(
+                  children: [
+                    for (final mail in mails)
+                      AppFeedMail(
+                        isUnread: true,
+                        mail: mail,
+                        onTap: (event) =>
+                            context.push('/mail/${event.id}', extra: event),
+                        onProfileTap: (profile) => context
+                            .push('/profile/${profile.npub}', extra: profile),
+                        onSwipeLeft: (model) => {},
+                        onSwipeRight: (model) => {},
+                        onResolveEvent:
+                            ref.read(resolversProvider).eventResolver,
+                        onResolveProfile:
+                            ref.read(resolversProvider).profileResolver,
+                        onResolveEmoji:
+                            ref.read(resolversProvider).emojiResolver,
+                      ),
+                  ],
+                )
+              : AppContainer(
+                  padding: const AppEdgeInsets.all(AppGapSize.s12),
+                  child: AppModelEmptyStateCard(
+                    contentType: "mail",
+                    onCreateTap: () {},
+                  ),
+                );
         },
       ),
     );
