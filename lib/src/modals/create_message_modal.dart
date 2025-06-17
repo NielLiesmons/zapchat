@@ -2,7 +2,6 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
 import '../providers/resolvers.dart';
 import '../providers/search.dart';
 
@@ -32,17 +31,6 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
 
     // Request focus after modal is built
     Future.microtask(() => _focusNode.requestFocus());
-
-    // Add keyboard listener
-    _focusNode.onKeyEvent = (node, event) {
-      if (event.logicalKey == LogicalKeyboardKey.enter &&
-          (HardwareKeyboard.instance.isMetaPressed ||
-              HardwareKeyboard.instance.isControlPressed)) {
-        _sendMessage();
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
   }
 
   @override
@@ -90,29 +78,32 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              AppShortTextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                placeholder: [
-                  AppText.reg16(
-                    'Your Message',
-                    color: theme.colors.white33,
-                  ),
-                ],
-                onSearchProfiles: ref.read(searchProvider).profileSearch,
-                onSearchEmojis: ref.read(searchProvider).emojiSearch,
-                onResolveEvent: ref.read(resolversProvider).eventResolver,
-                onResolveProfile: ref.read(resolversProvider).profileResolver,
-                onResolveEmoji: ref.read(resolversProvider).emojiResolver,
-                onCameraTap: () {}, // TODO: Implement camera tap
-                onEmojiTap: () {}, // TODO: Implement emoji tap
-                onGifTap: () {}, // TODO: Implement gif tap
-                onAddTap: () {}, // TODO: Implement add tap
-                onSendTap: _sendMessage,
-                onChevronTap: () {}, // TODO: Implement chevron tap
-                onProfileTap: (profile) =>
-                    context.push('/profile/${profile.npub}', extra: profile),
-                onChanged: _onContentChanged,
+              AppKeyboardSubmitHandler(
+                onSubmit: _sendMessage,
+                child: AppShortTextField(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  placeholder: [
+                    AppText.reg16(
+                      'Your Message',
+                      color: theme.colors.white33,
+                    ),
+                  ],
+                  onSearchProfiles: ref.read(searchProvider).profileSearch,
+                  onSearchEmojis: ref.read(searchProvider).emojiSearch,
+                  onResolveEvent: ref.read(resolversProvider).eventResolver,
+                  onResolveProfile: ref.read(resolversProvider).profileResolver,
+                  onResolveEmoji: ref.read(resolversProvider).emojiResolver,
+                  onCameraTap: () {}, // TODO: Implement camera tap
+                  onEmojiTap: () {}, // TODO: Implement emoji tap
+                  onGifTap: () {}, // TODO: Implement gif tap
+                  onAddTap: () {}, // TODO: Implement add tap
+                  onSendTap: _sendMessage,
+                  onChevronTap: () {}, // TODO: Implement chevron tap
+                  onProfileTap: (profile) =>
+                      context.push('/profile/${profile.npub}', extra: profile),
+                  onChanged: _onContentChanged,
+                ),
               ),
             ],
           ),

@@ -2,34 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
-
-class PartialCommunity {
-  final List<CommunityContentSection> contentSections;
-  final String name;
-  final String? about;
-  final String? picture;
-  final String? banner;
-
-  PartialCommunity({
-    required this.contentSections,
-    required this.name,
-    this.about,
-    this.picture,
-    this.banner,
-  });
-
-  factory PartialCommunity.initial(String name) {
-    return PartialCommunity(
-      name: name,
-      contentSections: [
-        CommunityContentSection(content: 'Chat', kinds: {1}, feeInSats: 0),
-        CommunityContentSection(content: 'Forum', kinds: {2}, feeInSats: 0),
-        CommunityContentSection(content: 'Articles', kinds: {3}, feeInSats: 0),
-        CommunityContentSection(content: 'Labels', kinds: {4}, feeInSats: 0),
-      ],
-    );
-  }
-}
+import 'dart:convert';
 
 class YourCommunityScreen extends StatefulWidget {
   final Profile profile;
@@ -47,11 +20,108 @@ class YourCommunityScreen extends StatefulWidget {
 
 class _YourCommunityScreenState extends State<YourCommunityScreen> {
   late PartialCommunity _community;
+  late PartialProfile _profile;
+  late Set<CommunityContentSection> _contentSections;
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  Profile get _displayProfile {
+    // Create a new Profile from the PartialProfile for display
+    return Profile.fromMap({
+      'event': {
+        'kind': 0,
+        'content': jsonEncode({
+          'name': _profile.name,
+          'about': _profile.about,
+          'picture': _profile.pictureUrl,
+          'banner': _profile.banner,
+        }),
+        'pubkey': widget.profile.event.pubkey,
+        'created_at': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        'tags': [],
+        'id': '',
+        'sig': '',
+      }
+    }, widget.profile.ref);
+  }
 
   @override
   void initState() {
     super.initState();
-    _community = PartialCommunity.initial(widget.communityName);
+    _contentSections = {
+      CommunityContentSection(content: 'Chat', kinds: {1}, feeInSats: 0),
+      CommunityContentSection(content: 'Forum', kinds: {2}, feeInSats: 0),
+      CommunityContentSection(content: 'Articles', kinds: {3}, feeInSats: 0),
+      CommunityContentSection(content: 'Labels', kinds: {4}, feeInSats: 0),
+    };
+    _community = PartialCommunity(
+      name: widget.communityName,
+      relayUrls: {},
+      contentSections: _contentSections,
+    );
+    _profile = PartialProfile(
+      name: widget.profile.name,
+      about: widget.profile.about,
+      pictureUrl: widget.profile.pictureUrl,
+      banner: widget.profile.banner,
+    );
+    _nameController.text = _profile.name ?? '';
+    _descriptionController.text = _profile.about ?? '';
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _showNameInputModal() async {
+    _nameController.text = _profile.name ?? '';
+
+    await AppInputTextModal.show(
+      context,
+      controller: _nameController,
+      placeholder: 'Community Name',
+      singleLine: true,
+      onDone: (text) {
+        setState(() {
+          _profile = PartialProfile(
+            name: text,
+            about: _profile.about,
+            pictureUrl: _profile.pictureUrl,
+            banner: _profile.banner,
+          );
+          _community = PartialCommunity(
+            name: text,
+            relayUrls: _community.relayUrls,
+            contentSections: _contentSections,
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> _showDescriptionInputModal() async {
+    final currentText = _profile.about ?? '';
+    _descriptionController.text = currentText;
+
+    await AppInputTextModal.show(
+      context,
+      controller: _descriptionController,
+      placeholder: 'Community Description',
+      size: AppInputTextFieldSize.medium,
+      onDone: (text) {
+        setState(() {
+          _profile = PartialProfile(
+            name: _profile.name,
+            about: text,
+            pictureUrl: _profile.pictureUrl,
+            banner: _profile.banner,
+          );
+        });
+      },
+    );
   }
 
   @override
@@ -115,13 +185,15 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                             aspectRatio: 3 / 1.2,
                             child: AppContainer(
                               decoration: BoxDecoration(
-                                color: Color(profileToColor(widget.profile))
+                                color: Color(
+                                        hexToColor(widget.profile.event.pubkey)
+                                            .toIntWithAlpha())
                                     .withValues(alpha: 0.16),
                               ),
-                              child: widget.profile.banner != null &&
-                                      widget.profile.banner!.isNotEmpty
+                              child: _profile.banner != null &&
+                                      _profile.banner!.isNotEmpty
                                   ? Image.network(
-                                      widget.profile.banner!,
+                                      _profile.banner!,
                                       fit: BoxFit.cover,
                                     )
                                   : null,
@@ -169,7 +241,11 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                 ),
                                 Positioned(
                                   top: -40,
-                                  child: AppProfilePic.s80(widget.profile),
+                                  child: AppProfilePic.fromNameAndPubkey(
+                                    _profile.name,
+                                    widget.profile.event.pubkey,
+                                    size: AppProfilePicSize.s80,
+                                  ),
                                 ),
                               ],
                             ),
@@ -214,12 +290,11 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                             const AppGap.s12(),
                             Expanded(
                               child: AppInputButton(
-                                onTap: () {},
+                                onTap: _showNameInputModal,
                                 color: theme.colors.black8,
                                 children: [
                                   AppText.med14(
-                                    widget.profile.name ??
-                                        formatNpub(widget.profile.npub),
+                                    _profile.name ?? '',
                                     color: theme.colors.white,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
@@ -244,15 +319,14 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           bottom: AppGapSize.s12,
                         ),
                         child: AppInputButton(
-                          onTap: () {},
+                          onTap: _showDescriptionInputModal,
                           color: theme.colors.black8,
                           topAlignment: true,
                           height: theme.sizes.s64,
                           children: [
-                            widget.profile.about != null &&
-                                    widget.profile.about!.isNotEmpty
+                            _profile.about != null && _profile.about!.isNotEmpty
                                 ? AppText.reg14(
-                                    widget.profile.about!,
+                                    _profile.about!,
                                     color: theme.colors.white,
                                   )
                                 : AppText.reg14(
@@ -323,8 +397,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           child: Column(
                             children: [
-                              for (final section
-                                  in _community.contentSections) ...[
+                              for (final section in _contentSections) ...[
                                 AppContainer(
                                   padding: const AppEdgeInsets.symmetric(
                                       horizontal: AppGapSize.s12,

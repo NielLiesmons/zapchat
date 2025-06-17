@@ -1,20 +1,40 @@
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:go_router/go_router.dart';
 
 class Resolvers {
   final NostrEventResolver eventResolver;
   final NostrProfileResolver profileResolver;
   final NostrEmojiResolver emojiResolver;
   final NostrHashtagResolver hashtagResolver;
+  final TopThreeReplyProfilesResolver topThreeReplyProfilesResolver;
+  final TotalReplyProfilesResolver totalReplyProfilesResolver;
 
   const Resolvers({
     required this.eventResolver,
     required this.profileResolver,
     required this.emojiResolver,
     required this.hashtagResolver,
+    required this.topThreeReplyProfilesResolver,
+    required this.totalReplyProfilesResolver,
   });
 }
+
+class TopThreeReplyProfilesNotifier extends StateNotifier<List<Profile>> {
+  TopThreeReplyProfilesNotifier(List<Profile> profiles) : super(profiles);
+}
+
+class TotalReplyProfilesNotifier extends StateNotifier<int> {
+  TotalReplyProfilesNotifier(int count) : super(count);
+}
+
+typedef TopThreeReplyProfilesResolver
+    = StateNotifierProvider<TopThreeReplyProfilesNotifier, List<Profile>>
+        Function(Model model);
+typedef TotalReplyProfilesResolver
+    = StateNotifierProvider<TotalReplyProfilesNotifier, int> Function(
+        Model model);
 
 // Add cache classes
 class _ResolverCache<T> {
@@ -39,9 +59,12 @@ final resolversProvider = Provider<Resolvers>((ref) {
   return Resolvers(
     eventResolver: (identifier) => eventCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
-      final state = ref.watch(query<ChatMessage>());
+      final state = ref.watch(query<Note>());
       if (state.models.isNotEmpty) {
-        return (model: state.models.first, onTap: null);
+        return (
+          model: state.models[2],
+          onTap: () => {print("test")},
+        );
       }
       // Fallback to creating a new note if no articles are available
       final message = await PartialChatMessage(
@@ -97,6 +120,46 @@ final resolversProvider = Provider<Resolvers>((ref) {
         hashtagCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
       return () {};
+    }),
+    topThreeReplyProfilesResolver: (model) =>
+        StateNotifierProvider<TopThreeReplyProfilesNotifier, List<Profile>>(
+            (ref) {
+      final replies = ref
+          .watch(query<Comment>(
+            where: (comment) => comment.parentModel.value?.id == model.id,
+          ))
+          .models
+          .cast<Comment>();
+
+      print('Found ${replies.length} replies for model ${model.id}');
+
+      final uniqueProfiles = replies
+          .map((reply) => reply.author.value)
+          .where((profile) => profile != null)
+          .toSet()
+          .take(3)
+          .cast<Profile>()
+          .toList();
+
+      print('Found ${uniqueProfiles.length} unique profiles');
+      return TopThreeReplyProfilesNotifier(uniqueProfiles);
+    }),
+    totalReplyProfilesResolver: (model) =>
+        StateNotifierProvider<TotalReplyProfilesNotifier, int>((ref) {
+      final replies = ref
+          .watch(query<Comment>(
+            where: (comment) => comment.parentModel.value?.id == model.id,
+          ))
+          .models
+          .cast<Comment>();
+
+      final uniqueProfilesCount = replies
+          .map((reply) => reply.author.value)
+          .where((profile) => profile != null)
+          .toSet()
+          .length;
+
+      return TotalReplyProfilesNotifier(uniqueProfilesCount);
     }),
   );
 });

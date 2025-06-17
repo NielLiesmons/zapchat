@@ -38,6 +38,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyCashuZaps = <CashuZap>[];
     final dummyServices = <Service>[];
     final dummyForumPosts = <ForumPost>[];
+    final dummyComments = <Comment>[];
 
     final jane = PartialProfile(
       name: 'Jane C.',
@@ -395,15 +396,15 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
 
     dummyNotes.addAll([
       PartialNote(
-        'A new study on swipe actions shows that it cleans up interfaces like nothing else nostr:nevent1blablabla',
+        'I agree with this statement. Time to test with live data! nostr:nevent1blablabla',
         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
       ).dummySign(niel.pubkey),
       PartialNote(
-        'I love Zaplab',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        'I love trampolines',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
       ).dummySign(franzap.pubkey),
       PartialNote(
-        'A new study on swipe actions shows that it cleans up interfaces like nothing else.',
+        'This could have been a more interesting test thread',
         createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
       ).dummySign(verbiricha.pubkey),
       PartialNote(
@@ -414,6 +415,45 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         'Test Poast',
         createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
       ).dummySign(zapchat.pubkey),
+    ]);
+
+    // Create comments after notes exist
+    dummyComments.addAll([
+      (PartialComment(
+        content:
+            "This is a reply to a note. It's an actual Nostr event in here, but just for testing.",
+        rootModel: dummyNotes.first,
+        parentModel: dummyNotes.first,
+        quotedModel: dummyNotes.first,
+      )).dummySign(franzap.pubkey),
+      (PartialComment(
+        content:
+            "This is a reply to a note. It's an actual Nostr event in here, but just for testing.",
+        rootModel: dummyNotes.first,
+        parentModel: dummyNotes.first,
+        quotedModel: dummyNotes.first,
+      )).dummySign(niel.pubkey),
+      (PartialComment(
+        content:
+            "This is a reply to a note. It's an actual Nostr event in here, but just for testing.",
+        rootModel: dummyNotes.first,
+        parentModel: dummyNotes.first,
+        quotedModel: dummyNotes.first,
+      )).dummySign(verbiricha.pubkey),
+      (PartialComment(
+        content:
+            "This is a reply to a note. It's an actual Nostr event in here, but just for testing.",
+        rootModel: dummyNotes.first,
+        parentModel: dummyNotes.first,
+        quotedModel: dummyNotes.first,
+      )).dummySign(zapchat.pubkey),
+      (PartialComment(
+        content:
+            "This is a reply to a note. It's an actual Nostr event in here, but just for testing.",
+        rootModel: dummyNotes.first,
+        parentModel: dummyNotes.first,
+        quotedModel: dummyNotes.first,
+      )).dummySign(jane.pubkey),
     ]);
 
     // Chat messages
@@ -801,6 +841,7 @@ Then ncommunity = npub + relay hints, for communities
       ...dummyCashuZaps,
       ...dummyServices,
       ...dummyForumPosts,
+      ...dummyComments,
     });
 
     return true;

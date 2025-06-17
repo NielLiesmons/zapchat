@@ -8,8 +8,9 @@ import '../screens/thread_screen.dart';
 import '../screens/article_screen.dart';
 import '../screens/mail_screen.dart';
 import '../screens/service_screen.dart';
-import '../modals/reply_modal.dart';
+import '../modals/reply_to_modal.dart';
 import '../modals/actions_modal.dart';
+import '../modals/reply_modal.dart';
 
 String getModelRoute(String modelType) {
   return switch (modelType.toLowerCase()) {
@@ -100,8 +101,23 @@ List<GoRoute> get eventRoutes => [
           return AppSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
-                return ReplyModal(
+                return ReplyToModal(
                   model: model,
+                );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/reply/:eventId',
+        pageBuilder: (context, state) {
+          final model = state.extra as Model;
+          return AppSlideInModal(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return ReplyModal(
+                  reply: model as Comment,
                 );
               },
             ),

@@ -14,6 +14,8 @@ class CommunityForumFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final resolvers = ref.read(resolversProvider);
+
     final state = ref.watch(query<ForumPost>());
 
     if (state case StorageLoading()) {
@@ -27,6 +29,12 @@ class CommunityForumFeed extends ConsumerWidget {
         for (final forumPost in forumPosts)
           AppFeedForumPost(
             forumPost: forumPost,
+            topThreeReplyProfiles: ref.watch(
+              resolvers.topThreeReplyProfilesResolver(forumPost),
+            ),
+            totalReplyProfiles: ref.watch(
+              resolvers.totalReplyProfilesResolver(forumPost),
+            ),
             onTap: (model) => context.push('/forum/${model.id}', extra: model),
             onReply: (model) =>
                 context.push('/reply-to/${model.id}', extra: model),
@@ -34,10 +42,10 @@ class CommunityForumFeed extends ConsumerWidget {
                 context.push('/actions/${model.id}', extra: model),
             onReactionTap: (reaction) {},
             onZapTap: (zap) {},
-            onResolveEvent: ref.read(resolversProvider).eventResolver,
-            onResolveProfile: ref.read(resolversProvider).profileResolver,
-            onResolveEmoji: ref.read(resolversProvider).emojiResolver,
-            onResolveHashtag: ref.read(resolversProvider).hashtagResolver,
+            onResolveEvent: resolvers.eventResolver,
+            onResolveProfile: resolvers.profileResolver,
+            onResolveEmoji: resolvers.emojiResolver,
+            onResolveHashtag: resolvers.hashtagResolver,
             onLinkTap: (url) {
               print(url);
             },

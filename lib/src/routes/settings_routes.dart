@@ -42,7 +42,7 @@ List<GoRoute> get settingsRoutes => [
             child: SpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
-                context.replace('/settings/your-key', extra: {
+                context.push('/settings/your-key', extra: {
                   'secretKey': secretKey,
                   'profileName': profileName,
                 });

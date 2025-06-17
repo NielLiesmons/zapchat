@@ -6,6 +6,7 @@ import 'package:models/models.dart';
 import 'src/router.dart';
 import 'src/providers/theme_settings.dart';
 import 'src/modals/settings_history_modal.dart';
+import 'src/homepage.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});

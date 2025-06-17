@@ -18,6 +18,8 @@ import 'tabs/home/jobs.dart';
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
+  static final GlobalKey<_HomePageState> _homeKey = GlobalKey<_HomePageState>();
+
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
 }
@@ -35,6 +37,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.initState();
     _tabController = AppTabController(length: 12);
     _tabController.addListener(() {
+      print('Tab changed to: ${_tabController.index}');
       setState(() {});
     });
   }
@@ -138,6 +141,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
                 Expanded(
                   child: AppTabView(
+                    key: HomePage._homeKey,
                     tabs: [
                       const HomeTab().tabData(context),
                       const MailTab().tabData(context),

@@ -1,206 +1,182 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
+// import 'package:go_router/go_router.dart';
 import '../providers/resolvers.dart';
-import '../providers/search.dart';
+import '../tabs/details/details.dart';
 
 class ReplyModal extends ConsumerStatefulWidget {
-  final Model model;
+  final Comment reply;
 
   const ReplyModal({
     super.key,
-    required this.model,
+    required this.reply,
   });
 
   @override
   ConsumerState<ReplyModal> createState() => _ReplyModalState();
 }
 
-class _ReplyModalState extends ConsumerState<ReplyModal> {
-  late TextEditingController _controller;
-  late FocusNode _focusNode;
-  // ignore: unused_field
-  late PartialChatMessage _partialMessage;
+class _ReplyModalState extends ConsumerState<ReplyModal>
+    with SingleTickerProviderStateMixin {
+  late AppTabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
-    _focusNode = FocusNode();
-    _partialMessage = PartialChatMessage('');
-
-    // Request focus after modal is built
-    Future.microtask(() => _focusNode.requestFocus());
-
-    // Add keyboard listener
-    _focusNode.onKeyEvent = (node, event) {
-      if (event.logicalKey == LogicalKeyboardKey.enter &&
-          (HardwareKeyboard.instance.isMetaPressed ||
-              HardwareKeyboard.instance.isControlPressed)) {
-        _sendMessage();
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
+    _tabController = AppTabController(length: 4);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
+    _tabController.dispose();
     super.dispose();
-  }
-
-  void _onContentChanged(String content) {
-    print('Content changed to: $content');
-    setState(() {
-      _partialMessage = PartialChatMessage(content);
-    });
-    // Update the controller's text
-    if (_controller.text != content) {
-      _controller.text = content;
-      _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: content.length),
-      );
-    }
-  }
-
-  void _sendMessage() async {
-    final text = _controller.text;
-    // final signedInProfile = ref.read(Profile.signedInActiveProfileProvider)!;
-    final signer = ref.read(Signer.activeSignerProvider)!;
-
-    if (text.isNotEmpty) {
-      // Add the Nostr event reference to the message content
-      final messageContent = 'nostr:nevent1${widget.model.id} $text';
-      final message = PartialChatMessage(
-        messageContent,
-        createdAt: DateTime.now(),
-      );
-      final signedMessage = await message.signWith(signer);
-      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
-      context.pop();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final resolvers = ref.read(resolversProvider);
+    final repliesState = ref.watch(query<Comment>(
+      where: (comment) => comment.parentModel.value?.id == widget.reply.id,
+    ));
+    final replies = repliesState.models.cast<Comment>().toList();
 
-    return AppInputModal(
-      children: [
-        SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              if (widget.model is! ChatMessage &&
-                  widget.model is! CashuZap &&
-                  widget.model is! Zap)
-                Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AppProfilePic.s40(widget.model.author.value),
-                        const AppGap.s12(),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  AppEmojiImage(
-                                    emojiUrl:
-                                        'assets/emoji/${getModelContentType(widget.model)}.png',
-                                    emojiName:
-                                        getModelContentType(widget.model),
-                                    size: 16,
-                                  ),
-                                  const AppGap.s10(),
-                                  Expanded(
-                                    child: AppCompactTextRenderer(
-                                      content:
-                                          getModelDisplayText(widget.model),
-                                      onResolveEvent: ref
-                                          .read(resolversProvider)
-                                          .eventResolver,
-                                      onResolveProfile: ref
-                                          .read(resolversProvider)
-                                          .profileResolver,
-                                      onResolveEmoji: ref
-                                          .read(resolversProvider)
-                                          .emojiResolver,
-                                      isWhite: true,
-                                      isMedium: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const AppGap.s2(),
-                              AppText.reg12(
-                                widget.model.author.value?.name ??
-                                    formatNpub(
-                                        widget.model.author.value?.pubkey ??
-                                            ''),
-                                color: theme.colors.white66,
-                              ),
-                            ],
-                          ),
+    return AppModal(
+      includePadding: false,
+      topBar: AppContainer(
+        padding: const AppEdgeInsets.all(AppGapSize.s12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AppProfilePic.s40(widget.reply.author.value),
+            const AppGap.s12(),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const AppGap.s2(),
+                  Row(
+                    children: [
+                      AppEmojiContentType(
+                        contentType: getModelContentType(widget.reply),
+                        size: 16,
+                      ),
+                      const AppGap.s10(),
+                      Expanded(
+                        child: AppCompactTextRenderer(
+                          isMedium: true,
+                          isWhite: true,
+                          content: getModelDisplayText(widget.reply),
+                          onResolveEvent: resolvers.eventResolver,
+                          onResolveProfile: resolvers.profileResolver,
+                          onResolveEmoji: resolvers.emojiResolver,
                         ),
-                        const AppGap.s8(),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        AppContainer(
-                          width: theme.sizes.s38,
-                          child: Center(
-                            child: AppContainer(
-                              decoration:
-                                  BoxDecoration(color: theme.colors.white33),
-                              width: AppLineThicknessData.normal().medium,
-                              height: theme.sizes.s16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              AppShortTextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                placeholder: [
-                  AppText.reg16(
-                    'Your Reply',
-                    color: theme.colors.white33,
+                      ),
+                    ],
+                  ),
+                  const AppGap.s2(),
+                  AppText.reg12(
+                    widget.reply.author.value?.name ??
+                        formatNpub(widget.reply.author.value?.npub ?? ''),
+                    color: theme.colors.white66,
                   ),
                 ],
-                quotedChatMessage: widget.model is ChatMessage
-                    ? (widget.model as ChatMessage)
-                    : null,
-                quotedCashuZap: widget.model is CashuZap
-                    ? (widget.model as CashuZap)
-                    : null,
-                quotedZap: widget.model is Zap ? (widget.model as Zap) : null,
-                onSearchProfiles: ref.read(searchProvider).profileSearch,
-                onSearchEmojis: ref.read(searchProvider).emojiSearch,
-                onResolveEvent: ref.read(resolversProvider).eventResolver,
-                onResolveProfile: ref.read(resolversProvider).profileResolver,
-                onResolveEmoji: ref.read(resolversProvider).emojiResolver,
-                onCameraTap: () {}, // TODO: Implement camera tap
-                onEmojiTap: () {}, // TODO: Implement emoji tap
-                onGifTap: () {}, // TODO: Implement gif tap
-                onAddTap: () {}, // TODO: Implement add tap
-                onSendTap: _sendMessage,
-                onChevronTap: () {}, // TODO: Implement chevron tap
-                onProfileTap: (profile) =>
-                    context.push('/profile/${profile.npub}', extra: profile),
-                onChanged: _onContentChanged,
               ),
-            ],
+            ),
+          ],
+        ),
+      ),
+      bottomBar: AppBottomBarReply(
+        onAddTap: (model) => print(model),
+        onReplyTap: (model) => print(model),
+        onVoiceTap: (model) => print(model),
+        onActions: (model) => print(model),
+        model: widget.reply,
+        onResolveEvent: resolvers.eventResolver,
+        onResolveProfile: resolvers.profileResolver,
+        onResolveEmoji: resolvers.emojiResolver,
+      ),
+      children: [
+        AppReply(
+          reply: widget.reply,
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
+          onResolveHashtag: resolvers.hashtagResolver,
+          onLinkTap: (url) => print(url),
+          onProfileTap: (profile) => print(profile),
+        ),
+        Expanded(
+          child: AppContainer(
+            child: AppTabView(
+              controller: _tabController,
+              tabs: [
+                TabData(
+                  label: 'Replies',
+                  icon: AppIcon.s24(
+                    theme.icons.characters.reply,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: repliesState is StorageLoading
+                      ? const AppLoadingFeed(type: LoadingFeedType.chat)
+                      : AppContainer(
+                          padding: AppEdgeInsets.all(AppGapSize.s6),
+                          child: Column(
+                            children: replies
+                                .map((reply) => Column(children: [
+                                      AppMessageStack(
+                                        replies: [reply],
+                                        onResolveEvent: resolvers.eventResolver,
+                                        onResolveProfile:
+                                            resolvers.profileResolver,
+                                        onResolveEmoji: resolvers.emojiResolver,
+                                        onResolveHashtag:
+                                            resolvers.hashtagResolver,
+                                        onLinkTap: (url) => print(url),
+                                        onActions: (model) => print(model),
+                                        onReply: (model) => print(model),
+                                        onReactionTap: (model) => print(model),
+                                        onZapTap: (model) => print(model),
+                                        onProfileTap: (profile) =>
+                                            print(profile),
+                                      ),
+                                      const AppGap.s8(),
+                                    ]))
+                                .toList(),
+                          ),
+                        ),
+                ),
+                TabData(
+                  label: 'Shares',
+                  icon: AppIcon.s24(
+                    theme.icons.characters.share,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: const AppText.reg14('Shares content'),
+                ),
+                TabData(
+                  label: 'Labels',
+                  icon: AppIcon.s24(
+                    theme.icons.characters.label,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: const AppText.reg14('Labels content'),
+                ),
+                TabData(
+                  label: 'Details',
+                  icon: AppIcon.s24(
+                    theme.icons.characters.details,
+                    outlineColor: theme.colors.white66,
+                    outlineThickness: AppLineThicknessData.normal().medium,
+                  ),
+                  content: DetailsTab(model: widget.reply),
+                ),
+              ],
+            ),
           ),
         ),
       ],

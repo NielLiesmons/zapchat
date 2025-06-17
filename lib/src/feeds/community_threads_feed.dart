@@ -21,12 +21,17 @@ class CommunityThreadsFeed extends ConsumerWidget {
     }
 
     final threads = state.models.cast<Note>();
+    final resolvers = ref.read(resolversProvider);
 
     return Column(
       children: [
         for (final thread in threads)
           AppFeedThread(
             thread: thread,
+            topThreeReplyProfiles:
+                ref.watch(resolvers.topThreeReplyProfilesResolver(thread)),
+            totalReplyProfiles:
+                ref.watch(resolvers.totalReplyProfilesResolver(thread)),
             onTap: (model) => context.push('/thread/${model.id}', extra: model),
             onReply: (model) =>
                 context.push('/reply-to/${model.id}', extra: model),

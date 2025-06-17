@@ -33,6 +33,15 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
     });
   }
 
+  void _onNextTap() {
+    if (_hasText) {
+      context.push(
+        '/create/community/spin-up-community-key',
+        extra: _communityNameController.text,
+      );
+    }
+  }
+
   @override
   void dispose() {
     _communityNameController.removeListener(_updateHasText);
@@ -56,30 +65,27 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
     final profiles = state.models.cast<Profile>();
 
     return AppScreen(
-        onHomeTap: () => Navigator.of(context).pop(),
-        alwaysShowTopBar: true,
-        topBarContent: AppContainer(
-          padding: const AppEdgeInsets.symmetric(
-            vertical: AppGapSize.s4,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const AppGap.s8(),
-                  AppText.med14('New Community'),
-                  const AppGap.s12(),
-                  const Spacer(),
-                  AppSmallButton(
-                    onTap: _hasText
-                        ? () {
-                            context.push(
-                                '/create/community/spin-up-community-key',
-                                extra: _communityNameController.text);
-                          }
-                        : null,
+      onHomeTap: () => Navigator.of(context).pop(),
+      alwaysShowTopBar: true,
+      topBarContent: AppContainer(
+        padding: const AppEdgeInsets.symmetric(
+          vertical: AppGapSize.s4,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const AppGap.s8(),
+                AppText.med14('Create Community'),
+                const AppGap.s12(),
+                const Spacer(),
+                AppKeyboardSubmitHandler(
+                  onSubmit: _hasText ? _onNextTap : () {},
+                  enabled: _hasText,
+                  child: AppSmallButton(
+                    onTap: _onNextTap,
                     rounded: true,
                     inactiveGradient: _hasText
                         ? theme.colors.blurple
@@ -95,11 +101,15 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                       const AppGap.s4(),
                     ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
+      child: AppKeyboardSubmitHandler(
+        onSubmit: _hasText ? _onNextTap : () {},
+        enabled: _hasText,
         child: AppContainer(
           padding: const AppEdgeInsets.symmetric(
             horizontal: AppGapSize.s12,
@@ -199,6 +209,8 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

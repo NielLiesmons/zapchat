@@ -45,8 +45,9 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
 
     // Get data
     final resolvers = ref.read(resolversProvider);
-    final state = ref.watch(query<Community>());
-    final communities = state.models.cast<Community>().toList();
+    final communities =
+        ref.watch(query<Community>()).models.cast<Community>().toList();
+    final replies = ref.watch(query<Comment>()).models.cast<Comment>().toList();
 
     return AppScreen(
       history: recentHistory,
@@ -119,8 +120,38 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,
                     ),
-                    content: const AppLoadingFeed(
-                      type: LoadingFeedType.thread,
+                    content: Column(
+                      children: [
+                        ...replies.map((reply) {
+                          return AppFeedThread(
+                            reply: reply,
+                            topThreeReplyProfiles: ref.watch(
+                                resolvers.topThreeReplyProfilesResolver(reply)),
+                            totalReplyProfiles: ref.watch(
+                                resolvers.totalReplyProfilesResolver(reply)),
+                            onTap: (reply) => context.push('/reply/${reply.id}',
+                                extra: reply),
+                            onReply: (reply) =>
+                                context.push('/reply-to/${reply.id}'),
+                            onActions: (reply) =>
+                                context.push('/actions/${reply.id}'),
+                            onReactionTap: (reply) =>
+                                context.push('/reactions/${reply.id}'),
+                            onZapTap: (reply) =>
+                                context.push('/zaps/${reply.id}'),
+                            onResolveEvent: resolvers.eventResolver,
+                            onResolveProfile: resolvers.profileResolver,
+                            onResolveEmoji: resolvers.emojiResolver,
+                            onResolveHashtag: resolvers.hashtagResolver,
+                            onLinkTap: (url) {
+                              print(url);
+                            },
+                            onProfileTap: (profile) => context.push(
+                                '/profile/${profile.npub}',
+                                extra: profile),
+                          );
+                        }).toList(),
+                      ],
                     ),
                   ),
                   TabData(
@@ -144,7 +175,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
                   TabData(
                     label: 'Details',
                     icon: AppIcon.s24(
-                      theme.icons.characters.info,
+                      theme.icons.characters.details,
                       outlineColor: theme.colors.white66,
                       outlineThickness: AppLineThicknessData.normal().medium,
                     ),

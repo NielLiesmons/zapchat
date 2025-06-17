@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/resolvers.dart';
 
 class CommunityArticlesFeed extends ConsumerWidget {
   final Community community;
@@ -13,6 +14,7 @@ class CommunityArticlesFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final resolvers = ref.read(resolversProvider);
     final state = ref.watch(query<Article>());
 
     if (state case StorageLoading()) {
@@ -26,6 +28,12 @@ class CommunityArticlesFeed extends ConsumerWidget {
         for (final article in articles)
           AppFeedArticle(
             article: article,
+            topThreeReplyProfiles: ref.watch(
+              resolvers.topThreeReplyProfilesResolver(article),
+            ),
+            totalReplyProfiles: ref.watch(
+              resolvers.totalReplyProfilesResolver(article),
+            ),
             isUnread: true,
             onTap: (event) =>
                 context.push('/article/${event.id}', extra: event),

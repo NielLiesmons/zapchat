@@ -17,27 +17,29 @@ class HomeTab extends StatelessWidget {
         theme.icons.characters.home,
         gradient: theme.colors.graydient66,
       ),
-      bottomBar: HookConsumer(
-        builder: (context, ref, _) {
-          final activeProfile = ref.watch(Signer.activeProfileProvider);
-          return AppBottomBarHome(
-            onZapTap: activeProfile != null
-                ? () {
-                    context.push('/pay');
-                  }
-                : null,
-            onAddTap: () {
-              context.push('/create/');
-            },
-            onSearchTap: () {
-              context.push('/search/');
-            },
-            onActions: () {
-              context.push('/actions/home');
-            },
-          );
-        },
-      ),
+      bottomBar: AppPlatformUtils.isMobile
+          ? HookConsumer(
+              builder: (context, ref, _) {
+                final activeProfile = ref.watch(Signer.activeProfileProvider);
+                return AppBottomBarHome(
+                  onZapTap: activeProfile != null
+                      ? () {
+                          context.push('/pay');
+                        }
+                      : null,
+                  onAddTap: () {
+                    context.push('/create/');
+                  },
+                  onSearchTap: () {
+                    context.push('/search/');
+                  },
+                  onActions: () {
+                    context.push('/actions/home');
+                  },
+                );
+              },
+            )
+          : null,
       content: HookConsumer(
         builder: (context, ref, _) {
           final resolvers = ref.read(resolversProvider);
