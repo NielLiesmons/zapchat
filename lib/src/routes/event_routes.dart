@@ -41,10 +41,10 @@ List<GoRoute> get eventRoutes => [
         },
         pageBuilder: (context, state) {
           // Show the default nostr publication view
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
-                return AppText.h1(
+                return LabText.h1(
                     'Nostr publication ${state.pathParameters['eventId']}');
               },
             ),
@@ -55,7 +55,7 @@ List<GoRoute> get eventRoutes => [
         path: '/actions/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ActionsModal(
@@ -70,13 +70,13 @@ List<GoRoute> get eventRoutes => [
         path: '/zap/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
-                return AppZapModal(
+                return LabZapModal(
                   model: model,
                   otherZaps: [],
-                  recentAmounts: AppDefaultData.defaultAmounts,
+                  recentAmounts: LabDefaultData.defaultAmounts,
                   onResolveEvent: ref.read(resolversProvider).eventResolver,
                   onResolveProfile: ref.read(resolversProvider).profileResolver,
                   onResolveEmoji: ref.read(resolversProvider).emojiResolver,
@@ -98,7 +98,7 @@ List<GoRoute> get eventRoutes => [
         path: '/reply-to/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyToModal(
@@ -113,7 +113,7 @@ List<GoRoute> get eventRoutes => [
         path: '/reply/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyModal(
@@ -128,7 +128,7 @@ List<GoRoute> get eventRoutes => [
         path: '/article/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
                 return ArticleScreen(
@@ -143,7 +143,7 @@ List<GoRoute> get eventRoutes => [
         path: '/mail/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
                 return MailScreen(
@@ -158,7 +158,7 @@ List<GoRoute> get eventRoutes => [
         path: '/service/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
                 return ServiceScreen(
@@ -173,7 +173,7 @@ List<GoRoute> get eventRoutes => [
         path: '/thread/:eventId',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: Consumer(
               builder: (context, ref, _) {
                 return ThreadScreen(

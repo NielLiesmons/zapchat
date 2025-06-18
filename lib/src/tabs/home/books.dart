@@ -9,26 +9,26 @@ class BooksTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Books',
-      icon: const AppEmojiContentType(contentType: 'book'),
+      icon: const LabEmojiContentType(contentType: 'book'),
       content: HookConsumer(
         builder: (context, ref, _) {
-          final theme = AppTheme.of(context);
+          final theme = LabTheme.of(context);
 
           final state = ref.watch(query<Book>());
 
           if (state case StorageLoading()) {
-            return const AppLoadingFeed();
+            return const LabLoadingFeed();
           }
 
           final books = state.models.cast<Book>();
-          return AppContainer(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+          return LabContainer(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Wrap(
               spacing: theme.sizes.s16,
               runSpacing: theme.sizes.s16,
               children: [
                 for (final book in books)
-                  AppBookCard(
+                  LabBookCard(
                     book: book,
                     onTap: () => context.push('/book/${book.id}', extra: book),
                   ),

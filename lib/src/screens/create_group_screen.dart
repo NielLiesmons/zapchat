@@ -46,17 +46,17 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     final state = ref.watch(query<Profile>());
     final profiles = state.models.cast<Profile>().toList();
 
-    return AppScreen(
+    return LabScreen(
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: true,
-      topBarContent: AppContainer(
-        padding: const AppEdgeInsets.symmetric(
-          vertical: AppGapSize.s4,
+      topBarContent: LabContainer(
+        padding: const LabEdgeInsets.symmetric(
+          vertical: LabGapSize.s4,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,37 +64,37 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const AppGap.s8(),
-                AppText.med14('New Private Group'),
-                const AppGap.s12(),
+                const LabGap.s8(),
+                LabText.med14('New Private Group'),
+                const LabGap.s12(),
                 const Spacer(),
-                AppSmallButton(
+                LabSmallButton(
                   onTap: () {},
                   rounded: true,
                   children: [
-                    const AppGap.s4(),
+                    const LabGap.s4(),
                     if (_selectedProfiles.isEmpty)
-                      AppText.med14('Skip')
+                      LabText.med14('Skip')
                     else
-                      AppText.med14('Next'),
-                    const AppGap.s4(),
+                      LabText.med14('Next'),
+                    const LabGap.s4(),
                   ],
                 ),
               ],
             ),
-            const AppGap.s12(),
-            AppSearchField(
+            const LabGap.s12(),
+            LabSearchField(
               placeholderWidget: [
-                AppText.reg16('Search Members', color: theme.colors.white33),
+                LabText.reg16('Search Members', color: theme.colors.white33),
               ],
               controller: _searchController,
               focusNode: _searchFocusNode,
             ),
             if (_selectedProfiles.isNotEmpty) ...[
-              const AppGap.s12(),
-              AppContainer(
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s6,
+              const LabGap.s12(),
+              LabContainer(
+                padding: const LabEdgeInsets.symmetric(
+                  horizontal: LabGapSize.s6,
                 ),
                 clipBehavior: Clip.none,
                 child: SingleChildScrollView(
@@ -106,33 +106,33 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                         .map(
                           (profile) => Row(
                             children: [
-                              AppSmallButton(
-                                padding: const AppEdgeInsets.symmetric(
-                                  horizontal: AppGapSize.s6,
+                              LabSmallButton(
+                                padding: const LabEdgeInsets.symmetric(
+                                  horizontal: LabGapSize.s6,
                                 ),
                                 inactiveColor: theme.colors.white8,
                                 onTap: () => _toggleProfileSelection(profile),
                                 children: [
-                                  AppProfilePic.s18(profile),
-                                  const AppGap.s6(),
+                                  LabProfilePic.s18(profile),
+                                  const LabGap.s6(),
                                   ConstrainedBox(
                                     constraints: const BoxConstraints(
                                       maxWidth: 56,
                                     ),
-                                    child: AppText.med12(
+                                    child: LabText.med12(
                                       profile.name ?? formatNpub(profile.npub),
                                       maxLines: 1,
                                       textOverflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  const AppGap.s4(),
-                                  AppCrossButton.s20(
+                                  const LabGap.s4(),
+                                  LabCrossButton.s20(
                                     onTap: () =>
                                         _toggleProfileSelection(profile),
                                   ),
                                 ],
                               ),
-                              const AppGap.s8(),
+                              const LabGap.s8(),
                             ],
                           ),
                         )
@@ -153,32 +153,32 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           for (final profile in profiles)
             TapBuilder(
               onTap: () => _toggleProfileSelection(profile),
-              builder: (context, state, hasFocus) => AppContainer(
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s16,
-                  vertical: AppGapSize.s8,
+              builder: (context, state, hasFocus) => LabContainer(
+                padding: const LabEdgeInsets.symmetric(
+                  horizontal: LabGapSize.s16,
+                  vertical: LabGapSize.s8,
                 ),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        AppProfilePic.s56(profile),
-                        const AppGap.s12(),
+                        LabProfilePic.s56(profile),
+                        const LabGap.s12(),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AppText.med16(profile.author.value?.name ?? ''),
-                            const AppGap.s4(),
-                            AppNpubDisplay(profile: profile, copyable: false),
+                            LabText.med16(profile.author.value?.name ?? ''),
+                            const LabGap.s4(),
+                            LabNpubDisplay(profile: profile, copyable: false),
                           ],
                         ),
                         const Spacer(),
-                        AppCheckBox(
+                        LabCheckBox(
                           value: _selectedProfiles.contains(profile),
                           onChanged: (value) =>
                               _toggleProfileSelection(profile),
                         ),
-                        const AppGap.s12(),
+                        const LabGap.s12(),
                       ],
                     ),
                   ],

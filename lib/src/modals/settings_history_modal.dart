@@ -14,49 +14,49 @@ class HistoryContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final selectedIndex = ref.watch(historyViewIndexProvider);
 
     return Column(
       children: [
-        AppSearchField(
+        LabSearchField(
           placeholder:
               selectedIndex == 0 ? 'Search History' : 'Search Activity',
           onChanged: (value) {},
         ),
-        const AppGap.s12(),
-        AppSelector(
+        const LabGap.s12(),
+        LabSelector(
           small: true,
           initialIndex: 0,
           onChanged: (index) {
             ref.read(historyViewIndexProvider.notifier).state = index;
           },
           children: [
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppText.reg12('Your History', color: theme.colors.white),
+                LabText.reg12('Your History', color: theme.colors.white),
               ],
               unselectedContent: [
-                AppText.reg12('Your History', color: theme.colors.white33),
+                LabText.reg12('Your History', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
             ),
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppText.reg12('Your Activity', color: theme.colors.white66),
+                LabText.reg12('Your Activity', color: theme.colors.white66),
               ],
               unselectedContent: [
-                AppText.reg12('Your Activity', color: theme.colors.white33),
+                LabText.reg12('Your Activity', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
             ),
           ],
         ),
-        const AppGap.s16(),
+        const LabGap.s16(),
         if (selectedIndex == 0)
-          AppContainer(
+          LabContainer(
             constraints: const BoxConstraints(minHeight: 1000),
             child: Column(
               children: [
@@ -67,7 +67,7 @@ class HistoryContent extends ConsumerWidget {
                     ))
                   Column(
                     children: [
-                      AppHistoryCard(
+                      LabHistoryCard(
                         contentType: item.modelType,
                         displayText: item.displayText,
                         onTap: () {
@@ -93,18 +93,18 @@ class HistoryContent extends ConsumerWidget {
                           }
                         },
                       ),
-                      const AppGap.s10(),
+                      const LabGap.s10(),
                     ],
                   ),
               ],
             ),
           )
         else
-          AppPanel(
+          LabPanel(
             child: Column(
               children: [
-                const AppGap.s12(),
-                AppText.h2('No activity yet',
+                const LabGap.s12(),
+                LabText.h2('No activity yet',
                     color: theme.colors.white33, textAlign: TextAlign.center),
                 SizedBox(
                   height: 1000,
@@ -122,7 +122,7 @@ class SettingsHistoryModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AppModal(
+    return LabModal(
       title: "History",
       children: [
         const HistoryContent(),

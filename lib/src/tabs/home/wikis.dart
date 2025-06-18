@@ -6,11 +6,11 @@ class WikisTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Wikis',
-      icon: const AppEmojiContentType(contentType: 'wiki'),
+      icon: const LabEmojiContentType(contentType: 'wiki'),
       content: Builder(
         builder: (context) {
-          return AppContainer(
-            child: const AppLoadingFeed(),
+          return LabContainer(
+            child: const LabLoadingFeed(),
           );
         },
       ),

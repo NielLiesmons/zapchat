@@ -18,20 +18,20 @@ class ThemeSettings extends _$ThemeSettings {
     // Load theme
     final savedTheme = prefs.getString(_themeKey);
     final themeMode = savedTheme != null
-        ? AppThemeColorMode.values.firstWhere((e) => e.name == savedTheme)
+        ? LabThemeColorMode.values.firstWhere((e) => e.name == savedTheme)
         : null;
 
     // Load text scale
     final savedTextScale = prefs.getString(_textScaleKey);
     final textScale = savedTextScale != null
-        ? AppTextScale.values.firstWhere((e) => e.name == savedTextScale)
-        : AppTextScale.normal;
+        ? LabTextScale.values.firstWhere((e) => e.name == savedTextScale)
+        : LabTextScale.normal;
 
     // Load system scale
     final savedSystemScale = prefs.getString(_systemScaleKey);
     final systemScale = savedSystemScale != null
-        ? AppSystemScale.values.firstWhere((e) => e.name == savedSystemScale)
-        : AppSystemScale.normal;
+        ? LabSystemScale.values.firstWhere((e) => e.name == savedSystemScale)
+        : LabSystemScale.normal;
 
     return ThemeState(
       colorMode: themeMode,
@@ -40,7 +40,7 @@ class ThemeSettings extends _$ThemeSettings {
     );
   }
 
-  Future<void> setTheme(AppThemeColorMode? mode) async {
+  Future<void> setTheme(LabThemeColorMode? mode) async {
     final prefs = await SharedPreferences.getInstance();
     if (mode == null) {
       await prefs.remove(_themeKey);
@@ -53,7 +53,7 @@ class ThemeSettings extends _$ThemeSettings {
     ));
   }
 
-  Future<void> setTextScale(AppTextScale scale) async {
+  Future<void> setTextScale(LabTextScale scale) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_textScaleKey, scale.name);
     final currentState = state.value!;
@@ -62,7 +62,7 @@ class ThemeSettings extends _$ThemeSettings {
     ));
   }
 
-  Future<void> setSystemScale(AppSystemScale scale) async {
+  Future<void> setSystemScale(LabSystemScale scale) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_systemScaleKey, scale.name);
     final currentState = state.value!;

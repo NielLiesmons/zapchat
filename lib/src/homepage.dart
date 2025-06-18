@@ -25,7 +25,7 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  late final AppTabController _tabController;
+  late final LabTabController _tabController;
   double _topContainerHeight = 1.0;
 
   static const double _heightWithProfile = 72.0;
@@ -35,7 +35,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 12);
+    _tabController = LabTabController(length: 12);
     _tabController.addListener(() {
       print('Tab changed to: ${_tabController.index}');
       setState(() {});
@@ -51,26 +51,26 @@ class _HomePageState extends ConsumerState<HomePage> {
   // Home page content
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final activeProfile = ref.watch(Signer.activeProfileProvider);
     final containerHeight =
         activeProfile == null ? _heightWithoutProfile : _heightWithProfile;
 
     return Stack(
       children: [
-        AppScaffold(
-          body: AppContainer(
+        LabScaffold(
+          body: LabContainer(
             child: Column(
               children: <Widget>[
-                const AppTopSafeArea(),
+                const LabTopSafeArea(),
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 100),
                   height: containerHeight * _topContainerHeight,
                   child: Opacity(
                     opacity: _topContainerHeight,
-                    child: AppContainer(
+                    child: LabContainer(
                       height: containerHeight,
-                      padding: const AppEdgeInsets.all(AppGapSize.s12),
+                      padding: const LabEdgeInsets.all(LabGapSize.s12),
                       child: activeProfile == null
                           ? Row(
                               children: [
@@ -79,18 +79,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   width: theme.sizes.s32,
                                   height: theme.sizes.s32,
                                 ),
-                                const AppGap.s8(),
-                                AppText.h1('Zapchat'),
+                                const LabGap.s8(),
+                                LabText.h1('Zapchat'),
                                 const Spacer(),
-                                AppButton(
+                                LabButton(
                                   onTap: () => context.push('/start'),
                                   children: [
-                                    AppIcon.s12(
+                                    LabIcon.s12(
                                       theme.icons.characters.play,
                                       color: theme.colors.whiteEnforced,
                                     ),
-                                    const AppGap.s12(),
-                                    AppText.med14('Start',
+                                    const LabGap.s12(),
+                                    LabText.med14('Start',
                                         color: theme.colors.whiteEnforced),
                                   ],
                                 ),
@@ -98,38 +98,38 @@ class _HomePageState extends ConsumerState<HomePage> {
                             )
                           : Row(
                               children: [
-                                if (AppPlatformUtils.isMobile)
-                                  AppProfilePic.s48(
+                                if (LabPlatformUtils.isMobile)
+                                  LabProfilePic.s48(
                                     activeProfile,
                                     onTap: () => context.push('/settings'),
                                   ),
-                                if (AppPlatformUtils.isMobile)
-                                  const AppGap.s12(),
+                                if (LabPlatformUtils.isMobile)
+                                  const LabGap.s12(),
                                 Expanded(
-                                  child: AppContainer(
+                                  child: LabContainer(
                                     height: theme.sizes.s48,
-                                    padding: const AppEdgeInsets.symmetric(
-                                        horizontal: AppGapSize.s12),
+                                    padding: const LabEdgeInsets.symmetric(
+                                        horizontal: LabGapSize.s12),
                                     decoration: BoxDecoration(
                                       color: theme.colors.gray33,
                                       borderRadius: BorderRadius.circular(
                                           theme.sizes.s24),
                                       border: Border.all(
                                         color: theme.colors.gray,
-                                        width: AppLineThicknessData.normal()
+                                        width: LabLineThicknessData.normal()
                                             .medium,
                                       ),
                                     ),
                                     child: Row(
                                       children: [
-                                        AppIcon.s16(
+                                        LabIcon.s16(
                                           theme.icons.characters.zap,
                                           gradient: theme.colors.blurple,
                                         ),
-                                        const AppGap.s4(),
-                                        AppAmount(124608,
+                                        const LabGap.s4(),
+                                        LabAmount(124608,
                                             color: theme.colors.white,
-                                            level: AppTextLevel.h2),
+                                            level: LabTextLevel.h2),
                                       ],
                                     ),
                                   ),
@@ -140,7 +140,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
                 Expanded(
-                  child: AppTabView(
+                  child: LabTabView(
                     key: HomePage._homeKey,
                     tabs: [
                       const HomeTab().tabData(context),

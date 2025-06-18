@@ -11,7 +11,7 @@ List<GoRoute> get startRoutes => [
       GoRoute(
         path: '/start',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: StartModal(
               logoImageUrl: 'assets/images/Zapchat-Blurple-Transparent.png',
               title: 'Zapchat',
@@ -30,7 +30,7 @@ List<GoRoute> get startRoutes => [
         path: '/start/spin-up-key',
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: SpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
@@ -46,7 +46,7 @@ List<GoRoute> get startRoutes => [
       GoRoute(
         path: '/start/your-key',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, child) {
                 final extra = state.extra as Map<String, dynamic>;
@@ -62,7 +62,7 @@ List<GoRoute> get startRoutes => [
       GoRoute(
         path: '/start/existing-profile',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: StartAddExistingKeyModal(),
           );
         },
@@ -70,7 +70,7 @@ List<GoRoute> get startRoutes => [
       GoRoute(
         path: '/start/paste-key',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: StartPasteKeyModal(
               onUseThisKey: () {
                 context

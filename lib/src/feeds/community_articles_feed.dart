@@ -18,7 +18,7 @@ class CommunityArticlesFeed extends ConsumerWidget {
     final state = ref.watch(query<Article>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed();
+      return const LabLoadingFeed();
     }
 
     final articles = state.models.cast<Article>();
@@ -26,7 +26,7 @@ class CommunityArticlesFeed extends ConsumerWidget {
     return Column(
       children: [
         for (final article in articles)
-          AppFeedArticle(
+          LabFeedArticle(
             article: article,
             topThreeReplyProfiles: ref.watch(
               resolvers.topThreeReplyProfilesResolver(article),

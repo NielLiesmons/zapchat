@@ -8,7 +8,7 @@ List<GoRoute> get profileRoutes => [
         path: '/profile/:npub',
         pageBuilder: (context, state) {
           final profile = state.extra as Profile;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: ProfileScreen(profile: profile),
           );
         },

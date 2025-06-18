@@ -19,12 +19,12 @@ class ReplyModal extends ConsumerStatefulWidget {
 
 class _ReplyModalState extends ConsumerState<ReplyModal>
     with SingleTickerProviderStateMixin {
-  late AppTabController _tabController;
+  late LabTabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 4);
+    _tabController = LabTabController(length: 4);
   }
 
   @override
@@ -35,36 +35,36 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final resolvers = ref.read(resolversProvider);
     final repliesState = ref.watch(query<Comment>(
       where: (comment) => comment.parentModel.value?.id == widget.reply.id,
     ));
     final replies = repliesState.models.cast<Comment>().toList();
 
-    return AppModal(
+    return LabModal(
       includePadding: false,
-      topBar: AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s12),
+      topBar: LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppProfilePic.s40(widget.reply.author.value),
-            const AppGap.s12(),
+            LabProfilePic.s40(widget.reply.author.value),
+            const LabGap.s12(),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AppGap.s2(),
+                  const LabGap.s2(),
                   Row(
                     children: [
-                      AppEmojiContentType(
+                      LabEmojiContentType(
                         contentType: getModelContentType(widget.reply),
                         size: 16,
                       ),
-                      const AppGap.s10(),
+                      const LabGap.s10(),
                       Expanded(
-                        child: AppCompactTextRenderer(
+                        child: LabCompactTextRenderer(
                           isMedium: true,
                           isWhite: true,
                           content: getModelDisplayText(widget.reply),
@@ -75,8 +75,8 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
                       ),
                     ],
                   ),
-                  const AppGap.s2(),
-                  AppText.reg12(
+                  const LabGap.s2(),
+                  LabText.reg12(
                     widget.reply.author.value?.name ??
                         formatNpub(widget.reply.author.value?.npub ?? ''),
                     color: theme.colors.white66,
@@ -87,7 +87,7 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
           ],
         ),
       ),
-      bottomBar: AppBottomBarReply(
+      bottomBar: LabBottomBarReply(
         onAddTap: (model) => print(model),
         onReplyTap: (model) => print(model),
         onVoiceTap: (model) => print(model),
@@ -98,7 +98,7 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
         onResolveEmoji: resolvers.emojiResolver,
       ),
       children: [
-        AppReply(
+        LabReply(
           reply: widget.reply,
           onResolveEvent: resolvers.eventResolver,
           onResolveProfile: resolvers.profileResolver,
@@ -108,25 +108,25 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
           onProfileTap: (profile) => print(profile),
         ),
         Expanded(
-          child: AppContainer(
-            child: AppTabView(
+          child: LabContainer(
+            child: LabTabView(
               controller: _tabController,
               tabs: [
                 TabData(
                   label: 'Replies',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.reply,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
                   content: repliesState is StorageLoading
-                      ? const AppLoadingFeed(type: LoadingFeedType.chat)
-                      : AppContainer(
-                          padding: AppEdgeInsets.all(AppGapSize.s6),
+                      ? const LabLoadingFeed(type: LoadingFeedType.chat)
+                      : LabContainer(
+                          padding: LabEdgeInsets.all(LabGapSize.s6),
                           child: Column(
                             children: replies
                                 .map((reply) => Column(children: [
-                                      AppMessageStack(
+                                      LabMessageStack(
                                         replies: [reply],
                                         onResolveEvent: resolvers.eventResolver,
                                         onResolveProfile:
@@ -142,7 +142,7 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
                                         onProfileTap: (profile) =>
                                             print(profile),
                                       ),
-                                      const AppGap.s8(),
+                                      const LabGap.s8(),
                                     ]))
                                 .toList(),
                           ),
@@ -150,28 +150,28 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
                 ),
                 TabData(
                   label: 'Shares',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.share,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const AppText.reg14('Shares content'),
+                  content: const LabText.reg14('Shares content'),
                 ),
                 TabData(
                   label: 'Labels',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.label,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const AppText.reg14('Labels content'),
+                  content: const LabText.reg14('Labels content'),
                 ),
                 TabData(
                   label: 'Details',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.details,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
                   content: DetailsTab(model: widget.reply),
                 ),

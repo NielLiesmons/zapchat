@@ -13,23 +13,23 @@ class CommunityBooksFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final state = ref.watch(query<Book>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed();
+      return const LabLoadingFeed();
     }
 
     final books = state.models.cast<Book>();
 
-    return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s12),
+    return LabContainer(
+      padding: const LabEdgeInsets.all(LabGapSize.s12),
       child: Wrap(
         spacing: theme.sizes.s16,
         runSpacing: theme.sizes.s16,
         children: [
           for (final book in books)
-            AppBookCard(
+            LabBookCard(
               book: book,
               onTap: () => context.push('/book/${book.id}', extra: book),
             ),

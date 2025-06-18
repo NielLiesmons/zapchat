@@ -17,30 +17,30 @@ class StartYourKeyModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
-    final npub = AppKeyGenerator.nsecToNpub(secretKey);
-    final mnemonic = AppKeyGenerator.nsecToMnemonic(secretKey) ?? '';
+    final theme = LabTheme.of(context);
+    final npub = LabKeyGenerator.nsecToNpub(secretKey);
+    final mnemonic = LabKeyGenerator.nsecToMnemonic(secretKey) ?? '';
 
-    return AppModal(
-      topBar: AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s12),
-        child: AppText.med16("Your Key", color: theme.colors.white),
+    return LabModal(
+      topBar: LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s12),
+        child: LabText.med16("Your Key", color: theme.colors.white),
       ),
       bottomBar: Row(
         children: [
-          AppButton(
+          LabButton(
             inactiveColor: theme.colors.black33,
             onTap: () => context.pop(),
             children: [
-              AppText.reg14(
+              LabText.reg14(
                 "Spin Again",
                 color: theme.colors.white66,
               ),
             ],
           ),
-          const AppGap.s12(),
+          const LabGap.s12(),
           Expanded(
-            child: AppButton(
+            child: LabButton(
               text: "Use This Key",
               onTap: () async {
                 // Create a PartialProfile with the provided name
@@ -49,13 +49,13 @@ class StartYourKeyModal extends ConsumerWidget {
                 );
 
                 // Verify nsec format
-                if (!AppKeyGenerator.verifyNsecChecksum(secretKey)) {
+                if (!LabKeyGenerator.verifyNsecChecksum(secretKey)) {
                   throw FormatException('Invalid nsec format: $secretKey');
                 }
 
                 try {
                   // Convert nsec to hex
-                  final secretKeyHex = AppKeyGenerator.nsecToHex(secretKey);
+                  final secretKeyHex = LabKeyGenerator.nsecToHex(secretKey);
 
                   // Get the signer from the provider
                   final signer = ref.read(bip340SignerProvider(secretKeyHex));
@@ -80,17 +80,17 @@ class StartYourKeyModal extends ConsumerWidget {
         ],
       ),
       children: [
-        AppContainer(
+        LabContainer(
           width: double.infinity,
           child: Column(
             children: [
-              const AppGap.s8(),
-              AppText.h1(
+              const LabGap.s8(),
+              LabText.h1(
                 "Hooray!",
                 color: theme.colors.white,
               ),
-              const AppGap.s12(),
-              AppContainer(
+              const LabGap.s12(),
+              LabContainer(
                 width: 344,
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -98,14 +98,14 @@ class StartYourKeyModal extends ConsumerWidget {
                     children: [
                       TextSpan(
                         text: "You generated an uncrackable ",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                             ),
                       ),
                       TextSpan(
                         text: "secret key",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                               decoration: TextDecoration.underline,
                             ),
                         recognizer: TapGestureRecognizer()
@@ -118,8 +118,8 @@ class StartYourKeyModal extends ConsumerWidget {
                       ),
                       TextSpan(
                         text: ".",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                             ),
                       ),
                     ],
@@ -129,22 +129,22 @@ class StartYourKeyModal extends ConsumerWidget {
             ],
           ),
         ),
-        const AppGap.s16(),
-        AppKeyDisplay(
+        const LabGap.s16(),
+        LabKeyDisplay(
           secretKey: secretKey,
           mnemonic: mnemonic,
         ),
-        const AppGap.s16(),
-        AppContainer(
+        const LabGap.s16(),
+        LabContainer(
           width: 344,
-          child: AppText.reg12(
+          child: LabText.reg12(
             "A secret key (Nsec) can be displayed and stored in multiple ways: 12 emoji, 12 words on a piece of paper, or as a text string (Nsec) in a password manager.",
             color: theme.colors.white33,
             textAlign: TextAlign.center,
           ),
         ),
-        const AppGap.s16(),
-        AppContainer(
+        const LabGap.s16(),
+        LabContainer(
           width: 344,
           child: RichText(
             textAlign: TextAlign.center,
@@ -152,14 +152,14 @@ class StartYourKeyModal extends ConsumerWidget {
               children: [
                 TextSpan(
                   text: "It comes with a unique ",
-                  style: AppTheme.of(context).typography.reg16.copyWith(
-                        color: AppTheme.of(context).colors.white66,
+                  style: LabTheme.of(context).typography.reg16.copyWith(
+                        color: LabTheme.of(context).colors.white66,
                       ),
                 ),
                 TextSpan(
                   text: "Public Identifier",
-                  style: AppTheme.of(context).typography.reg16.copyWith(
-                        color: AppTheme.of(context).colors.white66,
+                  style: LabTheme.of(context).typography.reg16.copyWith(
+                        color: LabTheme.of(context).colors.white66,
                         decoration: TextDecoration.underline,
                       ),
                   recognizer: TapGestureRecognizer()
@@ -172,17 +172,17 @@ class StartYourKeyModal extends ConsumerWidget {
                 ),
                 TextSpan(
                   text: ":",
-                  style: AppTheme.of(context).typography.reg16.copyWith(
-                        color: AppTheme.of(context).colors.white66,
+                  style: LabTheme.of(context).typography.reg16.copyWith(
+                        color: LabTheme.of(context).colors.white66,
                       ),
                 ),
               ],
             ),
           ),
         ),
-        const AppGap.s16(),
-        AppContainer(
-          padding: AppEdgeInsets.all(AppGapSize.s12),
+        const LabGap.s16(),
+        LabContainer(
+          padding: LabEdgeInsets.all(LabGapSize.s12),
           width: 316,
           decoration: BoxDecoration(
             color: theme.colors.white8,
@@ -190,29 +190,29 @@ class StartYourKeyModal extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              AppProfilePic.s56(
+              LabProfilePic.s56(
                 PartialProfile(
                   name: profileName,
                 ).dummySign(npubToHex(npub)),
               ),
-              const AppGap.s12(),
+              const LabGap.s12(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppText.bold16(profileName),
+                  LabText.bold16(profileName),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      AppContainer(
+                      LabContainer(
                         height: theme.sizes.s12,
                         width: theme.sizes.s12,
-                        margin: const AppEdgeInsets.only(top: AppGapSize.s2),
+                        margin: const LabEdgeInsets.only(top: LabGapSize.s2),
                         decoration: BoxDecoration(
                           color: Color(npubToColor(npub)),
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: AppLineThicknessData.normal().thin,
+                            width: LabLineThicknessData.normal().thin,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -222,8 +222,8 @@ class StartYourKeyModal extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      const AppGap.s8(),
-                      AppText.reg16(
+                      const LabGap.s8(),
+                      LabText.reg16(
                         formatNpub(npub),
                         color: theme.colors.white66,
                       ),
@@ -234,17 +234,17 @@ class StartYourKeyModal extends ConsumerWidget {
             ],
           ),
         ),
-        const AppGap.s16(),
-        AppContainer(
+        const LabGap.s16(),
+        LabContainer(
           width: 344,
-          child: AppText.reg12(
+          child: LabText.reg12(
             "Your Public identifier (Npub) is how people can identify you and is the ID that, unlike your Seceret Key (Nsec), you can share publicly.",
             color: theme.colors.white33,
             textAlign: TextAlign.center,
           ),
         ),
-        const AppGap.s16(),
-        AppContainer(
+        const LabGap.s16(),
+        LabContainer(
           width: 344,
           child: RichText(
             textAlign: TextAlign.center,
@@ -253,8 +253,8 @@ class StartYourKeyModal extends ConsumerWidget {
                 TextSpan(
                   text:
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                  style: AppTheme.of(context).typography.reg16.copyWith(
-                        color: AppTheme.of(context).colors.white66,
+                  style: LabTheme.of(context).typography.reg16.copyWith(
+                        color: LabTheme.of(context).colors.white66,
                       ),
                 ),
               ],

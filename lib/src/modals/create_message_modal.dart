@@ -70,21 +70,21 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppInputModal(
+    return LabInputModal(
       children: [
         SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              AppKeyboardSubmitHandler(
+              LabKeyboardSubmitHandler(
                 onSubmit: _sendMessage,
-                child: AppShortTextField(
+                child: LabShortTextField(
                   controller: _controller,
                   focusNode: _focusNode,
                   placeholder: [
-                    AppText.reg16(
+                    LabText.reg16(
                       'Your Message',
                       color: theme.colors.white33,
                     ),

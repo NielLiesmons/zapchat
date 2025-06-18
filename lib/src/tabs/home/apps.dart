@@ -6,11 +6,11 @@ class AppsTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Apps',
-      icon: const AppEmojiContentType(contentType: 'app'),
+      icon: const LabEmojiContentType(contentType: 'app'),
       content: Builder(
         builder: (context) {
-          return AppContainer(
-            child: const AppLoadingFeed(type: LoadingFeedType.thread),
+          return LabContainer(
+            child: const LabLoadingFeed(type: LoadingFeedType.thread),
           );
         },
       ),

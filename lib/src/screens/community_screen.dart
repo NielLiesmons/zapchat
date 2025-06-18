@@ -29,14 +29,14 @@ class CommunityScreen extends StatefulHookConsumerWidget {
 }
 
 class _CommunityScreenState extends ConsumerState<CommunityScreen> {
-  late final AppTabController _tabController;
+  late final LabTabController _tabController;
   late Map<String, ({int count, Widget feed, Widget bottomBar})> _contentTypes;
 
   @override
   void initState() {
     super.initState();
     _contentTypes = _buildContentTypes();
-    _tabController = AppTabController(
+    _tabController = LabTabController(
       length: _contentTypes.length,
       initialIndex: widget.initialContentType != null
           ? _contentTypes.keys.toList().indexOf(widget.initialContentType!)
@@ -70,18 +70,18 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         case 'Chat':
           contentTypes['welcome'] = (
             count: 0,
-            feed: AppCommunityWelcomeFeed(
+            feed: LabCommunityWelcomeFeed(
               community: widget.community,
               onProfileTap: () => context.push(
                   '/community/${widget.community.author.value?.npub}/info',
                   extra: widget.community),
             ),
-            bottomBar: const AppBottomBarWelcome()
+            bottomBar: const LabBottomBarWelcome()
           );
           contentTypes['chat'] = (
             count: 2,
             feed: CommunityChatFeed(community: widget.community),
-            bottomBar: AppBottomBarChat(
+            bottomBar: LabBottomBarChat(
               model: widget.community,
               onAddTap: (model) {},
               onMessageTap: (model) {
@@ -99,98 +99,98 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           contentTypes['thread'] = (
             count: 6,
             feed: CommunityThreadsFeed(community: widget.community),
-            bottomBar: const AppBottomBarContentFeed()
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Tasks':
           contentTypes['task'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Jobs':
           contentTypes['job'] = (
             count: 0,
             feed: CommunityJobsFeed(community: widget.community),
-            bottomBar: const AppBottomBarContentFeed()
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Services':
           contentTypes['service'] = (
             count: 0,
             feed: CommunityServicesFeed(community: widget.community),
-            bottomBar: const AppBottomBarContentFeed()
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Docs':
           contentTypes['doc'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Articles':
           contentTypes['article'] = (
             count: 4,
             feed: CommunityArticlesFeed(community: widget.community),
-            bottomBar: const AppBottomBarContentFeed()
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Forum':
           contentTypes['forum'] = (
             count: 0,
             feed: CommunityForumFeed(community: widget.community),
-            bottomBar: const AppBottomBarContentFeed()
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Polls':
           contentTypes['poll'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Apps':
           contentTypes['app'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Work-outs':
           contentTypes['work-out'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Books':
           contentTypes['book'] = (
             count: 0,
             feed: CommunityBooksFeed(community: widget.community),
-            bottomBar: const AppBottomBarContentFeed()
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Videos':
           contentTypes['video'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         case 'Albums':
           contentTypes['album'] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
           break;
         default:
           contentTypes[section.content] = (
             count: 0,
-            feed: AppLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const AppBottomBarContentFeed()
+            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            bottomBar: const LabBottomBarContentFeed()
           );
       }
     }
@@ -198,13 +198,13 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
     if (contentTypes.isEmpty) {
       contentTypes['welcome'] = (
         count: 0,
-        feed: AppCommunityWelcomeFeed(
+        feed: LabCommunityWelcomeFeed(
           community: widget.community,
           onProfileTap: () => context.push(
               '/community/${widget.community.author.value?.npub}/info',
               extra: widget.community),
         ),
-        bottomBar: const AppBottomBarWelcome()
+        bottomBar: const LabBottomBarWelcome()
       );
     }
 
@@ -212,22 +212,22 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   }
 
   Widget _buildTopBar(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final contentTypes = _contentTypes.keys.toList();
     final mainCount = _contentTypes.values.first.count;
 
     return Column(
       children: [
-        AppContainer(
-          padding: const AppEdgeInsets.only(
-            left: AppGapSize.s12,
-            right: AppGapSize.s12,
-            top: AppGapSize.s4,
-            bottom: AppGapSize.s12,
+        LabContainer(
+          padding: const LabEdgeInsets.only(
+            left: LabGapSize.s12,
+            right: LabGapSize.s12,
+            top: LabGapSize.s4,
+            bottom: LabGapSize.s12,
           ),
           child: Row(
             children: [
-              AppProfilePic.s32(widget.community.author.value,
+              LabProfilePic.s32(widget.community.author.value,
                   onTap: () => context.push(
                       '/community/${widget.community.author.value?.npub}/info',
                       extra: widget.community)),
@@ -235,14 +235,14 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     Expanded(
                       child: TapBuilder(
                         onTap: () => context.push(
                             '/community/${widget.community.author.value?.npub}/info',
                             extra: widget.community),
                         builder: (context, state, hasFocus) {
-                          return AppText.bold14(
+                          return LabText.bold14(
                             widget.community.author.value?.name ?? '',
                           );
                         },
@@ -254,7 +254,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            AppContainer(
+                            LabContainer(
                               height: 32,
                               width: 32,
                               decoration: BoxDecoration(
@@ -262,7 +262,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
-                                child: AppIcon(
+                                child: LabIcon(
                                   theme.icons.characters.bell,
                                   color: theme.colors.white33,
                                 ),
@@ -272,10 +272,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                               Positioned(
                                 top: -4,
                                 right: -10,
-                                child: AppContainer(
+                                child: LabContainer(
                                   height: theme.sizes.s20,
-                                  padding: const AppEdgeInsets.symmetric(
-                                    horizontal: AppGapSize.s6,
+                                  padding: const LabEdgeInsets.symmetric(
+                                    horizontal: LabGapSize.s6,
                                   ),
                                   decoration: BoxDecoration(
                                     gradient: theme.colors.blurple,
@@ -286,7 +286,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                                       minWidth: 8,
                                     ),
                                     child: Center(
-                                      child: AppText.med10(
+                                      child: LabText.med10(
                                         '$mainCount',
                                         color: theme.colors.whiteEnforced,
                                       ),
@@ -298,14 +298,14 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                         );
                       },
                     ),
-                    if (mainCount > 0) const AppGap.s10(),
+                    if (mainCount > 0) const LabGap.s10(),
                   ],
                 ),
               ),
             ],
           ),
         ),
-        AppTabView(
+        LabTabView(
           controller: _tabController,
           tabs: [
             for (final contentType in contentTypes)
@@ -313,7 +313,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                 label: ['chat', 'welcome', 'forum'].contains(contentType)
                     ? '${contentType[0].toUpperCase()}${contentType.substring(1)}'
                     : '${contentType[0].toUpperCase()}${contentType.substring(1)}s',
-                icon: AppEmojiContentType(contentType: contentType),
+                icon: LabEmojiContentType(contentType: contentType),
                 content: const SizedBox.shrink(),
                 count: _contentTypes[contentType]?.count ?? 0,
               ),
@@ -350,22 +350,22 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
     final recentHistory =
         ref.watch(recentHistoryItemsProvider(context, widget.community.id));
 
-    return AppScreen(
+    return LabScreen(
       alwaysShowTopBar: true,
       customTopBar: true,
       bottomBarContent: _buildBottomBar(),
       topBarContent: _buildTopBar(context),
       onHomeTap: () => context.push('/'),
       history: recentHistory,
-      child: AppContainer(
-        decoration: BoxDecoration(color: AppTheme.of(context).colors.black),
+      child: LabContainer(
+        decoration: BoxDecoration(color: LabTheme.of(context).colors.black),
         clipBehavior: Clip.hardEdge,
         width: double.infinity,
         child: Column(
           children: [
-            const AppGap.s80(),
-            const AppGap.s24(),
-            const AppGap.s2(),
+            const LabGap.s80(),
+            const LabGap.s24(),
+            const LabGap.s2(),
             _buildContent(),
           ],
         ),

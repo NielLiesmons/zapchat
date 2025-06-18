@@ -9,7 +9,7 @@ class TasksTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Tasks',
-      icon: const AppEmojiContentType(contentType: 'task'),
+      icon: const LabEmojiContentType(contentType: 'task'),
       content: HookConsumer(
         builder: (context, ref, _) {
           final tasks = ref.watch(query<Task>()).models.cast<Task>();
@@ -18,7 +18,7 @@ class TasksTab extends StatelessWidget {
             children: [
               // This is for testing purposes
               if (tasks.isNotEmpty) ...[
-                AppFeedTask(
+                LabFeedTask(
                   isUnread: true,
                   task: tasks[0],
                   onTap: (model) => context.push('/task/${model.id}'),
@@ -28,7 +28,7 @@ class TasksTab extends StatelessWidget {
                   onSwipeRight: (model) => {},
                 ),
                 if (tasks.length > 1)
-                  AppFeedTask(
+                  LabFeedTask(
                     isUnread: true,
                     task: tasks[1],
                     onTap: (model) => context.push('/task/${model.id}'),
@@ -58,7 +58,7 @@ class TasksTab extends StatelessWidget {
                     onSwipeRight: (model) => {},
                   ),
                 if (tasks.length > 2)
-                  AppFeedTask(
+                  LabFeedTask(
                     isUnread: true,
                     task: tasks[2],
                     onTap: (model) => context.push('/task/${model.id}'),
@@ -68,7 +68,7 @@ class TasksTab extends StatelessWidget {
                     onSwipeRight: (model) => {},
                   ),
                 if (tasks.length > 3)
-                  AppFeedTask(
+                  LabFeedTask(
                     isUnread: true,
                     task: tasks[3],
                     onTap: (model) => context.push('/task/${model.id}'),
@@ -86,7 +86,7 @@ class TasksTab extends StatelessWidget {
               ],
               // Rest of the tasks
               for (final task in tasks.skip(4))
-                AppFeedTask(
+                LabFeedTask(
                   isUnread: true,
                   task: task,
                   onTap: (model) => context.push('/task/${model.id}'),

@@ -51,76 +51,76 @@ class _StartModalState extends State<StartModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppInputModal(
+    return LabInputModal(
       children: [
         SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              const AppGap.s12(),
+              const LabGap.s12(),
               Image(
                 image: AssetImage(widget.logoImageUrl),
                 width: 80,
                 height: 80,
               ),
-              const AppGap.s12(),
-              AppText.h1(widget.title),
-              if (widget.description != null) const AppGap.s8(),
+              const LabGap.s12(),
+              LabText.h1(widget.title),
+              if (widget.description != null) const LabGap.s8(),
               if (widget.description != null)
-                AppText.reg16(
+                LabText.reg16(
                   widget.description!,
                   color: theme.colors.white66,
                   textAlign: TextAlign.center,
                 ),
-              const AppGap.s32(),
+              const LabGap.s32(),
               Row(
                 children: [
-                  const AppGap.s16(),
-                  AppText.reg14("Choose a Profile Name",
+                  const LabGap.s16(),
+                  LabText.reg14("Choose a Profile Name",
                       color: theme.colors.white),
-                  const AppGap.s12(),
+                  const LabGap.s12(),
                 ],
               ),
-              const AppGap.s8(),
-              AppInputTextField(
+              const LabGap.s8(),
+              LabInputTextField(
                 controller: _controller,
                 focusNode: _focusNode,
                 singleLine: true,
                 placeholder: 'Profile Name',
               ),
-              const AppGap.s16(),
-              AppButton(
+              const LabGap.s16(),
+              LabButton(
                 onTap: () {
                   if (_controller.text.isNotEmpty) {
                     widget.onStart(_controller.text);
                   }
                 },
                 children: [
-                  AppIcon.s12(
+                  LabIcon.s12(
                     theme.icons.characters.play,
                     color: theme.colors.whiteEnforced,
                   ),
-                  const AppGap.s12(),
-                  AppText.med14("Start", color: theme.colors.whiteEnforced),
+                  const LabGap.s12(),
+                  LabText.med14("Start", color: theme.colors.whiteEnforced),
                 ],
               ),
-              const AppGap.s16(),
-              AppButton(
+              const LabGap.s16(),
+              LabButton(
                 onTap: widget.onAlreadyHaveKey,
                 inactiveColor: theme.colors.black33,
                 children: [
-                  AppIcon.s16(
+                  LabIcon.s16(
                     theme.icons.characters.nostr,
-                    color: AppColorsData.dark().blurpleLightColor,
+                    color: LabColorsData.dark().blurpleLightColor,
                   ),
-                  const AppGap.s12(),
-                  AppText.reg14("Already have a Nostr key?",
+                  const LabGap.s12(),
+                  LabText.reg14("Already have a Nostr key?",
                       color: theme.colors.white66),
                 ],
               ),
-              AppPlatformUtils.isMobile ? const AppGap.s8() : const SizedBox(),
+              LabPlatformUtils.isMobile ? const LabGap.s8() : const SizedBox(),
             ],
           ),
         ),

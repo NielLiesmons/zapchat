@@ -14,7 +14,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings',
         pageBuilder: (context, state) {
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: const SettingsScreen(),
           );
         },
@@ -22,7 +22,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings/add-profile',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: SettingsAddProfileModal(
               onStart: (profileName) {
                 context.replace('/settings/spin-up-key', extra: profileName);
@@ -38,7 +38,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/spin-up-key',
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: SpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
@@ -54,7 +54,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings/your-key',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, child) {
                 final extra = state.extra as Map<String, dynamic>;
@@ -70,7 +70,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings/existing-profile',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: StartAddExistingKeyModal(),
           );
         },
@@ -78,7 +78,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings/history',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: const SettingsHistoryModal(),
           );
         },
@@ -86,7 +86,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings/appearance',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: const PreferencesModal(),
           );
         },
@@ -94,7 +94,7 @@ List<GoRoute> get settingsRoutes => [
       GoRoute(
         path: '/settings/hosting',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: const SettingsHostingModal(),
           );
         },

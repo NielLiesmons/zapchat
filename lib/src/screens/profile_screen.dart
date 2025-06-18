@@ -19,12 +19,12 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  late AppTabController _tabController;
+  late LabTabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 9);
+    _tabController = LabTabController(length: 9);
   }
 
   @override
@@ -41,18 +41,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     // Get data
     final resolvers = ref.read(resolversProvider);
 
-    return AppScreen(
+    return LabScreen(
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: false,
       noTopGap: true,
       topBarContent: Row(
         children: [
-          AppProfilePic.s38(widget.profile),
-          const AppGap.s10(),
-          AppText.reg14(widget.profile.name ?? formatNpub(widget.profile.npub)),
+          LabProfilePic.s38(widget.profile),
+          const LabGap.s10(),
+          LabText.reg14(widget.profile.name ?? formatNpub(widget.profile.npub)),
         ],
       ),
-      bottomBarContent: AppBottomBarProfile(
+      bottomBarContent: LabBottomBarProfile(
         onAddLabelTap: (model) {},
         onMailTap: (model) {},
         onVoiceTap: (model) {},
@@ -61,54 +61,69 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       ),
       child: Column(
         children: [
-          AppProfileHeader(profile: widget.profile),
-          AppTabView(
+          LabProfileHeader(profile: widget.profile),
+          LabTabView(
             tabs: [
               TabData(
                 label: 'Communities',
-                icon: AppEmojiContentType(contentType: 'community'),
+                icon: LabEmojiContentType(contentType: 'community'),
                 content: ProfileCommunitiesFeed(
                   profile: widget.profile,
                 ),
               ),
               TabData(
-                label: 'Books',
-                icon: AppEmojiContentType(contentType: 'book'),
-                content: const SizedBox(),
-              ),
-              TabData(
                 label: 'Threads',
-                icon: AppEmojiContentType(contentType: 'thread'),
+                icon: LabEmojiContentType(contentType: 'thread'),
                 content: const SizedBox(),
               ),
               TabData(
-                label: 'Articles',
-                icon: AppEmojiContentType(contentType: 'article'),
+                label: 'Books',
+                icon: LabEmojiContentType(contentType: 'book'),
                 content: const SizedBox(),
               ),
               TabData(
-                label: 'Polls',
-                icon: AppEmojiContentType(contentType: 'poll'),
+                label: 'Events',
+                icon: LabEmojiContentType(contentType: 'event'),
                 content: const SizedBox(),
               ),
               TabData(
                 label: 'Wikis',
-                icon: AppEmojiContentType(contentType: 'wiki'),
+                icon: LabEmojiContentType(contentType: 'wiki'),
+                content: const SizedBox(),
+              ),
+              TabData(
+                label: 'Articles',
+                icon: LabEmojiContentType(contentType: 'article'),
+                content: const SizedBox(),
+              ),
+              TabData(
+                label: 'Polls',
+                icon: LabEmojiContentType(contentType: 'poll'),
                 content: const SizedBox(),
               ),
               TabData(
                 label: 'Videos',
-                icon: AppEmojiContentType(contentType: 'video'),
+                icon: LabEmojiContentType(contentType: 'video'),
                 content: const SizedBox(),
               ),
               TabData(
-                label: 'Images',
-                icon: AppEmojiContentType(contentType: 'image'),
+                label: 'Wikis',
+                icon: LabEmojiContentType(contentType: 'wiki'),
+                content: const SizedBox(),
+              ),
+              TabData(
+                label: 'Albums',
+                icon: LabEmojiContentType(contentType: 'album'),
+                content: const SizedBox(),
+              ),
+              TabData(
+                label: 'Docs',
+                icon: LabEmojiContentType(contentType: 'doc'),
                 content: const SizedBox(),
               ),
               TabData(
                 label: 'Repos',
-                icon: AppEmojiContentType(contentType: 'repo'),
+                icon: LabEmojiContentType(contentType: 'repo'),
                 content: const SizedBox(),
               ),
             ],

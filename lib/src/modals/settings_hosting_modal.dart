@@ -8,13 +8,13 @@ class SettingsHostingModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: "Hosting",
       children: [
-        const AppGap.s8(),
-        AppHostingCard(
+        const LabGap.s8(),
+        LabHostingCard(
           name: 'Zapcloud',
           type: 'Pro',
           usedStorage: 45.7,
@@ -46,11 +46,11 @@ class SettingsHostingModal extends ConsumerWidget {
             ),
           ],
         ),
-        const AppGap.s12(),
-        AppPanelButton(
+        const LabGap.s12(),
+        LabPanelButton(
           child: Column(
             children: [
-              AppContainer(
+              LabContainer(
                 width: theme.sizes.s48,
                 height: theme.sizes.s48,
                 decoration: BoxDecoration(
@@ -58,15 +58,15 @@ class SettingsHostingModal extends ConsumerWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: AppIcon.s20(
+                  child: LabIcon.s20(
                     theme.icons.characters.plus,
-                    outlineThickness: AppLineThicknessData.normal().thick,
+                    outlineThickness: LabLineThicknessData.normal().thick,
                     outlineColor: theme.colors.white33,
                   ),
                 ),
               ),
-              const AppGap.s12(),
-              AppText.med14(
+              const LabGap.s12(),
+              LabText.med14(
                 'Add a Hosting solution',
                 color: theme.colors.white33,
               ),

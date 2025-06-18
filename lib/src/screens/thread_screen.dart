@@ -20,12 +20,12 @@ class ThreadScreen extends ConsumerStatefulWidget {
 
 class _ThreadScreenState extends ConsumerState<ThreadScreen>
     with SingleTickerProviderStateMixin {
-  late AppTabController _tabController;
+  late LabTabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 4);
+    _tabController = LabTabController(length: 4);
   }
 
   @override
@@ -36,7 +36,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // Record in history
     ref.read(historyProvider.notifier).addEntry(widget.thread);
@@ -49,29 +49,29 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
         ref.watch(query<Community>()).models.cast<Community>().toList();
     final replies = ref.watch(query<Comment>()).models.cast<Comment>().toList();
 
-    return AppScreen(
+    return LabScreen(
       history: recentHistory,
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: false,
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(widget.thread.author.value),
-          const AppGap.s12(),
+          LabProfilePic.s40(widget.thread.author.value),
+          const LabGap.s12(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppGap.s2(),
+                const LabGap.s2(),
                 Row(
                   children: [
-                    AppEmojiContentType(
+                    LabEmojiContentType(
                       contentType: getModelContentType(widget.thread),
                       size: 16,
                     ),
-                    const AppGap.s10(),
+                    const LabGap.s10(),
                     Expanded(
-                      child: AppCompactTextRenderer(
+                      child: LabCompactTextRenderer(
                         isMedium: true,
                         isWhite: true,
                         content: getModelDisplayText(widget.thread),
@@ -82,8 +82,8 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
                     ),
                   ],
                 ),
-                const AppGap.s2(),
-                AppText.reg12(
+                const LabGap.s2(),
+                LabText.reg12(
                   widget.thread.author.value?.name ??
                       formatNpub(widget.thread.author.value?.npub ?? ''),
                   color: theme.colors.white66,
@@ -96,7 +96,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
       child: IntrinsicHeight(
         child: Column(
           children: [
-            AppThread(
+            LabThread(
               thread: widget.thread,
               communities: communities,
               onResolveEvent: resolvers.eventResolver,
@@ -109,21 +109,21 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
               onProfileTap: (profile) =>
                   context.push('/profile/${profile.npub}', extra: profile),
             ),
-            AppContainer(
-              child: AppTabView(
+            LabContainer(
+              child: LabTabView(
                 controller: _tabController,
                 tabs: [
                   TabData(
                     label: 'Replies',
-                    icon: AppIcon.s24(
+                    icon: LabIcon.s24(
                       theme.icons.characters.reply,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                     ),
                     content: Column(
                       children: [
                         ...replies.map((reply) {
-                          return AppFeedThread(
+                          return LabFeedThread(
                             reply: reply,
                             topThreeReplyProfiles: ref.watch(
                                 resolvers.topThreeReplyProfilesResolver(reply)),
@@ -156,28 +156,28 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
                   ),
                   TabData(
                     label: 'Shares',
-                    icon: AppIcon.s24(
+                    icon: LabIcon.s24(
                       theme.icons.characters.share,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                     ),
-                    content: const AppText.reg14('Shares content'),
+                    content: const LabText.reg14('Shares content'),
                   ),
                   TabData(
                     label: 'Labels',
-                    icon: AppIcon.s24(
+                    icon: LabIcon.s24(
                       theme.icons.characters.label,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                     ),
-                    content: const AppText.reg14('Labels content'),
+                    content: const LabText.reg14('Labels content'),
                   ),
                   TabData(
                     label: 'Details',
-                    icon: AppIcon.s24(
+                    icon: LabIcon.s24(
                       theme.icons.characters.details,
                       outlineColor: theme.colors.white66,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                     ),
                     content: DetailsTab(model: widget.thread),
                   ),

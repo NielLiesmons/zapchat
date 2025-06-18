@@ -6,11 +6,11 @@ class ImagesTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Albums',
-      icon: const AppEmojiContentType(contentType: 'album'),
+      icon: const LabEmojiContentType(contentType: 'album'),
       content: Builder(
         builder: (context) {
-          return AppContainer(
-            child: const AppLoadingFeed(),
+          return LabContainer(
+            child: const LabLoadingFeed(),
           );
         },
       ),

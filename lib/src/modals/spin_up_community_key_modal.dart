@@ -37,15 +37,15 @@ class SpinUpCommunityKeyModalState extends State<SpinUpCommunityKeyModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: "Hey ${widget.profileName}!",
       children: [
-        AppContainer(
+        LabContainer(
           child: Column(
             children: [
-              AppContainer(
+              LabContainer(
                 width: 344,
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -53,14 +53,14 @@ class SpinUpCommunityKeyModalState extends State<SpinUpCommunityKeyModal> {
                     children: [
                       TextSpan(
                         text: "Spin up a ",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                             ),
                       ),
                       TextSpan(
                         text: "secret key",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                               decoration: TextDecoration.underline,
                             ),
                         recognizer: TapGestureRecognizer()
@@ -69,21 +69,21 @@ class SpinUpCommunityKeyModalState extends State<SpinUpCommunityKeyModal> {
                       TextSpan(
                         text:
                             " to secure your Community profile, publications and money",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                             ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const AppGap.s24(),
-              const AppGap.s4(),
-              AppSlotMachine(
+              const LabGap.s24(),
+              const LabGap.s4(),
+              LabSlotMachine(
                 showSelector: false,
                 onSpinComplete: _handleSpinComplete,
               ),
-              const AppGap.s16(),
+              const LabGap.s16(),
             ],
           ),
         ),

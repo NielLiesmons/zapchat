@@ -6,11 +6,11 @@ class VideosTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Videos',
-      icon: const AppEmojiContentType(contentType: 'video'),
+      icon: const LabEmojiContentType(contentType: 'video'),
       content: Builder(
         builder: (context) {
-          return AppContainer(
-            child: const AppLoadingFeed(),
+          return LabContainer(
+            child: const LabLoadingFeed(),
           );
         },
       ),

@@ -12,7 +12,7 @@ class MailTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Mail',
-      icon: const AppEmojiContentType(contentType: 'mail'),
+      icon: const LabEmojiContentType(contentType: 'mail'),
       content: HookConsumer(
         builder: (context, ref, _) {
           final mails = ref.watch(query<Mail>()).models.cast<Mail>();
@@ -21,7 +21,7 @@ class MailTab extends StatelessWidget {
               ? Column(
                   children: [
                     for (final mail in mails)
-                      AppFeedMail(
+                      LabFeedMail(
                         isUnread: true,
                         mail: mail,
                         onTap: (event) =>
@@ -39,9 +39,9 @@ class MailTab extends StatelessWidget {
                       ),
                   ],
                 )
-              : AppContainer(
-                  padding: const AppEdgeInsets.all(AppGapSize.s12),
-                  child: AppModelEmptyStateCard(
+              : LabContainer(
+                  padding: const LabEdgeInsets.all(LabGapSize.s12),
+                  child: LabModelEmptyStateCard(
                     contentType: "mail",
                     onCreateTap: () {},
                   ),

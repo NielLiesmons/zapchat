@@ -12,158 +12,158 @@ class CommunityPricingModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: "Pricing",
       initialChildSize: 0.64,
       children: [
-        const AppGap.s16(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s16(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "chat", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("Chat", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "chat", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("Chat", color: theme.colors.white66),
               const Spacer(),
-              const AppText.med14("Free"),
-              const AppGap.s8(),
-              AppContainer(
-                padding: AppEdgeInsets.only(top: AppGapSize.s2),
-                child: AppText.reg12("With Spam Filter",
+              const LabText.med14("Free"),
+              const LabGap.s8(),
+              LabContainer(
+                padding: LabEdgeInsets.only(top: LabGapSize.s2),
+                child: LabText.reg12("With Spam Filter",
                     color: theme.colors.white33),
               ),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
-        const AppGap.s8(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s8(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "thread", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("Thread", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "thread", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("Thread", color: theme.colors.white66),
               const Spacer(),
-              AppIcon.s12(
+              LabIcon.s12(
                 theme.icons.characters.zap,
                 gradient: theme.colors.blurple,
               ),
-              const AppGap.s4(),
-              const AppText.med14("21"),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s4(),
+              const LabText.med14("21"),
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
-        const AppGap.s8(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s8(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "article", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("Article", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "article", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("Article", color: theme.colors.white66),
               const Spacer(),
-              AppIcon.s12(
+              LabIcon.s12(
                 theme.icons.characters.crown,
                 gradient: theme.colors.gold,
               ),
-              const AppGap.s8(),
-              const AppText.med14("Admin"),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s8(),
+              const LabText.med14("Admin"),
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
-        const AppGap.s8(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s8(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "wiki", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("Wiki", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "wiki", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("Wiki", color: theme.colors.white66),
               const Spacer(),
-              AppIcon.s14(
+              LabIcon.s14(
                 theme.icons.characters.profile,
                 gradient: theme.colors.graydient66,
               ),
-              const AppGap.s8(),
-              const AppText.med14("Team"),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s8(),
+              const LabText.med14("Team"),
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
-        const AppGap.s8(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s8(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "app", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("App", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "app", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("App", color: theme.colors.white66),
               const Spacer(),
-              AppIcon.s14(
+              LabIcon.s14(
                 theme.icons.characters.profile,
                 gradient: theme.colors.graydient66,
               ),
-              const AppGap.s8(),
-              const AppText.med14("Team"),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s8(),
+              const LabText.med14("Team"),
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
-        const AppGap.s8(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s8(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "doc", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("Docs", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "doc", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("Docs", color: theme.colors.white66),
               const Spacer(),
-              AppIcon.s14(
+              LabIcon.s14(
                 theme.icons.characters.profile,
                 gradient: theme.colors.graydient66,
               ),
-              const AppGap.s8(),
-              const AppText.med14("Team"),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s8(),
+              const LabText.med14("Team"),
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
-        const AppGap.s8(),
-        AppPanel(
-            padding: const AppEdgeInsets.all(AppGapSize.s16),
+        const LabGap.s8(),
+        LabPanel(
+            padding: const LabEdgeInsets.all(LabGapSize.s16),
             child: Row(children: [
-              const AppEmojiContentType(contentType: "poll", size: 20),
-              const AppGap.s16(),
-              AppText.reg14("Poll", color: theme.colors.white66),
+              const LabEmojiContentType(contentType: "poll", size: 20),
+              const LabGap.s16(),
+              LabText.reg14("Poll", color: theme.colors.white66),
               const Spacer(),
-              AppIcon.s14(
+              LabIcon.s14(
                 theme.icons.characters.profile,
                 gradient: theme.colors.graydient66,
               ),
-              const AppGap.s8(),
-              const AppText.med14("Team"),
-              const AppGap.s12(),
-              AppIcon.s12(
+              const LabGap.s8(),
+              const LabText.med14("Team"),
+              const LabGap.s12(),
+              LabIcon.s12(
                 theme.icons.characters.chevronRight,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ])),
       ],

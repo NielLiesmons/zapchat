@@ -61,33 +61,33 @@ class _StartAddExistingKeyModalState
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: "Use Existing Key",
       description: "Connect a Nostr Profile to Zapchat",
       children: [
-        const AppGap.s12(),
-        AppPanel(
+        const LabGap.s12(),
+        LabPanel(
           child: Column(
             children: [
               if (_isChecking) ...[
-                AppContainer(
+                LabContainer(
                   height: theme.sizes.s80,
                   child: Column(
                     children: [
-                      AppContainer(
+                      LabContainer(
                         height: theme.sizes.s56,
                         child: Center(
                           child: Transform.scale(
                             scale: 1.5,
-                            child: AppLoadingDots(
+                            child: LabLoadingDots(
                               color: theme.colors.white66,
                             ),
                           ),
                         ),
                       ),
-                      AppText.reg14(
+                      LabText.reg14(
                         "Checking for Nostr Signer Apps...",
                         color: theme.colors.white33,
                       ),
@@ -95,25 +95,25 @@ class _StartAddExistingKeyModalState
                   ),
                 ),
               ] else if (_isAmberAvailable) ...[
-                AppContainer(
+                LabContainer(
                   height: theme.sizes.s80,
                   child: Center(
-                    child: AppText.reg16(
+                    child: LabText.reg16(
                       'Amber detected! Connect your profile with Amber.',
                       color: theme.colors.white,
                     ),
                   ),
                 ),
               ] else ...[
-                AppContainer(
+                LabContainer(
                   height: theme.sizes.s80,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AppContainer(
+                      LabContainer(
                         height: theme.sizes.s56,
                         child: Center(
-                          child: AppContainer(
+                          child: LabContainer(
                             height: theme.sizes.s24,
                             decoration: BoxDecoration(
                               color: theme.colors.white33,
@@ -121,26 +121,26 @@ class _StartAddExistingKeyModalState
                                 theme.sizes.s12,
                               ),
                             ),
-                            padding: AppEdgeInsets.symmetric(
-                                horizontal: AppGapSize.s12),
+                            padding: LabEdgeInsets.symmetric(
+                                horizontal: LabGapSize.s12),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                AppText.reg12(
+                                LabText.reg12(
                                   "None detected",
                                   color: theme.colors.black,
                                 ),
-                                const AppGap.s8(),
-                                AppIcon.s8(theme.icons.characters.check,
+                                const LabGap.s8(),
+                                LabIcon.s8(theme.icons.characters.check,
                                     outlineColor: theme.colors.black,
                                     outlineThickness:
-                                        AppLineThicknessData.normal().thick),
+                                        LabLineThicknessData.normal().thick),
                               ],
                             ),
                           ),
                         ),
                       ),
-                      AppText.reg14(
+                      LabText.reg14(
                         "We found no existing Nostr Signer Apps.",
                         color: theme.colors.white33,
                       ),
@@ -151,25 +151,25 @@ class _StartAddExistingKeyModalState
             ],
           ),
         ),
-        const AppGap.s12(),
+        const LabGap.s12(),
         Row(
           children: [
             Expanded(
-              child: AppPanelButton(
+              child: LabPanelButton(
                 onTap: () {
                   context.replace('/start/paste-key');
                 },
                 isLight: true,
                 child: Column(
                   children: [
-                    AppIcon.s32(theme.icons.characters.security,
+                    LabIcon.s32(theme.icons.characters.security,
                         gradient: theme.colors.graydient66),
-                    const AppGap.s8(),
-                    AppText.med16(
+                    const LabGap.s8(),
+                    LabText.med16(
                       "Secret Key",
                     ),
-                    const AppGap.s4(),
-                    AppText.reg12(
+                    const LabGap.s4(),
+                    LabText.reg12(
                       "Enter your Nsec",
                       color: theme.colors.white66,
                       textAlign: TextAlign.center,
@@ -178,26 +178,26 @@ class _StartAddExistingKeyModalState
                 ),
               ),
             ),
-            const AppGap.s12(),
+            const LabGap.s12(),
             Expanded(
-              child: AppPanelButton(
+              child: LabPanelButton(
                 onTap: () {},
                 isLight: true,
                 child: Column(
                   children: [
-                    AppContainer(
+                    LabContainer(
                       height: theme.sizes.s32,
                       child: Center(
-                        child: AppIcon.s24(theme.icons.characters.nostr,
+                        child: LabIcon.s24(theme.icons.characters.nostr,
                             gradient: theme.colors.graydient66),
                       ),
                     ),
-                    const AppGap.s8(),
-                    AppText.med16(
+                    const LabGap.s8(),
+                    LabText.med16(
                       "Nostr Connect",
                     ),
-                    const AppGap.s4(),
-                    AppText.reg12(
+                    const LabGap.s4(),
+                    LabText.reg12(
                       "Paste a Link",
                       color: theme.colors.white66,
                       textAlign: TextAlign.center,
@@ -208,7 +208,7 @@ class _StartAddExistingKeyModalState
             ),
           ],
         ),
-        const AppGap.s4(),
+        const LabGap.s4(),
       ],
     );
   }

@@ -20,12 +20,12 @@ class ServiceScreen extends ConsumerStatefulWidget {
 
 class _ServiceScreenState extends ConsumerState<ServiceScreen>
     with SingleTickerProviderStateMixin {
-  late AppTabController _tabController;
+  late LabTabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: 5);
+    _tabController = LabTabController(length: 5);
   }
 
   @override
@@ -36,7 +36,7 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // History
     ref.read(historyProvider.notifier).addEntry(widget.service);
@@ -48,29 +48,29 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
     final state = ref.watch(query<Community>());
     final communities = state.models.cast<Community>().toList();
 
-    return AppScreen(
+    return LabScreen(
       onHomeTap: () => context.push('/'),
       alwaysShowTopBar: false,
       history: recentHistory,
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(widget.service.author.value),
-          const AppGap.s12(),
+          LabProfilePic.s40(widget.service.author.value),
+          const LabGap.s12(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppGap.s2(),
+                const LabGap.s2(),
                 Row(
                   children: [
-                    AppEmojiContentType(
+                    LabEmojiContentType(
                       contentType: getModelContentType(widget.service),
                       size: 16,
                     ),
-                    const AppGap.s10(),
+                    const LabGap.s10(),
                     Expanded(
-                      child: AppCompactTextRenderer(
+                      child: LabCompactTextRenderer(
                         isMedium: true,
                         isWhite: true,
                         content: getModelDisplayText(widget.service),
@@ -81,8 +81,8 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
                     ),
                   ],
                 ),
-                const AppGap.s2(),
-                AppText.reg12(
+                const LabGap.s2(),
+                LabText.reg12(
                   widget.service.author.value?.name ??
                       formatNpub(widget.service.author.value?.npub ?? ''),
                   color: theme.colors.white66,
@@ -92,7 +92,7 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
           ),
         ],
       ),
-      bottomBarContent: AppBottomBarService(
+      bottomBarContent: LabBottomBarService(
         service: widget.service,
         onAddLabelTap: (service) {},
         onMailTap: (service) {},
@@ -101,7 +101,7 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
       ),
       child: Column(
         children: [
-          AppServiceHeader(
+          LabServiceHeader(
             service: widget.service,
             communities: communities,
             onProfileTap: (profile) => context.push(
@@ -109,22 +109,22 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
               extra: profile,
             ),
           ),
-          AppContainer(
-            child: AppTabView(
+          LabContainer(
+            child: LabTabView(
               controller: _tabController,
               tabs: [
                 TabData(
                   label: 'Service',
-                  icon: AppEmojiContentType(
+                  icon: LabEmojiContentType(
                     contentType: getModelContentType(widget.service),
                     size: 24,
                   ),
-                  content: AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                      vertical: AppGapSize.s10,
-                      horizontal: AppGapSize.s12,
+                  content: LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                      vertical: LabGapSize.s10,
+                      horizontal: LabGapSize.s12,
                     ),
-                    child: AppShortTextRenderer(
+                    child: LabShortTextRenderer(
                       content: widget.service.content,
                       onResolveEvent: resolvers.eventResolver,
                       onResolveProfile: resolvers.profileResolver,
@@ -138,39 +138,39 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
                 ),
                 TabData(
                   label: 'Replies',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.reply,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const AppLoadingFeed(
+                  content: const LabLoadingFeed(
                     type: LoadingFeedType.thread,
                   ),
                 ),
                 TabData(
                   label: 'Shares',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.share,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const AppText.reg14('Shares content'),
+                  content: const LabText.reg14('Shares content'),
                 ),
                 TabData(
                   label: 'Labels',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.label,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const AppText.reg14('Labels content'),
+                  content: const LabText.reg14('Labels content'),
                 ),
                 TabData(
                   label: 'Details',
-                  icon: AppIcon.s24(
+                  icon: LabIcon.s24(
                     theme.icons.characters.details,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
                   content: DetailsTab(model: widget.service),
                 ),

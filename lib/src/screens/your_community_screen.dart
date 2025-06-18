@@ -79,7 +79,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
   Future<void> _showNameInputModal() async {
     _nameController.text = _profile.name ?? '';
 
-    await AppInputTextModal.show(
+    await LabInputTextModal.show(
       context,
       controller: _nameController,
       placeholder: 'Community Name',
@@ -106,11 +106,11 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
     final currentText = _profile.about ?? '';
     _descriptionController.text = currentText;
 
-    await AppInputTextModal.show(
+    await LabInputTextModal.show(
       context,
       controller: _descriptionController,
       placeholder: 'Community Description',
-      size: AppInputTextFieldSize.medium,
+      size: LabInputTextFieldSize.medium,
       onDone: (text) {
         setState(() {
           _profile = PartialProfile(
@@ -126,14 +126,14 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppScreen(
+    return LabScreen(
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: true,
-      topBarContent: AppContainer(
-        padding: const AppEdgeInsets.symmetric(
-          vertical: AppGapSize.s4,
+      topBarContent: LabContainer(
+        padding: const LabEdgeInsets.symmetric(
+          vertical: LabGapSize.s4,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,18 +141,18 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const AppGap.s8(),
-                AppText.med14('Your Community'),
-                const AppGap.s12(),
+                const LabGap.s8(),
+                LabText.med14('Your Community'),
+                const LabGap.s12(),
                 const Spacer(),
-                AppSmallButton(
+                LabSmallButton(
                   onTap: () {},
                   rounded: true,
                   inactiveGradient: theme.colors.blurple33,
                   children: [
-                    const AppGap.s4(),
-                    AppText.med14('Publish', color: theme.colors.white66),
-                    const AppGap.s4(),
+                    const LabGap.s4(),
+                    LabText.med14('Publish', color: theme.colors.white66),
+                    const LabGap.s4(),
                   ],
                 ),
               ],
@@ -162,19 +162,19 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
       ),
       child: Column(
         children: [
-          const AppGap.s48(),
-          const AppGap.s2(),
-          AppContainer(
-            padding: const AppEdgeInsets.all(
-              AppGapSize.s12,
+          const LabGap.s48(),
+          const LabGap.s2(),
+          LabContainer(
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s12,
             ),
             child: Column(
               children: [
-                AppSectionTitle(
+                LabSectionTitle(
                   "Profile",
                 ),
-                AppPanel(
-                  padding: const AppEdgeInsets.all(AppGapSize.none),
+                LabPanel(
+                  padding: const LabEdgeInsets.all(LabGapSize.none),
                   color: theme.colors.gray66,
                   child: Column(
                     children: [
@@ -183,7 +183,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                         children: [
                           AspectRatio(
                             aspectRatio: 3 / 1.2,
-                            child: AppContainer(
+                            child: LabContainer(
                               decoration: BoxDecoration(
                                 color: Color(
                                         hexToColor(widget.profile.event.pubkey)
@@ -212,7 +212,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
 
                                 return Transform.scale(
                                   scale: scaleFactor,
-                                  child: AppIcon.s32(
+                                  child: LabIcon.s32(
                                     theme.icons.characters.camera,
                                     color: theme.colors.white33,
                                   ),
@@ -223,12 +223,12 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                         ],
                       ),
                       // Profile section
-                      AppContainer(
-                        padding: const AppEdgeInsets.only(
-                          left: AppGapSize.s12,
-                          right: AppGapSize.s12,
-                          top: AppGapSize.s12,
-                          bottom: AppGapSize.s10,
+                      LabContainer(
+                        padding: const LabEdgeInsets.only(
+                          left: LabGapSize.s12,
+                          right: LabGapSize.s12,
+                          top: LabGapSize.s12,
+                          bottom: LabGapSize.s10,
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,20 +236,20 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                             Stack(
                               clipBehavior: Clip.none,
                               children: [
-                                AppContainer(
+                                LabContainer(
                                   height: 40,
                                 ),
                                 Positioned(
                                   top: -40,
-                                  child: AppProfilePic.fromNameAndPubkey(
+                                  child: LabProfilePic.fromNameAndPubkey(
                                     _profile.name,
                                     widget.profile.event.pubkey,
-                                    size: AppProfilePicSize.s80,
+                                    size: LabProfilePicSize.s80,
                                   ),
                                 ),
                               ],
                             ),
-                            const AppGap.s56(),
+                            const LabGap.s56(),
                             TapBuilder(
                               onTap: () {},
                               builder: (context, state, isFocused) {
@@ -268,7 +268,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(
                                           sigmaX: 8, sigmaY: 8),
-                                      child: AppContainer(
+                                      child: LabContainer(
                                         width: theme.sizes.s38,
                                         height: theme.sizes.s38,
                                         decoration: BoxDecoration(
@@ -276,7 +276,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                           shape: BoxShape.circle,
                                         ),
                                         child: Center(
-                                          child: AppIcon.s16(
+                                          child: LabIcon.s16(
                                             theme.icons.characters.camera,
                                             color: theme.colors.white66,
                                           ),
@@ -287,21 +287,21 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                 );
                               },
                             ),
-                            const AppGap.s12(),
+                            const LabGap.s12(),
                             Expanded(
-                              child: AppInputButton(
+                              child: LabInputButton(
                                 onTap: _showNameInputModal,
                                 color: theme.colors.black8,
                                 children: [
-                                  AppText.med14(
+                                  LabText.med14(
                                     _profile.name ?? '',
                                     color: theme.colors.white,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   ),
                                   const Spacer(),
-                                  const AppGap.s8(),
-                                  AppIcon.s12(
+                                  const LabGap.s8(),
+                                  LabIcon.s12(
                                     theme.icons.characters.pen,
                                     color: theme.colors.white33,
                                   ),
@@ -311,30 +311,30 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           ],
                         ),
                       ),
-                      AppContainer(
-                        padding: const AppEdgeInsets.only(
-                          left: AppGapSize.s12,
-                          right: AppGapSize.s12,
-                          top: AppGapSize.s4,
-                          bottom: AppGapSize.s12,
+                      LabContainer(
+                        padding: const LabEdgeInsets.only(
+                          left: LabGapSize.s12,
+                          right: LabGapSize.s12,
+                          top: LabGapSize.s4,
+                          bottom: LabGapSize.s12,
                         ),
-                        child: AppInputButton(
+                        child: LabInputButton(
                           onTap: _showDescriptionInputModal,
                           color: theme.colors.black8,
                           topAlignment: true,
                           height: theme.sizes.s64,
                           children: [
                             _profile.about != null && _profile.about!.isNotEmpty
-                                ? AppText.reg14(
+                                ? LabText.reg14(
                                     _profile.about!,
                                     color: theme.colors.white,
                                   )
-                                : AppText.reg14(
+                                : LabText.reg14(
                                     'Community Description',
                                     color: theme.colors.white33,
                                   ),
                             const Spacer(),
-                            AppIcon.s12(
+                            LabIcon.s12(
                               theme.icons.characters.pen,
                               color: theme.colors.white33,
                             ),
@@ -344,18 +344,18 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                     ],
                   ),
                 ),
-                const AppGap.s12(),
-                AppButton(
+                const LabGap.s12(),
+                LabButton(
                   onTap: () {},
                   inactiveColor: theme.colors.gray33,
                   children: [
-                    AppIcon.s18(
+                    LabIcon.s18(
                       theme.icons.characters.pin,
                       outlineColor: theme.colors.white33,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                     ),
-                    const AppGap.s12(),
-                    AppText.reg14(
+                    const LabGap.s12(),
+                    LabText.reg14(
                       "Add Pinned Publications",
                       color: theme.colors.white33,
                     ),
@@ -365,20 +365,20 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
               ],
             ),
           ),
-          const AppDivider(),
-          AppContainer(
-            padding: const AppEdgeInsets.all(
-              AppGapSize.s12,
+          const LabDivider(),
+          LabContainer(
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s12,
             ),
             child: Column(
               children: [
-                AppSectionTitle(
+                LabSectionTitle(
                   "Pricing",
                 ),
-                AppPanelButton(
+                LabPanelButton(
                   onTap: () {},
                   height: 160,
-                  padding: const AppEdgeInsets.all(AppGapSize.none),
+                  padding: const LabEdgeInsets.all(LabGapSize.none),
                   child: Stack(
                     children: [
                       ShaderMask(
@@ -398,25 +398,25 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           child: Column(
                             children: [
                               for (final section in _contentSections) ...[
-                                AppContainer(
-                                  padding: const AppEdgeInsets.symmetric(
-                                      horizontal: AppGapSize.s12,
-                                      vertical: AppGapSize.s8),
+                                LabContainer(
+                                  padding: const LabEdgeInsets.symmetric(
+                                      horizontal: LabGapSize.s12,
+                                      vertical: LabGapSize.s8),
                                   child: Row(
                                     children: [
-                                      AppEmojiContentType(
+                                      LabEmojiContentType(
                                         contentType: section.content
                                             .toLowerCase()
                                             .replaceAll(RegExp(r's$'), ''),
                                         size: 18,
                                       ),
-                                      const AppGap.s10(),
-                                      AppText.reg14(
+                                      const LabGap.s10(),
+                                      LabText.reg14(
                                         section.content,
                                         color: theme.colors.white66,
                                       ),
                                       const Spacer(),
-                                      AppText.med12(
+                                      LabText.med12(
                                         section.feeInSats != null &&
                                                 section.feeInSats! > 0
                                             ? '${section.feeInSats}'
@@ -425,7 +425,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                     ],
                                   ),
                                 ),
-                                const AppDivider(),
+                                const LabDivider(),
                               ],
                             ],
                           ),
@@ -439,16 +439,16 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: AppButton(
+                            child: LabButton(
                               onTap: () {},
                               inactiveColor: theme.colors.white8,
                               children: [
-                                AppText.reg14(
+                                LabText.reg14(
                                   'Prices & Content Types',
                                   color: theme.colors.white66,
                                 ),
-                                const AppGap.s12(),
-                                AppIcon.s14(
+                                const LabGap.s12(),
+                                LabIcon.s14(
                                   theme.icons.characters.pen,
                                   color: theme.colors.white66,
                                 ),
@@ -463,20 +463,20 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
               ],
             ),
           ),
-          const AppDivider(),
-          AppContainer(
-            padding: const AppEdgeInsets.all(
-              AppGapSize.s12,
+          const LabDivider(),
+          LabContainer(
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s12,
             ),
             child: Column(
               children: [
-                AppSectionTitle(
+                LabSectionTitle(
                   "Guidelines",
                 ),
-                AppPanelButton(
+                LabPanelButton(
                   onTap: () {},
                   height: 160,
-                  padding: const AppEdgeInsets.all(AppGapSize.none),
+                  padding: const LabEdgeInsets.all(LabGapSize.none),
                   child: Stack(
                     children: [
                       ShaderMask(
@@ -496,18 +496,18 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           child: Column(
                             children: [
                               for (int i = 0; i < 3; i++) ...[
-                                AppContainer(
-                                  padding: const AppEdgeInsets.symmetric(
-                                      horizontal: AppGapSize.s12,
-                                      vertical: AppGapSize.s8),
+                                LabContainer(
+                                  padding: const LabEdgeInsets.symmetric(
+                                      horizontal: LabGapSize.s12,
+                                      vertical: LabGapSize.s8),
                                   child: Row(
                                     children: [
-                                      AppText.reg16(
+                                      LabText.reg16(
                                         '${i + 1}',
                                         color: theme.colors.blurpleColor66,
                                       ),
-                                      const AppGap.s10(),
-                                      AppText.reg14(
+                                      const LabGap.s10(),
+                                      LabText.reg14(
                                         "Title of Guideline ${i + 1}",
                                         color: theme.colors.white66,
                                       ),
@@ -515,7 +515,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                     ],
                                   ),
                                 ),
-                                const AppDivider(),
+                                const LabDivider(),
                               ],
                             ],
                           ),
@@ -529,16 +529,16 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: AppButton(
+                            child: LabButton(
                               onTap: () {},
                               inactiveColor: theme.colors.white8,
                               children: [
-                                AppText.reg14(
+                                LabText.reg14(
                                   'Guidelines',
                                   color: theme.colors.white66,
                                 ),
-                                const AppGap.s12(),
-                                AppIcon.s14(
+                                const LabGap.s12(),
+                                LabIcon.s14(
                                   theme.icons.characters.pen,
                                   color: theme.colors.white66,
                                 ),
@@ -553,68 +553,68 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
               ],
             ),
           ),
-          const AppDivider(),
-          AppContainer(
-            padding: const AppEdgeInsets.all(
-              AppGapSize.s12,
+          const LabDivider(),
+          LabContainer(
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s12,
             ),
             child: Column(
               children: [
-                AppSectionTitle(
+                LabSectionTitle(
                   "Hosting",
                 ),
-                AppPanelButton(
+                LabPanelButton(
                     onTap: () {},
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            AppHostingIcon(
+                            LabHostingIcon(
                               hostingStatuses: [
                                 HostingStatus.none,
                                 HostingStatus.none,
                                 HostingStatus.none,
                               ],
                             ),
-                            const AppGap.s16(),
+                            const LabGap.s16(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                AppText.h2(
+                                LabText.h2(
                                   "No Hosting yet",
                                   color: theme.colors.white33,
                                 ),
-                                const AppGap.s8(),
-                                AppContainer(
-                                  padding: const AppEdgeInsets.symmetric(
-                                    horizontal: AppGapSize.s8,
-                                    vertical: AppGapSize.s2,
+                                const LabGap.s8(),
+                                LabContainer(
+                                  padding: const LabEdgeInsets.symmetric(
+                                    horizontal: LabGapSize.s8,
+                                    vertical: LabGapSize.s2,
                                   ),
                                   decoration: BoxDecoration(
                                     gradient: theme.colors.rouge33,
                                     borderRadius:
                                         theme.radius.asBorderRadius().rad8,
                                   ),
-                                  child: AppText.reg12("Required",
+                                  child: LabText.reg12("Required",
                                       color: theme.colors.white66),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                        const AppGap.s16(),
-                        AppButton(
+                        const LabGap.s16(),
+                        LabButton(
                           onTap: () {},
                           children: [
-                            AppIcon.s14(
+                            LabIcon.s14(
                               theme.icons.characters.plus,
                               outlineColor: theme.colors.whiteEnforced,
                               outlineThickness:
-                                  AppLineThicknessData.normal().thick,
+                                  LabLineThicknessData.normal().thick,
                             ),
-                            const AppGap.s12(),
-                            AppText.reg14("Add Hosting",
+                            const LabGap.s12(),
+                            LabText.reg14("Add Hosting",
                                 color: theme.colors.whiteEnforced),
                           ],
                         ),
@@ -623,14 +623,14 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
               ],
             ),
           ),
-          const AppDivider(),
-          AppContainer(
-            padding: const AppEdgeInsets.all(
-              AppGapSize.s12,
+          const LabDivider(),
+          LabContainer(
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s12,
             ),
             child: Column(
               children: [
-                AppSectionTitle(
+                LabSectionTitle(
                   "MORE",
                 ),
               ],

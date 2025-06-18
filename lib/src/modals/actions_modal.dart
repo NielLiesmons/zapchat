@@ -16,10 +16,10 @@ class ActionsModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final resolvers = ref.read(resolversProvider);
 
-    return AppModal(
+    return LabModal(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +36,7 @@ class ActionsModal extends ConsumerWidget {
 
                 return AnimatedScale(
                   scale: scaleFactor,
-                  duration: AppDurationsData.normal().fast,
+                  duration: LabDurationsData.normal().fast,
                   curve: Curves.easeInOut,
                   child: model is ChatMessage ||
                           model is CashuZap ||
@@ -45,21 +45,21 @@ class ActionsModal extends ConsumerWidget {
                           onTap: () => context.replace('/reply-to/${model.id}',
                               extra: model),
                           builder: (context, state, hasFocus) {
-                            return AppContainer(
+                            return LabContainer(
                               decoration: BoxDecoration(
                                 color: theme.colors.black33,
                                 borderRadius:
                                     theme.radius.asBorderRadius().rad16,
                                 border: Border.all(
                                   color: theme.colors.white33,
-                                  width: AppLineThicknessData.normal().thin,
+                                  width: LabLineThicknessData.normal().thin,
                                 ),
                               ),
-                              padding: const AppEdgeInsets.all(AppGapSize.s8),
+                              padding: const LabEdgeInsets.all(LabGapSize.s8),
                               child: Column(
                                 children: [
                                   model is CashuZap || model is Zap
-                                      ? AppZapCard(
+                                      ? LabZapCard(
                                           zap: model is Zap
                                               ? model as Zap
                                               : null,
@@ -76,7 +76,7 @@ class ActionsModal extends ConsumerWidget {
                                               .push('/profile/${profile.npub}',
                                                   extra: profile),
                                         )
-                                      : AppQuotedMessage(
+                                      : LabQuotedMessage(
                                           chatMessage: model as ChatMessage,
                                           onResolveEvent:
                                               resolvers.eventResolver,
@@ -85,21 +85,21 @@ class ActionsModal extends ConsumerWidget {
                                           onResolveEmoji:
                                               resolvers.emojiResolver,
                                         ),
-                                  AppContainer(
-                                    padding: const AppEdgeInsets.only(
-                                      left: AppGapSize.s8,
-                                      right: AppGapSize.s8,
-                                      top: AppGapSize.s12,
-                                      bottom: AppGapSize.s4,
+                                  LabContainer(
+                                    padding: const LabEdgeInsets.only(
+                                      left: LabGapSize.s8,
+                                      right: LabGapSize.s8,
+                                      top: LabGapSize.s12,
+                                      bottom: LabGapSize.s4,
                                     ),
                                     child: Row(
                                       children: [
-                                        AppText.med14(
+                                        LabText.med14(
                                           'Reply',
                                           color: theme.colors.white33,
                                         ),
                                         const Spacer(),
-                                        AppIcon.s16(
+                                        LabIcon.s16(
                                           theme.icons.characters.voice,
                                           color: theme.colors.white33,
                                         ),
@@ -116,8 +116,8 @@ class ActionsModal extends ConsumerWidget {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                AppProfilePic.s40(model.author.value),
-                                const AppGap.s12(),
+                                LabProfilePic.s40(model.author.value),
+                                const LabGap.s12(),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -125,16 +125,16 @@ class ActionsModal extends ConsumerWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          AppEmojiImage(
+                                          LabEmojiImage(
                                             emojiUrl:
                                                 'assets/emoji/${getModelContentType(model)}.png',
                                             emojiName:
                                                 getModelContentType(model),
                                             size: 16,
                                           ),
-                                          const AppGap.s10(),
+                                          const LabGap.s10(),
                                           Expanded(
-                                            child: AppCompactTextRenderer(
+                                            child: LabCompactTextRenderer(
                                               content:
                                                   getModelDisplayText(model),
                                               onResolveEvent:
@@ -149,8 +149,8 @@ class ActionsModal extends ConsumerWidget {
                                           ),
                                         ],
                                       ),
-                                      const AppGap.s2(),
-                                      AppText.reg12(
+                                      const LabGap.s2(),
+                                      LabText.reg12(
                                         model.author.value?.name ??
                                             formatNpub(
                                                 model.author.value?.npub ?? ''),
@@ -159,19 +159,19 @@ class ActionsModal extends ConsumerWidget {
                                     ],
                                   ),
                                 ),
-                                const AppGap.s8(),
+                                const LabGap.s8(),
                               ],
                             ),
                             Row(
                               children: [
-                                AppContainer(
+                                LabContainer(
                                   width: theme.sizes.s38,
                                   child: Center(
-                                    child: AppContainer(
+                                    child: LabContainer(
                                       decoration: BoxDecoration(
                                           color: theme.colors.white33),
                                       width:
-                                          AppLineThicknessData.normal().medium,
+                                          LabLineThicknessData.normal().medium,
                                       height: theme.sizes.s16,
                                     ),
                                   ),
@@ -191,7 +191,7 @@ class ActionsModal extends ConsumerWidget {
 
                                 return Transform.scale(
                                   scale: scaleFactor,
-                                  child: AppContainer(
+                                  child: LabContainer(
                                     height: theme.sizes.s40,
                                     decoration: BoxDecoration(
                                       color: theme.colors.black33,
@@ -200,24 +200,24 @@ class ActionsModal extends ConsumerWidget {
                                       border: Border.all(
                                         color: theme.colors.white33,
                                         width:
-                                            AppLineThicknessData.normal().thin,
+                                            LabLineThicknessData.normal().thin,
                                       ),
                                     ),
                                     padding:
-                                        const AppEdgeInsets.all(AppGapSize.s8),
-                                    child: AppContainer(
-                                      padding: const AppEdgeInsets.only(
-                                        left: AppGapSize.s8,
-                                        right: AppGapSize.s8,
+                                        const LabEdgeInsets.all(LabGapSize.s8),
+                                    child: LabContainer(
+                                      padding: const LabEdgeInsets.only(
+                                        left: LabGapSize.s8,
+                                        right: LabGapSize.s8,
                                       ),
                                       child: Row(
                                         children: [
-                                          AppText.med14(
+                                          LabText.med14(
                                             'Reply',
                                             color: theme.colors.white33,
                                           ),
                                           const Spacer(),
-                                          AppIcon.s16(
+                                          LabIcon.s16(
                                             theme.icons.characters.voice,
                                             color: theme.colors.white33,
                                           ),
@@ -233,16 +233,16 @@ class ActionsModal extends ConsumerWidget {
                 );
               },
             ),
-            const AppGap.s12(),
-            const AppSectionTitle('React'),
-            AppContainer(
+            const LabGap.s12(),
+            const LabSectionTitle('React'),
+            LabContainer(
               height: 52,
               width: double.infinity,
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.none,
-                right: AppGapSize.s8,
-                top: AppGapSize.s8,
-                bottom: AppGapSize.s8,
+              padding: const LabEdgeInsets.only(
+                left: LabGapSize.none,
+                right: LabGapSize.s8,
+                top: LabGapSize.s8,
+                bottom: LabGapSize.s8,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.black33,
@@ -270,9 +270,9 @@ class ActionsModal extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const AppGap.s14(),
+                            const LabGap.s14(),
                             for (final emoji
-                                in AppDefaultData.defaultEmoji.take(24)) ...[
+                                in LabDefaultData.defaultEmoji.take(24)) ...[
                               TapBuilder(
                                 onTap: () {
                                   // TODO: Implement emoji reaction
@@ -287,13 +287,13 @@ class ActionsModal extends ConsumerWidget {
 
                                   return AnimatedScale(
                                     scale: scaleFactor,
-                                    duration: AppDurationsData.normal().fast,
+                                    duration: LabDurationsData.normal().fast,
                                     curve: Curves.easeInOut,
-                                    child: AppContainer(
-                                      padding: const AppEdgeInsets.only(
-                                          right: AppGapSize.s14),
+                                    child: LabContainer(
+                                      padding: const LabEdgeInsets.only(
+                                          right: LabGapSize.s14),
                                       child: Center(
-                                        child: AppEmojiImage(
+                                        child: LabEmojiImage(
                                           emojiUrl: emoji.emojiUrl,
                                           emojiName: emoji.emojiName,
                                           size: 28,
@@ -304,7 +304,7 @@ class ActionsModal extends ConsumerWidget {
                                 },
                               ),
                             ],
-                            const AppGap.s32(),
+                            const LabGap.s32(),
                           ],
                         ),
                       ),
@@ -323,7 +323,7 @@ class ActionsModal extends ConsumerWidget {
                             // TODO: Implement more emojis
                           },
                           builder: (context, state, isFocused) {
-                            return AppContainer(
+                            return LabContainer(
                               height: double.infinity,
                               width: 32,
                               decoration: BoxDecoration(
@@ -332,10 +332,10 @@ class ActionsModal extends ConsumerWidget {
                                     theme.radius.asBorderRadius().rad8,
                               ),
                               child: Center(
-                                child: AppIcon.s8(
+                                child: LabIcon.s8(
                                   theme.icons.characters.chevronDown,
                                   outlineThickness:
-                                      AppLineThicknessData.normal().medium,
+                                      LabLineThicknessData.normal().medium,
                                   outlineColor: theme.colors.white66,
                                 ),
                               ),
@@ -348,16 +348,16 @@ class ActionsModal extends ConsumerWidget {
                 ],
               ),
             ),
-            const AppGap.s12(),
-            const AppSectionTitle('Zap'),
-            AppContainer(
+            const LabGap.s12(),
+            const LabSectionTitle('Zap'),
+            LabContainer(
               height: 52,
               width: double.infinity,
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.none,
-                right: AppGapSize.s8,
-                top: AppGapSize.s8,
-                bottom: AppGapSize.s8,
+              padding: const LabEdgeInsets.only(
+                left: LabGapSize.none,
+                right: LabGapSize.s8,
+                top: LabGapSize.s8,
+                bottom: LabGapSize.s8,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.black33,
@@ -385,9 +385,9 @@ class ActionsModal extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const AppGap.s8(),
+                            const LabGap.s8(),
                             for (final amount
-                                in AppDefaultData.defaultAmounts) ...[
+                                in LabDefaultData.defaultAmounts) ...[
                               TapBuilder(
                                 onTap: () {
                                   // TODO: Implement zap
@@ -402,27 +402,27 @@ class ActionsModal extends ConsumerWidget {
 
                                   return AnimatedScale(
                                     scale: scaleFactor,
-                                    duration: AppDurationsData.normal().fast,
+                                    duration: LabDurationsData.normal().fast,
                                     curve: Curves.easeInOut,
-                                    child: AppContainer(
+                                    child: LabContainer(
                                       decoration: BoxDecoration(
                                         color: theme.colors.white8,
                                         borderRadius:
                                             theme.radius.asBorderRadius().rad8,
                                       ),
-                                      padding: const AppEdgeInsets.symmetric(
-                                          horizontal: AppGapSize.s12),
+                                      padding: const LabEdgeInsets.symmetric(
+                                          horizontal: LabGapSize.s12),
                                       child: Center(
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            AppIcon.s12(
+                                            LabIcon.s12(
                                               theme.icons.characters.zap,
                                               gradient: theme.colors.gold,
                                             ),
-                                            const AppGap.s4(),
-                                            AppText.bold16(
+                                            const LabGap.s4(),
+                                            LabText.bold16(
                                               amount.toStringAsFixed(0),
                                               color: theme.colors.white,
                                             ),
@@ -433,9 +433,9 @@ class ActionsModal extends ConsumerWidget {
                                   );
                                 },
                               ),
-                              const AppGap.s8(),
+                              const LabGap.s8(),
                             ],
-                            const AppGap.s32(),
+                            const LabGap.s32(),
                           ],
                         ),
                       ),
@@ -454,7 +454,7 @@ class ActionsModal extends ConsumerWidget {
                             context.replace('/zap/${model.id}', extra: model);
                           },
                           builder: (context, state, isFocused) {
-                            return AppContainer(
+                            return LabContainer(
                               height: double.infinity,
                               width: 32,
                               decoration: BoxDecoration(
@@ -463,10 +463,10 @@ class ActionsModal extends ConsumerWidget {
                                     theme.radius.asBorderRadius().rad8,
                               ),
                               child: Center(
-                                child: AppIcon.s8(
+                                child: LabIcon.s8(
                                   theme.icons.characters.chevronDown,
                                   outlineThickness:
-                                      AppLineThicknessData.normal().medium,
+                                      LabLineThicknessData.normal().medium,
                                   outlineColor: theme.colors.white66,
                                 ),
                               ),
@@ -479,18 +479,18 @@ class ActionsModal extends ConsumerWidget {
                 ],
               ),
             ),
-            const AppGap.s12(),
-            const AppSectionTitle('Actions'),
+            const LabGap.s12(),
+            const LabSectionTitle('Actions'),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 for (var i = 0; i < 3; i++) ...[
                   Expanded(
-                    child: AppPanelButton(
+                    child: LabPanelButton(
                       color: theme.colors.black33,
-                      padding: const AppEdgeInsets.only(
-                        top: AppGapSize.s20,
-                        bottom: AppGapSize.s16,
+                      padding: const LabEdgeInsets.only(
+                        top: LabGapSize.s20,
+                        bottom: LabGapSize.s16,
                       ),
                       onTap: () {
                         switch (i) {
@@ -510,18 +510,18 @@ class ActionsModal extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          AppIcon.s24(
+                          LabIcon.s24(
                             i == 0
                                 ? theme.icons.characters.openWith
                                 : i == 1
                                     ? theme.icons.characters.label
                                     : theme.icons.characters.share,
                             outlineThickness:
-                                AppLineThicknessData.normal().medium,
+                                LabLineThicknessData.normal().medium,
                             outlineColor: theme.colors.white66,
                           ),
-                          const AppGap.s10(),
-                          AppText.med14(
+                          const LabGap.s10(),
+                          LabText.med14(
                             i == 0
                                 ? 'Open with'
                                 : i == 1
@@ -533,34 +533,34 @@ class ActionsModal extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  if (i < 2) const AppGap.s12(),
+                  if (i < 2) const LabGap.s12(),
                 ],
               ],
             ),
-            const AppGap.s12(),
-            AppButton(
+            const LabGap.s12(),
+            LabButton(
               onTap: () {
                 // TODO: Implement report
               },
               inactiveColor: theme.colors.black33,
               children: [
-                AppText.med14('Report', gradient: theme.colors.rouge),
+                LabText.med14('Report', gradient: theme.colors.rouge),
               ],
             ),
-            const AppGap.s12(),
-            AppButton(
+            const LabGap.s12(),
+            LabButton(
               onTap: () {
                 // TODO: Implement add profile
               },
               children: [
-                AppIcon.s16(
+                LabIcon.s16(
                   theme.icons.characters.plus,
-                  outlineThickness: AppLineThicknessData.normal().thick,
+                  outlineThickness: LabLineThicknessData.normal().thick,
                   outlineColor: theme.colors.whiteEnforced,
                 ),
-                const AppGap.s12(),
-                AppText.reg14('Add ', color: theme.colors.whiteEnforced),
-                AppText.bold14(
+                const LabGap.s12(),
+                LabText.reg14('Add ', color: theme.colors.whiteEnforced),
+                LabText.bold14(
                   model.author.value?.name ??
                       formatNpub(model.author.value?.pubkey ?? ''),
                   color: theme.colors.whiteEnforced,

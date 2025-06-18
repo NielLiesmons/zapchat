@@ -9,19 +9,19 @@ class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
   TabData tabData(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TabData(
       label: 'Home',
-      icon: AppIcon.s32(
+      icon: LabIcon.s32(
         theme.icons.characters.home,
         gradient: theme.colors.graydient66,
       ),
-      bottomBar: AppPlatformUtils.isMobile
+      bottomBar: LabPlatformUtils.isMobile
           ? HookConsumer(
               builder: (context, ref, _) {
                 final activeProfile = ref.watch(Signer.activeProfileProvider);
-                return AppBottomBarHome(
+                return LabBottomBarHome(
                   onZapTap: activeProfile != null
                       ? () {
                           context.push('/pay');
@@ -65,7 +65,7 @@ class HomeTab extends StatelessWidget {
             children: [
               for (final community in communities
                   .where((c) => activeProfile != null || c.name == 'Zapchat'))
-                AppCommunityHomePanel(
+                LabCommunityHomePanel(
                   community: community,
                   lastModel:
                       chatMessages.isNotEmpty ? chatMessages.first : null,
@@ -109,7 +109,7 @@ class HomeTab extends StatelessWidget {
                 ),
               if (activeProfile != null) ...[
                 for (final group in groups)
-                  AppGroupHomePanel(
+                  LabGroupHomePanel(
                     group: group,
                     lastModel:
                         chatMessages.isNotEmpty ? chatMessages.first : null,
@@ -144,15 +144,15 @@ class HomeTab extends StatelessWidget {
                     },
                   ),
               ],
-              AppContainer(
-                padding: AppEdgeInsets.all(AppGapSize.s12),
+              LabContainer(
+                padding: LabEdgeInsets.all(LabGapSize.s12),
                 height: 1000,
-                child: AppPanelButton(
+                child: LabPanelButton(
                   color: theme.colors.gray33,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      AppContainer(
+                      LabContainer(
                         width: theme.sizes.s48,
                         height: theme.sizes.s48,
                         decoration: BoxDecoration(
@@ -160,16 +160,16 @@ class HomeTab extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: Center(
-                          child: AppIcon.s20(
+                          child: LabIcon.s20(
                             theme.icons.characters.plus,
                             outlineThickness:
-                                AppLineThicknessData.normal().thick,
+                                LabLineThicknessData.normal().thick,
                             outlineColor: theme.colors.white33,
                           ),
                         ),
                       ),
-                      const AppGap.s12(),
-                      AppText.med14('Add a Community',
+                      const LabGap.s12(),
+                      LabText.med14('Add a Community',
                           color: theme.colors.white33),
                     ],
                   ),
@@ -180,10 +180,10 @@ class HomeTab extends StatelessWidget {
         },
       ),
       settingsDescription: "Filter your groups and communities",
-      settingsContent: AppContainer(
+      settingsContent: LabContainer(
         child: Column(
           children: [
-            AppSectionTitle("Filter"),
+            LabSectionTitle("Filter"),
           ],
         ),
       ),

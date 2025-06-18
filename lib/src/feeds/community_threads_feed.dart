@@ -17,7 +17,7 @@ class CommunityThreadsFeed extends ConsumerWidget {
     final state = ref.watch(query<Note>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed(type: LoadingFeedType.thread);
+      return const LabLoadingFeed(type: LoadingFeedType.thread);
     }
 
     final threads = state.models.cast<Note>();
@@ -26,7 +26,7 @@ class CommunityThreadsFeed extends ConsumerWidget {
     return Column(
       children: [
         for (final thread in threads)
-          AppFeedThread(
+          LabFeedThread(
             thread: thread,
             topThreeReplyProfiles:
                 ref.watch(resolvers.topThreeReplyProfilesResolver(thread)),

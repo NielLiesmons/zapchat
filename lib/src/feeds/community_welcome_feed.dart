@@ -5,12 +5,12 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class AppCommunityWelcomeFeed extends ConsumerWidget {
+class LabCommunityWelcomeFeed extends ConsumerWidget {
   final Community community;
 
   final VoidCallback onProfileTap;
 
-  const AppCommunityWelcomeFeed({
+  const LabCommunityWelcomeFeed({
     super.key,
     required this.community,
     required this.onProfileTap,
@@ -18,25 +18,25 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final profilesState = ref.watch(query<Profile>());
     final articleState = ref.watch(query<Article>(limit: 1));
     final topSupportersState = ref.watch(query<Profile>(limit: 3));
 
     if (profilesState case StorageLoading()) {
-      return const AppLoadingFeed();
+      return const LabLoadingFeed();
     }
 
     final profiles = profilesState.models.cast<Profile>();
 
-    return AppScope(
+    return LabScope(
       isInsideScope: true,
-      child: AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s12),
+      child: LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s12),
         child: Column(
           children: [
-            const AppGap.s48(),
-            AppCommunityWelcomeHeader(
+            const LabGap.s48(),
+            LabCommunityWelcomeHeader(
               community: community,
               onProfileTap: onProfileTap,
               profiles: profiles,
@@ -47,40 +47,40 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 'https://cdn.satellite.earth/aa1557833a08864d55bef51146d1ed9b7a19099b2e4e880fe5f2e0aeedf85d69.png',
               ],
             ),
-            const AppGap.s16(),
+            const LabGap.s16(),
             ClipRRect(
               borderRadius: theme.radius.asBorderRadius().rad16,
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: AppContainer(
+                child: LabContainer(
                   width: double.infinity,
                   alignment: Alignment.center,
-                  padding: const AppEdgeInsets.symmetric(
-                    horizontal: AppGapSize.s12,
-                    vertical: AppGapSize.s10,
+                  padding: const LabEdgeInsets.symmetric(
+                    horizontal: LabGapSize.s12,
+                    vertical: LabGapSize.s10,
                   ),
                   decoration: BoxDecoration(
                     color: theme.colors.gray66,
                     borderRadius: theme.radius.asBorderRadius().rad16,
                   ),
-                  child: AppText.reg14(
+                  child: LabText.reg14(
                     community.description ?? '',
-                    color: AppTheme.of(context).colors.white,
+                    color: LabTheme.of(context).colors.white,
                     maxLines: 3,
                     textOverflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
             ),
-            const AppGap.s12(),
-            AppContainer(
+            const LabGap.s12(),
+            LabContainer(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const AppEdgeInsets.only(
-                top: AppGapSize.s10,
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+              padding: const LabEdgeInsets.only(
+                top: LabGapSize.s10,
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
@@ -91,24 +91,24 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      const AppGap.s4(),
-                      AppText.med14(
+                      const LabGap.s4(),
+                      LabText.med14(
                         'Pinned Publications',
                         color: theme.colors.white66,
                       ),
                       const Spacer(),
-                      AppIcon.s14(
+                      LabIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                     ],
                   ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                   if (articleState case StorageData(:final models))
                     if (models.isNotEmpty)
-                      AppArticleCard(
+                      LabArticleCard(
                         article: models.first,
                         onProfileTap: (profile) => context
                             .push('/profile/${profile.npub}', extra: profile),
@@ -118,15 +118,15 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 ],
               ),
             ),
-            const AppGap.s12(),
-            AppContainer(
+            const LabGap.s12(),
+            LabContainer(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const AppEdgeInsets.only(
-                top: AppGapSize.s10,
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+              padding: const LabEdgeInsets.only(
+                top: LabGapSize.s10,
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
@@ -137,38 +137,38 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      const AppGap.s4(),
-                      AppText.med14(
+                      const LabGap.s4(),
+                      LabText.med14(
                         'Content Types',
                         color: theme.colors.white66,
                       ),
                       const Spacer(),
-                      AppIcon.s14(
+                      LabIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                     ],
                   ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                   Wrap(
                     spacing: 8,
                     runSpacing: 10,
                     children: [
                       for (final section in community.contentSections)
                         IntrinsicWidth(
-                          child: AppButton(
+                          child: LabButton(
                             inactiveColor: theme.colors.white8,
                             children: [
-                              AppEmojiContentType(
+                              LabEmojiContentType(
                                 contentType: section.content
                                     .toLowerCase()
                                     .replaceAll(RegExp(r's$'), ''),
                                 size: 24,
                               ),
-                              const AppGap.s8(),
-                              AppText.reg12(section.content)
+                              const LabGap.s8(),
+                              LabText.reg12(section.content)
                             ],
                             onTap: () {},
                           ),
@@ -178,15 +178,15 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 ],
               ),
             ),
-            const AppGap.s12(),
-            AppContainer(
+            const LabGap.s12(),
+            LabContainer(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const AppEdgeInsets.only(
-                top: AppGapSize.s10,
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+              padding: const LabEdgeInsets.only(
+                top: LabGapSize.s10,
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
@@ -197,51 +197,51 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      const AppGap.s4(),
-                      AppText.med14(
+                      const LabGap.s4(),
+                      LabText.med14(
                         'Labels',
                         color: theme.colors.white66,
                       ),
                       const Spacer(),
-                      AppIcon.s14(
+                      LabIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                     ],
                   ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                   Wrap(
                     spacing: 8,
                     runSpacing: 10,
                     children: [
-                      AppLabel(
+                      LabLabel(
                         "Questions",
                         isEmphasized: true,
                         onTap: () {},
                       ),
-                      AppLabel(
+                      LabLabel(
                         "Feature Requests",
                         isEmphasized: true,
                         onTap: () {},
                       ),
-                      AppLabel(
+                      LabLabel(
                         "Bugs",
                         isEmphasized: true,
                         onTap: () {},
                       ),
-                      AppLabel(
+                      LabLabel(
                         "Marketing",
                         isEmphasized: true,
                         onTap: () {},
                       ),
-                      AppLabel(
+                      LabLabel(
                         "Big Picture",
                         isEmphasized: true,
                         onTap: () {},
                       ),
-                      AppLabel(
+                      LabLabel(
                         "Idea Box",
                         isEmphasized: true,
                         onTap: () {},
@@ -251,15 +251,15 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 ],
               ),
             ),
-            const AppGap.s12(),
-            AppContainer(
+            const LabGap.s12(),
+            LabContainer(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const AppEdgeInsets.only(
-                top: AppGapSize.s10,
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+              padding: const LabEdgeInsets.only(
+                top: LabGapSize.s10,
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
@@ -270,47 +270,47 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      const AppGap.s4(),
-                      AppText.med14(
+                      const LabGap.s4(),
+                      LabText.med14(
                         'Recommended Apps',
                         color: theme.colors.white66,
                       ),
                       const Spacer(),
-                      AppIcon.s14(
+                      LabIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                     ],
                   ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: [
-                      AppProfilePicSquare.fromUrl(
+                      LabProfilePicSquare.fromUrl(
                         'test',
-                        size: AppProfilePicSquareSize.s48,
+                        size: LabProfilePicSquareSize.s48,
                       ),
-                      AppProfilePicSquare.fromUrl(
+                      LabProfilePicSquare.fromUrl(
                         'test',
-                        size: AppProfilePicSquareSize.s48,
+                        size: LabProfilePicSquareSize.s48,
                       )
                     ],
                   ),
                 ],
               ),
             ),
-            const AppGap.s12(),
-            AppContainer(
+            const LabGap.s12(),
+            LabContainer(
               width: double.infinity,
               alignment: Alignment.center,
-              padding: const AppEdgeInsets.only(
-                top: AppGapSize.s10,
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+              padding: const LabEdgeInsets.only(
+                top: LabGapSize.s10,
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
@@ -321,24 +321,24 @@ class AppCommunityWelcomeFeed extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      const AppGap.s4(),
-                      AppText.med14(
+                      const LabGap.s4(),
+                      LabText.med14(
                         'Supporters',
                         color: theme.colors.white66,
                       ),
                       const Spacer(),
-                      AppIcon.s14(
+                      LabIcon.s14(
                         theme.icons.characters.chevronRight,
                         outlineColor: theme.colors.white33,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                     ],
                   ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                   if (topSupportersState case StorageData(:final models)) ...[
                     if (models.isNotEmpty)
-                      AppSupportersStage(
+                      LabSupportersStage(
                         topThreeSupporters: models,
                       ), // TODO: fetch actual supporters
                   ]

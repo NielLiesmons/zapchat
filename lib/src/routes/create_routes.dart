@@ -6,6 +6,7 @@ import '../modals/create_message_modal.dart';
 import '../modals/spin_up_community_key_modal.dart';
 import '../screens/create_group_screen.dart';
 import '../screens/create_community_screen.dart';
+import '../screens/create_event_screen.dart';
 import '../screens/your_community_screen.dart';
 import '../modals/community_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,7 @@ List<GoRoute> get createRoutes => [
       GoRoute(
         path: '/create',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: CreateNewStuffModal(),
           );
         },
@@ -22,7 +23,7 @@ List<GoRoute> get createRoutes => [
       GoRoute(
         path: '/create/group',
         pageBuilder: (context, state) {
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: CreateGroupScreen(),
           );
         },
@@ -30,8 +31,16 @@ List<GoRoute> get createRoutes => [
       GoRoute(
         path: '/create/community',
         pageBuilder: (context, state) {
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: CreateCommunityScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/event',
+        pageBuilder: (context, state) {
+          return LabSlideInScreen(
+            child: CreateEventScreen(),
           );
         },
       ),
@@ -39,7 +48,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/community/spin-up-community-key',
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: SpinUpCommunityKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
@@ -55,7 +64,7 @@ List<GoRoute> get createRoutes => [
       GoRoute(
         path: '/create/community/your-community-key',
         pageBuilder: (context, state) {
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, child) {
                 final extra = state.extra as Map<String, dynamic>;
@@ -72,7 +81,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/community/configure',
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: YourCommunityScreen(
               profile: extra['profile'] as Profile,
               communityName: extra['communityName'] as String,
@@ -84,7 +93,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/message',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: CreateMessageModal(target: model),
           );
         },

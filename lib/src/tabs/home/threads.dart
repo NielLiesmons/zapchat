@@ -10,13 +10,13 @@ class ThreadsTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Threads',
-      icon: const AppEmojiContentType(contentType: 'thread'),
+      icon: const LabEmojiContentType(contentType: 'thread'),
       content: HookConsumer(
         builder: (context, ref, _) {
           final state = ref.watch(query<Note>());
 
           if (state case StorageLoading()) {
-            return const AppLoadingFeed(type: LoadingFeedType.thread);
+            return const LabLoadingFeed(type: LoadingFeedType.thread);
           }
 
           final threads = state.models.cast<Note>();
@@ -24,7 +24,7 @@ class ThreadsTab extends StatelessWidget {
           return Column(
             children: [
               for (final thread in threads)
-                AppFeedThread(
+                LabFeedThread(
                   thread: thread,
                   onTap: (event) =>
                       context.push('/thread/${event.id}', extra: event),

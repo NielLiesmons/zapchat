@@ -9,21 +9,21 @@ class ArticlesTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Articles',
-      icon: const AppEmojiContentType(contentType: 'article'),
+      icon: const LabEmojiContentType(contentType: 'article'),
       content: HookConsumer(
         builder: (context, ref, _) {
           final state = ref.watch(query<Article>());
 
           if (state case StorageLoading()) {
-            return const AppLoadingFeed();
+            return const LabLoadingFeed();
           }
 
           final articles = state.models.cast<Article>();
-          return AppContainer(
+          return LabContainer(
             child: Column(
               children: [
                 for (final article in articles)
-                  AppFeedArticle(
+                  LabFeedArticle(
                     article: article,
                     isUnread: true,
                     onTap: (event) =>

@@ -11,7 +11,7 @@ List<GoRoute> get communityRoutes => [
         path: '/community/:npub',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: CommunityScreen(community: community),
           );
         },
@@ -20,7 +20,7 @@ List<GoRoute> get communityRoutes => [
         path: '/community/:npub/info',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: CommunityInfoModal(community: community),
           );
         },
@@ -29,7 +29,7 @@ List<GoRoute> get communityRoutes => [
         path: '/community/:npub/info/pricing',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: CommunityPricingModal(community: community),
           );
         },
@@ -38,7 +38,7 @@ List<GoRoute> get communityRoutes => [
         path: '/community/:npub/notifications',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
-          return AppSlideInModal(
+          return LabSlideInModal(
             child: CommunityNotificationsModal(community: community),
           );
         },
@@ -48,7 +48,7 @@ List<GoRoute> get communityRoutes => [
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           final contentType = state.pathParameters['contentType'];
-          return AppSlideInScreen(
+          return LabSlideInScreen(
             child: CommunityScreen(
               community: community,
               initialContentType: contentType,

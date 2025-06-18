@@ -19,7 +19,7 @@ class CommunityForumFeed extends ConsumerWidget {
     final state = ref.watch(query<ForumPost>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed(type: LoadingFeedType.thread);
+      return const LabLoadingFeed(type: LoadingFeedType.thread);
     }
 
     final forumPosts = state.models.cast<ForumPost>();
@@ -27,7 +27,7 @@ class CommunityForumFeed extends ConsumerWidget {
     return Column(
       children: [
         for (final forumPost in forumPosts)
-          AppFeedForumPost(
+          LabFeedForumPost(
             forumPost: forumPost,
             topThreeReplyProfiles: ref.watch(
               resolvers.topThreeReplyProfilesResolver(forumPost),

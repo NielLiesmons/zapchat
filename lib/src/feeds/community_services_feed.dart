@@ -16,18 +16,18 @@ class CommunityServicesFeed extends ConsumerWidget {
     final state = ref.watch(query<Service>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed();
+      return const LabLoadingFeed();
     }
 
     final services = state.models.cast<Service>();
 
-    return AppContainer(
+    return LabContainer(
       child: Column(
         children: [
           for (final service in services)
             Column(
               children: [
-                AppFeedService(
+                LabFeedService(
                   service: service,
                   isUnread: true,
                   onTap: (model) =>

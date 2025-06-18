@@ -16,24 +16,24 @@ class ProfileCommunitiesFeed extends ConsumerWidget {
     final state2 = ref.watch(query<Profile>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed(type: LoadingFeedType.thread);
+      return const LabLoadingFeed(type: LoadingFeedType.thread);
     }
 
     final communities = state.models.cast<Community>();
     final relevantProfiles = state2.models.cast<Profile>();
 
-    return AppContainer(
-      padding: const AppEdgeInsets.only(
-        top: AppGapSize.s12,
-        left: AppGapSize.s12,
-        right: AppGapSize.s12,
+    return LabContainer(
+      padding: const LabEdgeInsets.only(
+        top: LabGapSize.s12,
+        left: LabGapSize.s12,
+        right: LabGapSize.s12,
       ),
       child: Column(
         children: [
           for (final community in communities)
             Column(
               children: [
-                AppCommunityCard(
+                LabCommunityCard(
                   community: community,
                   onTap: () {},
                   profile: profile,
@@ -42,7 +42,7 @@ class ProfileCommunitiesFeed extends ConsumerWidget {
                   relevantProfilesDescription: "Followers in\nyour network",
                   onProfilesTap: () {},
                 ),
-                const AppGap.s12(),
+                const LabGap.s12(),
               ],
             ),
         ],

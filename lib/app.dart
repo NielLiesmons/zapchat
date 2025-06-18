@@ -18,43 +18,43 @@ class App extends ConsumerWidget {
         builder: (context, ref, _) {
           final value = ref.watch(zapchatInitializationProvider);
           return switch (value) {
-            AsyncLoading() => AppResponsiveTheme(
-                child: AppBase(
+            AsyncLoading() => LabResponsiveTheme(
+                child: LabBase(
                   title: 'Zapchat',
                   routerConfig: GoRouter(
                     routes: [
                       GoRoute(
                         path: '/',
-                        builder: (context, state) => AppScaffold(
-                          body: AppContainer(
+                        builder: (context, state) => LabScaffold(
+                          body: LabContainer(
                             alignment: Alignment.center,
-                            child: const AppLoadingDots(),
+                            child: const LabLoadingDots(),
                           ),
                         ),
                       ),
                     ],
                   ),
                   colorMode: null,
-                  textScale: AppTextScale.normal,
-                  systemScale: AppSystemScale.normal,
+                  textScale: LabTextScale.normal,
+                  systemScale: LabSystemScale.normal,
                 ),
               ),
-            AsyncError(:final error) => AppResponsiveTheme(
-                child: AppBase(
+            AsyncError(:final error) => LabResponsiveTheme(
+                child: LabBase(
                   title: 'Zapchat',
                   routerConfig: GoRouter(
                     routes: [
                       GoRoute(
                         path: '/',
-                        builder: (context, state) => AppScaffold(
-                          body: AppContainer(
+                        builder: (context, state) => LabScaffold(
+                          body: LabContainer(
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AppText.h2('Error during initialization:'),
-                                const AppGap.s8(),
-                                AppSelectableText(text: error.toString()),
+                                LabText.h2('Error during initialization:'),
+                                const LabGap.s8(),
+                                LabSelectableText(text: error.toString()),
                               ],
                             ),
                           ),
@@ -63,11 +63,11 @@ class App extends ConsumerWidget {
                     ],
                   ),
                   colorMode: null,
-                  textScale: AppTextScale.normal,
-                  systemScale: AppSystemScale.normal,
+                  textScale: LabTextScale.normal,
+                  systemScale: LabSystemScale.normal,
                 ),
               ),
-            AsyncValue() => _AppWithTheme(),
+            AsyncValue() => _LabWithTheme(),
           };
         },
       ),
@@ -75,8 +75,8 @@ class App extends ConsumerWidget {
   }
 }
 
-class _AppWithTheme extends ConsumerWidget {
-  const _AppWithTheme();
+class _LabWithTheme extends ConsumerWidget {
+  const _LabWithTheme();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,7 +84,7 @@ class _AppWithTheme extends ConsumerWidget {
 
     return themeState.when(
       data: (state) {
-        return AppBase(
+        return LabBase(
           title: 'Zapchat',
           routerConfig: goRouter,
           colorMode: state.colorMode,
@@ -113,19 +113,19 @@ class _AppWithTheme extends ConsumerWidget {
           historyMenu: const HistoryContent(),
         );
       },
-      loading: () => AppBase(
+      loading: () => LabBase(
         title: 'Zapchat',
         routerConfig: goRouter,
         colorMode: null,
-        textScale: AppTextScale.normal,
-        systemScale: AppSystemScale.normal,
+        textScale: LabTextScale.normal,
+        systemScale: LabSystemScale.normal,
       ),
-      error: (_, __) => AppBase(
+      error: (_, __) => LabBase(
         title: 'Zapchat',
         routerConfig: goRouter,
         colorMode: null,
-        textScale: AppTextScale.normal,
-        systemScale: AppSystemScale.normal,
+        textScale: LabTextScale.normal,
+        systemScale: LabSystemScale.normal,
       ),
     );
   }

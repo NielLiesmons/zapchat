@@ -37,28 +37,28 @@ class SpinUpKeyModalState extends State<SpinUpKeyModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: "Hey ${widget.profileName}!",
-      bottomBar: AppButton(
+      bottomBar: LabButton(
         onTap: widget.onSecretKeyTap,
         inactiveColor: theme.colors.black33,
         children: [
-          AppIcon.s16(
+          LabIcon.s16(
             theme.icons.characters.nostr,
-            color: AppColorsData.dark().blurpleLightColor,
+            color: LabColorsData.dark().blurpleLightColor,
           ),
-          const AppGap.s12(),
-          AppText.reg14("Already have a Nostr key?",
+          const LabGap.s12(),
+          LabText.reg14("Already have a Nostr key?",
               color: theme.colors.white66),
         ],
       ),
       children: [
-        AppContainer(
+        LabContainer(
           child: Column(
             children: [
-              AppContainer(
+              LabContainer(
                 width: 344,
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -66,14 +66,14 @@ class SpinUpKeyModalState extends State<SpinUpKeyModal> {
                     children: [
                       TextSpan(
                         text: "Spin up a ",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                             ),
                       ),
                       TextSpan(
                         text: "secret key",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                               decoration: TextDecoration.underline,
                             ),
                         recognizer: TapGestureRecognizer()
@@ -81,21 +81,21 @@ class SpinUpKeyModalState extends State<SpinUpKeyModal> {
                       ),
                       TextSpan(
                         text: " to secure your profile and publications",
-                        style: AppTheme.of(context).typography.reg16.copyWith(
-                              color: AppTheme.of(context).colors.white66,
+                        style: LabTheme.of(context).typography.reg16.copyWith(
+                              color: LabTheme.of(context).colors.white66,
                             ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const AppGap.s24(),
-              const AppGap.s4(),
-              AppSlotMachine(
+              const LabGap.s24(),
+              const LabGap.s4(),
+              LabSlotMachine(
                 showSelector: false,
                 onSpinComplete: _handleSpinComplete,
               ),
-              const AppGap.s16(),
+              const LabGap.s16(),
             ],
           ),
         ),

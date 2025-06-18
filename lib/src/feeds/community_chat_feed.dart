@@ -99,14 +99,14 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final resolvers = ref.read(resolversProvider);
 
     final state = ref.watch(query<ChatMessage>());
     final cashuZapsState = ref.watch(query<CashuZap>());
 
     if (state case StorageLoading()) {
-      return const Center(child: AppLoadingFeed(type: LoadingFeedType.chat));
+      return const Center(child: LabLoadingFeed(type: LoadingFeedType.chat));
     }
 
     final messages = state.models;
@@ -155,15 +155,15 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     }
 
     // The Chat feed is placed inside a container with a fixed height
-    // This is needed because we're in an AppScreen widgetthat by default scroll in the other direction and cannot really allow for fine-grained scroll automation.
-    return AppContainer(
+    // This is needed because we're in an LabScreen widgetthat by default scroll in the other direction and cannot really allow for fine-grained scroll automation.
+    return LabContainer(
       height: MediaQuery.of(context).size.height / theme.system.scale -
           184 -
-          (AppPlatformUtils.isMobile
+          (LabPlatformUtils.isMobile
               ? MediaQuery.of(context).padding.top / theme.system.scale +
                   MediaQuery.of(context).padding.bottom / theme.system.scale
               : 26.0),
-      padding: const AppEdgeInsets.all(AppGapSize.s6),
+      padding: const LabEdgeInsets.all(LabGapSize.s6),
       child: Stack(
         children: [
           ListView.builder(
@@ -173,7 +173,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
             itemCount: allEvents.length + 1, // +1 for the divider
             itemBuilder: (context, index) {
               if (index == 0) {
-                return const AppNewMessagesDivider(text: '8 New Mssages');
+                return const LabNewMessagesDivider(text: '8 New Mssages');
               }
               final event = allEvents[index - 1];
               return Column(
@@ -187,7 +187,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                         final messageId =
                             (event.model as List<ChatMessage>).first.id;
                         _messageKeys[messageId] = GlobalKey();
-                        return AppMessageStack(
+                        return LabMessageStack(
                           key: _messageKeys[messageId],
                           messages: event.model as List<ChatMessage>,
                           onResolveEvent: resolvers.eventResolver,
@@ -216,7 +216,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                       },
                     )
                   else
-                    AppZapBubble(
+                    LabZapBubble(
                       cashuZap: event.model as CashuZap,
                       onResolveEvent: resolvers.eventResolver,
                       onResolveProfile: resolvers.profileResolver,
@@ -238,7 +238,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
                       onProfileTap: (profile) => context
                           .push('/profile/${profile.npub}', extra: profile),
                     ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                 ],
               );
             },
@@ -247,10 +247,10 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
             right: 10,
             bottom: 6,
             child: _showScrollButton
-                ? AppFloatingButton(
-                    icon: AppIcon.s12(
+                ? LabFloatingButton(
+                    icon: LabIcon.s12(
                       theme.icons.characters.arrowDown,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66,
                     ),
                     onTap: () {

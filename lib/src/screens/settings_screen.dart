@@ -15,7 +15,7 @@ class SettingsScreen extends ConsumerWidget {
 
     if (signedInPubkeys.isEmpty) {
       return const Center(
-        child: AppLoadingDots(),
+        child: LabLoadingDots(),
       );
     }
 
@@ -23,7 +23,7 @@ class SettingsScreen extends ConsumerWidget {
 
     if (state case StorageLoading()) {
       return const Center(
-        child: AppLoadingDots(),
+        child: LabLoadingDots(),
       );
     }
 
@@ -31,21 +31,21 @@ class SettingsScreen extends ConsumerWidget {
 
     if (profiles.isEmpty) {
       return const Center(
-        child: AppLoadingDots(),
+        child: LabLoadingDots(),
       );
     }
 
     if (activeProfile == null) {
       return const Center(
-        child: AppLoadingDots(),
+        child: LabLoadingDots(),
       );
     }
 
     final themeMode =
-        themeState.value?.colorMode ?? AppResponsiveTheme.colorModeOf(context);
-    final textScale = themeState.value?.textScale ?? AppTextScale.normal;
+        themeState.value?.colorMode ?? LabResponsiveTheme.colorModeOf(context);
+    final textScale = themeState.value?.textScale ?? LabTextScale.normal;
 
-    return AppSettingsScreen(
+    return LabSettingsScreen(
       activeProfile: activeProfile,
       profiles: profiles,
       onSelect: (profile) {

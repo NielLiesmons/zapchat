@@ -20,7 +20,7 @@ class MailScreen extends ConsumerStatefulWidget {
 class _MailScreenState extends ConsumerState<MailScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // Record in history
     ref.read(historyProvider.notifier).addEntry(widget.mail);
@@ -34,10 +34,10 @@ class _MailScreenState extends ConsumerState<MailScreen> {
             ))
         .toList();
 
-    return AppScreen(
+    return LabScreen(
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: false,
-      bottomBarContent: AppBottomBarMail(
+      bottomBarContent: LabBottomBarMail(
         onAddTap: (mail) {},
         onMessageTap: (mail) {},
         onVoiceTap: (mail) {},
@@ -50,22 +50,22 @@ class _MailScreenState extends ConsumerState<MailScreen> {
       topBarContent: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppProfilePic.s40(widget.mail.author.value),
-          const AppGap.s12(),
+          LabProfilePic.s40(widget.mail.author.value),
+          const LabGap.s12(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppGap.s2(),
+                const LabGap.s2(),
                 Row(
                   children: [
-                    AppEmojiContentType(
+                    LabEmojiContentType(
                       contentType: "mail",
                       size: 16,
                     ),
-                    const AppGap.s10(),
+                    const LabGap.s10(),
                     Expanded(
-                      child: AppText.med14(
+                      child: LabText.med14(
                         widget.mail.title ?? 'No Subject',
                         maxLines: 1,
                         textOverflow: TextOverflow.ellipsis,
@@ -73,8 +73,8 @@ class _MailScreenState extends ConsumerState<MailScreen> {
                     ),
                   ],
                 ),
-                const AppGap.s2(),
-                AppText.reg12(
+                const LabGap.s2(),
+                LabText.reg12(
                   widget.mail.author.value?.name ??
                       formatNpub(widget.mail.author.value?.npub ?? ''),
                   color: theme.colors.white66,
@@ -87,31 +87,31 @@ class _MailScreenState extends ConsumerState<MailScreen> {
       child: IntrinsicHeight(
         child: Column(
           children: [
-            if (AppPlatformUtils.isMobile) const AppGap.s8(),
-            AppContainer(
-              padding: const AppEdgeInsets.only(
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+            if (LabPlatformUtils.isMobile) const LabGap.s8(),
+            LabContainer(
+              padding: const LabEdgeInsets.only(
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               alignment: Alignment.centerLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppText.bold16(
+                  LabText.bold16(
                     widget.mail.title ?? 'No Subject',
                     maxLines: 2,
                     textOverflow: TextOverflow.ellipsis,
                   ),
-                  const AppGap.s6(),
+                  const LabGap.s6(),
                   Row(
                     children: [
-                      // AppSmallLabel(
+                      // LabSmallLabel(
                       //   'Urgent',
                       //   isEmphasized: true,
                       // ),
-                      // const AppGap.s4(),
-                      AppSmallLabel(
+                      // const LabGap.s4(),
+                      LabSmallLabel(
                         'Your Network',
                       ),
                     ],
@@ -119,12 +119,12 @@ class _MailScreenState extends ConsumerState<MailScreen> {
                 ],
               ),
             ),
-            const AppDivider(),
-            AppContainer(
-              padding: const AppEdgeInsets.all(AppGapSize.s12),
+            const LabDivider(),
+            LabContainer(
+              padding: const LabEdgeInsets.all(LabGapSize.s12),
               child: Column(
                 children: [
-                  AppMail(
+                  LabMail(
                     mail: widget.mail,
                     recipients: recipients,
                     activeProfile: ref.watch(Signer.activeProfileProvider),

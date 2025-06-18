@@ -6,12 +6,12 @@ class ReposTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Repos',
-      icon: const AppEmojiContentType(contentType: 'repo'),
-      bottomBar: AppBottomBarContentFeed(),
+      icon: const LabEmojiContentType(contentType: 'repo'),
+      bottomBar: LabBottomBarContentFeed(),
       content: Builder(
         builder: (context) {
-          return AppContainer(
-            child: const AppLoadingFeed(),
+          return LabContainer(
+            child: const LabLoadingFeed(),
           );
         },
       ),

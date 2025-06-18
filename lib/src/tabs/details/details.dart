@@ -70,41 +70,41 @@ class _DetailsTabState extends State<DetailsTab>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Column(
       children: [
-        AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s12),
+        LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s12),
           child: Column(
             children: [
-              AppSectionTitle(
+              LabSectionTitle(
                 'IDENTIFIERS',
               ),
-              const AppGap.s2(),
-              AppPanel(
-                padding: const AppEdgeInsets.all(AppGapSize.none),
+              const LabGap.s2(),
+              LabPanel(
+                padding: const LabEdgeInsets.all(LabGapSize.none),
                 child: Column(
                   children: [
-                    AppContainer(
-                      padding: const AppEdgeInsets.only(
-                          left: AppGapSize.s14,
-                          right: AppGapSize.s8,
-                          top: AppGapSize.s8,
-                          bottom: AppGapSize.s8),
+                    LabContainer(
+                      padding: const LabEdgeInsets.only(
+                          left: LabGapSize.s14,
+                          right: LabGapSize.s8,
+                          top: LabGapSize.s8,
+                          bottom: LabGapSize.s8),
                       child: Row(
                         children: [
-                          const AppText.reg14('Publication'),
-                          const AppGap.s40(),
+                          const LabText.reg14('Publication'),
+                          const LabGap.s40(),
                           Expanded(
-                            child: AppText.reg14(
+                            child: LabText.reg14(
                               widget.model.event.shareableId,
                               textOverflow: TextOverflow.ellipsis,
                               color: theme.colors.white66,
                             ),
                           ),
-                          const AppGap.s14(),
-                          AppSmallButton(
+                          const LabGap.s14(),
+                          LabSmallButton(
                             inactiveColor: theme.colors.white8,
                             square: true,
                             onTap: _handleEventIdCopy,
@@ -112,40 +112,40 @@ class _DetailsTabState extends State<DetailsTab>
                               _showEventIdCheckmark
                                   ? ScaleTransition(
                                       scale: _scaleAnimation,
-                                      child: AppIcon.s10(
+                                      child: LabIcon.s10(
                                         theme.icons.characters.check,
                                         outlineColor: theme.colors.white66,
                                         outlineThickness:
-                                            AppLineThicknessData.normal().thick,
+                                            LabLineThicknessData.normal().thick,
                                       ),
                                     )
-                                  : AppIcon.s18(
+                                  : LabIcon.s18(
                                       theme.icons.characters.copy,
                                       outlineColor: theme.colors.white66,
                                       outlineThickness:
-                                          AppLineThicknessData.normal().medium,
+                                          LabLineThicknessData.normal().medium,
                                     )
                             ],
                           ),
                         ],
                       ),
                     ),
-                    const AppDivider(),
-                    AppContainer(
-                      padding: const AppEdgeInsets.only(
-                          left: AppGapSize.s14,
-                          right: AppGapSize.s8,
-                          top: AppGapSize.s8,
-                          bottom: AppGapSize.s8),
+                    const LabDivider(),
+                    LabContainer(
+                      padding: const LabEdgeInsets.only(
+                          left: LabGapSize.s14,
+                          right: LabGapSize.s8,
+                          top: LabGapSize.s8,
+                          bottom: LabGapSize.s8),
                       child: Row(
                         children: [
-                          const AppText.reg14('Profile'),
-                          const AppGap.s40(),
+                          const LabText.reg14('Profile'),
+                          const LabGap.s40(),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                AppContainer(
+                                LabContainer(
                                   height: theme.sizes.s8,
                                   width: theme.sizes.s8,
                                   decoration: BoxDecoration(
@@ -156,12 +156,12 @@ class _DetailsTabState extends State<DetailsTab>
                                     borderRadius: BorderRadius.circular(100),
                                     border: Border.all(
                                       color: theme.colors.white16,
-                                      width: AppLineThicknessData.normal().thin,
+                                      width: LabLineThicknessData.normal().thin,
                                     ),
                                   ),
                                 ),
-                                const AppGap.s8(),
-                                AppText.reg14(
+                                const LabGap.s8(),
+                                LabText.reg14(
                                   formatNpub(
                                       widget.model.author.value?.npub ?? ''),
                                   textOverflow: TextOverflow.ellipsis,
@@ -170,8 +170,8 @@ class _DetailsTabState extends State<DetailsTab>
                               ],
                             ),
                           ),
-                          const AppGap.s16(),
-                          AppSmallButton(
+                          const LabGap.s16(),
+                          LabSmallButton(
                             inactiveColor: theme.colors.white8,
                             square: true,
                             onTap: _handleProfileIdCopy,
@@ -179,18 +179,18 @@ class _DetailsTabState extends State<DetailsTab>
                               _showProfileIdCheckmark
                                   ? ScaleTransition(
                                       scale: _scaleAnimation,
-                                      child: AppIcon.s10(
+                                      child: LabIcon.s10(
                                         theme.icons.characters.check,
                                         outlineColor: theme.colors.white66,
                                         outlineThickness:
-                                            AppLineThicknessData.normal().thick,
+                                            LabLineThicknessData.normal().thick,
                                       ),
                                     )
-                                  : AppIcon.s18(
+                                  : LabIcon.s18(
                                       theme.icons.characters.copy,
                                       outlineColor: theme.colors.white66,
                                       outlineThickness:
-                                          AppLineThicknessData.normal().medium,
+                                          LabLineThicknessData.normal().medium,
                                     )
                             ],
                           ),
@@ -203,16 +203,16 @@ class _DetailsTabState extends State<DetailsTab>
             ],
           ),
         ),
-        const AppDivider(),
-        AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s12),
+        const LabDivider(),
+        LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s12),
           child: Column(
             children: [
-              AppSectionTitle(
+              LabSectionTitle(
                 'RAW DATA',
               ),
-              const AppGap.s2(),
-              AppCodeBlock(
+              const LabGap.s2(),
+              LabCodeBlock(
                 code: jsonEncode(widget.model.toMap()),
                 language: 'JSON',
               ),

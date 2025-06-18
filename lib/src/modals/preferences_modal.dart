@@ -8,39 +8,39 @@ class PreferencesModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final themeState = ref.watch(themeSettingsProvider);
     final activeProfile = ref.watch(Signer.activeProfileProvider);
 
-    return AppModal(
+    return LabModal(
       title: 'Preferences',
-      bottomBar: AppButton(
+      bottomBar: LabButton(
         onTap: () {
           Navigator.pop(context);
         },
         children: [
-          AppText.med14('Done', color: theme.colors.whiteEnforced),
+          LabText.med14('Done', color: theme.colors.whiteEnforced),
         ],
       ),
       children: [
-        const AppSectionTitle('Theme'),
-        AppSelector(
+        const LabSectionTitle('Theme'),
+        LabSelector(
           initialIndex: themeState.when(
             data: (state) => state.colorMode == null
                 ? 0
-                : state.colorMode == AppThemeColorMode.light
+                : state.colorMode == LabThemeColorMode.light
                     ? 1
-                    : state.colorMode == AppThemeColorMode.gray
+                    : state.colorMode == LabThemeColorMode.gray
                         ? 2
                         : 3,
             loading: () => 0,
             error: (_, __) => 0,
           ),
           children: [
-            AppSelectorButton(
-              selectedContent: [AppText.med14('System')],
+            LabSelectorButton(
+              selectedContent: [LabText.med14('System')],
               unselectedContent: [
-                AppText.med14('System', color: theme.colors.white33)
+                LabText.med14('System', color: theme.colors.white33)
               ],
               isSelected: themeState.when(
                 data: (state) => state.colorMode == null,
@@ -49,37 +49,37 @@ class PreferencesModal extends ConsumerWidget {
               ),
               onTap: () {},
             ),
-            AppSelectorButton(
-              selectedContent: [AppText.med14('Light')],
+            LabSelectorButton(
+              selectedContent: [LabText.med14('Light')],
               unselectedContent: [
-                AppText.med14('Light', color: theme.colors.white33)
+                LabText.med14('Light', color: theme.colors.white33)
               ],
               isSelected: themeState.when(
-                data: (state) => state.colorMode == AppThemeColorMode.light,
+                data: (state) => state.colorMode == LabThemeColorMode.light,
                 loading: () => false,
                 error: (_, __) => false,
               ),
               onTap: () {},
             ),
-            AppSelectorButton(
-              selectedContent: [AppText.med14('Gray')],
+            LabSelectorButton(
+              selectedContent: [LabText.med14('Gray')],
               unselectedContent: [
-                AppText.med14('Gray', color: theme.colors.white33)
+                LabText.med14('Gray', color: theme.colors.white33)
               ],
               isSelected: themeState.when(
-                data: (state) => state.colorMode == AppThemeColorMode.gray,
+                data: (state) => state.colorMode == LabThemeColorMode.gray,
                 loading: () => false,
                 error: (_, __) => false,
               ),
               onTap: () {},
             ),
-            AppSelectorButton(
-              selectedContent: [AppText.med14('Dark')],
+            LabSelectorButton(
+              selectedContent: [LabText.med14('Dark')],
               unselectedContent: [
-                AppText.med14('Dark', color: theme.colors.white33)
+                LabText.med14('Dark', color: theme.colors.white33)
               ],
               isSelected: themeState.when(
-                data: (state) => state.colorMode == AppThemeColorMode.dark,
+                data: (state) => state.colorMode == LabThemeColorMode.dark,
                 loading: () => false,
                 error: (_, __) => false,
               ),
@@ -89,128 +89,128 @@ class PreferencesModal extends ConsumerWidget {
           onChanged: (index) => Future.microtask(() {
             switch (index) {
               case 0:
-                AppResponsiveTheme.of(context).setColorMode(null);
+                LabResponsiveTheme.of(context).setColorMode(null);
                 ref.read(themeSettingsProvider.notifier).setTheme(null);
                 break;
               case 1:
-                AppResponsiveTheme.of(context)
-                    .setColorMode(AppThemeColorMode.light);
+                LabResponsiveTheme.of(context)
+                    .setColorMode(LabThemeColorMode.light);
                 ref
                     .read(themeSettingsProvider.notifier)
-                    .setTheme(AppThemeColorMode.light);
+                    .setTheme(LabThemeColorMode.light);
                 break;
               case 2:
-                AppResponsiveTheme.of(context)
-                    .setColorMode(AppThemeColorMode.gray);
+                LabResponsiveTheme.of(context)
+                    .setColorMode(LabThemeColorMode.gray);
                 ref
                     .read(themeSettingsProvider.notifier)
-                    .setTheme(AppThemeColorMode.gray);
+                    .setTheme(LabThemeColorMode.gray);
                 break;
               case 3:
-                AppResponsiveTheme.of(context)
-                    .setColorMode(AppThemeColorMode.dark);
+                LabResponsiveTheme.of(context)
+                    .setColorMode(LabThemeColorMode.dark);
                 ref
                     .read(themeSettingsProvider.notifier)
-                    .setTheme(AppThemeColorMode.dark);
+                    .setTheme(LabThemeColorMode.dark);
                 break;
             }
           }),
         ),
-        const AppGap.s12(),
-        const AppSectionTitle('Text Size'),
-        AppSelector(
-          initialIndex: AppResponsiveTheme.of(context).textScale ==
-                  AppTextScale.small
+        const LabGap.s12(),
+        const LabSectionTitle('Text Size'),
+        LabSelector(
+          initialIndex: LabResponsiveTheme.of(context).textScale ==
+                  LabTextScale.small
               ? 0
-              : AppResponsiveTheme.of(context).textScale == AppTextScale.normal
+              : LabResponsiveTheme.of(context).textScale == LabTextScale.normal
                   ? 1
                   : 2,
           children: [
-            AppSelectorButton(
-              selectedContent: [AppText.med12('Small')],
+            LabSelectorButton(
+              selectedContent: [LabText.med12('Small')],
               unselectedContent: [
-                AppText.med14('Small', color: theme.colors.white33)
+                LabText.med14('Small', color: theme.colors.white33)
               ],
-              isSelected: AppResponsiveTheme.of(context).textScale ==
-                  AppTextScale.small,
+              isSelected: LabResponsiveTheme.of(context).textScale ==
+                  LabTextScale.small,
               onTap: () {},
             ),
-            AppSelectorButton(
-              selectedContent: [AppText.med14('Normal')],
+            LabSelectorButton(
+              selectedContent: [LabText.med14('Normal')],
               unselectedContent: [
-                AppText.med14('Normal', color: theme.colors.white33)
+                LabText.med14('Normal', color: theme.colors.white33)
               ],
-              isSelected: AppResponsiveTheme.of(context).textScale ==
-                  AppTextScale.normal,
+              isSelected: LabResponsiveTheme.of(context).textScale ==
+                  LabTextScale.normal,
               onTap: () {},
             ),
-            AppSelectorButton(
-              selectedContent: [AppText.med16('Large')],
+            LabSelectorButton(
+              selectedContent: [LabText.med16('Large')],
               unselectedContent: [
-                AppText.med16('Large', color: theme.colors.white33)
+                LabText.med16('Large', color: theme.colors.white33)
               ],
-              isSelected: AppResponsiveTheme.of(context).textScale ==
-                  AppTextScale.large,
+              isSelected: LabResponsiveTheme.of(context).textScale ==
+                  LabTextScale.large,
               onTap: () {},
             ),
           ],
           onChanged: (index) => Future.microtask(() {
             switch (index) {
               case 0:
-                AppResponsiveTheme.of(context).setTextScale(AppTextScale.small);
-                AppResponsiveTheme.of(context)
-                    .setSystemScale(AppSystemScale.small);
+                LabResponsiveTheme.of(context).setTextScale(LabTextScale.small);
+                LabResponsiveTheme.of(context)
+                    .setSystemScale(LabSystemScale.small);
                 ref.read(themeSettingsProvider.notifier)
-                  ..setTextScale(AppTextScale.small)
-                  ..setSystemScale(AppSystemScale.small);
+                  ..setTextScale(LabTextScale.small)
+                  ..setSystemScale(LabSystemScale.small);
                 break;
               case 1:
-                AppResponsiveTheme.of(context)
-                    .setTextScale(AppTextScale.normal);
-                AppResponsiveTheme.of(context)
-                    .setSystemScale(AppSystemScale.normal);
+                LabResponsiveTheme.of(context)
+                    .setTextScale(LabTextScale.normal);
+                LabResponsiveTheme.of(context)
+                    .setSystemScale(LabSystemScale.normal);
                 ref.read(themeSettingsProvider.notifier)
-                  ..setTextScale(AppTextScale.normal)
-                  ..setSystemScale(AppSystemScale.normal);
+                  ..setTextScale(LabTextScale.normal)
+                  ..setSystemScale(LabSystemScale.normal);
                 break;
               case 2:
-                AppResponsiveTheme.of(context).setTextScale(AppTextScale.large);
-                AppResponsiveTheme.of(context)
-                    .setSystemScale(AppSystemScale.large);
+                LabResponsiveTheme.of(context).setTextScale(LabTextScale.large);
+                LabResponsiveTheme.of(context)
+                    .setSystemScale(LabSystemScale.large);
                 ref.read(themeSettingsProvider.notifier)
-                  ..setTextScale(AppTextScale.large)
-                  ..setSystemScale(AppSystemScale.large);
+                  ..setTextScale(LabTextScale.large)
+                  ..setSystemScale(LabSystemScale.large);
                 break;
             }
           }),
         ),
-        const AppGap.s12(),
-        const AppSectionTitle('Show Others'),
-        AppPanel(
-          padding: AppEdgeInsets.all(AppGapSize.none),
+        const LabGap.s12(),
+        const LabSectionTitle('Show Others'),
+        LabPanel(
+          padding: LabEdgeInsets.all(LabGapSize.none),
           child: Column(
             children: [
-              AppContainer(
-                padding: AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s16,
-                  vertical: AppGapSize.s12,
+              LabContainer(
+                padding: LabEdgeInsets.symmetric(
+                  horizontal: LabGapSize.s16,
+                  vertical: LabGapSize.s12,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [AppText.reg14("When you are typing"), AppSwitch()],
+                  children: [LabText.reg14("When you are typing"), LabSwitch()],
                 ),
               ),
-              const AppDivider(),
-              AppContainer(
-                padding: AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s16,
-                  vertical: AppGapSize.s12,
+              const LabDivider(),
+              LabContainer(
+                padding: LabEdgeInsets.symmetric(
+                  horizontal: LabGapSize.s16,
+                  vertical: LabGapSize.s12,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppTypingBubble(profile: activeProfile),
-                    AppText.reg12(
+                    LabTypingBubble(profile: activeProfile),
+                    LabText.reg12(
                       "This is what \nothers can see",
                       color: theme.colors.white33,
                       textAlign: TextAlign.right,
@@ -221,15 +221,15 @@ class PreferencesModal extends ConsumerWidget {
             ],
           ),
         ),
-        const AppGap.s12(),
-        const AppSectionTitle('Other'),
-        AppPanel(
-          padding: AppEdgeInsets.all(AppGapSize.none),
+        const LabGap.s12(),
+        const LabSectionTitle('Other'),
+        LabPanel(
+          padding: LabEdgeInsets.all(LabGapSize.none),
           child: Column(
             children: [
-              const AppGap.s12(),
-              AppText.reg14('// TODO', color: theme.colors.white33),
-              const AppGap.s12(),
+              const LabGap.s12(),
+              LabText.reg14('// TODO', color: theme.colors.white33),
+              const LabGap.s12(),
             ],
           ),
         ),

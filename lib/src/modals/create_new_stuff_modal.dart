@@ -12,58 +12,58 @@ class CreateNewStuffModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final activeProfile = ref.watch(Signer.activeProfileProvider);
 
-    return AppModal(
+    return LabModal(
       title: 'Create New',
       description: 'Choose what you want to create',
       children: [
         // First row with Community and Private Group buttons
-        const AppGap.s8(),
+        const LabGap.s8(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
-              child: AppPanelButton(
-                padding: const AppEdgeInsets.only(
-                  top: AppGapSize.s20,
-                  bottom: AppGapSize.s14,
+              child: LabPanelButton(
+                padding: const LabEdgeInsets.only(
+                  top: LabGapSize.s20,
+                  bottom: LabGapSize.s14,
                 ),
                 onTap: () => context.replace('/create/community'),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AppEmojiContentType(
+                    LabEmojiContentType(
                       contentType: 'community',
                       size: 32,
                     ),
-                    const AppGap.s10(),
-                    AppText.med14("Community"),
+                    const LabGap.s10(),
+                    LabText.med14("Community"),
                   ],
                 ),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             activeProfile != null
                 ? Expanded(
-                    child: AppPanelButton(
-                      padding: const AppEdgeInsets.only(
-                        top: AppGapSize.s20,
-                        bottom: AppGapSize.s14,
+                    child: LabPanelButton(
+                      padding: const LabEdgeInsets.only(
+                        top: LabGapSize.s20,
+                        bottom: LabGapSize.s14,
                       ),
                       onTap: () => context.replace('/create/group'),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          AppEmojiContentType(
+                          LabEmojiContentType(
                             contentType: 'group',
                             size: 32,
                           ),
-                          const AppGap.s10(),
-                          AppText.med14("Private Group"),
+                          const LabGap.s10(),
+                          LabText.med14("Private Group"),
                         ],
                       ),
                     ),
@@ -71,20 +71,20 @@ class CreateNewStuffModal extends ConsumerWidget {
                 : SizedBox.shrink(),
           ],
         ),
-        activeProfile != null ? const AppGap.s8() : const AppGap.s12(),
+        activeProfile != null ? const LabGap.s8() : const LabGap.s12(),
         // Content type buttons in rows of three
         activeProfile != null
             ? Column(
-                children: _buildContentTypeRows(),
+                children: _buildContentTypeRows(context),
               )
             : Stack(
                 children: [
-                  AppContainer(
+                  LabContainer(
                     height: 240,
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),
                       child: Column(
-                        children: _buildContentTypeRows(),
+                        children: _buildContentTypeRows(context),
                       ),
                     ),
                   ),
@@ -92,13 +92,13 @@ class CreateNewStuffModal extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(theme.sizes.s16),
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: AppContainer(
+                      child: LabContainer(
                         height: 260,
-                        padding: AppEdgeInsets.all(AppGapSize.s24),
+                        padding: LabEdgeInsets.all(LabGapSize.s24),
                         child: Column(
                           children: [
-                            const AppGap.s20(),
-                            AppContainer(
+                            const LabGap.s20(),
+                            LabContainer(
                               width: theme.sizes.s96,
                               height: theme.sizes.s96,
                               decoration: BoxDecoration(
@@ -112,26 +112,26 @@ class CreateNewStuffModal extends ConsumerWidget {
                                 ],
                                 border: Border.all(
                                   color: theme.colors.white16,
-                                  width: AppLineThicknessData.normal().thin,
+                                  width: LabLineThicknessData.normal().thin,
                                 ),
                               ),
                               child: Center(
-                                child: AppIcon.s64(
+                                child: LabIcon.s64(
                                     theme.icons.characters.profile,
                                     color: theme.colors.white33),
                               ),
                             ),
-                            const AppGap.s12(),
-                            AppText.med14(
+                            const LabGap.s12(),
+                            LabText.med14(
                                 "You need a Profile to publish content",
                                 color: theme.colors.white66),
-                            const AppGap.s16(),
-                            AppButton(
+                            const LabGap.s16(),
+                            LabButton(
                               children: [
-                                AppIcon.s12(theme.icons.characters.play,
+                                LabIcon.s12(theme.icons.characters.play,
                                     color: theme.colors.whiteEnforced),
-                                const AppGap.s12(),
-                                AppText.med14("Start"),
+                                const LabGap.s12(),
+                                LabText.med14("Start"),
                               ],
                             ),
                           ],
@@ -145,7 +145,7 @@ class CreateNewStuffModal extends ConsumerWidget {
     );
   }
 
-  List<Widget> _buildContentTypeRows() {
+  List<Widget> _buildContentTypeRows(BuildContext context) {
     final contentTypes = [
       'mail',
       'task',
@@ -162,6 +162,7 @@ class CreateNewStuffModal extends ConsumerWidget {
       'book',
       'service',
       'job',
+      'event',
     ];
 
     final rows = <Widget>[];
@@ -174,22 +175,24 @@ class CreateNewStuffModal extends ConsumerWidget {
         if (index < contentTypes.length) {
           rowItems.add(
             Expanded(
-              child: AppPanelButton(
-                padding: const AppEdgeInsets.only(
-                  top: AppGapSize.s20,
-                  bottom: AppGapSize.s14,
+              child: LabPanelButton(
+                padding: const LabEdgeInsets.only(
+                  top: LabGapSize.s20,
+                  bottom: LabGapSize.s14,
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.replace('/create/${contentTypes[index]}');
+                },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AppEmojiContentType(
+                    LabEmojiContentType(
                       contentType: contentTypes[index],
                       size: 32,
                     ),
-                    const AppGap.s10(),
-                    AppText.med14(
+                    const LabGap.s10(),
+                    LabText.med14(
                       contentTypes[index][0].toUpperCase() +
                           contentTypes[index].substring(1),
                     ),
@@ -199,12 +202,12 @@ class CreateNewStuffModal extends ConsumerWidget {
             ),
           );
           if (col < 2) {
-            rowItems.add(const AppGap.s8());
+            rowItems.add(const LabGap.s8());
           }
         } else {
           rowItems.add(const Expanded(child: SizedBox()));
           if (col < 2) {
-            rowItems.add(const AppGap.s8());
+            rowItems.add(const LabGap.s8());
           }
         }
       }
@@ -213,7 +216,7 @@ class CreateNewStuffModal extends ConsumerWidget {
         children: rowItems,
       ));
       if (row < rowCount - 1) {
-        rows.add(const AppGap.s8());
+        rows.add(const LabGap.s8());
       }
     }
 

@@ -14,122 +14,122 @@ class CommunityNotificationsModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: "Notifications",
       description: "For ${community.name}",
       children: [
-        const AppGap.s8(),
-        AppSelector(
+        const LabGap.s8(),
+        LabSelector(
           emphasized: true,
           children: [
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppIcon.s16(
+                LabIcon.s16(
                   theme.icons.characters.bell,
                   color: theme.colors.whiteEnforced,
                 ),
-                AppGap.s8(),
-                AppText.med14('21', color: theme.colors.whiteEnforced),
+                LabGap.s8(),
+                LabText.med14('21', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
-                AppIcon.s16(
+                LabIcon.s16(
                   theme.icons.characters.bell,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14('21', color: theme.colors.white33),
+                LabGap.s8(),
+                LabText.med14('21', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
             ),
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppIcon.s16(
+                LabIcon.s16(
                   theme.icons.characters.reply,
                   outlineColor: theme.colors.whiteEnforced,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14(
+                LabGap.s8(),
+                LabText.med14(
                   '12',
                   color: theme.colors.whiteEnforced,
                 ),
               ],
               unselectedContent: [
-                AppIcon.s16(
+                LabIcon.s16(
                   theme.icons.characters.reply,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14('12', color: theme.colors.white33),
+                LabGap.s8(),
+                LabText.med14('12', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
             ),
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppIcon.s18(
+                LabIcon.s18(
                   theme.icons.characters.zap,
                   color: theme.colors.whiteEnforced,
                 ),
-                AppGap.s8(),
-                AppText.med14('5', color: theme.colors.whiteEnforced),
+                LabGap.s8(),
+                LabText.med14('5', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
-                AppIcon.s18(
+                LabIcon.s18(
                   theme.icons.characters.zap,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14('5', color: theme.colors.white33),
+                LabGap.s8(),
+                LabText.med14('5', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
             ),
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppIcon.s18(
+                LabIcon.s18(
                   theme.icons.characters.at,
                   outlineColor: theme.colors.whiteEnforced,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14('2', color: theme.colors.whiteEnforced),
+                LabGap.s8(),
+                LabText.med14('2', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
-                AppIcon.s18(
+                LabIcon.s18(
                   theme.icons.characters.at,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14('2', color: theme.colors.white33),
+                LabGap.s8(),
+                LabText.med14('2', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
             ),
-            AppSelectorButton(
+            LabSelectorButton(
               selectedContent: [
-                AppIcon.s18(
+                LabIcon.s18(
                   theme.icons.characters.emojiFill,
                   color: theme.colors.whiteEnforced,
                 ),
-                AppGap.s8(),
-                AppText.med14('2', color: theme.colors.whiteEnforced),
+                LabGap.s8(),
+                LabText.med14('2', color: theme.colors.whiteEnforced),
               ],
               unselectedContent: [
-                AppIcon.s18(
+                LabIcon.s18(
                   theme.icons.characters.emojiLine,
                   outlineColor: theme.colors.white33,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
-                AppGap.s8(),
-                AppText.med14('2', color: theme.colors.white33),
+                LabGap.s8(),
+                LabText.med14('2', color: theme.colors.white33),
               ],
               isSelected: true,
               onTap: () {},
@@ -137,10 +137,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
           ],
           onChanged: (index) {},
         ),
-        const AppGap.s12(),
-        AppNotificationCard(
+        const LabGap.s12(),
+        LabNotificationCard(
           model: PartialNote(
-            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
           ).dummySign(),
           onActions: (nevent) {
@@ -150,10 +150,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
             print(nevent);
           },
         ),
-        const AppGap.s8(),
-        AppNotificationCard(
+        const LabGap.s8(),
+        LabNotificationCard(
           model: PartialNote(
-            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
           ).dummySign(),
           onActions: (nevent) {
@@ -163,10 +163,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
             print(nevent);
           },
         ),
-        const AppGap.s8(),
-        AppNotificationCard(
+        const LabGap.s8(),
+        LabNotificationCard(
           model: PartialNote(
-            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
           ).dummySign(),
           onActions: (nevent) {
@@ -176,10 +176,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
             print(nevent);
           },
         ),
-        const AppGap.s8(),
-        AppNotificationCard(
+        const LabGap.s8(),
+        LabNotificationCard(
           model: PartialNote(
-            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
           ).dummySign(),
           onActions: (nevent) {
@@ -189,10 +189,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
             print(nevent);
           },
         ),
-        const AppGap.s8(),
-        AppNotificationCard(
+        const LabGap.s8(),
+        LabNotificationCard(
           model: PartialNote(
-            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
           ).dummySign(),
           onActions: (nevent) {
@@ -202,10 +202,10 @@ class CommunityNotificationsModal extends ConsumerWidget {
             print(nevent);
           },
         ),
-        const AppGap.s8(),
-        AppNotificationCard(
+        const LabGap.s8(),
+        LabNotificationCard(
           model: PartialNote(
-            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `AppScreen` widget of the Zaplab design package.',
+            'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
           ).dummySign(),
           onActions: (nevent) {

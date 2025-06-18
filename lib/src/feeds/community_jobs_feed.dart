@@ -16,25 +16,25 @@ class CommunityJobsFeed extends ConsumerWidget {
     final state = ref.watch(query<Job>());
 
     if (state case StorageLoading()) {
-      return const AppLoadingFeed();
+      return const LabLoadingFeed();
     }
 
     final jobs = state.models.cast<Job>();
 
-    return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s12),
+    return LabContainer(
+      padding: const LabEdgeInsets.all(LabGapSize.s12),
       child: Column(
         children: [
           for (final job in jobs)
             Column(
               children: [
-                AppJobCard(
+                LabJobCard(
                   job: job,
                   isUnread: true,
                   onTap: (event) =>
                       context.push('/job/${event.id}', extra: event),
                 ),
-                const AppGap.s12(),
+                const LabGap.s12(),
               ],
             ),
         ],

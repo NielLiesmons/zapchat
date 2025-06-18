@@ -9,24 +9,24 @@ class JobsTab extends StatelessWidget {
   TabData tabData(BuildContext context) {
     return TabData(
       label: 'Jobs',
-      icon: const AppEmojiContentType(contentType: 'job'),
+      icon: const LabEmojiContentType(contentType: 'job'),
       content: HookConsumer(
         builder: (context, ref, _) {
           final jobs = ref.watch(query<Job>()).models.cast<Job>();
 
-          return AppContainer(
-            padding: const AppEdgeInsets.all(AppGapSize.s12),
+          return LabContainer(
+            padding: const LabEdgeInsets.all(LabGapSize.s12),
             child: Column(
               children: [
                 for (final job in jobs)
                   Column(
                     children: [
-                      AppJobCard(
+                      LabJobCard(
                         job: job,
                         onTap: (model) => context.push('/job/${model.id}'),
                         isUnread: true,
                       ),
-                      const AppGap.s12(),
+                      const LabGap.s12(),
                     ],
                   ),
               ],

@@ -52,24 +52,24 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final signedInPubkeys = ref.watch(Signer.signedInPubkeysProvider);
     final state = ref.watch(query<Profile>(authors: signedInPubkeys));
 
     if (state case StorageLoading()) {
       return const Center(
-        child: AppLoadingDots(),
+        child: LabLoadingDots(),
       );
     }
 
     final profiles = state.models.cast<Profile>();
 
-    return AppScreen(
+    return LabScreen(
       onHomeTap: () => Navigator.of(context).pop(),
       alwaysShowTopBar: true,
-      topBarContent: AppContainer(
-        padding: const AppEdgeInsets.symmetric(
-          vertical: AppGapSize.s4,
+      topBarContent: LabContainer(
+        padding: const LabEdgeInsets.symmetric(
+          vertical: LabGapSize.s4,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,28 +77,28 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const AppGap.s8(),
-                AppText.med14('Create Community'),
-                const AppGap.s12(),
+                const LabGap.s8(),
+                LabText.med14('Create Community'),
+                const LabGap.s12(),
                 const Spacer(),
-                AppKeyboardSubmitHandler(
+                LabKeyboardSubmitHandler(
                   onSubmit: _hasText ? _onNextTap : () {},
                   enabled: _hasText,
-                  child: AppSmallButton(
+                  child: LabSmallButton(
                     onTap: _onNextTap,
                     rounded: true,
                     inactiveGradient: _hasText
                         ? theme.colors.blurple
                         : theme.colors.blurple33,
                     children: [
-                      const AppGap.s4(),
-                      AppText.med14(
+                      const LabGap.s4(),
+                      LabText.med14(
                         'Next',
                         color: _hasText
                             ? theme.colors.white
                             : theme.colors.white66,
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                     ],
                   ),
                 ),
@@ -107,25 +107,25 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
           ],
         ),
       ),
-      child: AppKeyboardSubmitHandler(
+      child: LabKeyboardSubmitHandler(
         onSubmit: _hasText ? _onNextTap : () {},
         enabled: _hasText,
-        child: AppContainer(
-          padding: const AppEdgeInsets.symmetric(
-            horizontal: AppGapSize.s12,
+        child: LabContainer(
+          padding: const LabEdgeInsets.symmetric(
+            horizontal: LabGapSize.s12,
           ),
           child: Column(
             children: [
-              const AppGap.s64(),
-              AppPanel(
-                padding: const AppEdgeInsets.all(AppGapSize.s12),
+              const LabGap.s64(),
+              LabPanel(
+                padding: const LabEdgeInsets.all(LabGapSize.s12),
                 child: Column(
                   children: [
-                    AppText.h2('Create a Community Profile',
+                    LabText.h2('Create a Community Profile',
                         color: theme.colors.white66,
                         textAlign: TextAlign.center),
-                    const AppGap.s16(),
-                    AppInputTextField(
+                    const LabGap.s16(),
+                    LabInputTextField(
                       title: 'Choose a Community Name',
                       controller: _communityNameController,
                       focusNode: _communityNameFocusNode,
@@ -134,29 +134,29 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                   ],
                 ),
               ),
-              const AppGap.s12(),
+              const LabGap.s12(),
               Row(
                 children: [
-                  const Expanded(child: AppDivider()),
-                  const AppGap.s12(),
-                  AppText.h3('OR', color: theme.colors.white66),
-                  const AppGap.s12(),
-                  const Expanded(child: AppDivider()),
+                  const Expanded(child: LabDivider()),
+                  const LabGap.s12(),
+                  LabText.h3('OR', color: theme.colors.white66),
+                  const LabGap.s12(),
+                  const Expanded(child: LabDivider()),
                 ],
               ),
-              const AppGap.s12(),
-              AppPanel(
-                padding: const AppEdgeInsets.all(AppGapSize.s12),
+              const LabGap.s12(),
+              LabPanel(
+                padding: const LabEdgeInsets.all(LabGapSize.s12),
                 child: Column(
                   children: [
-                    AppText.h2('Use an existing Profile',
+                    LabText.h2('Use an existing Profile',
                         color: theme.colors.white66,
                         textAlign: TextAlign.center),
-                    const AppGap.s4(),
-                    AppText.reg14(
+                    const LabGap.s4(),
+                    LabText.reg14(
                         'Select or Add a Profile that you want \nto turn into a Community',
                         textAlign: TextAlign.center),
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     SingleChildScrollView(
                       clipBehavior: Clip.none,
                       scrollDirection: Axis.horizontal,
@@ -165,8 +165,8 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                           ...profiles
                               .map(
                                 (profile) => [
-                                  AppProfilePic.s48(profile),
-                                  const AppGap.s12(),
+                                  LabProfilePic.s48(profile),
+                                  const LabGap.s12(),
                                 ],
                               )
                               .expand((x) => x),
@@ -182,7 +182,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
 
                               return Transform.scale(
                                 scale: scaleFactor,
-                                child: AppContainer(
+                                child: LabContainer(
                                   width: theme.sizes.s48,
                                   height: theme.sizes.s48,
                                   decoration: BoxDecoration(
@@ -190,10 +190,10 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Center(
-                                    child: AppIcon.s20(
+                                    child: LabIcon.s20(
                                       theme.icons.characters.plus,
                                       outlineThickness:
-                                          AppLineThicknessData.normal().thick,
+                                          LabLineThicknessData.normal().thick,
                                       outlineColor: theme.colors.white33,
                                     ),
                                   ),

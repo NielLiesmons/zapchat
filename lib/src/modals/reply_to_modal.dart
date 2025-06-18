@@ -75,9 +75,9 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppInputModal(
+    return LabInputModal(
       children: [
         SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
@@ -91,24 +91,24 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppProfilePic.s40(widget.model.author.value),
-                        const AppGap.s12(),
+                        LabProfilePic.s40(widget.model.author.value),
+                        const LabGap.s12(),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
-                                  AppEmojiImage(
+                                  LabEmojiImage(
                                     emojiUrl:
                                         'assets/emoji/${getModelContentType(widget.model)}.png',
                                     emojiName:
                                         getModelContentType(widget.model),
                                     size: 16,
                                   ),
-                                  const AppGap.s10(),
+                                  const LabGap.s10(),
                                   Expanded(
-                                    child: AppCompactTextRenderer(
+                                    child: LabCompactTextRenderer(
                                       content:
                                           getModelDisplayText(widget.model),
                                       onResolveEvent: ref
@@ -126,8 +126,8 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
                                   ),
                                 ],
                               ),
-                              const AppGap.s2(),
-                              AppText.reg12(
+                              const LabGap.s2(),
+                              LabText.reg12(
                                 widget.model.author.value?.name ??
                                     formatNpub(
                                         widget.model.author.value?.pubkey ??
@@ -137,18 +137,18 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
                             ],
                           ),
                         ),
-                        const AppGap.s8(),
+                        const LabGap.s8(),
                       ],
                     ),
                     Row(
                       children: [
-                        AppContainer(
+                        LabContainer(
                           width: theme.sizes.s38,
                           child: Center(
-                            child: AppContainer(
+                            child: LabContainer(
                               decoration:
                                   BoxDecoration(color: theme.colors.white33),
-                              width: AppLineThicknessData.normal().medium,
+                              width: LabLineThicknessData.normal().medium,
                               height: theme.sizes.s16,
                             ),
                           ),
@@ -157,13 +157,13 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
                     ),
                   ],
                 ),
-              AppKeyboardSubmitHandler(
+              LabKeyboardSubmitHandler(
                 onSubmit: _sendMessage,
-                child: AppShortTextField(
+                child: LabShortTextField(
                   controller: _controller,
                   focusNode: _focusNode,
                   placeholder: [
-                    AppText.reg16(
+                    LabText.reg16(
                       'Your Reply',
                       color: theme.colors.white33,
                     ),
