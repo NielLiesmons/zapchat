@@ -12,7 +12,19 @@ class CreateEventScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
-  DateTime? selectedDate;
+  late DateTime selectedDate;
+  LabTime? selectedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = DateTime.now();
+  }
+
+  String getDisplayText() {
+    final dateStr = selectedDate.toString().split(' ')[0];
+    return '$dateStr${selectedTime != null ? ' at ${selectedTime.toString()}' : ''}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,49 +39,23 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
           children: [
             LabText.h2('Event Date'),
             const LabGap.s16(),
-
-            // Date picker
-            LabDatePicker(
-              onDateSelected: (date) {
-                setState(() {
-                  selectedDate = date;
-                });
-                print('Selected date: $date');
-              },
-            ),
-
-            const LabGap.s24(),
-
-            // Display selected date
-            if (selectedDate != null) ...[
-              LabText.bold14('Selected Date:'),
-              const LabGap.s8(),
-              LabText.reg14(
-                '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
-                color: theme.colors.white66,
-              ),
-              const LabGap.s24(),
-            ],
-
-            // Create button
             LabButton(
-              onTap: selectedDate != null
-                  ? () {
-                      // Handle event creation
-                      print('Creating event for date: $selectedDate');
-                      context.pop();
-                    }
-                  : null,
+              onTap: () async {
+                final result = await LabDatePickerModal.show(
+                  context,
+                  initialDate: selectedDate,
+                  initialTime: selectedTime,
+                );
+                if (result != null) {
+                  setState(() {
+                    selectedDate = result.$1;
+                    selectedTime = result.$2;
+                  });
+                }
+              },
+              inactiveColor: theme.colors.white8,
               children: [
-                LabIcon.s12(
-                  theme.icons.characters.plus,
-                  color: theme.colors.whiteEnforced,
-                ),
-                const LabGap.s12(),
-                LabText.med14(
-                  'Create Event',
-                  color: theme.colors.whiteEnforced,
-                ),
+                LabText.med14(getDisplayText()),
               ],
             ),
           ],
