@@ -95,14 +95,14 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
       pictureUrl:
           'https://nostr.build/i/nostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
     ).dummySign(
-        '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
+        '1fa56f3d6962ab1e3cd4247758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
 
     final verbiricha = PartialProfile(
       name: 'verbiricha',
       pictureUrl:
           'https://npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg.blossom.band/3d84787d7284c879429eb0c8e6dcae0bf94cc50456d4046adf33cf040f8f5504.jpg',
     ).dummySign(
-        '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195');
+        '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194');
 
     final communikeys = PartialProfile(
       name: 'Communikeys',
@@ -668,35 +668,17 @@ Then ncommunity = npub + relay hints, for communities
       PartialMail(
         'Marriage Invitation',
         'Chicos & Chicas, \nMe and nostr:npub1blablabla are getting married and would love for you to be there. \nPlease let me know if you can make it. \n\nBest regards, \n\n**Fran**',
-        recipientPubkeys: {
-          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be', // jane
-          '4239B36789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', // zapchat
-          '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
-          'f683e87035f7ad4f44e0b98cfbd9537e16455a92cd38cefc4cb31db7557f5ef2', // cypherchads
-          '7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194', // franzap
-          '30B8C05d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac195', // verbiricha
-          '9fa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac196', // communikeys
-          'afa56f5d69645b1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac197', // nipsout
-          '1203456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', // metabolism
-          '266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // hzrd149
-          '266813e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // thegang
-          '266813e0cff10dfa324c6cba357b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
-        },
+        recipientPubkeys: {},
       ).dummySign(franzap.pubkey),
       (PartialMail(
         'Re: Job Listing - Branding & Corprate Identity for Zapcloud',
         'Hey Zapcloud Team, \n\nI think I might be a good fit for this job. \n\nI have a lot of experience in branding and corporate identity, in the Nostr space specifically. \n\nHere\'s my [Portfolio](https://zapchat.com/portfolio) \n\nBest regards, \n\n**Niel**',
-        recipientPubkeys: {
-          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be', // jane
-          '266813e0cff10dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5', // zapcloud
-        },
+        recipientPubkeys: {},
       )).dummySign(niel.pubkey),
       (PartialMail(
         'Top-Up Time!',
-        'Hey Jane! \n\n## Reminder \nYour Zapcloud budget is running low. \n\n[Top Up Here](https://zapchat.com/top-up) to avoid service disruption. \n\nList test: \n- Item 1 \n- Item 2 \n- Item 3 \n\nBest regards, \n\n**Zapcloud**',
-        recipientPubkeys: {
-          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be'
-        },
+        'Hey Jane! \n\n== Reminder \nYour Zapcloud budget is running low. \n\nhttps://zapchat.com/top-up[Top Up Here] to avoid service disruption.\n\nNOTE: This is a note\n\nList test: \n* [*] checked\n* [ ] checked \n\nBest regards, \n\n*Zapcloud*',
+        recipientPubkeys: {},
       )).dummySign(zapcloud.pubkey),
     ]);
 

@@ -2,36 +2,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 
-class CreateEventScreen extends ConsumerStatefulWidget {
-  const CreateEventScreen({
+class CreateTaskScreen extends ConsumerStatefulWidget {
+  const CreateTaskScreen({
     super.key,
   });
 
   @override
-  ConsumerState<CreateEventScreen> createState() => _CreateEventScreenState();
+  ConsumerState<CreateTaskScreen> createState() => _CreateTaskScreenState();
 }
 
-class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
-  late DateTime selectedDate;
-  LabTime? selectedTime;
+class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   bool _hasRequiredFields = false;
 
   @override
   void initState() {
     super.initState();
-    selectedDate = DateTime.now();
   }
 
   void _updateHasRequiredFields() {
     setState(() {
-      _hasRequiredFields = selectedDate != null && selectedTime != null;
+      _hasRequiredFields = true;
     });
   }
 
   void _onShareTap() {
     if (_hasRequiredFields) {
       context.push(
-        '/share/event',
+        '/share/task',
       );
     }
   }
@@ -39,11 +36,6 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  String getDisplayText() {
-    final dateStr = selectedDate.toString().split(' ')[0];
-    return '$dateStr${selectedTime != null ? ' at ${selectedTime.toString()}' : ''}';
   }
 
   @override
@@ -64,7 +56,7 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const LabGap.s8(),
-                LabText.med14('Create Event'),
+                LabText.med14('Create Task'),
                 const LabGap.s12(),
                 const Spacer(),
                 LabKeyboardSubmitHandler(
@@ -103,20 +95,20 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
               LabGapSize.s16,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LabImageUploadCard(),
-                const LabGap.s12(),
                 LabInputTextField(
-                  placeholder: "Event Name",
+                  placeholder: "Task Name",
                   style: theme.typography.h2,
                   backgroundColor: theme.colors.gray33,
                 ),
                 const LabGap.s12(),
                 LabInputButton(
+                  onTap: () {},
                   minHeight: theme.sizes.s96,
                   topAlignment: true,
                   children: [
-                    LabText.reg14("Description of Event",
+                    LabText.reg14("Description of Task",
                         color: theme.colors.white33),
                     const Spacer(),
                     const LabGap.s12(),
@@ -126,11 +118,95 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
                     ),
                   ],
                 ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabLShape(
+                      width: 32,
+                      height: 30,
+                      padding: LabGapSize.s16,
+                      color: theme.colors.white33,
+                      strokeWidth: LabLineThicknessData.normal().medium,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: LabContainer(
+                        padding: const LabEdgeInsets.only(
+                          top: LabGapSize.s14,
+                          bottom: LabGapSize.none,
+                        ),
+                        child: Row(
+                          children: [
+                            LabSmallButton(
+                              onTap: () {},
+                              inactiveColor: theme.colors.gray66,
+                              padding: const LabEdgeInsets.only(
+                                left: LabGapSize.s8,
+                                right: LabGapSize.s12,
+                              ),
+                              children: [
+                                LabIcon.s14(
+                                  theme.icons.characters.plus,
+                                  outlineColor: theme.colors.white33,
+                                  outlineThickness:
+                                      LabLineThicknessData.normal().thick,
+                                ),
+                                const LabGap.s8(),
+                                LabText.reg14("Target Publications  /  Files",
+                                    color: theme.colors.white33),
+                              ],
+                            ),
+                            // for (final model in taggedModels ?? [])
+                            //   Row(
+                            //     children: [
+                            //       LabModelButton(
+                            //         model: model,
+                            //         onTap: () {},
+                            //       ),
+                            //       const LabGap.s8(),
+                            //     ],
+                            //   ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
           const LabDivider(),
-          LabDatesInputDisplay(),
+          LabContainer(
+            padding: const LabEdgeInsets.only(
+              top: LabGapSize.s12,
+              bottom: LabGapSize.s16,
+              left: LabGapSize.s16,
+              right: LabGapSize.s16,
+            ),
+            child: Column(
+              children: [
+                LabSectionTitle("Status"),
+                LabPanelButton(
+                  onTap: () {},
+                  child: Row(
+                    children: [
+                      LabTaskBox(state: TaskBoxState.open),
+                      const LabGap.s12(),
+                      LabText.reg14(
+                        "Open",
+                        color: theme.colors.white33,
+                      ),
+                      const Spacer(),
+                      LabIcon.s12(
+                        theme.icons.characters.pen,
+                        color: theme.colors.white33,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           const LabDivider(),
           LabContainer(
             padding: const LabEdgeInsets.only(
@@ -223,34 +299,6 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
             ),
           ),
           const LabDivider(),
-          // LabContainer(
-          //   padding: const LabEdgeInsets.all(
-          //     LabGapSize.s16,
-          //   ),
-          //   child: Column(
-          //     children: [
-          //       LabButton(
-          //         onTap: () async {
-          //           final result = await LabDatePickerModal.show(
-          //             context,
-          //             initialDate: selectedDate,
-          //             initialTime: selectedTime,
-          //           );
-          //           if (result != null) {
-          //             setState(() {
-          //               selectedDate = result.$1;
-          //               selectedTime = result.$2;
-          //             });
-          //           }
-          //         },
-          //         inactiveColor: theme.colors.white8,
-          //         children: [
-          //           LabText.med14(getDisplayText()),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );

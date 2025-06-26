@@ -7,6 +7,9 @@ import '../modals/spin_up_community_key_modal.dart';
 import '../screens/create_group_screen.dart';
 import '../screens/create_community_screen.dart';
 import '../screens/create_event_screen.dart';
+import '../screens/create_mail_screen.dart';
+import '../screens/create_task_screen.dart';
+import '../screens/create_note_screen.dart';
 import '../screens/your_community_screen.dart';
 import '../modals/community_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,14 +36,6 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             child: CreateCommunityScreen(),
-          );
-        },
-      ),
-      GoRoute(
-        path: '/create/event',
-        pageBuilder: (context, state) {
-          return LabSlideInScreen(
-            child: CreateEventScreen(),
           );
         },
       ),
@@ -90,11 +85,43 @@ List<GoRoute> get createRoutes => [
         },
       ),
       GoRoute(
+        path: '/create/event',
+        pageBuilder: (context, state) {
+          return LabSlideInScreen(
+            child: CreateEventScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/mail',
+        pageBuilder: (context, state) {
+          return LabSlideInScreen(
+            child: CreateMailScreen(),
+          );
+        },
+      ),
+      GoRoute(
         path: '/create/message',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInModal(
             child: CreateMessageModal(target: model),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/note',
+        pageBuilder: (context, state) {
+          return LabSlideInScreen(
+            child: CreateNoteScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/create/task',
+        pageBuilder: (context, state) {
+          return LabSlideInScreen(
+            child: CreateTaskScreen(),
           );
         },
       ),

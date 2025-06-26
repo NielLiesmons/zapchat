@@ -322,7 +322,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                           onTap: _showDescriptionInputModal,
                           color: theme.colors.black8,
                           topAlignment: true,
-                          height: theme.sizes.s64,
+                          minHeight: theme.sizes.s64,
                           children: [
                             _profile.about != null && _profile.about!.isNotEmpty
                                 ? LabText.reg14(

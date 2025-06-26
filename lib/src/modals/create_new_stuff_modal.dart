@@ -149,6 +149,7 @@ class CreateNewStuffModal extends ConsumerWidget {
     final contentTypes = [
       'mail',
       'task',
+      'note',
       'article',
       'thread',
       'app',
