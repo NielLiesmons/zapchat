@@ -17,9 +17,19 @@ class ThemeSettings extends _$ThemeSettings {
 
     // Load theme
     final savedTheme = prefs.getString(_themeKey);
-    final themeMode = savedTheme != null
-        ? LabThemeColorMode.values.firstWhere((e) => e.name == savedTheme)
-        : null;
+    LabThemeColorMode? themeMode;
+
+    if (savedTheme != null) {
+      themeMode =
+          LabThemeColorMode.values.firstWhere((e) => e.name == savedTheme);
+    } else {
+      // Set platform-specific defaults when no saved preference
+      if (LabPlatformUtils.isMobile) {
+        themeMode = LabThemeColorMode.dark;
+      } else {
+        themeMode = LabThemeColorMode.gray;
+      }
+    }
 
     // Load text scale
     final savedTextScale = prefs.getString(_textScaleKey);

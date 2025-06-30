@@ -10,6 +10,7 @@ import '../screens/mail_screen.dart';
 import '../screens/service_screen.dart';
 import '../modals/reply_to_modal.dart';
 import '../modals/actions_modal.dart';
+import '../modals/label_modal.dart';
 import '../modals/reply_modal.dart';
 
 String getModelRoute(String modelType) {
@@ -102,6 +103,21 @@ List<GoRoute> get eventRoutes => [
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyToModal(
+                  model: model,
+                );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/label/:eventId',
+        pageBuilder: (context, state) {
+          final model = state.extra as Model;
+          return LabSlideInModal(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return LabelModal(
                   model: model,
                 );
               },

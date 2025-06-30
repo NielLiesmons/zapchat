@@ -109,6 +109,7 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
                                   const LabGap.s10(),
                                   Expanded(
                                     child: LabCompactTextRenderer(
+                                      model: widget.model,
                                       content:
                                           getModelDisplayText(widget.model),
                                       onResolveEvent: ref

@@ -1,7 +1,6 @@
 import 'package:models/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:go_router/go_router.dart';
 
 class Resolvers {
   final NostrEventResolver eventResolver;
@@ -105,7 +104,8 @@ final resolversProvider = Provider<Resolvers>((ref) {
         }
       );
     }),
-    emojiResolver: (identifier) => emojiCache.getOrCreate(identifier, () async {
+    emojiResolver: (identifier, model) =>
+        emojiCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
       return switch (identifier.toLowerCase()) {
         'nostr' =>

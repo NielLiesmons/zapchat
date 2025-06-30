@@ -9,6 +9,7 @@ import '../feeds/community_threads_feed.dart';
 import '../feeds/community_articles_feed.dart';
 import '../feeds/community_jobs_feed.dart';
 import '../feeds/community_books_feed.dart';
+import '../feeds/comunity_polls_feed.dart';
 import '../feeds/community_services_feed.dart';
 import '../feeds/community_forum_feed.dart';
 import '../providers/resolvers.dart';
@@ -147,7 +148,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         case 'Polls':
           contentTypes['poll'] = (
             count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
+            feed: CommunityPollsFeed(community: widget.community),
             bottomBar: const LabBottomBarContentFeed()
           );
           break;

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zapchat/src/providers/resolvers.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
@@ -15,6 +16,7 @@ class CommunityNotificationsModal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = LabTheme.of(context);
+    final resolvers = ref.watch(resolversProvider);
 
     return LabModal(
       title: "Notifications",
@@ -139,6 +141,9 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const LabGap.s12(),
         LabNotificationCard(
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
           model: PartialNote(
             'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
@@ -152,6 +157,9 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const LabGap.s8(),
         LabNotificationCard(
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
           model: PartialNote(
             'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
@@ -165,6 +173,9 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const LabGap.s8(),
         LabNotificationCard(
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
           model: PartialNote(
             'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
@@ -178,6 +189,9 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const LabGap.s8(),
         LabNotificationCard(
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
           model: PartialNote(
             'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
@@ -191,6 +205,9 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const LabGap.s8(),
         LabNotificationCard(
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
           model: PartialNote(
             'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),
@@ -204,6 +221,9 @@ class CommunityNotificationsModal extends ConsumerWidget {
         ),
         const LabGap.s8(),
         LabNotificationCard(
+          onResolveEvent: resolvers.eventResolver,
+          onResolveProfile: resolvers.profileResolver,
+          onResolveEmoji: resolvers.emojiResolver,
           model: PartialNote(
             'This is a :emeoji: Nostr note. Just for testing, nothing special. \n\nIt\'s mainly to test the top bar of the `LabScreen` widget of the Zaplab design package.',
             createdAt: DateTime.now(),

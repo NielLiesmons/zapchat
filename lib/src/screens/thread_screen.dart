@@ -72,6 +72,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
                     const LabGap.s10(),
                     Expanded(
                       child: LabCompactTextRenderer(
+                        model: widget.thread,
                         isMedium: true,
                         isWhite: true,
                         content: getModelDisplayText(widget.thread),

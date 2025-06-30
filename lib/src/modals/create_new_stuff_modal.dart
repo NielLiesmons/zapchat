@@ -127,11 +127,13 @@ class CreateNewStuffModal extends ConsumerWidget {
                                 color: theme.colors.white66),
                             const LabGap.s16(),
                             LabButton(
+                              onTap: () => context.replace('/start'),
                               children: [
                                 LabIcon.s12(theme.icons.characters.play,
                                     color: theme.colors.whiteEnforced),
                                 const LabGap.s12(),
-                                LabText.med14("Start"),
+                                LabText.med14("Start",
+                                    color: theme.colors.whiteEnforced),
                               ],
                             ),
                           ],

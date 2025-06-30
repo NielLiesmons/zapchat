@@ -219,6 +219,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabSectionTitle("Labels"),
+                const LabGap.s4(),
                 LabInputButton(
                   onTap: () {},
                   children: [

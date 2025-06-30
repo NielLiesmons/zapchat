@@ -5,7 +5,6 @@ import '../providers/resolvers.dart';
 import '../providers/history.dart';
 import '../tabs/details/details.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zaplab_design/src/notifications/scroll_progress_notification.dart';
 
 class ArticleScreen extends ConsumerStatefulWidget {
   final Article article;
@@ -78,6 +77,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                       const LabGap.s10(),
                       Expanded(
                         child: LabCompactTextRenderer(
+                          model: widget.article,
                           isMedium: true,
                           isWhite: true,
                           content: getModelDisplayText(widget.article),
@@ -129,6 +129,7 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                       size: 24,
                     ),
                     content: LabLongTextRenderer(
+                      model: widget.article,
                       language: "ndown",
                       content: widget.article.content,
                       onResolveEvent: resolvers.eventResolver,

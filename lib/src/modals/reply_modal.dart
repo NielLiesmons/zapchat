@@ -65,6 +65,7 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
                       const LabGap.s10(),
                       Expanded(
                         child: LabCompactTextRenderer(
+                          model: widget.reply,
                           isMedium: true,
                           isWhite: true,
                           content: getModelDisplayText(widget.reply),

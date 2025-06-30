@@ -135,6 +135,7 @@ class ActionsModal extends ConsumerWidget {
                                           const LabGap.s10(),
                                           Expanded(
                                             child: LabCompactTextRenderer(
+                                              model: model,
                                               content:
                                                   getModelDisplayText(model),
                                               onResolveEvent:
@@ -498,7 +499,7 @@ class ActionsModal extends ConsumerWidget {
                             // TODO: Implement open with
                             break;
                           case 1:
-                            // TODO: Implement label
+                            context.replace('/label/${model.id}', extra: model);
                             break;
                           case 2:
                             // TODO: Implement share

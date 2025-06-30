@@ -71,6 +71,7 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
                     const LabGap.s10(),
                     Expanded(
                       child: LabCompactTextRenderer(
+                        model: widget.service,
                         isMedium: true,
                         isWhite: true,
                         content: getModelDisplayText(widget.service),
@@ -125,6 +126,7 @@ class _ServiceScreenState extends ConsumerState<ServiceScreen>
                       horizontal: LabGapSize.s12,
                     ),
                     child: LabShortTextRenderer(
+                      model: widget.service,
                       content: widget.service.content,
                       onResolveEvent: resolvers.eventResolver,
                       onResolveProfile: resolvers.profileResolver,

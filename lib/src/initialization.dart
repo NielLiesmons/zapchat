@@ -24,6 +24,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         kind: 33333,
         constructor: Service.fromMap); // TODO: Change to right kind
     Model.register(kind: 11, constructor: ForumPost.fromMap);
+    Model.register(kind: 1068, constructor: Poll.fromMap);
+    Model.register(kind: 1018, constructor: PollResponse.fromMap);
 
     final dummyProfiles = <Profile>[];
     final dummyNotes = <Note>[];
@@ -39,6 +41,8 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyServices = <Service>[];
     final dummyForumPosts = <ForumPost>[];
     final dummyComments = <Comment>[];
+    final dummyPolls = <Poll>[];
+    final dummyPollResponses = <PollResponse>[];
 
     final jane = PartialProfile(
       name: 'Jane C.',
@@ -204,6 +208,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         CommunityContentSection(
           content: 'Forum',
           kinds: {11},
+        ),
+        CommunityContentSection(
+          content: 'Polls',
+          kinds: {1068},
         ),
         CommunityContentSection(
           content: 'Jobs',
@@ -808,6 +816,44 @@ Then ncommunity = npub + relay hints, for communities
       )).dummySign(zapchat.pubkey),
     ]);
 
+    dummyPolls.addAll([
+      (PartialPoll(
+        content: 'What is the best Nostr icon?',
+        options: [
+          (id: '1', label: ':emoji:'),
+          (id: '2', label: ':emoji:'),
+          (id: '3', label: ':emoji:'),
+        ],
+      )).dummySign(niel.pubkey),
+    ]);
+
+    dummyPollResponses.addAll([
+      (PartialPollResponse(
+        pollEventId: '1234567890abcdef',
+        selectedOptionIds: ['1'],
+      )).dummySign(niel.pubkey),
+      (PartialPollResponse(
+        pollEventId: '1234567890abcdef',
+        selectedOptionIds: ['1'],
+      )).dummySign(verbiricha.pubkey),
+      (PartialPollResponse(
+        pollEventId: '1234567890abcdef',
+        selectedOptionIds: ['1'],
+      )).dummySign(jane.pubkey),
+      (PartialPollResponse(
+        pollEventId: '1234567890abcdef',
+        selectedOptionIds: ['2'],
+      )).dummySign(franzap.pubkey),
+      (PartialPollResponse(
+        pollEventId: '1234567890abcdef',
+        selectedOptionIds: ['3'],
+      )).dummySign(zapchat.pubkey),
+      (PartialPollResponse(
+        pollEventId: '1234567890abcdef',
+        selectedOptionIds: ['3'],
+      )).dummySign(zapcloud.pubkey),
+    ]);
+
     // Save all data
     await ref.read(storageNotifierProvider.notifier).save({
       ...dummyProfiles,
@@ -824,6 +870,8 @@ Then ncommunity = npub + relay hints, for communities
       ...dummyServices,
       ...dummyForumPosts,
       ...dummyComments,
+      ...dummyPolls,
+      ...dummyPollResponses,
     });
 
     return true;

@@ -143,6 +143,7 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabSectionTitle("Labels"),
+                const LabGap.s4(),
                 LabInputButton(
                   onTap: () {},
                   children: [
@@ -223,34 +224,34 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
             ),
           ),
           const LabDivider(),
-          // LabContainer(
-          //   padding: const LabEdgeInsets.all(
-          //     LabGapSize.s16,
-          //   ),
-          //   child: Column(
-          //     children: [
-          //       LabButton(
-          //         onTap: () async {
-          //           final result = await LabDatePickerModal.show(
-          //             context,
-          //             initialDate: selectedDate,
-          //             initialTime: selectedTime,
-          //           );
-          //           if (result != null) {
-          //             setState(() {
-          //               selectedDate = result.$1;
-          //               selectedTime = result.$2;
-          //             });
-          //           }
-          //         },
-          //         inactiveColor: theme.colors.white8,
-          //         children: [
-          //           LabText.med14(getDisplayText()),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          LabContainer(
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s16,
+            ),
+            child: Column(
+              children: [
+                LabButton(
+                  onTap: () async {
+                    final result = await LabDatePickerModal.show(
+                      context,
+                      initialDate: selectedDate,
+                      initialTime: selectedTime,
+                    );
+                    if (result != null) {
+                      setState(() {
+                        selectedDate = result.$1;
+                        selectedTime = result.$2;
+                      });
+                    }
+                  },
+                  inactiveColor: theme.colors.white8,
+                  children: [
+                    LabText.med14(getDisplayText()),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
