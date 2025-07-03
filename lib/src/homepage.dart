@@ -16,7 +16,8 @@ import 'tabs/home/tasks.dart';
 import 'tabs/home/jobs.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+  final String? tab;
+  const HomePage({super.key, this.tab});
 
   static final GlobalKey<_HomePageState> _homeKey = GlobalKey<_HomePageState>();
 

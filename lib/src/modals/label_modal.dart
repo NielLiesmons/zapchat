@@ -78,10 +78,9 @@ class _LabelModalState extends ConsumerState<LabelModal> {
           placeholder: 'Search / Add Label',
           onChanged: _onContentChanged,
         ),
-        const LabGap.s4(),
+        const LabGap.s12(),
         LabContainer(
           width: double.infinity,
-          padding: const LabEdgeInsets.all(LabGapSize.s8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

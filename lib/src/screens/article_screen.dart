@@ -128,17 +128,23 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                       contentType: getModelContentType(widget.article),
                       size: 24,
                     ),
-                    content: LabLongTextRenderer(
-                      model: widget.article,
-                      language: "ndown",
-                      content: widget.article.content,
-                      onResolveEvent: resolvers.eventResolver,
-                      onResolveProfile: resolvers.profileResolver,
-                      onResolveEmoji: resolvers.emojiResolver,
-                      onResolveHashtag: resolvers.hashtagResolver,
-                      onLinkTap: (url) {},
-                      onProfileTap: (profile) => context
-                          .push('/profile/${profile.npub}', extra: profile),
+                    content: LabContainer(
+                      padding: const LabEdgeInsets.symmetric(
+                        vertical: LabGapSize.s10,
+                        horizontal: LabGapSize.s16,
+                      ),
+                      child: LabLongTextRenderer(
+                        model: widget.article,
+                        language: "ndown",
+                        content: widget.article.content,
+                        onResolveEvent: resolvers.eventResolver,
+                        onResolveProfile: resolvers.profileResolver,
+                        onResolveEmoji: resolvers.emojiResolver,
+                        onResolveHashtag: resolvers.hashtagResolver,
+                        onLinkTap: (url) {},
+                        onProfileTap: (profile) => context
+                            .push('/profile/${profile.npub}', extra: profile),
+                      ),
                     ),
                   ),
                   TabData(

@@ -23,6 +23,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     Model.register(
         kind: 33333,
         constructor: Service.fromMap); // TODO: Change to right kind
+    Model.register(kind: 30402, constructor: Product.fromMap);
     Model.register(kind: 11, constructor: ForumPost.fromMap);
     Model.register(kind: 1068, constructor: Poll.fromMap);
     Model.register(kind: 1018, constructor: PollResponse.fromMap);
@@ -39,6 +40,7 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
     final dummyJobs = <Job>[];
     final dummyCashuZaps = <CashuZap>[];
     final dummyServices = <Service>[];
+    final dummyProducts = <Product>[];
     final dummyForumPosts = <ForumPost>[];
     final dummyComments = <Comment>[];
     final dummyPolls = <Poll>[];
@@ -178,12 +180,20 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         .read(storageNotifierProvider.notifier)
         .save(dummyProfiles.toSet());
 
-    // Set current profile and add to signed in profiles
-    if (dummyProfiles.isNotEmpty) {
-      final signer = DummySigner(ref, pubkey: dummyProfiles.first.pubkey);
-      // TODO: Modify the active flag here to show Jane logged in, or no-one
-      await signer.initialize(active: false);
-    }
+    // TESTING: Create a test profile with a signer for testing mentions
+    // TODO: Comment this out when not testing
+    final testProfile = PartialProfile(
+      name: 'TestUser',
+      pictureUrl: 'https://cdn.satellite.earth/test-profile.png',
+      about:
+          'This is a test profile for testing mentions and search functionality',
+    ).dummySign(
+        '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef');
+
+    await ref.read(storageNotifierProvider.notifier).save({testProfile});
+
+    final testSigner = DummySigner(ref, pubkey: testProfile.pubkey);
+    await testSigner.initialize(active: true); // Set as active for testing
 
     // Create community after profiles are saved and indexed
     final zapchatCommunity = PartialCommunity(
@@ -675,8 +685,10 @@ Then ncommunity = npub + relay hints, for communities
     dummyMails.addAll([
       PartialMail(
         'Marriage Invitation',
-        'Chicos & Chicas, \nMe and nostr:npub1blablabla are getting married and would love for you to be there. \nPlease let me know if you can make it. \n\nBest regards, \n\n**Fran**',
-        recipientPubkeys: {},
+        'Chicos & Chicas, \nMe and Jane are getting married and would love for you to be there. \nPlease let me know if you can make it. \n\nBest regards, \n\n**Fran**',
+        recipientPubkeys: {
+          'e9434ae165ed91b286becfc2721ef1705d3537d051b387288898cc00d5c885be',
+        },
       ).dummySign(franzap.pubkey),
       (PartialMail(
         'Re: Job Listing - Branding & Corprate Identity for Zapcloud',
@@ -801,6 +813,31 @@ Then ncommunity = npub + relay hints, for communities
       )).dummySign(franzap.pubkey),
     ]);
 
+    dummyProducts.addAll([
+      (PartialProduct(
+        'Nostr App Design',
+        "Here's some text to convince you that a dude that spent under two years of his life designing and building UIs can do a wonderful job for you.",
+        price: "210000",
+        summary:
+            'Pixel-perfect designs and front end builds for your Nostr app.',
+        images: {
+          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+          'https://cdn.satellite.earth/723a6b2aaa7df2512da3e3858d70e0fbea01c0b2a43be91d3f6d42d3e004fd0a.png',
+          'https://cdn.satellite.earth/d2403b5242834573a3c19d9024dda0e61defc76442247c19082755f48bbf13e9.png',
+        },
+      )).dummySign(niel.pubkey),
+      (PartialProduct(
+        'Custom Micro App',
+        "Here's some text to convince you that we can build a decent app for you;",
+        price: "210000",
+        summary:
+            'We build small custom Nostr apps for any platform, that can tap right into your existing Communities and Provate groups',
+        images: {
+          'https://cdn.satellite.earth/6375a73e1ee7b398c3910ac06cfd8fa79d5947fd898f68ba401960465d4e15bf.png',
+        },
+      )).dummySign(franzap.pubkey),
+    ]);
+
     dummyForumPosts.addAll([
       (PartialForumPost(
         'Forum Post Title',
@@ -868,6 +905,7 @@ Then ncommunity = npub + relay hints, for communities
       ...dummyJobs,
       ...dummyCashuZaps,
       ...dummyServices,
+      ...dummyProducts,
       ...dummyForumPosts,
       ...dummyComments,
       ...dummyPolls,

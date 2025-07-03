@@ -15,6 +15,14 @@ final goRouter = GoRouter(
         return HomePage();
       },
     ),
+    GoRoute(
+      path: '/home/:tab',
+      builder: (context, state) {
+        return HomePage(
+            tab: state.pathParameters['tab'] ??
+                'home'); // TODO: enable routing to specific Tab
+      },
+    ),
     ...createRoutes,
     ...communityRoutes,
     ...eventRoutes,

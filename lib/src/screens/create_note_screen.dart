@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
+import '../providers/resolvers.dart';
+import '../providers/search.dart';
 
 class CreateNoteScreen extends ConsumerStatefulWidget {
   const CreateNoteScreen({
@@ -13,16 +15,32 @@ class CreateNoteScreen extends ConsumerStatefulWidget {
 
 class _CreateNoteScreenState extends ConsumerState<CreateNoteScreen> {
   bool _hasRequiredFields = false;
+  List<LongTextElement> _elements = [];
 
   @override
   void initState() {
     super.initState();
+    // Start with a single paragraph element
+    _elements = [
+      LongTextElement(
+        type: LongTextElementType.paragraph,
+        content: '',
+      ),
+    ];
   }
 
   void _updateHasRequiredFields() {
     setState(() {
-      _hasRequiredFields = true;
+      _hasRequiredFields =
+          _elements.any((element) => element.content.isNotEmpty);
     });
+  }
+
+  void _onElementsChanged(List<LongTextElement> elements) {
+    setState(() {
+      _elements = elements;
+    });
+    _updateHasRequiredFields();
   }
 
   void _onShareTap() {
@@ -41,6 +59,8 @@ class _CreateNoteScreenState extends ConsumerState<CreateNoteScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+    final resolvers = ref.watch(resolversProvider);
+    final search = ref.watch(searchProvider);
 
     return LabScreen(
       onHomeTap: () => context.pop(),
@@ -85,46 +105,35 @@ class _CreateNoteScreenState extends ConsumerState<CreateNoteScreen> {
           ],
         ),
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const LabGap.s48(),
-              const LabGap.s2(),
-              LabContainer(
-                height:
-                    MediaQuery.of(context).size.height / theme.system.scale -
-                        80 -
-                        MediaQuery.of(context).viewInsets.bottom,
-                padding: const LabEdgeInsets.all(
-                  LabGapSize.s16,
+          const LabGap.s48(),
+          const LabGap.s2(),
+          LabContainer(
+            height: MediaQuery.of(context).size.height / theme.system.scale -
+                80 -
+                MediaQuery.of(context).viewInsets.bottom,
+            padding: const LabEdgeInsets.all(
+              LabGapSize.s16,
+            ),
+            child: Column(
+              children: [
+                // TODO: Change to long text WYSIWYG Editor
+                LabShortTextField(
+                  onEmojiTap: () {},
+                  onGifTap: () {},
+                  onAddTap: () {},
+                  onProfileTap: (profile) {},
+                  onCameraTap: () {},
+                  onResolveEvent: resolvers.eventResolver,
+                  onResolveProfile: resolvers.profileResolver,
+                  onResolveEmoji: resolvers.emojiResolver,
+                  onSearchProfiles: search.profileSearch,
+                  onSearchEmojis: search.emojiSearch,
                 ),
-                child: Column(
-                  children: [
-                    LabEditableInputText(
-                      text: '',
-                      style: theme.typography.h2,
-                      controller: TextEditingController(),
-                      focusNode: FocusNode(),
-                      placeholder: [
-                        LabText.h2(
-                          'Title of Note',
-                          color: theme.colors.white33,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            right:
-                LabPlatformUtils.isMobile ? theme.sizes.s12 : theme.sizes.s16,
-            bottom:
-                LabPlatformUtils.isMobile ? theme.sizes.s12 : theme.sizes.s16,
-            child: LabLongTextBar(),
+              ],
+            ),
           ),
         ],
       ),

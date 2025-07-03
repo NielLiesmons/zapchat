@@ -163,7 +163,6 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
               ? MediaQuery.of(context).padding.top / theme.system.scale +
                   MediaQuery.of(context).padding.bottom / theme.system.scale
               : 26.0),
-      padding: const LabEdgeInsets.all(LabGapSize.s6),
       child: Stack(
         children: [
           ListView.builder(
@@ -244,8 +243,8 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
             },
           ),
           Positioned(
-            right: 10,
-            bottom: 6,
+            right: theme.sizes.s16,
+            bottom: theme.sizes.s16,
             child: _showScrollButton
                 ? LabFloatingButton(
                     icon: LabIcon.s12(

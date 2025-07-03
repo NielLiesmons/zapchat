@@ -27,12 +27,8 @@ class _MailScreenState extends ConsumerState<MailScreen> {
 
     // Get data
     final resolvers = ref.read(resolversProvider);
-    final state = ref.watch(query<Profile>());
-    final recipients = widget.mail.recipientPubkeys
-        .map((pubkey) => state.models.cast<Profile>().firstWhere(
-              (profile) => profile.pubkey == pubkey,
-            ))
-        .toList();
+    final profilesState = ref.watch(query<Profile>());
+    final recipients = profilesState.models.cast<Profile>().toList();
 
     return LabScreen(
       onHomeTap: () => Navigator.of(context).pop(),
