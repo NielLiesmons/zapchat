@@ -179,8 +179,8 @@ class HomeTab extends StatelessWidget {
           );
         },
       ),
-      settingsDescription: "Filter your groups and communities",
-      settingsContent: LabContainer(
+      optionsDescription: "Filter your groups and communities",
+      optionssContent: LabContainer(
         child: Column(
           children: [
             LabSectionTitle("Filter"),

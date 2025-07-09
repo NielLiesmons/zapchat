@@ -87,7 +87,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                   child: LabSmallButton(
                     onTap: _onNextTap,
                     rounded: true,
-                    inactiveGradient: _hasText
+                    gradient: _hasText
                         ? theme.colors.blurple
                         : theme.colors.blurple33,
                     children: [

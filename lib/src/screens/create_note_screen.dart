@@ -85,7 +85,7 @@ class _CreateNoteScreenState extends ConsumerState<CreateNoteScreen> {
                   child: LabSmallButton(
                     onTap: _onShareTap,
                     rounded: true,
-                    inactiveGradient: _hasRequiredFields
+                    gradient: _hasRequiredFields
                         ? theme.colors.blurple
                         : theme.colors.blurple33,
                     children: [

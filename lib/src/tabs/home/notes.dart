@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class WikisTab extends StatelessWidget {
-  const WikisTab({super.key});
+class NotesTab extends StatelessWidget {
+  const NotesTab({super.key});
 
   TabData tabData(BuildContext context) {
     return TabData(
-      label: 'Wikis',
-      icon: const LabEmojiContentType(contentType: 'wiki'),
+      label: 'Notes',
+      icon: const LabEmojiContentType(contentType: 'note'),
       content: Builder(
         builder: (context) {
           return LabContainer(

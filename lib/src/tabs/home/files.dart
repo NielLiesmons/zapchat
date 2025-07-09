@@ -1,12 +1,13 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class VideosTab extends StatelessWidget {
-  const VideosTab({super.key});
+class FilesTab extends StatelessWidget {
+  const FilesTab({super.key});
 
   TabData tabData(BuildContext context) {
     return TabData(
-      label: 'Videos',
-      icon: const LabEmojiContentType(contentType: 'video'),
+      label: 'Files',
+      icon: const LabEmojiContentType(contentType: 'file'),
+      bottomBar: LabBottomBarContentFeed(),
       content: Builder(
         builder: (context) {
           return LabContainer(

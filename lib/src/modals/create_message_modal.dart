@@ -22,6 +22,9 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   // ignore: unused_field
   late PartialChatMessage _partialMessage;
 
+  // Global key to access the text field state
+  final GlobalKey _textFieldStateKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -54,13 +57,46 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
   }
 
   void _sendMessage() async {
-    final text = _controller.text;
+    // Get the text field state using the GlobalKey
+    final textFieldState = _textFieldStateKey.currentState;
+
+    // Debug logging
+    print('=== Send Message Debug ===');
+    print('Text field state found: ${textFieldState != null}');
+
+    if (textFieldState == null) {
+      print('ERROR: Could not find text field state!');
+      return;
+    }
+
+    // Access the editor state through the text field state
+    final editorState =
+        (textFieldState as dynamic).editorState as LabEditableShortTextState?;
+    print('Editor state found: ${editorState != null}');
+
+    if (editorState == null) {
+      print('ERROR: Could not find editor state!');
+      return;
+    }
+
+    final content = editorState.getTextForPublishing();
+    final emojiData = editorState.getEmojiData();
+    final npubs = editorState.getProfileNpubs();
     final signer = ref.read(Signer.activeSignerProvider)!;
 
-    if (text.isNotEmpty) {
+    print('Publishable content: "$content" (length: ${content.length})');
+    print('Emoji data: $emojiData');
+    print('Profile npubs: $npubs');
+
+    // Only send if there's actual content
+    if (content.isNotEmpty) {
+      // Use content as the Nostr event content
+      // Use emojiData for your emoji JSON tag
+      // Use npubs for your p-tags
       final message = PartialChatMessage(
-        text,
+        content,
         createdAt: DateTime.now(),
+        // TODO: Add emojiData and npubs to the event as needed
       );
       final signedMessage = await message.signWith(signer);
       await ref.read(storageNotifierProvider.notifier).save({signedMessage});
@@ -81,6 +117,7 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
               LabKeyboardSubmitHandler(
                 onSubmit: _sendMessage,
                 child: LabShortTextField(
+                  key: _textFieldStateKey,
                   controller: _controller,
                   focusNode: _focusNode,
                   placeholder: [

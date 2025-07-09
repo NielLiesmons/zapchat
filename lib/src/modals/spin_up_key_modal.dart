@@ -43,7 +43,7 @@ class SpinUpKeyModalState extends State<SpinUpKeyModal> {
       title: "Hey ${widget.profileName}!",
       bottomBar: LabButton(
         onTap: widget.onSecretKeyTap,
-        inactiveColor: theme.colors.black33,
+        color: theme.colors.black33,
         children: [
           LabIcon.s16(
             theme.icons.characters.nostr,

@@ -224,6 +224,10 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
           kinds: {1068},
         ),
         CommunityContentSection(
+          content: 'Products',
+          kinds: {30402},
+        ),
+        CommunityContentSection(
           content: 'Jobs',
           kinds: {32767},
         ),
@@ -498,11 +502,6 @@ final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
         createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
         community: zapchatCommunity,
       ).dummySign(verbiricha.pubkey),
-      PartialChatMessage(
-        'https://cdn.satellite.earth/ce1ada957054c84e7dc95ecaa6b14ddb452f4ab31632903d74ffe83bc6c8ff38.mp3',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
-        community: zapchatCommunity,
-      ).dummySign(zapchat.pubkey),
       PartialChatMessage(
         'Awesome!',
         createdAt: DateTime.now().subtract(const Duration(minutes: 9)),

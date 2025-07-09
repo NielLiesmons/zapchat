@@ -110,7 +110,7 @@ class _CreateMailScreenState extends ConsumerState<CreateMailScreen> {
                                 padding: const LabEdgeInsets.symmetric(
                                   horizontal: LabGapSize.s6,
                                 ),
-                                inactiveColor: theme.colors.white8,
+                                color: theme.colors.white8,
                                 onTap: () => _toggleProfileSelection(profile),
                                 children: [
                                   LabProfilePic.s18(profile),

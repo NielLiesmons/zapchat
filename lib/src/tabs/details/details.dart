@@ -105,7 +105,7 @@ class _DetailsTabState extends State<DetailsTab>
                           ),
                           const LabGap.s14(),
                           LabSmallButton(
-                            inactiveColor: theme.colors.white8,
+                            color: theme.colors.white8,
                             square: true,
                             onTap: _handleEventIdCopy,
                             children: [
@@ -172,7 +172,7 @@ class _DetailsTabState extends State<DetailsTab>
                           ),
                           const LabGap.s16(),
                           LabSmallButton(
-                            inactiveColor: theme.colors.white8,
+                            color: theme.colors.white8,
                             square: true,
                             onTap: _handleProfileIdCopy,
                             children: [

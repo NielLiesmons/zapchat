@@ -29,7 +29,7 @@ class StartYourKeyModal extends ConsumerWidget {
       bottomBar: Row(
         children: [
           LabButton(
-            inactiveColor: theme.colors.black33,
+            color: theme.colors.black33,
             onTap: () => context.pop(),
             children: [
               LabText.reg14(

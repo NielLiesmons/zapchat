@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class ImagesTab extends StatelessWidget {
-  const ImagesTab({super.key});
+class AlbumsTab extends StatelessWidget {
+  const AlbumsTab({super.key});
 
   TabData tabData(BuildContext context) {
     return TabData(

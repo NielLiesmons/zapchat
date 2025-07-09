@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import '../providers/theme_settings.dart';
+import '../providers/color_themes.dart';
 import 'package:models/models.dart';
 
 class PreferencesModal extends ConsumerWidget {
@@ -89,26 +90,19 @@ class PreferencesModal extends ConsumerWidget {
           onChanged: (index) => Future.microtask(() {
             switch (index) {
               case 0:
-                LabResponsiveTheme.of(context).setColorMode(null);
                 ref.read(themeSettingsProvider.notifier).setTheme(null);
                 break;
               case 1:
-                LabResponsiveTheme.of(context)
-                    .setColorMode(LabThemeColorMode.light);
                 ref
                     .read(themeSettingsProvider.notifier)
                     .setTheme(LabThemeColorMode.light);
                 break;
               case 2:
-                LabResponsiveTheme.of(context)
-                    .setColorMode(LabThemeColorMode.gray);
                 ref
                     .read(themeSettingsProvider.notifier)
                     .setTheme(LabThemeColorMode.gray);
                 break;
               case 3:
-                LabResponsiveTheme.of(context)
-                    .setColorMode(LabThemeColorMode.dark);
                 ref
                     .read(themeSettingsProvider.notifier)
                     .setTheme(LabThemeColorMode.dark);
@@ -185,7 +179,75 @@ class PreferencesModal extends ConsumerWidget {
           }),
         ),
         const LabGap.s12(),
-        const LabSectionTitle('Show Others'),
+        const LabSectionTitle('Accent Color'),
+        LabSelector(
+          initialIndex: themeState.when(
+            data: (state) {
+              if (state.colorsOverride == null) {
+                return 0; // Blurple is first
+              }
+              // For now, assume Pink (index 1) if there's an override
+              return 1;
+            },
+            loading: () => 0,
+            error: (_, __) => 0,
+          ),
+          children: ColorThemes.availableThemes.map((themeName) {
+            final gradient = ColorThemes.getGradient(themeName);
+            return LabSelectorButton(
+              selectedContent: [
+                LabContainer(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    gradient: gradient,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+              unselectedContent: [
+                LabContainer(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    gradient: gradient,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+              isSelected: themeState.when(
+                data: (state) {
+                  // If there's no override, Blurple is selected
+                  if (state.colorsOverride == null) {
+                    final isBlurple = themeName == 'Blurple';
+                    return isBlurple;
+                  }
+                  // If there is an override, we need to determine which theme it is
+                  // For now, let's check if it's a Pink override
+                  if (state.colorsOverride?.blurple != null) {
+                    // This is a hack - we should store the theme name in state
+                    // For now, assume it's Pink if there's an override
+                    return themeName == 'Pink';
+                  }
+                  return false;
+                },
+                loading: () => false,
+                error: (_, __) => false,
+              ),
+              onTap: () {
+                ref
+                    .read(themeSettingsProvider.notifier)
+                    .setColorTheme(themeName);
+              },
+            );
+          }).toList(),
+          onChanged: (index) {
+            final themeName = ColorThemes.availableThemes[index];
+            ref.read(themeSettingsProvider.notifier).setColorTheme(themeName);
+          },
+        ),
+        const LabGap.s12(),
+        const LabSectionTitle('Show To Others'),
         LabPanel(
           padding: LabEdgeInsets.all(LabGapSize.none),
           child: Column(
@@ -218,18 +280,6 @@ class PreferencesModal extends ConsumerWidget {
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-        const LabGap.s12(),
-        const LabSectionTitle('Other'),
-        LabPanel(
-          padding: LabEdgeInsets.all(LabGapSize.none),
-          child: Column(
-            children: [
-              const LabGap.s12(),
-              LabText.reg14('// TODO', color: theme.colors.white33),
-              const LabGap.s12(),
             ],
           ),
         ),

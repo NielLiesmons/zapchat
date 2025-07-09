@@ -543,7 +543,7 @@ class ActionsModal extends ConsumerWidget {
               onTap: () {
                 // TODO: Implement report
               },
-              inactiveColor: theme.colors.black33,
+              color: theme.colors.black33,
               children: [
                 LabText.med14('Report', gradient: theme.colors.rouge),
               ],

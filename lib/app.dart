@@ -90,6 +90,7 @@ class _LabWithTheme extends ConsumerWidget {
           colorMode: state.colorMode,
           textScale: state.textScale,
           systemScale: state.systemScale,
+          colorsOverride: state.colorsOverride,
           onHomeTap: () {
             goRouter.go('/');
           },

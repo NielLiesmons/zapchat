@@ -73,7 +73,7 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
                   child: LabSmallButton(
                     onTap: _onShareTap,
                     rounded: true,
-                    inactiveGradient: _hasRequiredFields
+                    gradient: _hasRequiredFields
                         ? theme.colors.blurple
                         : theme.colors.blurple33,
                     children: [
@@ -224,34 +224,6 @@ class _CreateEventScreenState extends ConsumerState<CreateEventScreen> {
             ),
           ),
           const LabDivider(),
-          LabContainer(
-            padding: const LabEdgeInsets.all(
-              LabGapSize.s16,
-            ),
-            child: Column(
-              children: [
-                LabButton(
-                  onTap: () async {
-                    final result = await LabDatePickerModal.show(
-                      context,
-                      initialDate: selectedDate,
-                      initialTime: selectedTime,
-                    );
-                    if (result != null) {
-                      setState(() {
-                        selectedDate = result.$1;
-                        selectedTime = result.$2;
-                      });
-                    }
-                  },
-                  inactiveColor: theme.colors.white8,
-                  children: [
-                    LabText.med14(getDisplayText()),
-                  ],
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

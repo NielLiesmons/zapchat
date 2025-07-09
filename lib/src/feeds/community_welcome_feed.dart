@@ -159,7 +159,7 @@ class LabCommunityWelcomeFeed extends ConsumerWidget {
                       for (final section in community.contentSections)
                         IntrinsicWidth(
                           child: LabButton(
-                            inactiveColor: theme.colors.white8,
+                            color: theme.colors.white8,
                             children: [
                               LabEmojiContentType(
                                 contentType: section.content

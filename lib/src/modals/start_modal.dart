@@ -109,7 +109,7 @@ class _StartModalState extends State<StartModal> {
               const LabGap.s16(),
               LabButton(
                 onTap: widget.onAlreadyHaveKey,
-                inactiveColor: theme.colors.black33,
+                color: theme.colors.black33,
                 children: [
                   LabIcon.s16(
                     theme.icons.characters.nostr,

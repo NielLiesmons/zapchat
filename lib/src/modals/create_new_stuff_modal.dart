@@ -154,9 +154,10 @@ class CreateNewStuffModal extends ConsumerWidget {
       'note',
       'article',
       'thread',
+      'event',
       'app',
-      'poll',
       'work-out',
+      'poll',
       'doc',
       'video',
       'wiki',
@@ -165,7 +166,6 @@ class CreateNewStuffModal extends ConsumerWidget {
       'book',
       'service',
       'job',
-      'event',
     ];
 
     final rows = <Widget>[];

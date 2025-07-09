@@ -24,17 +24,17 @@ class CommunityProductsFeed extends ConsumerWidget {
     return LabContainer(
       child: Column(
         children: [
-          for (final service in products)
+          for (final product in products)
             Column(
               children: [
-                LabFeedProduct(
-                  service: service,
-                  isUnread: true,
-                  onTap: (model) =>
-                      context.push('/service/${model.id}', extra: model),
-                  onProfileTap: (profile) =>
-                      context.push('/service/${profile.npub}', extra: profile),
-                ),
+                // LabFeedProduct(
+                //   service: service,
+                //   isUnread: true,
+                //   onTap: (model) =>
+                //       context.push('/service/${model.id}', extra: model),
+                //   onProfileTap: (profile) =>
+                //       context.push('/service/${profile.npub}', extra: profile),
+                // ),
               ],
             ),
         ],

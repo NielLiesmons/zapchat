@@ -10,6 +10,8 @@ class MailTab extends StatelessWidget {
   const MailTab({super.key});
 
   TabData tabData(BuildContext context) {
+    final theme = LabTheme.of(context);
+
     return TabData(
       label: 'Mail',
       icon: const LabEmojiContentType(contentType: 'mail'),
@@ -47,6 +49,24 @@ class MailTab extends StatelessWidget {
                   ),
                 );
         },
+      ),
+      optionsDescription: "Filter your mails",
+      optionssContent: LabContainer(
+        child: Column(
+          children: [
+            LabPanelButton(
+              child: LabText.med14("Lorem Ipsum dolor sit amet",
+                  color: theme.colors.white33),
+              onTap: () {},
+            ),
+            const LabGap.s8(),
+            LabPanelButton(
+              child: LabText.med14("Lorem Ipsum dolor sit amet",
+                  color: theme.colors.white33),
+              onTap: () {},
+            ),
+          ],
+        ),
       ),
     );
   }

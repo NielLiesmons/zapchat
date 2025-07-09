@@ -148,7 +148,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                 LabSmallButton(
                   onTap: () {},
                   rounded: true,
-                  inactiveGradient: theme.colors.blurple33,
+                  gradient: theme.colors.blurple33,
                   children: [
                     const LabGap.s4(),
                     LabText.med14('Publish', color: theme.colors.white66),
@@ -347,7 +347,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                 const LabGap.s12(),
                 LabButton(
                   onTap: () {},
-                  inactiveColor: theme.colors.gray33,
+                  color: theme.colors.gray33,
                   children: [
                     LabIcon.s18(
                       theme.icons.characters.pin,
@@ -441,7 +441,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                             child: LabButton(
                               onTap: () {},
-                              inactiveColor: theme.colors.white8,
+                              color: theme.colors.white8,
                               children: [
                                 LabText.reg14(
                                   'Prices & Content Types',
@@ -531,7 +531,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                             child: LabButton(
                               onTap: () {},
-                              inactiveColor: theme.colors.white8,
+                              color: theme.colors.white8,
                               children: [
                                 LabText.reg14(
                                   'Guidelines',

@@ -65,7 +65,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                   child: LabSmallButton(
                     onTap: _onShareTap,
                     rounded: true,
-                    inactiveGradient: _hasRequiredFields
+                    gradient: _hasRequiredFields
                         ? theme.colors.blurple
                         : theme.colors.blurple33,
                     children: [
@@ -139,7 +139,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           children: [
                             LabSmallButton(
                               onTap: () {},
-                              inactiveColor: theme.colors.gray66,
+                              color: theme.colors.gray66,
                               padding: const LabEdgeInsets.only(
                                 left: LabGapSize.s8,
                                 right: LabGapSize.s12,

@@ -2,18 +2,12 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'tabs/home/apps.dart';
-import 'tabs/home/articles.dart';
-import 'tabs/home/books.dart';
 import 'tabs/home/home.dart';
 import 'tabs/home/albums.dart';
-import 'tabs/home/threads.dart';
-import 'tabs/home/repos.dart';
-import 'tabs/home/videos.dart';
-import 'tabs/home/wikis.dart';
+import 'tabs/home/notes.dart';
 import 'tabs/home/mail.dart';
 import 'tabs/home/tasks.dart';
-import 'tabs/home/jobs.dart';
+import 'tabs/home/files.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   final String? tab;
@@ -147,15 +141,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                       const HomeTab().tabData(context),
                       const MailTab().tabData(context),
                       const TasksTab().tabData(context),
-                      const JobsTab().tabData(context),
-                      const ReposTab().tabData(context),
-                      const AppsTab().tabData(context),
-                      const WikisTab().tabData(context),
-                      const BooksTab().tabData(context),
-                      const ArticlesTab().tabData(context),
-                      const ThreadsTab().tabData(context),
-                      const ImagesTab().tabData(context),
-                      const VideosTab().tabData(context),
+                      const NotesTab().tabData(context),
+                      const AlbumsTab().tabData(context),
+                      const FilesTab().tabData(context),
                     ],
                     controller: _tabController,
                     scrollableContent: true,
