@@ -21,11 +21,11 @@ class Resolvers {
 }
 
 class TopThreeReplyProfilesNotifier extends StateNotifier<List<Profile>> {
-  TopThreeReplyProfilesNotifier(List<Profile> profiles) : super(profiles);
+  TopThreeReplyProfilesNotifier(super.profiles);
 }
 
 class TotalReplyProfilesNotifier extends StateNotifier<int> {
-  TotalReplyProfilesNotifier(int count) : super(count);
+  TotalReplyProfilesNotifier(super.count);
 }
 
 typedef TopThreeReplyProfilesResolver
@@ -77,7 +77,8 @@ final resolversProvider = Provider<Resolvers>((ref) {
         profileCache.getOrCreate(identifier, () async {
       await Future.delayed(const Duration(milliseconds: 50));
       print('Resolving profile for identifier: $identifier');
-      final profile = ref.watch(Signer.activeProfileProvider);
+      final profile =
+          ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
       print('Current profile: $profile');
 
       if (profile == null) {

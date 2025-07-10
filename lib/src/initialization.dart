@@ -1,15 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:convert';
 
-final zapchatInitializationProvider = FutureProvider<bool>((ref) async {
+final zapchatInitializationProvider = FutureProvider<void>((ref) async {
+  final dir = await getApplicationDocumentsDirectory();
   try {
     await ref.read(initializationProvider(
       StorageConfiguration(
-        databasePath: '',
-        relayGroups: {},
-        defaultRelayGroup: '',
+        databasePath: path.join(dir.path, 'zapchat.db'),
+        relayGroups: {
+          'default': {'wss://relay.damus.io'}
+        },
+        keepSignatures: false,
       ),
     ).future);
 
@@ -910,8 +915,6 @@ Then ncommunity = npub + relay hints, for communities
       ...dummyPolls,
       ...dummyPollResponses,
     });
-
-    return true;
   } catch (e, stackTrace) {
     print('Error during initialization: $e');
     print('Stack trace: $stackTrace');

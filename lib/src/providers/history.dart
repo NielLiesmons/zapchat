@@ -132,14 +132,14 @@ class History extends _$History {
               modelId: entry.modelId,
               displayText: entry.displayText,
               timestamp: entry.timestamp,
-              onTap: () {
+              onTap: () async {
                 // Get the model from storage using querySync
                 final storage = ref.read(storageNotifierProvider.notifier);
-                final models = storage.querySync(
+                final models = await storage.query(
                   RequestFilter(
                     ids: {entry.modelId},
-                    remote: false,
-                  ),
+                  ).toRequest(),
+                  source: LocalSource(),
                 );
                 if (models.isNotEmpty) {
                   final model = models.first;

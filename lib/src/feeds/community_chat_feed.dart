@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
@@ -120,7 +121,12 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     // Group messages by author and time
     final messageGroups = _groupMessages(messages);
 
-    final activeProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile =
+        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
+
+    if (activeProfile == null) {
+      return CircularProgressIndicator();
+    }
 
     // Create a single list of all events (messages and zaps) with their timestamps
     final allEvents = <({dynamic model, DateTime timestamp, bool isMessage})>[

@@ -12,10 +12,12 @@ packages:
   amber_signer:
     dependency: "direct main"
     description:
-      path: "../amber_signer"
-      relative: true
-    source: path
-    version: "0.0.1"
+      path: "."
+      ref: main
+      resolved-ref: "817586f4ba3fb6034f47494eb820eddbdd1a74ad"
+      url: "https://github.com/purplebase/amber_signer"
+    source: git
+    version: "0.1.0"
   analyzer:
     dependency: transitive
     description:
@@ -232,6 +234,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  cryptography:
+    dependency: transitive
+    description:
+      name: cryptography
+      sha256: d146b76d33d94548cf035233fbc2f4338c1242fa119013bead807d033fc4ae05
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
   custom_lint_core:
     dependency: transitive
     description:
@@ -256,6 +266,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  elliptic:
+    dependency: transitive
+    description:
+      name: elliptic
+      sha256: "0c303d810603953a65dc39c4c542fb7538defd9e212403c54c266140819523b6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.11"
   equatable:
     dependency: transitive
     description:
@@ -459,10 +477,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: "53385261521cc4a0c4658fd0ad07a7d14591cf8fc33abbceae306ddb974888dc"
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.2"
+    version: "0.6.7"
   json_annotation:
     dependency: transitive
     description:
@@ -535,6 +553,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "2621da01aabaf223f8f961e751f2c943dbb374dc3559b982f200ccedadaa6999"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.0"
   logging:
     dependency: transitive
     description:
@@ -579,11 +605,20 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "217fdc3"
-      resolved-ref: "217fdc3ff412de0102811ec60d36f815c983e398"
+      ref: main
+      resolved-ref: "93578f25b5b3a3a46fb1e18a30c45862672714ed"
       url: "https://github.com/purplebase/models"
     source: git
-    version: "0.1.1"
+    version: "0.3.0"
+  nip44:
+    dependency: transitive
+    description:
+      path: dart
+      ref: "3b40d453c772ad10b57b81762d5b56e80aa1facb"
+      resolved-ref: "3b40d453c772ad10b57b81762d5b56e80aa1facb"
+      url: "https://github.com/paulmillr/nip44.git"
+    source: git
+    version: "1.0.0"
   package_config:
     dependency: transitive
     description:
@@ -593,7 +628,7 @@ packages:
     source: hosted
     version: "2.1.1"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "75cca69d1490965be98c73ceaea117e8a04dd21217b37b292c9ddbec0d955bc5"
@@ -601,7 +636,7 @@ packages:
     source: hosted
     version: "1.9.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: "50c5dd5b6e1aaf6fb3a78b33f6aa3afca52bf903a8a5298f53101fdaee55bbcd"
@@ -712,6 +747,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  purplebase:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "3a129d9bc141b17289fa8c58a6b44bc0c05669e4"
+      url: "https://github.com/purplebase/purplebase"
+    source: git
+    version: "0.3.0"
   riverpod:
     dependency: "direct main"
     description:
@@ -910,6 +954,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      sha256: c0503c69b44d5714e6abbf4c1f51a3c3cc42b75ce785f44404765e4635481d38
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.6"
+  sqlite3_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: sqlite3_flutter_libs
+      sha256: e07232b998755fe795655c56d1f5426e0190c9c435e1752d39e7b1cd33699c71
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.34"
   stack_trace:
     dependency: transitive
     description:
@@ -1046,6 +1106,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  web_socket_client:
+    dependency: transitive
+    description:
+      name: web_socket_client
+      sha256: "394789177aa3bc1b7b071622a1dbf52a4631d7ce23c555c39bb2523e92316b07"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   window_manager:
     dependency: "direct main"
     description:

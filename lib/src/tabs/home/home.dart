@@ -20,7 +20,8 @@ class HomeTab extends StatelessWidget {
       bottomBar: LabPlatformUtils.isMobile
           ? HookConsumer(
               builder: (context, ref, _) {
-                final activeProfile = ref.watch(Signer.activeProfileProvider);
+                final activeProfile = ref.watch(
+                    Signer.activeProfileProvider(LocalAndRemoteSource()));
                 return LabBottomBarHome(
                   onZapTap: activeProfile != null
                       ? () {
@@ -43,15 +44,15 @@ class HomeTab extends StatelessWidget {
       content: HookConsumer(
         builder: (context, ref, _) {
           final resolvers = ref.read(resolversProvider);
-          final state = ref.watch(query<Community>());
+          final state = ref.watch(query<Community>(and: (c) => {c.author}));
           final state2 = ref.watch(query<Group>());
-          final activeProfile = ref.watch(Signer.activeProfileProvider);
+          final activeProfile =
+              ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
 
-          final communities = state.models.cast<Community>();
-          final groups = state2.models.cast<Group>();
+          final communities = state.models;
+          final groups = state2.models;
 
-          final chatMessages =
-              ref.watch(query<ChatMessage>()).models.cast<ChatMessage>();
+          final chatMessages = ref.watch(query<ChatMessage>()).models;
 
           final communityCounts = {
             'Zapchat': {'main': 20, 'Chat': 15, 'Tasks': 3},
@@ -63,8 +64,7 @@ class HomeTab extends StatelessWidget {
 
           return Column(
             children: [
-              for (final community in communities
-                  .where((c) => activeProfile != null || c.name == 'Zapchat'))
+              for (final community in communities)
                 LabCommunityHomePanel(
                   community: community,
                   lastModel:

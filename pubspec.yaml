@@ -34,13 +34,10 @@ dependencies:
     #   url: https://github.com/NielLiesmons/zaplab_design.git
     #   ref: 00b9438a920d3fa6a9ca65b1b627fa71b4752212
 
-  models:
-    git:
-      url: https://github.com/purplebase/models
-      ref: 217fdc3
+  models: ^0.3.0
+  purplebase: ^0.3.0
+  amber_signer: ^0.1.0
 
-  amber_signer:
-    path: ../amber_signer
   flutter:
     sdk: flutter
   audio_waveforms: ^1.3.0
@@ -54,6 +51,26 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_hooks: ^0.21.2
   hooks_riverpod: ^2.6.1
+  sqlite3_flutter_libs: ^0.5.34
+  path_provider: ^2.1.5
+  path: ^1.9.1
+
+dependency_overrides:
+  models:
+    # path: ../models
+    git:
+      url: https://github.com/purplebase/models
+      ref: main
+  purplebase:
+    # path: ../purplebase
+    git:
+      url: https://github.com/purplebase/purplebase
+      ref: master
+  amber_signer:
+    # path: ../amber_signer
+    git:
+      url: https://github.com/purplebase/amber_signer
+      ref: main
 
 dev_dependencies:
   flutter_test:
