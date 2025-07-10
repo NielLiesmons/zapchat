@@ -44,15 +44,14 @@ class HomeTab extends StatelessWidget {
       content: HookConsumer(
         builder: (context, ref, _) {
           final resolvers = ref.read(resolversProvider);
-          final state = ref.watch(query<Community>(and: (c) => {c.author}));
+          final state = ref
+              .watch(query<Community>(and: (c) => {c.author, c.chatMessages}));
           final state2 = ref.watch(query<Group>());
           final activeProfile =
               ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
 
           final communities = state.models;
           final groups = state2.models;
-
-          final chatMessages = ref.watch(query<ChatMessage>()).models;
 
           final communityCounts = {
             'Zapchat': {'main': 20, 'Chat': 15, 'Tasks': 3},
@@ -67,8 +66,7 @@ class HomeTab extends StatelessWidget {
               for (final community in communities)
                 LabCommunityHomePanel(
                   community: community,
-                  lastModel:
-                      chatMessages.isNotEmpty ? chatMessages.first : null,
+                  lastModel: community.chatMessages.toList().firstOrNull,
                   mainCount: communityCounts[community.name]?['main'] ?? 0,
                   contentCounts: {
                     'chat': communityCounts[community.name]?['Chat'] ?? 0,
@@ -111,8 +109,8 @@ class HomeTab extends StatelessWidget {
                 for (final group in groups)
                   LabGroupHomePanel(
                     group: group,
-                    lastModel:
-                        chatMessages.isNotEmpty ? chatMessages.first : null,
+                    // lastModel:
+                    //     chatMessages.isNotEmpty ? chatMessages.first : null,
                     mainCount: 0,
                     contentCounts: {
                       'chat': 8,
