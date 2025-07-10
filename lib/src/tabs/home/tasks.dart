@@ -38,20 +38,6 @@ class TasksTab extends StatelessWidget {
                         'Repo Description',
                       ).dummySign()
                     ],
-                    subTasks: [
-                      PartialTask(
-                        'Subtask Title',
-                        'Subtask Content',
-                      ).dummySign(),
-                      PartialTask(
-                        'Subtask Title',
-                        'Subtask Content',
-                      ).dummySign(),
-                      PartialTask(
-                        'Subtask Title',
-                        'Subtask Content',
-                      ).dummySign()
-                    ],
                     onTaggedModelTap: (model) =>
                         context.push('/model/${model.id}'),
                     onSwipeLeft: (model) => {},

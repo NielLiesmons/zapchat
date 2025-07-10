@@ -33,6 +33,8 @@ class CommunityScreen extends StatefulHookConsumerWidget {
 class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   late final LabTabController _tabController;
   late Map<String, ({int count, Widget feed, Widget bottomBar})> _contentTypes;
+  final ScrollController _sharedScrollController = ScrollController();
+  final Map<String, double> _tabScrollPositions = {};
 
   @override
   void initState() {
@@ -50,12 +52,53 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         _tabController.animateTo(0);
       }
       setState(() {});
+
+      // Restore scroll position for the new tab
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _restoreScrollPosition();
+      });
     });
+
+    // Add scroll listener to track positions
+    _sharedScrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_sharedScrollController.hasClients) {
+      final currentTab = _contentTypes.keys.toList()[_tabController.index];
+      final offset = _sharedScrollController.offset;
+      _tabScrollPositions[currentTab] = offset;
+      print('DEBUG: Saving scroll position for tab "$currentTab": $offset');
+    }
+  }
+
+  void _restoreScrollPosition() {
+    if (_sharedScrollController.hasClients) {
+      final currentTab = _contentTypes.keys.toList()[_tabController.index];
+      final savedPosition = _tabScrollPositions[currentTab];
+      final maxScroll = _sharedScrollController.position.maxScrollExtent;
+
+      if (savedPosition != null) {
+        // Restore saved position, but clamp it to valid range
+        final clampedPosition = savedPosition.clamp(0.0, maxScroll);
+        _sharedScrollController.jumpTo(clampedPosition);
+      } else {
+        // First time visiting this tab - set default position
+        if (currentTab == 'chat') {
+          // Chat tab starts at bottom
+          _sharedScrollController.jumpTo(maxScroll);
+        } else {
+          // Other tabs start at top
+          _sharedScrollController.jumpTo(0);
+        }
+      }
+    }
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _sharedScrollController.dispose();
     super.dispose();
   }
 
@@ -82,7 +125,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           );
           contentTypes['chat'] = (
             count: 2,
-            feed: CommunityChatFeed(community: widget.community),
+            feed: CommunityChatFeed(
+              community: widget.community,
+              scrollController: _sharedScrollController,
+            ),
             bottomBar: LabBottomBarChat(
               model: widget.community,
               onAddTap: (model) {},
@@ -352,6 +398,41 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
     return _contentTypes[selectedType]?.bottomBar ?? const SizedBox.shrink();
   }
 
+  // Method to scroll to specific content across tabs
+  void scrollToContent(String contentType,
+      {double? offset, GlobalKey? targetKey}) {
+    // Switch to the correct tab first
+    final tabIndex = _contentTypes.keys.toList().indexOf(contentType);
+    if (tabIndex >= 0) {
+      _tabController.animateTo(tabIndex);
+    }
+
+    // Wait for tab switch to complete, then scroll
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_sharedScrollController.hasClients) {
+        if (targetKey != null) {
+          // Scroll to specific widget
+          final context = targetKey.currentContext;
+          if (context != null) {
+            Scrollable.ensureVisible(
+              context,
+              duration: LabDurationsData.normal().normal,
+              curve: Curves.easeOut,
+              alignment: 0.0, // Align to top
+            );
+          }
+        } else {
+          // Scroll to specific offset
+          _sharedScrollController.animateTo(
+            offset ?? 0,
+            duration: LabDurationsData.normal().normal,
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Record in history
@@ -366,6 +447,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       topBarContent: _buildTopBar(context),
       onHomeTap: () => context.push('/'),
       history: recentHistory,
+      scrollController: _sharedScrollController,
+      startAtBottom:
+          _contentTypes.keys.toList()[_tabController.index] == 'chat',
       child: LabContainer(
         decoration: BoxDecoration(color: LabTheme.of(context).colors.black),
         clipBehavior: Clip.hardEdge,

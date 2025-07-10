@@ -6,10 +6,12 @@ import '../providers/resolvers.dart';
 
 class CommunityChatFeed extends ConsumerStatefulWidget {
   final Community community;
+  final ScrollController? scrollController;
 
   const CommunityChatFeed({
     super.key,
     required this.community,
+    this.scrollController,
   });
 
   @override
@@ -17,34 +19,17 @@ class CommunityChatFeed extends ConsumerStatefulWidget {
 }
 
 class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
-  final ScrollController _scrollController = ScrollController();
-  String? _lastOutgoingMessageId;
   final Map<String, GlobalKey> _messageKeys = {};
-  bool _showScrollButton = true;
+  List<String> _previousMessageIds = [];
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _onScroll() {
-    if (!_scrollController.hasClients) return;
-
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    final delta = maxScroll - currentScroll;
-
-    setState(() {
-      _showScrollButton = delta > 40;
-    });
   }
 
   /// Scrolls to a specific message by its ID if it exists in the feed
@@ -57,12 +42,25 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
 
     await Scrollable.ensureVisible(
       key!.currentContext!,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: LabDurationsData.normal().normal,
+      curve: Curves.easeOut,
       alignment: 0.0, // Align to top
     );
 
     return true;
+  }
+
+  /// Scrolls to the bottom of the chat
+  void _scrollToBottom() {
+    // Use the passed scroll controller or find one through context
+    if (widget.scrollController != null) {
+      widget.scrollController!
+          .jumpTo(widget.scrollController!.position.maxScrollExtent);
+    } else {
+      final scrollable = Scrollable.of(context);
+
+      scrollable.position.jumpTo(scrollable.position.maxScrollExtent);
+    }
   }
 
   List<List<ChatMessage>> _groupMessages(List<ChatMessage> messages) {
@@ -99,7 +97,6 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = LabTheme.of(context);
     final resolvers = ref.read(resolversProvider);
 
     final state = ref.watch(query<ChatMessage>());
@@ -113,8 +110,10 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     final cashuZaps = cashuZapsState.models;
 
     if (messages.isEmpty && cashuZaps.isEmpty) {
-      return const Center(
-        child: Text('No messages yet'),
+      return LabModelEmptyStateCard(
+        contentType: "chat",
+        onCreateTap: () =>
+            context.push('/create/message', extra: widget.community),
       );
     }
 
@@ -134,136 +133,96 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     // Sort all events by timestamp (oldest first)
     allEvents.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
-    // Check for new outgoing messages
+    // Simple auto-scroll for new outgoing messages
     if (activeProfile != null) {
-      for (final event in allEvents) {
-        if (event.isMessage) {
-          final messageGroup = event.model as List<ChatMessage>;
-          final message = messageGroup.first;
-          if (message.author.value?.pubkey == activeProfile.pubkey &&
-              message.id != _lastOutgoingMessageId) {
-            // Found a new outgoing message
-            _lastOutgoingMessageId = message.id;
-            // Schedule scroll after the build is complete
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              scrollToMessage(message.id);
-            });
-            break;
+      // Count individual outgoing messages (not groups)
+      final currentOutgoingCount = messages
+          .where(
+              (message) => message.author.value?.pubkey == activeProfile.pubkey)
+          .length;
+
+      if (currentOutgoingCount > _previousMessageIds.length) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _scrollToBottom();
           }
-        }
+        });
       }
+
+      // Update the count
+      _previousMessageIds =
+          List.generate(currentOutgoingCount, (index) => 'msg_$index');
     }
 
-    // The Chat feed is placed inside a container with a fixed height
-    // This is needed because we're in an LabScreen widgetthat by default scroll in the other direction and cannot really allow for fine-grained scroll automation.
-    return LabContainer(
-      height: MediaQuery.of(context).size.height / theme.system.scale -
-          184 -
-          (LabPlatformUtils.isMobile
-              ? MediaQuery.of(context).padding.top / theme.system.scale +
-                  MediaQuery.of(context).padding.bottom / theme.system.scale
-              : 26.0),
-      child: Stack(
-        children: [
-          ListView.builder(
-            controller: _scrollController,
-            physics: ScrollPhysics(),
-            clipBehavior: Clip.none,
-            itemCount: allEvents.length + 1, // +1 for the divider
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return const LabNewMessagesDivider(text: '8 New Mssages');
-              }
-              final event = allEvents[index - 1];
-              return Column(
-                key: ValueKey(event.isMessage
-                    ? (event.model as List<ChatMessage>).first.id
-                    : (event.model as CashuZap).id),
-                children: [
-                  if (event.isMessage)
-                    Builder(
-                      builder: (context) {
-                        final messageId =
-                            (event.model as List<ChatMessage>).first.id;
-                        _messageKeys[messageId] = GlobalKey();
-                        return LabMessageStack(
-                          key: _messageKeys[messageId],
-                          messages: event.model as List<ChatMessage>,
-                          onResolveEvent: resolvers.eventResolver,
-                          onResolveProfile: resolvers.profileResolver,
-                          onResolveEmoji: resolvers.emojiResolver,
-                          onResolveHashtag: (identifier) async {
-                            await Future.delayed(const Duration(seconds: 1));
-                            return () {};
-                          },
-                          isOutgoing: (event.model as List<ChatMessage>)
-                                  .first
-                                  .author
-                                  .value
-                                  ?.pubkey ==
-                              activeProfile?.pubkey,
-                          onReply: (event) => context
-                              .push('/reply-to/${event.id}', extra: event),
-                          onActions: (event) => context
-                              .push('/actions/${event.id}', extra: event),
-                          onReactionTap: (reaction) {},
-                          onZapTap: (zap) {},
-                          onLinkTap: (url) {},
-                          onProfileTap: (profile) => context
-                              .push('/profile/${profile.npub}', extra: profile),
-                        );
-                      },
-                    )
-                  else
-                    LabZapBubble(
-                      cashuZap: event.model as CashuZap,
-                      onResolveEvent: resolvers.eventResolver,
-                      onResolveProfile: resolvers.profileResolver,
-                      onResolveEmoji: resolvers.emojiResolver,
-                      onResolveHashtag: (identifier) async {
-                        await Future.delayed(const Duration(seconds: 1));
-                        return () {};
-                      },
-                      isOutgoing:
-                          (event.model as CashuZap).author.value?.pubkey ==
-                              activeProfile?.pubkey,
-                      onReply: (event) =>
-                          context.push('/reply-to/${event.id}', extra: event),
-                      onActions: (event) =>
-                          context.push('/actions/${event.id}', extra: event),
-                      onReactionTap: (reaction) {},
-                      onZapTap: (zap) {},
-                      onLinkTap: (url) {},
-                      onProfileTap: (profile) => context
-                          .push('/profile/${profile.npub}', extra: profile),
-                    ),
-                  const LabGap.s8(),
-                ],
-              );
-            },
-          ),
-          Positioned(
-            right: theme.sizes.s16,
-            bottom: theme.sizes.s16,
-            child: _showScrollButton
-                ? LabFloatingButton(
-                    icon: LabIcon.s12(
-                      theme.icons.characters.arrowDown,
-                      outlineThickness: LabLineThicknessData.normal().medium,
-                      outlineColor: theme.colors.white66,
-                    ),
-                    onTap: () {
-                      _scrollController.animateTo(
-                        _scrollController.position.maxScrollExtent,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeOut,
+    return Column(
+      children: [
+        const LabNewMessagesDivider(text: '8 New Messages'),
+        ...allEvents.map((event) => Column(
+              key: ValueKey(event.isMessage
+                  ? (event.model as List<ChatMessage>).first.id
+                  : (event.model as CashuZap).id),
+              children: [
+                if (event.isMessage)
+                  Builder(
+                    builder: (context) {
+                      final messageId =
+                          (event.model as List<ChatMessage>).first.id;
+                      _messageKeys[messageId] = GlobalKey();
+                      return LabMessageStack(
+                        key: _messageKeys[messageId],
+                        messages: event.model as List<ChatMessage>,
+                        onResolveEvent: resolvers.eventResolver,
+                        onResolveProfile: resolvers.profileResolver,
+                        onResolveEmoji: resolvers.emojiResolver,
+                        onResolveHashtag: (identifier) async {
+                          await Future.delayed(const Duration(seconds: 1));
+                          return () {};
+                        },
+                        isOutgoing: (event.model as List<ChatMessage>)
+                                .first
+                                .author
+                                .value
+                                ?.pubkey ==
+                            activeProfile?.pubkey,
+                        onReply: (event) =>
+                            context.push('/reply-to/${event.id}', extra: event),
+                        onActions: (event) =>
+                            context.push('/actions/${event.id}', extra: event),
+                        onReactionTap: (reaction) {},
+                        onZapTap: (zap) {},
+                        onLinkTap: (url) {},
+                        onProfileTap: (profile) => context
+                            .push('/profile/${profile.npub}', extra: profile),
                       );
                     },
                   )
-                : const SizedBox.shrink(),
-          ),
-        ],
-      ),
+                else
+                  LabZapBubble(
+                    cashuZap: event.model as CashuZap,
+                    onResolveEvent: resolvers.eventResolver,
+                    onResolveProfile: resolvers.profileResolver,
+                    onResolveEmoji: resolvers.emojiResolver,
+                    onResolveHashtag: (identifier) async {
+                      await Future.delayed(const Duration(seconds: 1));
+                      return () {};
+                    },
+                    isOutgoing:
+                        (event.model as CashuZap).author.value?.pubkey ==
+                            activeProfile?.pubkey,
+                    onReply: (event) =>
+                        context.push('/reply-to/${event.id}', extra: event),
+                    onActions: (event) =>
+                        context.push('/actions/${event.id}', extra: event),
+                    onReactionTap: (reaction) {},
+                    onZapTap: (zap) {},
+                    onLinkTap: (url) {},
+                    onProfileTap: (profile) => context
+                        .push('/profile/${profile.npub}', extra: profile),
+                  ),
+                const LabGap.s8(),
+              ],
+            )),
+      ],
     );
   }
 }

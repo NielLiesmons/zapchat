@@ -159,22 +159,22 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen>
                     ),
                   ),
                   TabData(
-                    label: 'Shares',
-                    icon: LabIcon.s24(
-                      theme.icons.characters.share,
-                      outlineColor: theme.colors.white66,
-                      outlineThickness: LabLineThicknessData.normal().medium,
-                    ),
-                    content: const LabText.reg14('Shares content'),
-                  ),
-                  TabData(
                     label: 'Labels',
                     icon: LabIcon.s24(
                       theme.icons.characters.label,
                       outlineColor: theme.colors.white66,
                       outlineThickness: LabLineThicknessData.normal().medium,
                     ),
-                    content: const LabText.reg14('Labels content'),
+                    content: const LabLoadingFeed(),
+                  ),
+                  TabData(
+                    label: 'Shares',
+                    icon: LabIcon.s24(
+                      theme.icons.characters.share,
+                      outlineColor: theme.colors.white66,
+                      outlineThickness: LabLineThicknessData.normal().medium,
+                    ),
+                    content: const LabLoadingFeed(),
                   ),
                   TabData(
                     label: 'Details',

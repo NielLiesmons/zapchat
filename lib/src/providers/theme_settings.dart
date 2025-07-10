@@ -58,6 +58,7 @@ class ThemeSettings extends _$ThemeSettings {
       textScale: textScale,
       systemScale: systemScale,
       colorsOverride: colorsOverride,
+      colorThemeName: savedColorTheme ?? 'Blurple',
     );
   }
 
@@ -104,6 +105,7 @@ class ThemeSettings extends _$ThemeSettings {
 
     state = AsyncValue.data(currentState.copyWith(
       colorsOverride: colorsOverride,
+      colorThemeName: colorThemeName,
     ));
   }
 
@@ -120,13 +122,6 @@ class ThemeSettings extends _$ThemeSettings {
       return 'Blurple';
     }
 
-    // If there's no override, it's Blurple
-    if (currentState.colorsOverride == null) {
-      return 'Blurple';
-    }
-
-    // For now, return Blurple as default since we don't have a reverse lookup
-    // In a real implementation, you'd want to store the theme name in the state
-    return 'Blurple';
+    return currentState.colorThemeName;
   }
 }

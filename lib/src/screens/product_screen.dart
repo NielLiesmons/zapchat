@@ -132,7 +132,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen>
                     outlineColor: theme.colors.white66,
                     outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const LabText.reg14('Labels content'),
+                  content: const LabLoadingFeed(),
                 ),
                 TabData(
                   label: 'Shares',
@@ -141,7 +141,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen>
                     outlineColor: theme.colors.white66,
                     outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  content: const LabText.reg14('Shares content'),
+                  content: const LabLoadingFeed(),
                 ),
                 TabData(
                   label: 'Details',

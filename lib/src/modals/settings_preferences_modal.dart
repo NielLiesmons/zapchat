@@ -183,11 +183,8 @@ class PreferencesModal extends ConsumerWidget {
         LabSelector(
           initialIndex: themeState.when(
             data: (state) {
-              if (state.colorsOverride == null) {
-                return 0; // Blurple is first
-              }
-              // For now, assume Pink (index 1) if there's an override
-              return 1;
+              final themeName = state.colorThemeName;
+              return ColorThemes.availableThemes.indexOf(themeName);
             },
             loading: () => 0,
             error: (_, __) => 0,
@@ -217,19 +214,7 @@ class PreferencesModal extends ConsumerWidget {
               ],
               isSelected: themeState.when(
                 data: (state) {
-                  // If there's no override, Blurple is selected
-                  if (state.colorsOverride == null) {
-                    final isBlurple = themeName == 'Blurple';
-                    return isBlurple;
-                  }
-                  // If there is an override, we need to determine which theme it is
-                  // For now, let's check if it's a Pink override
-                  if (state.colorsOverride?.blurple != null) {
-                    // This is a hack - we should store the theme name in state
-                    // For now, assume it's Pink if there's an override
-                    return themeName == 'Pink';
-                  }
-                  return false;
+                  return themeName == state.colorThemeName;
                 },
                 loading: () => false,
                 error: (_, __) => false,
