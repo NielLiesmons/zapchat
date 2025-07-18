@@ -79,8 +79,7 @@ class HistoryContent extends ConsumerWidget {
                           final models = storage.querySync(
                             RequestFilter(
                               ids: {item.modelId},
-                              remote: false,
-                            ),
+                            ).toRequest(),
                           );
                           print('Found models: ${models.length}');
                           if (models.isNotEmpty) {

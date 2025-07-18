@@ -10,7 +10,8 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final signedInPubkeys = ref.watch(Signer.signedInPubkeysProvider);
-    final activeProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile =
+        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
     final themeState = ref.watch(themeSettingsProvider);
 
     if (signedInPubkeys.isEmpty) {

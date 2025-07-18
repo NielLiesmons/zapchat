@@ -11,7 +11,8 @@ class PreferencesModal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = LabTheme.of(context);
     final themeState = ref.watch(themeSettingsProvider);
-    final activeProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile =
+        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
 
     return LabModal(
       title: 'Preferences',

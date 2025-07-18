@@ -13,7 +13,8 @@ class CreateNewStuffModal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = LabTheme.of(context);
-    final activeProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile =
+        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
 
     return LabModal(
       title: 'Create New',

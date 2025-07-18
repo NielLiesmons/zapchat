@@ -198,7 +198,7 @@ class CommunityKeyModal extends ConsumerWidget {
               LabProfilePic.s56(
                 PartialProfile(
                   name: profileName,
-                ).dummySign(npubToHex(npub)),
+                ).dummySign(npub.decodeShareable()),
               ),
               const LabGap.s12(),
               Column(

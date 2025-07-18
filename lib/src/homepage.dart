@@ -47,7 +47,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
-    final activeProfile = ref.watch(Signer.activeProfileProvider);
+    final activeProfile =
+        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
     final containerHeight =
         activeProfile == null ? _heightWithoutProfile : _heightWithProfile;
 
