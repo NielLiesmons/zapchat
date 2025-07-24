@@ -3,6 +3,7 @@ import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class YourCommunityScreen extends StatefulWidget {
   final Profile profile;
@@ -192,8 +193,8 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                               ),
                               child: _profile.banner != null &&
                                       _profile.banner!.isNotEmpty
-                                  ? Image.network(
-                                      _profile.banner!,
+                                  ? CachedNetworkImage(
+                                      imageUrl: _profile.banner!,
                                       fit: BoxFit.cover,
                                     )
                                   : null,

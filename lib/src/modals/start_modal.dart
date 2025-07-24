@@ -74,7 +74,7 @@ class _StartModalState extends State<StartModal> {
                   color: theme.colors.white66,
                   textAlign: TextAlign.center,
                 ),
-              const LabGap.s32(),
+              const LabGap.s24(),
               Row(
                 children: [
                   const LabGap.s16(),

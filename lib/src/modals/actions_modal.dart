@@ -180,7 +180,7 @@ class ActionsModal extends ConsumerWidget {
                               ],
                             ),
                             TapBuilder(
-                              onTap: () => context.push('/reply/${model.id}',
+                              onTap: () => context.push('/reply-to/${model.id}',
                                   extra: model),
                               builder: (context, state, hasFocus) {
                                 double scaleFactor = 1.0;

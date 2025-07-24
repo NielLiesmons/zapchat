@@ -15,13 +15,17 @@ class CommunityArticlesFeed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final resolvers = ref.read(resolversProvider);
-    final state = ref.watch(query<Article>());
+    final state = ref.watch(query<Article>(limit: 1));
+    print(
+        'DEBUG: CommunityArticlesFeed: Articles found: ${state.models.length}, State: ${state}, Time: ${DateTime.now()}');
+    print('DEBUG: Article query state: ${state}');
+    print('DEBUG: Article query runtimeType: ${state.runtimeType}');
 
     if (state case StorageLoading()) {
       return const LabLoadingFeed();
     }
 
-    final articles = state.models.cast<Article>();
+    final articles = state.models;
 
     return Column(
       children: [

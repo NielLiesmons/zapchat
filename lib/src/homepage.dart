@@ -47,10 +47,24 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+    final activePubkey = ref.watch(Signer.activePubkeyProvider);
     final activeProfile =
         ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
+
+    final profileState = (activeProfile == null && activePubkey != null)
+        ? ref.watch(query<Profile>(
+            authors: {activePubkey},
+            source:
+                RemoteSource(group: 'social', stream: false, background: false),
+            limit: 1,
+          ))
+        : null;
+    final profileToShow = activeProfile ??
+        (profileState is StorageData && profileState?.models.isNotEmpty == true
+            ? profileState!.models.first
+            : null);
     final containerHeight =
-        activeProfile == null ? _heightWithoutProfile : _heightWithProfile;
+        activePubkey == null ? _heightWithoutProfile : _heightWithProfile;
 
     return Stack(
       children: [
@@ -67,7 +81,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: LabContainer(
                       height: containerHeight,
                       padding: const LabEdgeInsets.all(LabGapSize.s12),
-                      child: activeProfile == null
+                      child: activePubkey == null
                           ? Row(
                               children: [
                                 Image.asset(
@@ -96,7 +110,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                               children: [
                                 if (LabPlatformUtils.isMobile)
                                   LabProfilePic.s48(
-                                    activeProfile,
+                                    profileToShow,
                                     onTap: () => context.push('/settings'),
                                   ),
                                 if (LabPlatformUtils.isMobile)

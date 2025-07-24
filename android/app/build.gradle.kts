@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    ndkVersion = "27.0.12077973"
     namespace = "com.example.zapchat"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion

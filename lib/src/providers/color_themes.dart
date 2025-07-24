@@ -94,43 +94,7 @@ class ColorThemes {
             Color(0xFFDB465F).withValues(alpha: 0.16)
           ]),
         );
-      case 'Bronze':
-        return LabColorsOverride(
-          blurple:
-              LinearGradient(colors: [Color(0xFFEC7347), Color(0xFFC6492F)]),
-          blurple66: LinearGradient(colors: [
-            Color(0xFFEC7347).withValues(alpha: 0.66),
-            Color(0xFFC6492F).withValues(alpha: 0.66)
-          ]),
-          blurple33: LinearGradient(colors: [
-            Color(0xFFEC7347).withValues(alpha: 0.33),
-            Color(0xFFC6492F).withValues(alpha: 0.33)
-          ]),
-          blurple16: LinearGradient(colors: [
-            Color(0xFFEC7347).withValues(alpha: 0.16),
-            Color(0xFFC6492F).withValues(alpha: 0.16)
-          ]),
-          blurpleColor: Color(0xFFE55D37),
-          blurpleColor66: Color(0xFFE55D37).withValues(alpha: 0.66),
-          blurpleColor33: Color(0xFFE55D37).withValues(alpha: 0.33),
-          blurpleLightColor: Color(0xFFE55D37),
-          blurpleLightColor66: Color(0xFFE55D37).withValues(alpha: 0.66),
-          gold: LinearGradient(colors: [Color(0xFF43A3EA), Color(0xFF5747D1)]),
-          gold66: LinearGradient(colors: [
-            Color(0xFF43A3EA).withValues(alpha: 0.66),
-            Color(0xFF5747D1).withValues(alpha: 0.66)
-          ]),
-          gold33: LinearGradient(colors: [
-            Color(0xFF43A3EA).withValues(alpha: 0.33),
-            Color(0xFF5747D1).withValues(alpha: 0.33)
-          ]),
-          gold16: LinearGradient(colors: [
-            Color(0xFF43A3EA).withValues(alpha: 0.16),
-            Color(0xFF5747D1).withValues(alpha: 0.16)
-          ]),
-          goldColor: Color(0xFF4D75DE),
-          goldColor66: Color(0xFF4D75DE).withValues(alpha: 0.66),
-        );
+
       case 'Blue':
         return LabColorsOverride(
           blurple:
@@ -186,7 +150,6 @@ class ColorThemes {
         'Blurple',
         'Pink',
         'Ocean',
-        'Bronze',
         'Blue',
         'Purple',
       ];
@@ -209,8 +172,6 @@ class ColorThemes {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
-      case 'Bronze':
-        return LinearGradient(colors: [Color(0xFFEC7347), Color(0xFFC6492F)]);
 
       case 'Blue':
         return LinearGradient(

@@ -20,10 +20,9 @@ class HomeTab extends StatelessWidget {
       bottomBar: LabPlatformUtils.isMobile
           ? HookConsumer(
               builder: (context, ref, _) {
-                final activeProfile = ref.watch(
-                    Signer.activeProfileProvider(LocalAndRemoteSource()));
+                final activePubkey = ref.watch(Signer.activePubkeyProvider);
                 return LabBottomBarHome(
-                  onZapTap: activeProfile != null
+                  onZapTap: activePubkey != null
                       ? () {
                           context.push('/pay');
                         }
@@ -46,20 +45,12 @@ class HomeTab extends StatelessWidget {
           final resolvers = ref.read(resolversProvider);
           final state = ref
               .watch(query<Community>(and: (c) => {c.author, c.chatMessages}));
-          final state2 = ref.watch(query<Group>());
-          final activeProfile =
-              ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
+          final activePubkey = ref.watch(Signer.activePubkeyProvider);
+          final activeProfile = ref.watch(
+            Signer.activeProfileProvider(LocalAndRemoteSource()),
+          );
 
           final communities = state.models;
-          final groups = state2.models;
-
-          final communityCounts = {
-            'Zapchat': {'main': 20, 'Chat': 15, 'Tasks': 3},
-            'Cypher Chads': {'main': 4, 'Chat': 12, 'Threads': 15},
-            'Communikeys': {'main': 3, 'Chat': 18, 'Threads': 9},
-            'Nips Out': {'main': 1, 'Chat': 10, 'Wikis': 8},
-            'Metabolism Go Up': {'Threads': 12, 'Work-outs': 1},
-          };
 
           return Column(
             children: [
@@ -67,18 +58,11 @@ class HomeTab extends StatelessWidget {
                 LabCommunityHomePanel(
                   community: community,
                   lastModel: community.chatMessages.toList().firstOrNull,
-                  mainCount: communityCounts[community.name]?['main'] ?? 0,
+                  mainCount: 10,
                   contentCounts: {
-                    'chat': communityCounts[community.name]?['Chat'] ?? 0,
-                    'thread': communityCounts[community.name]?['Threads'] ?? 0,
-                    'article':
-                        communityCounts[community.name]?['Articles'] ?? 0,
-                    'app': communityCounts[community.name]?['Apps'] ?? 0,
-                    'book': communityCounts[community.name]?['Books'] ?? 0,
-                    'task': communityCounts[community.name]?['Tasks'] ?? 0,
-                    'wiki': communityCounts[community.name]?['Wikis'] ?? 0,
-                    'work-out':
-                        communityCounts[community.name]?['Work-outs'] ?? 0,
+                    'chat': 10,
+                    'thread': 10,
+                    'task': 10,
                   },
                   onNavigateToCommunity: (community) {
                     context.push(
@@ -105,43 +89,6 @@ class HomeTab extends StatelessWidget {
                     context.push('/create/', extra: community);
                   },
                 ),
-              if (activeProfile != null) ...[
-                for (final group in groups)
-                  LabGroupHomePanel(
-                    group: group,
-                    // lastModel:
-                    //     chatMessages.isNotEmpty ? chatMessages.first : null,
-                    mainCount: 0,
-                    contentCounts: {
-                      'chat': 8,
-                      'album': 2,
-                    },
-                    onNavigateToGroup: (group) {
-                      context.push(
-                        '/group/${group.author.value?.npub}/chat',
-                        extra: group,
-                      );
-                    },
-                    onNavigateToContent: (community, contentType) {
-                      context.push(
-                        '/group/${group.author.value?.npub}/$contentType',
-                        extra: group,
-                      );
-                    },
-                    onNavigateToNotifications: (group) {
-                      context.push(
-                        '/group/${group.author.value?.npub}/notifications',
-                        extra: group,
-                      );
-                    },
-                    onResolveEvent: resolvers.eventResolver,
-                    onResolveProfile: resolvers.profileResolver,
-                    onResolveEmoji: resolvers.emojiResolver,
-                    onCreateNewPublication: (community) {
-                      context.push('/create/', extra: community);
-                    },
-                  ),
-              ],
               LabContainer(
                 padding: LabEdgeInsets.all(LabGapSize.s12),
                 height: 1000,

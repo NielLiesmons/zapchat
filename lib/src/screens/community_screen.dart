@@ -13,6 +13,7 @@ import '../feeds/comunity_polls_feed.dart';
 import '../feeds/community_services_feed.dart';
 import '../feeds/community_forum_feed.dart';
 import '../feeds/community_products_feed.dart';
+import '../feeds/community_supporters_feed.dart';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
 
@@ -40,11 +41,18 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   void initState() {
     super.initState();
     _contentTypes = _buildContentTypes();
+
+    // Calculate initial index safely
+    int initialIndex = 0;
+    if (widget.initialContentType != null) {
+      final index =
+          _contentTypes.keys.toList().indexOf(widget.initialContentType!);
+      initialIndex = index >= 0 ? index : 0;
+    }
+
     _tabController = LabTabController(
       length: _contentTypes.length,
-      initialIndex: widget.initialContentType != null
-          ? _contentTypes.keys.toList().indexOf(widget.initialContentType!)
-          : 0,
+      initialIndex: initialIndex,
     );
     _tabController.addListener(() {
       if (_tabController.index < 0 ||
@@ -64,7 +72,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   }
 
   void _onScroll() {
-    if (_sharedScrollController.hasClients) {
+    if (_sharedScrollController.hasClients &&
+        _tabController.index >= 0 &&
+        _tabController.index < _contentTypes.length) {
       final currentTab = _contentTypes.keys.toList()[_tabController.index];
       final offset = _sharedScrollController.offset;
       _tabScrollPositions[currentTab] = offset;
@@ -73,7 +83,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   }
 
   void _restoreScrollPosition() {
-    if (_sharedScrollController.hasClients) {
+    if (_sharedScrollController.hasClients &&
+        _tabController.index >= 0 &&
+        _tabController.index < _contentTypes.length) {
       final currentTab = _contentTypes.keys.toList()[_tabController.index];
       final savedPosition = _tabScrollPositions[currentTab];
       final maxScroll = _sharedScrollController.position.maxScrollExtent;
@@ -84,7 +96,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         _sharedScrollController.jumpTo(clampedPosition);
       } else {
         // First time visiting this tab - set default position
-        if (currentTab == 'chat') {
+        if (currentTab == 'Chat') {
           // Chat tab starts at bottom
           _sharedScrollController.jumpTo(maxScroll);
         } else {
@@ -108,161 +120,126 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         <String, ({int count, Widget feed, Widget bottomBar})>{};
     final resolvers = ref.read(resolversProvider);
 
+    // DEBUG: Print community data to understand the structure
+    print('DEBUG: Community name: ${widget.community.name}');
+    print(
+        'DEBUG: Community contentSections count: ${widget.community.contentSections.length}');
     for (final section in widget.community.contentSections) {
-      final contentType = section.content;
+      print(
+          'DEBUG: Content section: "${section.content}" with kinds: ${section.kinds}');
+    }
 
-      switch (contentType) {
-        case 'Chat':
-          contentTypes['welcome'] = (
-            count: 0,
-            feed: LabCommunityWelcomeFeed(
-              community: widget.community,
-              onProfileTap: () => context.push(
-                  '/community/${widget.community.author.value?.npub}/info',
-                  extra: widget.community),
-            ),
-            bottomBar: const LabBottomBarWelcome()
-          );
-          contentTypes['chat'] = (
-            count: 2,
-            feed: CommunityChatFeed(
-              community: widget.community,
-              scrollController: _sharedScrollController,
-            ),
-            bottomBar: LabBottomBarChat(
-              model: widget.community,
-              onAddTap: (model) {},
-              onMessageTap: (model) {
-                context.push('/create/message', extra: model);
-              },
-              onVoiceTap: (model) {},
-              onActions: (model) {},
-              onResolveEvent: resolvers.eventResolver,
-              onResolveProfile: resolvers.profileResolver,
-              onResolveEmoji: resolvers.emojiResolver,
-            )
-          );
-          break;
-        case 'Threads':
-          contentTypes['thread'] = (
-            count: 6,
-            feed: CommunityThreadsFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Tasks':
-          contentTypes['task'] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Jobs':
-          contentTypes['job'] = (
-            count: 0,
-            feed: CommunityJobsFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Products':
-          contentTypes['product'] = (
-            count: 0,
-            feed: CommunityProductsFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Services':
-          contentTypes['service'] = (
-            count: 0,
-            feed: CommunityServicesFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Docs':
-          contentTypes['doc'] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Articles':
-          contentTypes['article'] = (
-            count: 4,
-            feed: CommunityArticlesFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Forum':
-          contentTypes['forum'] = (
-            count: 0,
-            feed: CommunityForumFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Polls':
-          contentTypes['poll'] = (
-            count: 0,
-            feed: CommunityPollsFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Apps':
-          contentTypes['app'] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Work-outs':
-          contentTypes['work-out'] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Books':
-          contentTypes['book'] = (
-            count: 0,
-            feed: CommunityBooksFeed(community: widget.community),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Videos':
-          contentTypes['video'] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        case 'Albums':
-          contentTypes['album'] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
-          break;
-        default:
-          contentTypes[section.content] = (
-            count: 0,
-            feed: LabLoadingFeed(type: LoadingFeedType.content),
-            bottomBar: const LabBottomBarContentFeed()
-          );
+    // 1. Always add hardcoded sections
+    contentTypes['Welcome'] = (
+      count: 0,
+      feed: LabCommunityWelcomeFeed(
+        community: widget.community,
+        onProfileTap: () => context.push(
+            '/community/${widget.community.author.value?.npub}/info',
+            extra: widget.community),
+      ),
+      bottomBar: const LabBottomBarWelcome()
+    );
+
+    contentTypes['Chat'] = (
+      count: 2,
+      feed: CommunityChatFeed(
+        community: widget.community,
+        scrollController: _sharedScrollController,
+      ),
+      bottomBar: LabBottomBarChat(
+        model: widget.community,
+        onAddTap: (model) {},
+        onMessageTap: (model) {
+          context.push('/create/message', extra: model);
+        },
+        onVoiceTap: (model) {},
+        onActions: (model) {},
+        onResolveEvent: resolvers.eventResolver,
+        onResolveProfile: resolvers.profileResolver,
+        onResolveEmoji: resolvers.emojiResolver,
+      )
+    );
+
+    // 2. Process Community content sections
+    for (final section in widget.community.contentSections) {
+      final sectionName = section.content;
+      final kinds = section.kinds;
+
+      // Simple mapping: check name + kinds for custom feeds
+      if ((sectionName == 'Threads' || sectionName == 'Posts') &&
+          kinds.contains(1)) {
+        contentTypes['Threads'] = (
+          count: 6,
+          feed: CommunityThreadsFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Articles' && kinds.contains(30023)) {
+        contentTypes['Articles'] = (
+          count: 4,
+          feed: CommunityArticlesFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Jobs' && kinds.contains(9041)) {
+        contentTypes['Jobs'] = (
+          count: 0,
+          feed: CommunityJobsFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Books' && kinds.contains(30008)) {
+        contentTypes['Books'] = (
+          count: 0,
+          feed: CommunityBooksFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Polls' && kinds.contains(1068)) {
+        contentTypes['Polls'] = (
+          count: 0,
+          feed: CommunityPollsFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Forum' && kinds.contains(30001)) {
+        contentTypes['Forum'] = (
+          count: 0,
+          feed: CommunityForumFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Products' && kinds.contains(30009)) {
+        contentTypes['Products'] = (
+          count: 0,
+          feed: CommunityProductsFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else if (sectionName == 'Services' && kinds.contains(30010)) {
+        contentTypes['Services'] = (
+          count: 0,
+          feed: CommunityServicesFeed(community: widget.community),
+          bottomBar: const LabBottomBarContentFeed()
+        );
+      } else {
+        // Default: use capitalized name + generic feed
+        final displayName =
+            sectionName[0].toUpperCase() + sectionName.substring(1);
+        contentTypes[displayName] = (
+          count: 0,
+          feed: LabLoadingFeed(
+              type: LoadingFeedType
+                  .content), // TODO: Replace with generic feed that takes kinds
+          bottomBar: const LabBottomBarContentFeed()
+        );
+        print(
+            'DEBUG: Created default tab for: "$sectionName" -> "$displayName" with kinds: $kinds');
       }
     }
 
-    if (contentTypes.isEmpty) {
-      contentTypes['welcome'] = (
-        count: 0,
-        feed: LabCommunityWelcomeFeed(
-          community: widget.community,
-          onProfileTap: () => context.push(
-              '/community/${widget.community.author.value?.npub}/info',
-              extra: widget.community),
-        ),
-        bottomBar: const LabBottomBarWelcome()
-      );
-    }
+    // 3. Always add Supporters section last
+    contentTypes['Supporters'] = (
+      count: 0,
+      feed: CommunitySupportersFeed(community: widget.community),
+      bottomBar: const LabBottomBarContentFeed()
+    );
 
+    print('DEBUG: Final content types: ${contentTypes.keys.toList()}');
     return contentTypes;
   }
 
@@ -365,10 +342,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           tabs: [
             for (final contentType in contentTypes)
               TabData(
-                label: ['chat', 'welcome', 'forum'].contains(contentType)
-                    ? '${contentType[0].toUpperCase()}${contentType.substring(1)}'
-                    : '${contentType[0].toUpperCase()}${contentType.substring(1)}s',
-                icon: LabEmojiContentType(contentType: contentType),
+                label: contentType,
+                icon: LabEmojiContentType(
+                    contentType:
+                        getContentTyepFromCommunitySectionName(contentType)),
                 content: const SizedBox.shrink(),
                 count: _contentTypes[contentType]?.count ?? 0,
               ),
@@ -440,6 +417,17 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
     final recentHistory =
         ref.watch(recentHistoryItemsProvider(context, widget.community.id));
 
+    // Watch profiles to ensure author data is loaded for fallback logic
+    ref.watch(query<Profile>());
+
+    // Safely determine if we should start at bottom
+    bool startAtBottom = false;
+    if (_tabController.index >= 0 &&
+        _tabController.index < _contentTypes.length) {
+      final currentTab = _contentTypes.keys.toList()[_tabController.index];
+      startAtBottom = currentTab == 'Chat';
+    }
+
     return LabScreen(
       alwaysShowTopBar: true,
       customTopBar: true,
@@ -448,8 +436,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       onHomeTap: () => context.push('/'),
       history: recentHistory,
       scrollController: _sharedScrollController,
-      startAtBottom:
-          _contentTypes.keys.toList()[_tabController.index] == 'chat',
+      startAtBottom: startAtBottom,
       child: LabContainer(
         decoration: BoxDecoration(color: LabTheme.of(context).colors.black),
         clipBehavior: Clip.hardEdge,

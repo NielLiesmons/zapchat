@@ -59,7 +59,7 @@ class CommunityKeyModal extends ConsumerWidget {
 
                   // Get the signer from the provider
                   final signer = ref.read(bip340SignerProvider(secretKeyHex));
-                  await signer.initialize();
+                  await signer.signIn();
 
                   // Sign the profile with the signer
                   final profile = await partialProfile.signWith(signer);

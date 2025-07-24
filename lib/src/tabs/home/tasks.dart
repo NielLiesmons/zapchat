@@ -32,12 +32,7 @@ class TasksTab extends StatelessWidget {
                     isUnread: true,
                     task: tasks[1],
                     onTap: (model) => context.push('/task/${model.id}'),
-                    taggedModels: [
-                      PartialRepository(
-                        'Repo Name',
-                        'Repo Description',
-                      ).dummySign()
-                    ],
+                    taggedModels: [],
                     onTaggedModelTap: (model) =>
                         context.push('/model/${model.id}'),
                     onSwipeLeft: (model) => {},
@@ -58,12 +53,7 @@ class TasksTab extends StatelessWidget {
                     isUnread: true,
                     task: tasks[3],
                     onTap: (model) => context.push('/task/${model.id}'),
-                    taggedModels: [
-                      PartialRepository(
-                        'Repo Name',
-                        'Repo Description',
-                      ).dummySign()
-                    ],
+                    taggedModels: [],
                     onTaggedModelTap: (model) =>
                         context.push('/model/${model.id}'),
                     onSwipeLeft: (model) => {},

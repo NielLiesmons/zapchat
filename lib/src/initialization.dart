@@ -12,7 +12,14 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
       StorageConfiguration(
         databasePath: path.join(dir.path, 'zapchat.db'),
         relayGroups: {
-          'default': {'wss://relay.damus.io'}
+          'social': {
+            // 'wss://relay.damus.io',
+            'wss://zaplab.nostr1.com',
+            'wss://theforest.nostr1.com',
+            // 'wss://nos.lol',
+            'wss://nostr.wine',
+            // 'wss://relay.primal.net',
+          }
         },
         keepSignatures: false,
       ),
@@ -29,7 +36,7 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
         kind: 33333,
         constructor: Service.fromMap); // TODO: Change to right kind
     Model.register(kind: 30402, constructor: Product.fromMap);
-    Model.register(kind: 11, constructor: ForumPost.fromMap);
+    // Model.register(kind: 11, constructor: ForumPost.fromMap);
     Model.register(kind: 1068, constructor: Poll.fromMap);
     Model.register(kind: 1018, constructor: PollResponse.fromMap);
 
@@ -46,7 +53,7 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
     final dummyCashuZaps = <CashuZap>[];
     final dummyServices = <Service>[];
     final dummyProducts = <Product>[];
-    final dummyForumPosts = <ForumPost>[];
+    // final dummyForumPosts = <ForumPost>[];
     final dummyComments = <Comment>[];
     final dummyPolls = <Poll>[];
     final dummyPollResponses = <PollResponse>[];
@@ -198,7 +205,7 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
     await ref.read(storageNotifierProvider.notifier).save({testProfile});
 
     final testSigner = DummySigner(ref, pubkey: testProfile.pubkey);
-    await testSigner.initialize(active: true); // Set as active for testing
+    await testSigner.signIn(); // Set as active for testing
 
     // Create community after profiles are saved and indexed
     final zapchatCommunity = PartialCommunity(
@@ -706,73 +713,73 @@ Then ncommunity = npub + relay hints, for communities
       )).dummySign(zapcloud.pubkey),
     ]);
 
-    dummyTasks.addAll([
-      (PartialTask(
-        'Task Title',
-        'Task Content',
-        status: 'open',
-        slug: Utils.generateRandomHex64(),
-        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).dummySign(franzap.pubkey),
-      (PartialTask(
-        'Task Title',
-        'Task Content',
-        status: 'inProgress',
-        slug: Utils.generateRandomHex64(),
-        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).dummySign(zapcloud.pubkey),
-      (PartialTask(
-        'Task Title',
-        'Task Content',
-        status: 'inReview',
-        slug: Utils.generateRandomHex64(),
-        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).dummySign(niel.pubkey),
-      (PartialTask(
-        'Task Title',
-        'Task Content',
-        status: 'closed',
-        slug: Utils.generateRandomHex64(),
-        publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-      )).dummySign(zapchat.pubkey),
-    ]);
+    // dummyTasks.addAll([
+    //   (PartialTask(
+    //     'Task Title',
+    //     'Task Content',
+    //     status: 'open',
+    //     slug: Utils.generateRandomHex64(),
+    //     publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+    //   )).dummySign(franzap.pubkey),
+    //   (PartialTask(
+    //     'Task Title',
+    //     'Task Content',
+    //     status: 'inProgress',
+    //     slug: Utils.generateRandomHex64(),
+    //     publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+    //   )).dummySign(zapcloud.pubkey),
+    //   (PartialTask(
+    //     'Task Title',
+    //     'Task Content',
+    //     status: 'inReview',
+    //     slug: Utils.generateRandomHex64(),
+    //     publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+    //   )).dummySign(niel.pubkey),
+    //   (PartialTask(
+    //     'Task Title',
+    //     'Task Content',
+    //     status: 'closed',
+    //     slug: Utils.generateRandomHex64(),
+    //     publishedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+    //   )).dummySign(zapchat.pubkey),
+    // ]);
 
-    dummyJobs.addAll([
-      (PartialJob(
-        'Codesigner',
-        '''We are looking for a coding designer \n## Project Overview\nZapcloud is an **all-in-one** hosting solution for Nostr and we need branding and bla bla bla.''',
-        labels: {
-          'UX',
-          'UI',
-          'Design System',
-          'Flutter',
-        },
-        location: 'Remote',
-        employment: 'Part-Time',
-      )).dummySign(zaplab.pubkey),
-      (PartialJob(
-        'Community Manager',
-        '''Zapchat Community Manager \n## Project Overview\nZapchat is a Nostr community for the Zapchat project and we need a community manager to help us grow the community.''',
-        labels: {
-          'Community',
-          'Moderation',
-          'Content',
-        },
-        location: 'Remote',
-        employment: 'Full-Time',
-      )).dummySign(metabolism.pubkey),
-      (PartialJob(
-        'Food Forest Design',
-        '''Food Forest Design \n## Project Overview\nFood Forest is a permaculture project in Winsconsin, USA and we need a design to help us grow plants and trees.''',
-        labels: {
-          'Permaculture',
-          'Gardening',
-          'Design',
-        },
-        location: 'Winsconsin, USA',
-        employment: 'Task Based',
-      )).dummySign(jane.pubkey),
-    ]);
+    // dummyJobs.addAll([
+    //   (PartialJob(
+    //     'Codesigner',
+    //     '''We are looking for a coding designer \n## Project Overview\nZapcloud is an **all-in-one** hosting solution for Nostr and we need branding and bla bla bla.''',
+    //     labels: {
+    //       'UX',
+    //       'UI',
+    //       'Design System',
+    //       'Flutter',
+    //     },
+    //     location: 'Remote',
+    //     employment: 'Part-Time',
+    //   )).dummySign(zaplab.pubkey),
+    //   (PartialJob(
+    //     'Community Manager',
+    //     '''Zapchat Community Manager \n## Project Overview\nZapchat is a Nostr community for the Zapchat project and we need a community manager to help us grow the community.''',
+    //     labels: {
+    //       'Community',
+    //       'Moderation',
+    //       'Content',
+    //     },
+    //     location: 'Remote',
+    //     employment: 'Full-Time',
+    //   )).dummySign(metabolism.pubkey),
+    //   (PartialJob(
+    //     'Food Forest Design',
+    //     '''Food Forest Design \n## Project Overview\nFood Forest is a permaculture project in Winsconsin, USA and we need a design to help us grow plants and trees.''',
+    //     labels: {
+    //       'Permaculture',
+    //       'Gardening',
+    //       'Design',
+    //     },
+    //     location: 'Winsconsin, USA',
+    //     employment: 'Task Based',
+    //   )).dummySign(jane.pubkey),
+    // ]);
 
     // Add dummy zap requests
     dummyCashuZaps.addAll([
@@ -794,68 +801,68 @@ Then ncommunity = npub + relay hints, for communities
       )).dummySign(verbiricha.pubkey),
     ]);
 
-    dummyServices.addAll([
-      (PartialService(
-        'Nostr App Design',
-        "Here's some text to convince you that a dude that spent under two years of his life designing and building UIs can do a wonderful job for you.",
-        summary:
-            'Pixel-perfect designs and front end builds for your Nostr app.',
-        images: {
-          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-          'https://cdn.satellite.earth/723a6b2aaa7df2512da3e3858d70e0fbea01c0b2a43be91d3f6d42d3e004fd0a.png',
-          'https://cdn.satellite.earth/d2403b5242834573a3c19d9024dda0e61defc76442247c19082755f48bbf13e9.png',
-        },
-      )).dummySign(niel.pubkey),
-      (PartialService(
-        'Custom Micro App',
-        "Here's some text to convince you that we can build a decent app for you;",
-        summary:
-            'We build small custom Nostr apps for any platform, that can tap right into your existing Communities and Provate groups',
-        images: {
-          'https://cdn.satellite.earth/6375a73e1ee7b398c3910ac06cfd8fa79d5947fd898f68ba401960465d4e15bf.png',
-        },
-      )).dummySign(franzap.pubkey),
-    ]);
+    // dummyServices.addAll([
+    //   (PartialService(
+    //     'Nostr App Design',
+    //     "Here's some text to convince you that a dude that spent under two years of his life designing and building UIs can do a wonderful job for you.",
+    //     summary:
+    //         'Pixel-perfect designs and front end builds for your Nostr app.',
+    //     images: {
+    //       'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+    //       'https://cdn.satellite.earth/723a6b2aaa7df2512da3e3858d70e0fbea01c0b2a43be91d3f6d42d3e004fd0a.png',
+    //       'https://cdn.satellite.earth/d2403b5242834573a3c19d9024dda0e61defc76442247c19082755f48bbf13e9.png',
+    //     },
+    //   )).dummySign(niel.pubkey),
+    //   (PartialService(
+    //     'Custom Micro App',
+    //     "Here's some text to convince you that we can build a decent app for you;",
+    //     summary:
+    //         'We build small custom Nostr apps for any platform, that can tap right into your existing Communities and Provate groups',
+    //     images: {
+    //       'https://cdn.satellite.earth/6375a73e1ee7b398c3910ac06cfd8fa79d5947fd898f68ba401960465d4e15bf.png',
+    //     },
+    //   )).dummySign(franzap.pubkey),
+    // ]);
 
-    dummyProducts.addAll([
-      (PartialProduct(
-        'Nostr App Design',
-        "Here's some text to convince you that a dude that spent under two years of his life designing and building UIs can do a wonderful job for you.",
-        price: "210000",
-        summary:
-            'Pixel-perfect designs and front end builds for your Nostr app.',
-        images: {
-          'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
-          'https://cdn.satellite.earth/723a6b2aaa7df2512da3e3858d70e0fbea01c0b2a43be91d3f6d42d3e004fd0a.png',
-          'https://cdn.satellite.earth/d2403b5242834573a3c19d9024dda0e61defc76442247c19082755f48bbf13e9.png',
-        },
-      )).dummySign(niel.pubkey),
-      (PartialProduct(
-        'Custom Micro App',
-        "Here's some text to convince you that we can build a decent app for you;",
-        price: "210000",
-        summary:
-            'We build small custom Nostr apps for any platform, that can tap right into your existing Communities and Provate groups',
-        images: {
-          'https://cdn.satellite.earth/6375a73e1ee7b398c3910ac06cfd8fa79d5947fd898f68ba401960465d4e15bf.png',
-        },
-      )).dummySign(franzap.pubkey),
-    ]);
+    // dummyProducts.addAll([
+    //   (PartialProduct(
+    //     'Nostr App Design',
+    //     "Here's some text to convince you that a dude that spent under two years of his life designing and building UIs can do a wonderful job for you.",
+    //     price: "210000",
+    //     summary:
+    //         'Pixel-perfect designs and front end builds for your Nostr app.',
+    //     images: {
+    //       'https://cdn.satellite.earth/848413776358f99a9a90ebc2bac711262a76243795c95615d805dba0fd23c571.png',
+    //       'https://cdn.satellite.earth/723a6b2aaa7df2512da3e3858d70e0fbea01c0b2a43be91d3f6d42d3e004fd0a.png',
+    //       'https://cdn.satellite.earth/d2403b5242834573a3c19d9024dda0e61defc76442247c19082755f48bbf13e9.png',
+    //     },
+    //   )).dummySign(niel.pubkey),
+    //   (PartialProduct(
+    //     'Custom Micro App',
+    //     "Here's some text to convince you that we can build a decent app for you;",
+    //     price: "210000",
+    //     summary:
+    //         'We build small custom Nostr apps for any platform, that can tap right into your existing Communities and Provate groups',
+    //     images: {
+    //       'https://cdn.satellite.earth/6375a73e1ee7b398c3910ac06cfd8fa79d5947fd898f68ba401960465d4e15bf.png',
+    //     },
+    //   )).dummySign(franzap.pubkey),
+    // ]);
 
-    dummyForumPosts.addAll([
-      (PartialForumPost(
-        'Forum Post Title',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      )).dummySign(niel.pubkey),
-      (PartialForumPost(
-        'Forum Post Title',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      )).dummySign(franzap.pubkey),
-      (PartialForumPost(
-        'Forum Post Title',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      )).dummySign(zapchat.pubkey),
-    ]);
+    // dummyForumPosts.addAll([
+    //   (PartialForumPost(
+    //     'Forum Post Title',
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    //   )).dummySign(niel.pubkey),
+    //   (PartialForumPost(
+    //     'Forum Post Title',
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    //   )).dummySign(franzap.pubkey),
+    //   (PartialForumPost(
+    //     'Forum Post Title',
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    //   )).dummySign(zapchat.pubkey),
+    // ]);
 
     dummyPolls.addAll([
       (PartialPoll(
@@ -910,7 +917,7 @@ Then ncommunity = npub + relay hints, for communities
       ...dummyCashuZaps,
       ...dummyServices,
       ...dummyProducts,
-      ...dummyForumPosts,
+      // ...dummyForumPosts,
       ...dummyComments,
       ...dummyPolls,
       ...dummyPollResponses,

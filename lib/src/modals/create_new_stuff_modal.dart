@@ -13,8 +13,7 @@ class CreateNewStuffModal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = LabTheme.of(context);
-    final activeProfile =
-        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
+    final activePubkey = ref.watch(Signer.activePubkeyProvider);
 
     return LabModal(
       title: 'Create New',
@@ -47,7 +46,7 @@ class CreateNewStuffModal extends ConsumerWidget {
               ),
             ),
             const LabGap.s8(),
-            activeProfile != null
+            activePubkey != null
                 ? Expanded(
                     child: LabPanelButton(
                       padding: const LabEdgeInsets.only(
@@ -72,9 +71,9 @@ class CreateNewStuffModal extends ConsumerWidget {
                 : SizedBox.shrink(),
           ],
         ),
-        activeProfile != null ? const LabGap.s8() : const LabGap.s12(),
+        activePubkey != null ? const LabGap.s8() : const LabGap.s12(),
         // Content type buttons in rows of three
-        activeProfile != null
+        activePubkey != null
             ? Column(
                 children: _buildContentTypeRows(context),
               )

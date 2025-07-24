@@ -10,6 +10,8 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final signedInPubkeys = ref.watch(Signer.signedInPubkeysProvider);
+    final activePubkey = ref.watch(Signer.activePubkeyProvider);
+    print('[DEBUG] activePubkey: $activePubkey');
     final activeProfile =
         ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
     final themeState = ref.watch(themeSettingsProvider);
@@ -20,27 +22,20 @@ class SettingsScreen extends ConsumerWidget {
       );
     }
 
-    final state = ref.watch(query<Profile>(authors: signedInPubkeys));
+    final profilesState = ref.watch(query<Profile>(authors: signedInPubkeys));
 
-    if (state case StorageLoading()) {
+    if (profilesState case StorageLoading()) {
       return const Center(
         child: LabLoadingDots(),
       );
     }
 
-    final profiles = state.models.cast<Profile>();
-
-    if (profiles.isEmpty) {
-      return const Center(
-        child: LabLoadingDots(),
-      );
-    }
-
-    if (activeProfile == null) {
-      return const Center(
-        child: LabLoadingDots(),
-      );
-    }
+    final profiles = profilesState is StorageData<Profile>
+        ? profilesState.models
+        : <Profile>[];
+    final profilePubkeys = profiles.map((p) => p.pubkey).toSet();
+    final incompleteProfilePubkeys =
+        signedInPubkeys.where((k) => !profilePubkeys.contains(k)).toList();
 
     final themeMode =
         themeState.value?.colorMode ?? LabResponsiveTheme.colorModeOf(context);
@@ -48,9 +43,12 @@ class SettingsScreen extends ConsumerWidget {
 
     return LabSettingsScreen(
       activeProfile: activeProfile,
+      activePubkey: activePubkey,
       profiles: profiles,
+      incompleteProfilePubkeys: incompleteProfilePubkeys,
       onSelect: (profile) {
-        ref.read(Signer.signerProvider(profile.pubkey))?.setActive();
+        print('[DEBUG] onSelect called for pubkey: ${profile.pubkey}');
+        ref.read(Signer.signerProvider(profile.pubkey))?.setAsActivePubkey();
       },
       onViewProfile: (profile) =>
           context.push('/profile/${profile.npub}', extra: profile),
@@ -75,7 +73,13 @@ class SettingsScreen extends ConsumerWidget {
       onSignerTap: () => context.push('/settings/security'),
       signerDescription: 'Secure mode, Keys are backed up',
       onInviteTap: () => context.push('/settings/invite'),
-      onDisconnectTap: () => context.push('/settings/disconnect'),
+      onDisconnectTap: () async {
+        final signer = ref.read(Signer.activeSignerProvider);
+        if (signer != null) {
+          await signer.signOut();
+        }
+        context.go('/');
+      },
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
@@ -100,21 +99,54 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
   Widget build(BuildContext context) {
     final resolvers = ref.read(resolversProvider);
 
-    final state = ref.watch(query<ChatMessage>());
-    final cashuZapsState = ref.watch(query<CashuZap>());
+    // Query for chat messages specifically for this community
+    final chatMessagesState =
+        ref.watch(query<ChatMessage>(limit: 1, and: (msg) => {msg.author}, source: LocalAndRemoteSource(background: true)));
 
-    if (state case StorageLoading()) {
-      return const Center(child: LabLoadingFeed(type: LoadingFeedType.chat));
+    final cashuZapsState = null;
+    // ref.watch(query<CashuZap>());
+
+    // Handle loading state
+    if (chatMessagesState case StorageLoading()) {
+      return const LabLoadingFeed(type: LoadingFeedType.chat);
     }
 
-    final messages = state.models;
-    final cashuZaps = cashuZapsState.models;
+    // Get messages from the community relationship or fallback to direct query
+    List<ChatMessage> messages = [];
+    if (widget.community.chatMessages.isNotEmpty) {
+      messages = widget.community.chatMessages.toList();
+      print('DEBUG: Using community relationship messages: ${messages.length}');
+    } else {
+      // Fallback: filter all chat messages by community
+      messages = chatMessagesState.models
+          .where((msg) => msg.community?.value?.id == widget.community.id)
+          .toList();
+      print('DEBUG: Using fallback filtered messages: ${messages.length}');
+      print(
+          'DEBUG: All chat messages: ${chatMessagesState.models.map((m) => '${m.id} -> community: ${m.community?.value?.id}').toList()}');
+    }
 
-    if (messages.isEmpty && cashuZaps.isEmpty) {
-      return LabModelEmptyStateCard(
-        contentType: "chat",
-        onCreateTap: () =>
-            context.push('/create/message', extra: widget.community),
+    final cashuZaps = null;
+    // final cashuZaps = cashuZapsState.models;
+
+    // Debug: Print community and messages info
+    print('DEBUG: Community: ${widget.community.name}');
+    print('DEBUG: Community ID: ${widget.community.id}');
+    print('DEBUG: Messages count: ${messages.length}');
+    print(
+        'DEBUG: Community chatMessages relationship count: ${widget.community.chatMessages.length}');
+    print('DEBUG: All chat messages count: ${chatMessagesState.models.length}');
+    print(
+        'DEBUG: Messages: ${messages.map((m) => '${m.id}: ${m.content}').toList()}');
+
+    if (messages.isEmpty) {
+      return LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s12),
+        child: LabModelEmptyStateCard(
+          contentType: "chat",
+          onCreateTap: () =>
+              context.push('/create/message', extra: widget.community),
+        ),
       );
     }
 
@@ -123,10 +155,6 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
 
     final activeProfile =
         ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
-
-    if (activeProfile == null) {
-      return CircularProgressIndicator();
-    }
 
     // Create a single list of all events (messages and zaps) with their timestamps
     final allEvents = <({dynamic model, DateTime timestamp, bool isMessage})>[

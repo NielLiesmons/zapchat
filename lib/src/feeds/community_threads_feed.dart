@@ -14,7 +14,12 @@ class CommunityThreadsFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(query<Note>());
+    final state = ref.watch(query<Note>(
+        limit: 10,
+        and: (note) => {
+              note.author,
+              note.replies,
+            }));
 
     if (state case StorageLoading()) {
       return const LabLoadingFeed(type: LoadingFeedType.thread);
