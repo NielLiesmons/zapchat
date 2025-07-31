@@ -435,7 +435,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       topBarContent: _buildTopBar(context),
       onHomeTap: () => context.push('/'),
       history: recentHistory,
-      scrollController: _sharedScrollController,
+      scrollable: false,
       startAtBottom: startAtBottom,
       child: LabContainer(
         decoration: BoxDecoration(color: LabTheme.of(context).colors.black),

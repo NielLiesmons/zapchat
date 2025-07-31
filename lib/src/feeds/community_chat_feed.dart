@@ -100,8 +100,13 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     final resolvers = ref.read(resolversProvider);
 
     // Query for chat messages specifically for this community
-    final chatMessagesState =
-        ref.watch(query<ChatMessage>(limit: 1, and: (msg) => {msg.author}, source: LocalAndRemoteSource(background: true)));
+    final chatMessagesState = ref.watch(query<ChatMessage>(
+        limit: 21,
+        and: (msg) => {msg.author},
+        tags: {
+          '#h': {widget.community.id}
+        },
+        source: LocalAndRemoteSource(background: true)));
 
     final cashuZapsState = null;
     // ref.watch(query<CashuZap>());
@@ -111,33 +116,9 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
       return const LabLoadingFeed(type: LoadingFeedType.chat);
     }
 
-    // Get messages from the community relationship or fallback to direct query
-    List<ChatMessage> messages = [];
-    if (widget.community.chatMessages.isNotEmpty) {
-      messages = widget.community.chatMessages.toList();
-      print('DEBUG: Using community relationship messages: ${messages.length}');
-    } else {
-      // Fallback: filter all chat messages by community
-      messages = chatMessagesState.models
-          .where((msg) => msg.community?.value?.id == widget.community.id)
-          .toList();
-      print('DEBUG: Using fallback filtered messages: ${messages.length}');
-      print(
-          'DEBUG: All chat messages: ${chatMessagesState.models.map((m) => '${m.id} -> community: ${m.community?.value?.id}').toList()}');
-    }
+    List<ChatMessage> messages = chatMessagesState.models.toList();
 
     final cashuZaps = null;
-    // final cashuZaps = cashuZapsState.models;
-
-    // Debug: Print community and messages info
-    print('DEBUG: Community: ${widget.community.name}');
-    print('DEBUG: Community ID: ${widget.community.id}');
-    print('DEBUG: Messages count: ${messages.length}');
-    print(
-        'DEBUG: Community chatMessages relationship count: ${widget.community.chatMessages.length}');
-    print('DEBUG: All chat messages count: ${chatMessagesState.models.length}');
-    print(
-        'DEBUG: Messages: ${messages.map((m) => '${m.id}: ${m.content}').toList()}');
 
     if (messages.isEmpty) {
       return LabContainer(
@@ -160,8 +141,8 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     final allEvents = <({dynamic model, DateTime timestamp, bool isMessage})>[
       ...messageGroups.map((group) =>
           (model: group, timestamp: group.first.createdAt, isMessage: true)),
-      ...cashuZaps.map(
-          (zap) => (model: zap, timestamp: zap.createdAt, isMessage: false)),
+      // ...cashuZaps.map(
+      //     (zap) => (model: zap, timestamp: zap.createdAt, isMessage: false)),
     ];
 
     // Sort all events by timestamp (oldest first)
@@ -188,75 +169,84 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
           List.generate(currentOutgoingCount, (index) => 'msg_$index');
     }
 
-    return Column(
-      children: [
-        const LabNewMessagesDivider(text: '8 New Messages'),
-        ...allEvents.map((event) => Column(
-              key: ValueKey(event.isMessage
-                  ? (event.model as List<ChatMessage>).first.id
-                  : (event.model as CashuZap).id),
-              children: [
-                if (event.isMessage)
-                  Builder(
-                    builder: (context) {
-                      final messageId =
-                          (event.model as List<ChatMessage>).first.id;
-                      _messageKeys[messageId] = GlobalKey();
-                      return LabMessageStack(
-                        key: _messageKeys[messageId],
-                        messages: event.model as List<ChatMessage>,
-                        onResolveEvent: resolvers.eventResolver,
-                        onResolveProfile: resolvers.profileResolver,
-                        onResolveEmoji: resolvers.emojiResolver,
-                        onResolveHashtag: (identifier) async {
-                          await Future.delayed(const Duration(seconds: 1));
-                          return () {};
-                        },
-                        isOutgoing: (event.model as List<ChatMessage>)
-                                .first
-                                .author
-                                .value
-                                ?.pubkey ==
-                            activeProfile?.pubkey,
-                        onReply: (event) =>
-                            context.push('/reply-to/${event.id}', extra: event),
-                        onActions: (event) =>
-                            context.push('/actions/${event.id}', extra: event),
-                        onReactionTap: (reaction) {},
-                        onZapTap: (zap) {},
-                        onLinkTap: (url) {},
-                        onProfileTap: (profile) => context
-                            .push('/profile/${profile.npub}', extra: profile),
-                      );
-                    },
-                  )
-                else
-                  LabZapBubble(
-                    cashuZap: event.model as CashuZap,
-                    onResolveEvent: resolvers.eventResolver,
-                    onResolveProfile: resolvers.profileResolver,
-                    onResolveEmoji: resolvers.emojiResolver,
-                    onResolveHashtag: (identifier) async {
-                      await Future.delayed(const Duration(seconds: 1));
-                      return () {};
-                    },
-                    isOutgoing:
-                        (event.model as CashuZap).author.value?.pubkey ==
-                            activeProfile?.pubkey,
-                    onReply: (event) =>
-                        context.push('/reply-to/${event.id}', extra: event),
-                    onActions: (event) =>
-                        context.push('/actions/${event.id}', extra: event),
-                    onReactionTap: (reaction) {},
-                    onZapTap: (zap) {},
-                    onLinkTap: (url) {},
-                    onProfileTap: (profile) => context
-                        .push('/profile/${profile.npub}', extra: profile),
-                  ),
-                const LabGap.s8(),
-              ],
-            )),
-      ],
+    return SingleChildScrollView(
+      controller: widget.scrollController,
+      child: Column(
+        children: [
+          const LabNewMessagesDivider(text: '8 New Messages'),
+          ...allEvents.map((event) => Column(
+                key: ValueKey(event.isMessage
+                    ? (event.model as List<ChatMessage>).first.id
+                    : (event.model as CashuZap).id),
+                children: [
+                  if (event.isMessage)
+                    Builder(
+                      builder: (context) {
+                        final messageId =
+                            (event.model as List<ChatMessage>).first.id;
+                        _messageKeys[messageId] = GlobalKey();
+                        return LabMessageStack(
+                          key: _messageKeys[messageId],
+                          messages: event.model as List<ChatMessage>,
+                          onResolveEvent: resolvers.eventResolver,
+                          onResolveProfile: resolvers.profileResolver,
+                          onResolveEmoji: resolvers.emojiResolver,
+                          onResolveHashtag: (identifier) async {
+                            await Future.delayed(const Duration(seconds: 1));
+                            return () {};
+                          },
+                          isOutgoing: (event.model as List<ChatMessage>)
+                                  .first
+                                  .author
+                                  .value
+                                  ?.pubkey ==
+                              activeProfile?.pubkey,
+                          onReply: (event) => context
+                              .push('/reply-to/${event.id}', extra: (
+                            model: event,
+                            community: widget.community
+                          )),
+                          onActions: (event) => context
+                              .push('/actions/${event.id}', extra: (
+                            model: event,
+                            community: widget.community
+                          )),
+                          onReactionTap: (reaction) {},
+                          onZapTap: (zap) {},
+                          onLinkTap: (url) {},
+                          onProfileTap: (profile) => context
+                              .push('/profile/${profile.npub}', extra: profile),
+                        );
+                      },
+                    )
+                  else
+                    LabZapBubble(
+                      cashuZap: event.model as CashuZap,
+                      onResolveEvent: resolvers.eventResolver,
+                      onResolveProfile: resolvers.profileResolver,
+                      onResolveEmoji: resolvers.emojiResolver,
+                      onResolveHashtag: (identifier) async {
+                        await Future.delayed(const Duration(seconds: 1));
+                        return () {};
+                      },
+                      isOutgoing:
+                          (event.model as CashuZap).author.value?.pubkey ==
+                              activeProfile?.pubkey,
+                      onReply: (event) => context.push('/reply-to/${event.id}',
+                          extra: (model: event, community: widget.community)),
+                      onActions: (event) => context.push('/actions/${event.id}',
+                          extra: (model: event, community: widget.community)),
+                      onReactionTap: (reaction) {},
+                      onZapTap: (zap) {},
+                      onLinkTap: (url) {},
+                      onProfileTap: (profile) => context
+                          .push('/profile/${profile.npub}', extra: profile),
+                    ),
+                  const LabGap.s8(),
+                ],
+              )),
+        ],
+      ),
     );
   }
 }
