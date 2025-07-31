@@ -8,10 +8,12 @@ import '../providers/resolvers.dart';
 
 class ActionsModal extends ConsumerWidget {
   final Model model;
+  final Community? community;
 
   const ActionsModal({
     super.key,
     required this.model,
+    this.community,
   });
 
   @override
@@ -43,7 +45,7 @@ class ActionsModal extends ConsumerWidget {
                           model is Zap
                       ? TapBuilder(
                           onTap: () => context.replace('/reply-to/${model.id}',
-                              extra: model),
+                              extra: (model: model, community: community)),
                           builder: (context, state, hasFocus) {
                             return LabContainer(
                               decoration: BoxDecoration(
@@ -180,8 +182,9 @@ class ActionsModal extends ConsumerWidget {
                               ],
                             ),
                             TapBuilder(
-                              onTap: () => context.push('/reply-to/${model.id}',
-                                  extra: model),
+                              onTap: () => context.replace(
+                                  '/reply-to/${model.id}',
+                                  extra: (model: model, community: community)),
                               builder: (context, state, hasFocus) {
                                 double scaleFactor = 1.0;
                                 if (state == TapState.pressed) {
@@ -270,6 +273,7 @@ class ActionsModal extends ConsumerWidget {
                       child: Center(
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const LabGap.s14(),
                             for (final emoji
@@ -502,7 +506,7 @@ class ActionsModal extends ConsumerWidget {
                             context.replace('/label/${model.id}', extra: model);
                             break;
                           case 2:
-                            // TODO: Implement share
+                            context.replace('/share/${model.id}', extra: model);
                             break;
                         }
                       },

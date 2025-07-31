@@ -107,15 +107,16 @@ final resolversProvider = Provider<Resolvers>((ref) {
     }),
     emojiResolver: (identifier, model) =>
         emojiCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(milliseconds: 50));
-      return switch (identifier.toLowerCase()) {
-        'nostr' =>
-          'https://cdn.satellite.earth/cbcd50ec769b65c03bc780f0b2d0967f893d10a29f7666d7df8f2d7614d493d4.png',
-        'beautiful' =>
-          'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif', // Replace with actual URL
-        _ =>
-          'https://cdn.satellite.earth/cbcd50ec769b65c03bc780f0b2d0967f893d10a29f7666d7df8f2d7614d493d4.png', // Default fallback
-      };
+      final emojiTags = model.event.tags
+          .where((tag) => tag.isNotEmpty && tag[0] == 'emoji')
+          .toList();
+
+      for (final tag in emojiTags) {
+        if (tag.length >= 3 && tag[1] == identifier) {
+          return tag[2];
+        }
+      }
+      return '';
     }),
     hashtagResolver: (identifier) =>
         hashtagCache.getOrCreate(identifier, () async {

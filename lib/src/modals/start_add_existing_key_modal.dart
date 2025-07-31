@@ -2,7 +2,7 @@ import 'package:amber_signer/amber_signer.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:models/models.dart';
+import 'dart:io' show Platform;
 
 class StartAddExistingKeyModal extends ConsumerStatefulWidget {
   const StartAddExistingKeyModal({super.key});
@@ -28,18 +28,36 @@ class _StartAddExistingKeyModalState
 
   Future<void> _checkSigners() async {
     final startTime = DateTime.now();
+
     try {
-      final amber = AmberSigner(ref.read(_refProvider));
-      final isAmberAvailable = await amber.isAvailable;
-      // Ensure we show loading for at least 2 seconds
-      final elapsed = DateTime.now().difference(startTime);
-      if (elapsed.inMilliseconds < 2000) {
-        await Future.delayed(
-            Duration(milliseconds: 2000 - elapsed.inMilliseconds));
+      // Platform-specific signer detection
+      if (Platform.isAndroid) {
+        await _checkAndroidSigners();
+      } else if (Platform.isIOS) {
+        await _checkIOSSigners();
+      } else if (Platform.isMacOS) {
+        await _checkMacOSSigners();
+      } else if (Platform.isLinux) {
+        await _checkLinuxSigners();
+      } else if (Platform.isWindows) {
+        await _checkWindowsSigners();
+      } else {
+        // Web or other platforms
+        await _checkWebSigners();
       }
+
+      // Ensure we show loading for at least 2 seconds (only if no signers found)
+      if (!_isAmberAvailable) {
+        // Add more signer checks here as we add them
+        final elapsed = DateTime.now().difference(startTime);
+        if (elapsed.inMilliseconds < 2000) {
+          await Future.delayed(
+              Duration(milliseconds: 2000 - elapsed.inMilliseconds));
+        }
+      }
+
       if (mounted) {
         setState(() {
-          _isAmberAvailable = isAmberAvailable;
           _isChecking = false;
         });
       }
@@ -59,16 +77,54 @@ class _StartAddExistingKeyModalState
     }
   }
 
+  Future<void> _checkAndroidSigners() async {
+    // Check for Amber on Android
+    try {
+      final amber = AmberSigner(ref.read(_refProvider));
+      final isAmberAvailable = await amber.isAvailable;
+      if (mounted) {
+        setState(() {
+          _isAmberAvailable = isAmberAvailable;
+        });
+      }
+    } catch (e) {
+      print('Error checking for Amber: $e');
+    }
+
+    // TODO: Add other Android signers here
+    // Example: await _checkOtherAndroidSigner();
+  }
+
+  Future<void> _checkIOSSigners() async {
+    // TODO: Add iOS signers here
+    // Example: await _checkIOSSigner();
+  }
+
+  Future<void> _checkMacOSSigners() async {
+    // TODO: Add macOS signers here
+    // Example: await _checkMacOSSigner();
+  }
+
+  Future<void> _checkLinuxSigners() async {
+    // TODO: Add Linux signers here
+    // Example: await _checkLinuxSigner();
+  }
+
+  Future<void> _checkWindowsSigners() async {
+    // TODO: Add Windows signers here
+    // Example: await _checkWindowsSigner();
+  }
+
+  Future<void> _checkWebSigners() async {
+    // TODO: Add Web signers here
+    // Example: await _checkWebSigner();
+  }
+
   Future<void> _signInWithAmber() async {
     setState(() => _isSigningIn = true);
     try {
       final amber = AmberSigner(ref.read(_refProvider));
       await amber.signIn(); // sets as active by default
-      // After sign-in, ensure a profile exists
-      final pubkey = ref.read(Signer.activePubkeyProvider);
-      final profileState =
-          ref.read(query<Profile>(authors: {if (pubkey != null) pubkey!}));
-      Profile? profile;
 
       if (mounted) {
         context.go('/');

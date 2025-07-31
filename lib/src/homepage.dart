@@ -50,19 +50,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     final activePubkey = ref.watch(Signer.activePubkeyProvider);
     final activeProfile =
         ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
-
-    final profileState = (activeProfile == null && activePubkey != null)
-        ? ref.watch(query<Profile>(
-            authors: {activePubkey},
-            source:
-                RemoteSource(group: 'social', stream: false, background: false),
-            limit: 1,
-          ))
-        : null;
-    final profileToShow = activeProfile ??
-        (profileState is StorageData && profileState?.models.isNotEmpty == true
-            ? profileState!.models.first
-            : null);
     final containerHeight =
         activePubkey == null ? _heightWithoutProfile : _heightWithProfile;
 
@@ -109,10 +96,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                           : Row(
                               children: [
                                 if (LabPlatformUtils.isMobile)
-                                  LabProfilePic.s48(
-                                    profileToShow,
-                                    onTap: () => context.push('/settings'),
-                                  ),
+                                  activeProfile != null
+                                      ? LabProfilePic.s48(
+                                          activeProfile,
+                                          onTap: () =>
+                                              context.push('/settings'),
+                                        )
+                                      : LabProfilePic.fromPubkey(
+                                          activePubkey!,
+                                          onTap: () =>
+                                              context.push('/settings'),
+                                          size: LabProfilePicSize.s48,
+                                        ),
                                 if (LabPlatformUtils.isMobile)
                                   const LabGap.s12(),
                                 Expanded(

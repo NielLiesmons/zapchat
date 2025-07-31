@@ -7,10 +7,12 @@ import '../providers/search.dart';
 
 class ReplyToModal extends ConsumerStatefulWidget {
   final Model model;
+  final Community? community;
 
   const ReplyToModal({
     super.key,
     required this.model,
+    this.community,
   });
 
   @override
@@ -42,7 +44,6 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
   }
 
   void _onContentChanged(String content) {
-    print('Content changed to: $content');
     setState(() {
       _partialMessage = PartialChatMessage(content);
     });
@@ -57,19 +58,37 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
 
   void _sendMessage() async {
     final text = _controller.text;
-    // final signedInProfile = ref.read(Profile.signedInActiveProfileProvider)!;
     final signer = ref.read(Signer.activeSignerProvider)!;
 
     if (text.isNotEmpty) {
-      // Add the Nostr event reference to the message content
-      final messageContent = 'nostr:nevent1${widget.model.id} $text';
-      final message = PartialChatMessage(
-        messageContent,
-        createdAt: DateTime.now(),
-      );
-      final signedMessage = await message.signWith(signer);
-      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
-      context.pop();
+      try {
+        // Add the Nostr event reference to the message content
+        final message = PartialChatMessage(
+          text,
+          createdAt: DateTime.now(),
+          quotedMessage: widget.model is ChatMessage
+              ? (widget.model as ChatMessage)
+              : null,
+        );
+
+        // Add h tag with community pubkey if community is provided
+        if (widget.community != null) {
+          message.event.addTag('h', [widget.community!.event.pubkey]);
+        }
+
+        final signedMessage = await message.signWith(signer);
+
+        // Save locally AND publish to relays
+        await ref.read(storageNotifierProvider.notifier).save({signedMessage});
+        await ref
+            .read(storageNotifierProvider.notifier)
+            .publish({signedMessage});
+
+        context.pop();
+      } catch (e, stackTrace) {
+        print('ERROR: Failed to send reply: $e');
+        print('ERROR: Stack trace: $stackTrace');
+      }
     }
   }
 

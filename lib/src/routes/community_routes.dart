@@ -47,7 +47,7 @@ List<GoRoute> get communityRoutes => [
         path: '/community/:npub/:contentType',
         pageBuilder: (context, state) {
           final community = state.extra as Community;
-          final contentType = state.pathParameters['contentType'];
+          final contentType = state.pathParameters['contentType']?.capitalize();
           return LabSlideInScreen(
             child: CommunityScreen(
               community: community,

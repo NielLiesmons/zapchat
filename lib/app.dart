@@ -86,8 +86,14 @@ class _LabWithTheme extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeState = ref.watch(themeSettingsProvider);
 
+    // Listen to Nostr debug info
+    ref.listen(infoNotifierProvider, (previous, next) {
+      print('NOSTR DEBUG: $next');
+    });
+
     return themeState.when(
       data: (state) {
+        final activePubkey = ref.watch(Signer.activePubkeyProvider);
         return LabBase(
           title: 'Zapchat',
           routerConfig: goRouter,
@@ -113,9 +119,11 @@ class _LabWithTheme extends ConsumerWidget {
           onProfilesTap: () {
             goRouter.push('/settings');
           },
-          // TODO: activeProfile could be read from zaplab
-          activeProfile:
-              ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource())),
+          // Check for activeProfile, fallback to activePubkey
+          activeProfile: activePubkey != null
+              ? ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()))
+              : null,
+          activePubkey: activePubkey,
           historyMenu: const HistoryContent(),
         );
       },

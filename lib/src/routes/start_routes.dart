@@ -71,12 +71,7 @@ List<GoRoute> get startRoutes => [
         path: '/start/paste-key',
         pageBuilder: (context, state) {
           return LabSlideInModal(
-            child: StartPasteKeyModal(
-              onUseThisKey: () {
-                context
-                    .pop(); // TODO: Add logic to use the key and add a signedInProfile + Signer
-              },
-            ),
+            child: StartPasteKeyModal(),
           );
         },
       ),

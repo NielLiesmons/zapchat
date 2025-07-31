@@ -13,11 +13,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "8e61275"
-      resolved-ref: "8e61275b1b7cce10b762002a8aafcd83f6b430fe"
+      ref: f7b13f4
+      resolved-ref: f7b13f41613226d2711df0ffd79bbd3f085bae4e
       url: "https://github.com/purplebase/amber_signer"
     source: git
-    version: "0.1.0"
+    version: "0.2.0"
   analyzer:
     dependency: transitive
     description:
@@ -469,10 +469,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: fe7ab022b76f3034adc518fb6ea04a82387620e19977665ea18d30a1cf43442f
+      sha256: "2c11f3f94c687ee9bad77c171151672986360b2b001d109814ee7140b2cf261b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.4.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -637,11 +637,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "501c8cf"
-      resolved-ref: "501c8cf4d5d3ba23fec417820ba7fe25ca7cd339"
+      ref: "731b37f"
+      resolved-ref: "731b37ff4b3e9c41e4b670bd2543b1c30bd12d6e"
       url: "https://github.com/purplebase/models"
     source: git
-    version: "0.3.2"
+    version: "0.3.3"
   nip44:
     dependency: transitive
     description:
@@ -731,6 +731,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  photo_view:
+    dependency: transitive
+    description:
+      name: photo_view
+      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.14.0"
   platform:
     dependency: transitive
     description:
@@ -791,11 +799,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: ae92f3a
-      resolved-ref: ae92f3a7f042ea89f3888688ae7b6c07d049010d
+      ref: "7817845"
+      resolved-ref: "7817845e1ffe779abfde3965446bf2b4cc8a9847"
       url: "https://github.com/purplebase/purplebase"
     source: git
-    version: "0.3.2"
+    version: "0.3.3"
   riverpod:
     dependency: "direct main"
     description:

@@ -50,6 +50,10 @@ class SettingsScreen extends ConsumerWidget {
         print('[DEBUG] onSelect called for pubkey: ${profile.pubkey}');
         ref.read(Signer.signerProvider(profile.pubkey))?.setAsActivePubkey();
       },
+      onSelectIncomplete: (pubkey) {
+        print('[DEBUG] onSelectIncomplete called for pubkey: $pubkey');
+        ref.read(Signer.signerProvider(pubkey))?.setAsActivePubkey();
+      },
       onViewProfile: (profile) =>
           context.push('/profile/${profile.npub}', extra: profile),
       onAddProfile: () => context.push('/settings/add-profile'),
@@ -74,11 +78,21 @@ class SettingsScreen extends ConsumerWidget {
       signerDescription: 'Secure mode, Keys are backed up',
       onInviteTap: () => context.push('/settings/invite'),
       onDisconnectTap: () async {
-        final signer = ref.read(Signer.activeSignerProvider);
-        if (signer != null) {
-          await signer.signOut();
-        }
-        context.go('/');
+        await LabConfirmationModal.show(
+          context,
+          description: activeProfile != null
+              ? 'Disconnect ${activeProfile.name}'
+              : activePubkey != null
+                  ? 'Disconnect ${formatNpub(Utils.encodeShareableFromString(activePubkey, type: 'npub'))}'
+                  : 'Disconnect',
+          onConfirm: () async {
+            final signer = ref.read(Signer.activeSignerProvider);
+            if (signer != null) {
+              await signer.signOut();
+            }
+            context.go('/');
+          },
+        );
       },
     );
   }

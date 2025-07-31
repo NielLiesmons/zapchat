@@ -34,9 +34,9 @@ dependencies:
     #   url: https://github.com/NielLiesmons/zaplab_design.git
     #   ref: 00b9438a920d3fa6a9ca65b1b627fa71b4752212
 
-  models: ^0.3.2
-  purplebase: ^0.3.0
-  amber_signer: ^0.1.0
+  models: ^0.3.3
+  purplebase: ^0.3.3
+  amber_signer: ^0.2.0
   cached_network_image: ^3.3.1
 
   flutter:
@@ -61,17 +61,17 @@ dependency_overrides:
     # path: ../models
     git:
       url: https://github.com/purplebase/models
-      ref: "501c8cf"
+      ref: "731b37f"
   purplebase:
     # path: ../purplebase
     git:
       url: https://github.com/purplebase/purplebase
-      ref: "ae92f3a"
+      ref: "7817845"
   amber_signer:
     # path: ../amber_signer
     git:
       url: https://github.com/purplebase/amber_signer
-      ref: "8e61275"
+      ref: "f7b13f4"
 
 dev_dependencies:
   flutter_test:

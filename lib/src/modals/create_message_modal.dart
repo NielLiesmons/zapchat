@@ -84,23 +84,31 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
     final npubs = editorState.getProfileNpubs();
     final signer = ref.read(Signer.activeSignerProvider)!;
 
-    print('Publishable content: "$content" (length: ${content.length})');
-    print('Emoji data: $emojiData');
-    print('Profile npubs: $npubs');
-
     // Only send if there's actual content
     if (content.isNotEmpty) {
-      // Use content as the Nostr event content
-      // Use emojiData for your emoji JSON tag
-      // Use npubs for your p-tags
-      final message = PartialChatMessage(
-        content,
-        createdAt: DateTime.now(),
-        // TODO: Add emojiData and npubs to the event as needed
-      );
-      final signedMessage = await message.signWith(signer);
-      await ref.read(storageNotifierProvider.notifier).save({signedMessage});
-      context.pop();
+      try {
+        final community = widget.target as Community;
+        final message = PartialChatMessage(
+          content,
+          createdAt: DateTime.now(),
+          // TODO: Add emojiData and npubs to the event as needed
+        );
+
+        message.event.addTag('h', [community.event.pubkey]);
+
+        final signedMessage = await message.signWith(signer);
+
+        // Save locally AND publish to relays
+        await ref.read(storageNotifierProvider.notifier).save({signedMessage});
+        await ref
+            .read(storageNotifierProvider.notifier)
+            .publish({signedMessage});
+
+        context.pop();
+      } catch (e, stackTrace) {
+        print('ERROR: Failed to send message: $e');
+        print('ERROR: Stack trace: $stackTrace');
+      }
     }
   }
 

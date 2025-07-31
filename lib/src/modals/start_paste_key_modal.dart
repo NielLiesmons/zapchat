@@ -1,20 +1,22 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:models/models.dart';
+import '../providers/signer.dart';
+import 'package:go_router/go_router.dart';
 
-class StartPasteKeyModal extends StatefulWidget {
-  final VoidCallback onUseThisKey;
-
+class StartPasteKeyModal extends ConsumerStatefulWidget {
   const StartPasteKeyModal({
     super.key,
-    required this.onUseThisKey,
   });
 
   @override
-  State<StartPasteKeyModal> createState() => _StartPasteKeyModalState();
+  ConsumerState<StartPasteKeyModal> createState() => _StartPasteKeyModalState();
 }
 
-class _StartPasteKeyModalState extends State<StartPasteKeyModal> {
+class _StartPasteKeyModalState extends ConsumerState<StartPasteKeyModal> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -31,6 +33,48 @@ class _StartPasteKeyModalState extends State<StartPasteKeyModal> {
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleUseThisKey() async {
+    final secretKey = _controller.text.trim();
+
+    if (secretKey.isEmpty) {
+      setState(() {
+        _errorMessage = "Please enter your secret key";
+      });
+      return;
+    }
+
+    try {
+      // Verify nsec format
+      if (!LabKeyGenerator.verifyNsecChecksum(secretKey)) {
+        setState(() {
+          _errorMessage = "Invalid nsec format";
+        });
+        return;
+      }
+
+      // Convert nsec to hex
+      final secretKeyHex = LabKeyGenerator.nsecToHex(secretKey);
+
+      // Get the signer from the provider
+      final signer = ref.read(bip340SignerProvider(secretKeyHex));
+      await signer.signIn();
+
+      // Clear any previous error
+      setState(() {
+        _errorMessage = null;
+      });
+
+      // Navigate to home or close modal
+      if (context.mounted) {
+        context.go('/');
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = "Error processing secret key: $e";
+      });
+    }
   }
 
   @override
@@ -57,18 +101,15 @@ class _StartPasteKeyModalState extends State<StartPasteKeyModal> {
             LabInputTextField(
               placeholder: 'Nsec, Ncryptsec, 12 words or 12 emoji',
               title: "Your Key",
-              // warning: "This is not a valid secret key",  TODO: Add warning if the nsec is not valid
+              warning: _errorMessage,
               controller: _controller,
               focusNode: _focusNode,
               singleLine: true,
+              obscureText: true,
             ),
             const LabGap.s12(),
             LabButton(
-              onTap: () {
-                if (_controller.text.isNotEmpty) {
-                  widget.onUseThisKey();
-                }
-              },
+              onTap: _handleUseThisKey,
               text: "Use This Key",
             ),
           ],

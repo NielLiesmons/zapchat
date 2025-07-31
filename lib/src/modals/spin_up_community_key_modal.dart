@@ -68,7 +68,7 @@ class SpinUpCommunityKeyModalState extends State<SpinUpCommunityKeyModal> {
                       ),
                       TextSpan(
                         text:
-                            " to secure your Community profile, publications and money",
+                            " to secure your Community profile and publications",
                         style: LabTheme.of(context).typography.reg16.copyWith(
                               color: LabTheme.of(context).colors.white66,
                             ),

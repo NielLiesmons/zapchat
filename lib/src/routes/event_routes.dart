@@ -12,6 +12,7 @@ import '../modals/reply_to_modal.dart';
 import '../modals/actions_modal.dart';
 import '../modals/label_modal.dart';
 import '../modals/reply_modal.dart';
+import '../modals/share_modal.dart';
 
 String getModelRoute(String modelType) {
   return switch (modelType.toLowerCase()) {
@@ -55,12 +56,13 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/actions/:eventId',
         pageBuilder: (context, state) {
-          final model = state.extra as Model;
+          final extra = state.extra as ({Model model, Community? community});
           return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ActionsModal(
-                  model: model,
+                  model: extra.model,
+                  community: extra.community,
                 );
               },
             ),
@@ -98,12 +100,14 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/reply-to/:eventId',
         pageBuilder: (context, state) {
-          final model = state.extra as Model;
+          final replyData =
+              state.extra as ({Model model, Community? community});
           return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyToModal(
-                  model: model,
+                  model: replyData.model,
+                  community: replyData.community,
                 );
               },
             ),
@@ -118,6 +122,21 @@ List<GoRoute> get eventRoutes => [
             child: Consumer(
               builder: (context, ref, _) {
                 return LabelModal(
+                  model: model,
+                );
+              },
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/share/:eventId',
+        pageBuilder: (context, state) {
+          final model = state.extra as Model;
+          return LabSlideInModal(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return ShareModal(
                   model: model,
                 );
               },

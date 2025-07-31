@@ -3,7 +3,10 @@ import 'package:models/models.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:amber_signer/amber_signer.dart';
 import 'dart:convert';
+
+final amberSignerProvider = Provider<AmberSigner>((ref) => AmberSigner(ref));
 
 final zapchatInitializationProvider = FutureProvider<void>((ref) async {
   final dir = await getApplicationDocumentsDirectory();
@@ -12,23 +15,32 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
       StorageConfiguration(
         databasePath: path.join(dir.path, 'zapchat.db'),
         relayGroups: {
-          'social': {
-            // 'wss://relay.damus.io',
+          'default': {
+            'wss://relay.damus.io',
             'wss://zaplab.nostr1.com',
             'wss://theforest.nostr1.com',
-            // 'wss://nos.lol',
+            'wss://groups.0xchat.com',
             'wss://nostr.wine',
-            // 'wss://relay.primal.net',
+            'wss://relay.primal.net',
           }
         },
         keepSignatures: false,
       ),
     ).future);
 
+    // Attempt auto sign-in for Amber signer
+    try {
+      final amberSigner = ref.read(amberSignerProvider);
+      await amberSigner.attemptAutoSignIn();
+    } catch (e) {
+      print('Amber auto sign-in failed: $e');
+      // Continue with initialization even if Amber auto sign-in fails
+    }
+
     Model.register(kind: 1055, constructor: Book.fromMap);
     Model.register(kind: 10456, constructor: Group.fromMap);
     Model.register(kind: 145, constructor: Mail.fromMap);
-    Model.register(kind: 35000, constructor: Task.fromMap);
+    Model.register(kind: 37060, constructor: Task.fromMap);
     Model.register(kind: 30617, constructor: Repository.fromMap);
     Model.register(kind: 32767, constructor: Job.fromMap);
     Model.register(kind: 9321, constructor: CashuZap.fromMap);
@@ -58,6 +70,7 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
     final dummyPolls = <Poll>[];
     final dummyPollResponses = <PollResponse>[];
 
+// DUMMY TEST DATA that only is availble when the we don't override the default storage with purplebase
     final jane = PartialProfile(
       name: 'Jane C.',
       pictureUrl:
@@ -185,27 +198,10 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
       zapcloud,
     });
 
-    // SignedInProfile for testing, to avoid signing in all the time
-
     // Add profiles to storage
     await ref
         .read(storageNotifierProvider.notifier)
         .save(dummyProfiles.toSet());
-
-    // TESTING: Create a test profile with a signer for testing mentions
-    // TODO: Comment this out when not testing
-    final testProfile = PartialProfile(
-      name: 'TestUser',
-      pictureUrl: 'https://cdn.satellite.earth/test-profile.png',
-      about:
-          'This is a test profile for testing mentions and search functionality',
-    ).dummySign(
-        '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef');
-
-    await ref.read(storageNotifierProvider.notifier).save({testProfile});
-
-    final testSigner = DummySigner(ref, pubkey: testProfile.pubkey);
-    await testSigner.signIn(); // Set as active for testing
 
     // Create community after profiles are saved and indexed
     final zapchatCommunity = PartialCommunity(
