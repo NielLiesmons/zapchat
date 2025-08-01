@@ -6,12 +6,10 @@ import '../providers/resolvers.dart';
 
 class CommunityChatFeed extends ConsumerStatefulWidget {
   final Community community;
-  final ScrollController? scrollController;
 
   const CommunityChatFeed({
     super.key,
     required this.community,
-    this.scrollController,
   });
 
   @override
@@ -20,6 +18,7 @@ class CommunityChatFeed extends ConsumerStatefulWidget {
 
 class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
   final Map<String, GlobalKey> _messageKeys = {};
+  final ScrollController _scrollController = ScrollController();
   List<String> _previousMessageIds = [];
 
   @override
@@ -29,6 +28,7 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -50,75 +50,75 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     return true;
   }
 
-  /// Scrolls to the bottom of the chat
-  void _scrollToBottom() {
-    // Use the passed scroll controller or find one through context
-    if (widget.scrollController != null) {
-      widget.scrollController!
-          .jumpTo(widget.scrollController!.position.maxScrollExtent);
-    } else {
-      final scrollable = Scrollable.of(context);
+  /// Checks if the message at the given index has the same sender as the previous message
+  bool _isSameSenderAsPrevious(List<ChatMessage> messages, int index) {
+    if (index <= 0) return false;
 
-      scrollable.position.jumpTo(scrollable.position.maxScrollExtent);
-    }
+    final currentMessage = messages[index];
+    final previousMessage = messages[index - 1];
+
+    final currentPubkey = currentMessage.author.value?.pubkey;
+    final previousPubkey = previousMessage.author.value?.pubkey;
+
+    if (currentPubkey != previousPubkey) return false;
+
+    // Check if within 21 minutes
+    final timeDiff = currentMessage.createdAt
+        .difference(previousMessage.createdAt)
+        .inMinutes
+        .abs();
+    return timeDiff <= 21;
   }
 
-  List<List<ChatMessage>> _groupMessages(List<ChatMessage> messages) {
-    final groups = <List<ChatMessage>>[];
-    List<ChatMessage>? currentGroup;
-    String? currentPubkey;
-    DateTime? lastMessageTime;
+  /// Checks if the message at the given index has the same sender as the next message
+  bool _isSameSenderAsNext(List<ChatMessage> messages, int index) {
+    if (index >= messages.length - 1) return false;
 
-    // Sort messages by timestamp in ascending order (oldest first)
-    messages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    final currentMessage = messages[index];
+    final nextMessage = messages[index + 1];
 
-    for (final message in messages) {
-      final shouldStartNewGroup = currentGroup == null ||
-          currentPubkey != message.author.value?.pubkey ||
-          lastMessageTime!.difference(message.createdAt).inMinutes.abs() > 21;
+    final currentPubkey = currentMessage.author.value?.pubkey;
+    final nextPubkey = nextMessage.author.value?.pubkey;
 
-      if (shouldStartNewGroup) {
-        currentGroup = [message];
-        groups.add(currentGroup);
-        currentPubkey = message.author.value?.pubkey;
-      } else {
-        currentGroup.add(message);
-      }
-      lastMessageTime = message.createdAt;
-    }
+    if (currentPubkey != nextPubkey) return false;
 
-    // Reverse each group so newest messages are at the bottom
-    for (final group in groups) {
-      group.reversed.toList();
-    }
-
-    return groups;
+    // Check if within 21 minutes
+    final timeDiff = nextMessage.createdAt
+        .difference(currentMessage.createdAt)
+        .inMinutes
+        .abs();
+    return timeDiff <= 21;
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = LabTheme.of(context);
+    final activePubkey = ref.watch(Signer.activePubkeyProvider);
     final resolvers = ref.read(resolversProvider);
 
-    // Query for chat messages specifically for this community
+    // Query for chat messages specifically for this community using h tag filtering
+    // Use the same pattern as Threads feed for consistency
+
     final chatMessagesState = ref.watch(query<ChatMessage>(
         limit: 21,
-        and: (msg) => {msg.author},
         tags: {
-          '#h': {widget.community.id}
+          '#h': {widget.community.event.pubkey}
         },
-        source: LocalAndRemoteSource(background: true)));
+        and: (msg) => {msg.author}));
+    final queryEndTime = DateTime.now();
 
-    final cashuZapsState = null;
-    // ref.watch(query<CashuZap>());
+    // Background remote sync temporarily disabled for debugging
 
     // Handle loading state
     if (chatMessagesState case StorageLoading()) {
       return const LabLoadingFeed(type: LoadingFeedType.chat);
     }
 
-    List<ChatMessage> messages = chatMessagesState.models.toList();
+    if (chatMessagesState case StorageError()) {
+      return const LabLoadingFeed(type: LoadingFeedType.chat);
+    }
 
-    final cashuZaps = null;
+    List<ChatMessage> messages = chatMessagesState.models.toList();
 
     if (messages.isEmpty) {
       return LabContainer(
@@ -131,29 +131,11 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
       );
     }
 
-    // Group messages by author and time
-    final messageGroups = _groupMessages(messages);
-
-    final activeProfile =
-        ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
-
-    // Create a single list of all events (messages and zaps) with their timestamps
-    final allEvents = <({dynamic model, DateTime timestamp, bool isMessage})>[
-      ...messageGroups.map((group) =>
-          (model: group, timestamp: group.first.createdAt, isMessage: true)),
-      // ...cashuZaps.map(
-      //     (zap) => (model: zap, timestamp: zap.createdAt, isMessage: false)),
-    ];
-
-    // Sort all events by timestamp (oldest first)
-    allEvents.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-
     // Simple auto-scroll for new outgoing messages
-    if (activeProfile != null) {
-      // Count individual outgoing messages (not groups)
+    if (activePubkey != null) {
+      // Count individual outgoing messages
       final currentOutgoingCount = messages
-          .where(
-              (message) => message.author.value?.pubkey == activeProfile.pubkey)
+          .where((message) => message.author.value?.pubkey == activePubkey)
           .length;
 
       if (currentOutgoingCount > _previousMessageIds.length) {
@@ -163,90 +145,93 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
           }
         });
       }
-
-      // Update the count
-      _previousMessageIds =
-          List.generate(currentOutgoingCount, (index) => 'msg_$index');
     }
 
-    return SingleChildScrollView(
-      controller: widget.scrollController,
-      child: Column(
-        children: [
-          const LabNewMessagesDivider(text: '8 New Messages'),
-          ...allEvents.map((event) => Column(
-                key: ValueKey(event.isMessage
-                    ? (event.model as List<ChatMessage>).first.id
-                    : (event.model as CashuZap).id),
-                children: [
-                  if (event.isMessage)
-                    Builder(
-                      builder: (context) {
-                        final messageId =
-                            (event.model as List<ChatMessage>).first.id;
-                        _messageKeys[messageId] = GlobalKey();
-                        return LabMessageStack(
-                          key: _messageKeys[messageId],
-                          messages: event.model as List<ChatMessage>,
-                          onResolveEvent: resolvers.eventResolver,
-                          onResolveProfile: resolvers.profileResolver,
-                          onResolveEmoji: resolvers.emojiResolver,
-                          onResolveHashtag: (identifier) async {
-                            await Future.delayed(const Duration(seconds: 1));
-                            return () {};
-                          },
-                          isOutgoing: (event.model as List<ChatMessage>)
-                                  .first
-                                  .author
-                                  .value
-                                  ?.pubkey ==
-                              activeProfile?.pubkey,
-                          onReply: (event) => context
-                              .push('/reply-to/${event.id}', extra: (
-                            model: event,
-                            community: widget.community
-                          )),
-                          onActions: (event) => context
-                              .push('/actions/${event.id}', extra: (
-                            model: event,
-                            community: widget.community
-                          )),
-                          onReactionTap: (reaction) {},
-                          onZapTap: (zap) {},
-                          onLinkTap: (url) {},
-                          onProfileTap: (profile) => context
-                              .push('/profile/${profile.npub}', extra: profile),
-                        );
-                      },
-                    )
-                  else
-                    LabZapBubble(
-                      cashuZap: event.model as CashuZap,
-                      onResolveEvent: resolvers.eventResolver,
-                      onResolveProfile: resolvers.profileResolver,
-                      onResolveEmoji: resolvers.emojiResolver,
-                      onResolveHashtag: (identifier) async {
-                        await Future.delayed(const Duration(seconds: 1));
-                        return () {};
-                      },
-                      isOutgoing:
-                          (event.model as CashuZap).author.value?.pubkey ==
-                              activeProfile?.pubkey,
-                      onReply: (event) => context.push('/reply-to/${event.id}',
-                          extra: (model: event, community: widget.community)),
-                      onActions: (event) => context.push('/actions/${event.id}',
-                          extra: (model: event, community: widget.community)),
-                      onReactionTap: (reaction) {},
-                      onZapTap: (zap) {},
-                      onLinkTap: (url) {},
-                      onProfileTap: (profile) => context
-                          .push('/profile/${profile.npub}', extra: profile),
-                    ),
-                  const LabGap.s8(),
-                ],
-              )),
-        ],
+    // Update previous message IDs
+    _previousMessageIds = messages.map((m) => m.id).toList();
+
+    return LabContainer(
+      height: MediaQuery.of(context).size.height / theme.system.scale -
+          (16 +
+              (LabPlatformUtils.isMobile
+                  ? MediaQuery.of(context).padding.top
+                  : 20)),
+      child: ListView.builder(
+        reverse: true,
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 8.0,
+        ),
+        cacheExtent: 500, // Reduce cache to prevent memory issues
+        itemCount: messages.length + 1, // +1 for the bottom padding
+        itemBuilder: (context, index) {
+          // If this is the first item (which is now the bottom due to reverse), return bottom padding
+          if (index == 0) {
+            return const SizedBox(height: 160);
+          }
+
+          final messageIndex =
+              index - 1; // Adjust index since we added padding at the beginning
+          final message = messages[messageIndex];
+          final isOutgoing = message.author.value?.pubkey == activePubkey;
+
+          // For reversed list: visual "previous" is actually next in array, visual "next" is actually previous in array
+          final isSameSenderAsPrevious = _isSameSenderAsNext(
+              messages, messageIndex); // Visual previous = array next
+          final isSameSenderAsNext = _isSameSenderAsPrevious(
+              messages, messageIndex); // Visual next = array previous
+
+          // Create a unique key for this message
+          final messageKey = GlobalKey();
+          _messageKeys[message.id] = messageKey;
+
+          try {
+            return RepaintBoundary(
+              child: LabMessageBubble(
+                key: messageKey,
+                message: message,
+                isFirstInStack:
+                    !isSameSenderAsPrevious, // First in stack for both incoming and outgoing
+                isLastInStack:
+                    !isSameSenderAsNext, // Last in stack if no next message from same sender
+                isOutgoing: isOutgoing,
+                onResolveEvent: resolvers.eventResolver,
+                onResolveProfile: resolvers.profileResolver,
+                onResolveEmoji: resolvers.emojiResolver,
+                onResolveHashtag: (identifier) async {
+                  return () {};
+                },
+                onReply: (event) => context.push('/reply-to/${event.id}',
+                    extra: (model: event, community: widget.community)),
+                onActions: (event) => context.push('/actions/${event.id}',
+                    extra: (model: event, community: widget.community)),
+                onReactionTap: (reaction) {},
+                onZapTap: (zap) {},
+                onLinkTap: (url) {},
+                onProfileTap: (profile) =>
+                    context.push('/profile/${profile.npub}', extra: profile),
+              ),
+            );
+          } catch (e) {
+            return Container(
+              padding: const EdgeInsets.all(8),
+              child: Text('Error rendering message: ${e.toString()}'),
+            );
+          }
+        },
       ),
     );
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: LabDurationsData.normal().normal,
+        curve: Curves.easeOut,
+      );
+    }
   }
 }

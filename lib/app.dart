@@ -86,10 +86,7 @@ class _LabWithTheme extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeState = ref.watch(themeSettingsProvider);
 
-    // Listen to Nostr debug info
-    ref.listen(infoNotifierProvider, (previous, next) {
-      print('NOSTR DEBUG: $next');
-    });
+    // Nostr debug info removed to prevent console flooding and UI freezing
 
     return themeState.when(
       data: (state) {

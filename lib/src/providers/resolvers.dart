@@ -50,63 +50,80 @@ class _ResolverCache<T> {
 
 final resolversProvider = Provider<Resolvers>((ref) {
   final eventCache = _ResolverCache<({Model model, VoidCallback? onTap})>();
-  final profileCache =
-      _ResolverCache<({Profile profile, VoidCallback? onTap})>();
-  final emojiCache = _ResolverCache<String>();
   final hashtagCache = _ResolverCache<void Function()?>();
 
   return Resolvers(
     eventResolver: (identifier) => eventCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(milliseconds: 50));
-      final state = ref.watch(query<Note>());
-      if (state.models.isNotEmpty) {
-        return (
-          model: state.models[2],
-          onTap: () => {print("test")},
-        );
+      // Handle nostr: prefix and extract the actual identifier
+      String eventId = identifier;
+      if (identifier.startsWith('nostr:')) {
+        eventId = identifier.substring(6); // Remove 'nostr:' prefix
       }
-      // Fallback to creating a new note if no articles are available
-      final message = await PartialChatMessage(
-        'This is a :emeoji: Nostr message. Just for testing, nothing special. \n\nIt\'s mainly to test the profile colors in chat widgets.',
-        createdAt: DateTime.now(),
-      ).signWith(DummySigner(ref));
-      await ref.read(storageNotifierProvider.notifier).save({message});
-      return (model: message, onTap: null);
-    }),
-    profileResolver: (identifier) =>
-        profileCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(milliseconds: 50));
-      print('Resolving profile for identifier: $identifier');
-      final profile =
-          ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
-      print('Current profile: $profile');
 
-      if (profile == null) {
-        print('Creating dummy profile for: $identifier');
-        // Create a dummy profile instead of throwing
-        final dummyProfile = Profile.fromMap({
-          'pubkey': identifier,
-          'content': '{}',
-          'created_at': DateTime.now().toSeconds(),
-        }, ref);
-        return (
-          profile: dummyProfile,
-          onTap: () {
-            // Dummy function - you can implement actual navigation later
-            print('Profile tapped: $identifier');
+      // Handle nevent1... format - decode to get the actual event ID
+      if (eventId.startsWith('nevent1')) {
+        try {
+          final decoded = Utils.decodeShareableIdentifier(eventId);
+          if (decoded is EventData) {
+            eventId = decoded.eventId;
           }
-        );
-      }
-      return (
-        profile: profile,
-        onTap: () {
-          // Dummy function - you can implement actual navigation later
-          print('Profile tapped: ${profile.name}');
+        } catch (e) {
+          print('Failed to decode nevent1: $e');
+          // Skip this identifier if decoding fails
+          eventId = '';
         }
-      );
+      }
+
+      // Query for any model with this ID
+      final models = await ref.read(storageNotifierProvider.notifier).query(
+            RequestFilter(ids: {eventId}).toRequest(),
+          );
+
+      // Trigger background sync to keep looking for the event
+      ref.read(storageNotifierProvider.notifier).query(
+            RequestFilter(ids: {eventId}).toRequest(),
+            source: RemoteSource(),
+          );
+
+      return (model: models.firstOrNull as Model, onTap: null);
     }),
-    emojiResolver: (identifier, model) =>
-        emojiCache.getOrCreate(identifier, () async {
+    profileResolver: (identifier) async {
+      // Handle nostr: prefix and extract the actual identifier
+      String cleanIdentifier = identifier;
+      if (identifier.startsWith('nostr:')) {
+        cleanIdentifier = identifier.substring(6); // Remove 'nostr:' prefix
+      }
+
+      // Handle npub and nprofile formats - decode to get the actual pubkey
+      String pubkey = cleanIdentifier;
+      if (cleanIdentifier.startsWith('npub') ||
+          cleanIdentifier.startsWith('nprofile')) {
+        try {
+          final decoded = Utils.decodeShareableIdentifier(cleanIdentifier);
+          if (decoded is ProfileData) {
+            pubkey = decoded.pubkey;
+          }
+        } catch (e) {
+          // Continue with original identifier
+        }
+      }
+
+      // Query from local storage and custom relays simultaneously
+      final models = await ref.read(storageNotifierProvider.notifier).query(
+            RequestFilter<Profile>(authors: {pubkey}).toRequest(),
+            source: LocalAndRemoteSource(
+              relayUrls: {
+                'wss://relay.vertexlab.io',
+                'wss://nostr.band',
+              },
+              stream: true,
+              background: true,
+            ),
+          );
+
+      return (profile: models.firstOrNull, onTap: null);
+    },
+    emojiResolver: (identifier, model) async {
       final emojiTags = model.event.tags
           .where((tag) => tag.isNotEmpty && tag[0] == 'emoji')
           .toList();
@@ -117,10 +134,9 @@ final resolversProvider = Provider<Resolvers>((ref) {
         }
       }
       return '';
-    }),
+    },
     hashtagResolver: (identifier) =>
         hashtagCache.getOrCreate(identifier, () async {
-      await Future.delayed(const Duration(milliseconds: 50));
       return () {};
     }),
     topThreeReplyProfilesResolver: (model) =>

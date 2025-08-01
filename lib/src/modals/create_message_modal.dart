@@ -60,22 +60,15 @@ class _CreateMessageModalState extends ConsumerState<CreateMessageModal> {
     // Get the text field state using the GlobalKey
     final textFieldState = _textFieldStateKey.currentState;
 
-    // Debug logging
-    print('=== Send Message Debug ===');
-    print('Text field state found: ${textFieldState != null}');
-
     if (textFieldState == null) {
-      print('ERROR: Could not find text field state!');
       return;
     }
 
     // Access the editor state through the text field state
     final editorState =
         (textFieldState as dynamic).editorState as LabEditableShortTextState?;
-    print('Editor state found: ${editorState != null}');
 
     if (editorState == null) {
-      print('ERROR: Could not find editor state!');
       return;
     }
 

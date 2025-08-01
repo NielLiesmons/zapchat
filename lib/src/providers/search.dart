@@ -28,7 +28,7 @@ class _ResolverCache<T> {
 // Create a provider that ensures profiles are available
 final profileSearchProvider = Provider<NostrProfileSearch>((ref) {
   // Watch profiles in the provider context to ensure they're available
-  final profilesState = ref.watch(query<Profile>());
+  final profilesState = ref.watch(query<Profile>(limit: 21));
 
   return (queryText) async {
     try {

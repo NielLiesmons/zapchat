@@ -125,27 +125,9 @@ class _ReplyModalState extends ConsumerState<ReplyModal>
                       : LabContainer(
                           padding: LabEdgeInsets.all(LabGapSize.s6),
                           child: Column(
-                            children: replies
-                                .map((reply) => Column(children: [
-                                      LabMessageStack(
-                                        replies: [reply],
-                                        onResolveEvent: resolvers.eventResolver,
-                                        onResolveProfile:
-                                            resolvers.profileResolver,
-                                        onResolveEmoji: resolvers.emojiResolver,
-                                        onResolveHashtag:
-                                            resolvers.hashtagResolver,
-                                        onLinkTap: (url) => print(url),
-                                        onActions: (model) => print(model),
-                                        onReply: (model) => print(model),
-                                        onReactionTap: (model) => print(model),
-                                        onZapTap: (model) => print(model),
-                                        onProfileTap: (profile) =>
-                                            print(profile),
-                                      ),
-                                      const LabGap.s8(),
-                                    ]))
-                                .toList(),
+                            children: [
+                              //
+                            ],
                           ),
                         ),
                 ),
