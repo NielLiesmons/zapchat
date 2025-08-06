@@ -20,7 +20,7 @@ class LabCommunityWelcomeFeed extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = LabTheme.of(context);
     final profilesState = ref.watch(query<Profile>());
-    final articleState = ref.watch(query<Article>(limit: 1));
+    // final articleState = ref.watch(query<Article>(limit: 1));
     final topSupportersState = ref.watch(query<Profile>(limit: 3));
 
     if (profilesState case StorageLoading()) {
@@ -68,57 +68,58 @@ class LabCommunityWelcomeFeed extends ConsumerWidget {
                     color: LabTheme.of(context).colors.white,
                     maxLines: 3,
                     textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
             ),
             const LabGap.s12(),
-            LabContainer(
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const LabEdgeInsets.only(
-                top: LabGapSize.s10,
-                bottom: LabGapSize.s12,
-                left: LabGapSize.s12,
-                right: LabGapSize.s12,
-              ),
-              decoration: BoxDecoration(
-                color: theme.colors.gray66,
-                borderRadius: theme.radius.asBorderRadius().rad16,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const LabGap.s4(),
-                      LabText.med14(
-                        'Pinned Publications',
-                        color: theme.colors.white66,
-                      ),
-                      const Spacer(),
-                      LabIcon.s14(
-                        theme.icons.characters.chevronRight,
-                        outlineColor: theme.colors.white33,
-                        outlineThickness: LabLineThicknessData.normal().medium,
-                      ),
-                      const LabGap.s4(),
-                    ],
-                  ),
-                  const LabGap.s8(),
-                  if (articleState case StorageData(:final models))
-                    if (models.isNotEmpty)
-                      LabArticleCard(
-                        article: models.first,
-                        onProfileTap: (profile) => context
-                            .push('/profile/${profile.npub}', extra: profile),
-                        onTap: (article) => context
-                            .push('/article/${article.id}', extra: article),
-                      ), // TODO: fetch actual pinned publications
-                ],
-              ),
-            ),
-            const LabGap.s12(),
+            // LabContainer(
+            //   width: double.infinity,
+            //   alignment: Alignment.center,
+            //   padding: const LabEdgeInsets.only(
+            //     top: LabGapSize.s10,
+            //     bottom: LabGapSize.s12,
+            //     left: LabGapSize.s12,
+            //     right: LabGapSize.s12,
+            //   ),
+            //   decoration: BoxDecoration(
+            //     color: theme.colors.gray66,
+            //     borderRadius: theme.radius.asBorderRadius().rad16,
+            //   ),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Row(
+            //         children: [
+            //           const LabGap.s4(),
+            //           LabText.med14(
+            //             'Pinned Publications',
+            //             color: theme.colors.white66,
+            //           ),
+            //           const Spacer(),
+            //           LabIcon.s14(
+            //             theme.icons.characters.chevronRight,
+            //             outlineColor: theme.colors.white33,
+            //             outlineThickness: LabLineThicknessData.normal().medium,
+            //           ),
+            //           const LabGap.s4(),
+            //         ],
+            //       ),
+            //       const LabGap.s8(),
+            //       if (articleState case StorageData(:final models))
+            //         if (models.isNotEmpty)
+            //           LabArticleCard(
+            //             article: models.first,
+            //             onProfileTap: (profile) => context
+            //                 .push('/profile/${profile.npub}', extra: profile),
+            //             onTap: (article) => context
+            //                 .push('/article/${article.id}', extra: article),
+            //           ), // TODO: fetch actual pinned publications
+            //     ],
+            //   ),
+            // ),
+            // const LabGap.s12(),
             LabContainer(
               width: double.infinity,
               alignment: Alignment.center,

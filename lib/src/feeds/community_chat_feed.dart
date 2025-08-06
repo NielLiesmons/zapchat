@@ -19,35 +19,140 @@ class CommunityChatFeed extends ConsumerStatefulWidget {
 class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
   final Map<String, GlobalKey> _messageKeys = {};
   final ScrollController _scrollController = ScrollController();
-  List<String> _previousMessageIds = [];
+  bool _isLoadingMore = false;
+  int _loadedCount = 0;
+  bool _hasInitialized = false; // Flag to prevent re-initialization
+  bool _hasReachedEnd = false; // Flag to prevent loading when no more messages
+  bool _isInitializing = true; // Flag to prevent loading during initialization
+  List<ChatMessage> _visibleMessages =
+      []; // Keep track of visible messages separately
+  DateTime? _lastLoadTime; // Track when we last loaded messages
+  static const Duration _loadCooldown = Duration(
+      milliseconds: 1000); // Increase cooldown to prevent rapid loading
+  int _consecutiveEmptyResults = 0; // Track consecutive empty results
+  static const int _maxConsecutiveEmpty =
+      3; // Stop after 3 consecutive empty results
+  static const int _maxMessagesToLoad =
+      500; // Maximum messages to load to prevent infinite loops
 
   @override
   void initState() {
     super.initState();
+    // Don't add scroll listener until initialization is complete
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
 
-  /// Scrolls to a specific message by its ID if it exists in the feed
-  /// Returns true if the message was found and scrolled to, false otherwise
-  Future<bool> scrollToMessage(String messageId) async {
-    final key = _messageKeys[messageId];
-    if (key?.currentContext == null) {
-      return false;
+  void _onScroll() {
+    // Don't load during initialization
+    if (_isInitializing) {
+      return;
     }
 
-    await Scrollable.ensureVisible(
-      key!.currentContext!,
-      duration: LabDurationsData.normal().normal,
-      curve: Curves.easeOut,
-      alignment: 0.0, // Align to top
-    );
+    // Check if we need to load more messages when scrolling to the top (since ListView is reversed)
+    // Only trigger if we're very close to the top to prevent excessive loads
+    if (_scrollController.position.pixels <= 100 &&
+        !_isLoadingMore &&
+        !_hasReachedEnd &&
+        _visibleMessages.length < _maxMessagesToLoad &&
+        (_lastLoadTime == null ||
+            DateTime.now().difference(_lastLoadTime!) > _loadCooldown)) {
+      print('Loading more messages...');
+      _loadMoreMessages();
+    }
+  }
 
-    return true;
+  void _loadMoreMessages() async {
+    print(
+        '_loadMoreMessages called, _isLoadingMore: $_isLoadingMore, _hasReachedEnd: $_hasReachedEnd, messages: ${_visibleMessages.length}');
+
+    // Multiple safety checks to prevent infinite loading
+    if (_isLoadingMore || _hasReachedEnd) {
+      print('Skipping load: already loading or reached end');
+      return;
+    }
+
+    if (_visibleMessages.length >= _maxMessagesToLoad) {
+      print(
+          'Reached maximum message limit ($_maxMessagesToLoad) - stopping loads');
+      setState(() {
+        _hasReachedEnd = true;
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoadingMore = true;
+      _lastLoadTime = DateTime.now();
+    });
+
+    try {
+      if (_visibleMessages.isNotEmpty) {
+        final oldestMessage = _visibleMessages.last;
+
+        // Load older messages
+        final newMessages =
+            await ref.read(storageNotifierProvider.notifier).query(
+                  RequestFilter<ChatMessage>(
+                    tags: {
+                      '#h': {widget.community.event.pubkey}
+                    },
+                    limit: 21,
+                    until: oldestMessage.createdAt,
+                  ).toRequest(),
+                  source: LocalAndRemoteSource(background: true),
+                );
+
+        if (newMessages.isNotEmpty) {
+          _consecutiveEmptyResults = 0; // Reset counter when we get results
+          final newMessagesList =
+              newMessages.cast<ChatMessage>().reversed.toList();
+
+          // Simple duplicate check - only add messages we don't already have
+          final existingIds = _visibleMessages.map((m) => m.id).toSet();
+          final uniqueNewMessages = newMessagesList
+              .where((msg) => !existingIds.contains(msg.id))
+              .toList();
+
+          if (uniqueNewMessages.isNotEmpty) {
+            setState(() {
+              _visibleMessages.addAll(uniqueNewMessages);
+              print(
+                  'Added ${uniqueNewMessages.length} unique messages, total: ${_visibleMessages.length}');
+            });
+          } else {
+            // All messages are duplicates, we've reached the end
+            setState(() {
+              _hasReachedEnd = true;
+              print(
+                  'Reached end of messages - all new messages are duplicates');
+            });
+          }
+        } else {
+          // No more messages available
+          _consecutiveEmptyResults++;
+          if (_consecutiveEmptyResults >= _maxConsecutiveEmpty) {
+            setState(() {
+              _hasReachedEnd = true;
+              print(
+                  'Reached end of messages - no more older messages available after $_consecutiveEmptyResults consecutive empty results');
+            });
+          } else {
+            print(
+                'Empty result $_consecutiveEmptyResults/$_maxConsecutiveEmpty - will try again');
+          }
+        }
+      }
+    } finally {
+      setState(() {
+        _isLoadingMore = false;
+      });
+    }
   }
 
   /// Checks if the message at the given index has the same sender as the previous message
@@ -96,31 +201,51 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
     final activePubkey = ref.watch(Signer.activePubkeyProvider);
     final resolvers = ref.read(resolversProvider);
 
-    // Query for chat messages specifically for this community using h tag filtering
-    // Use the same pattern as Threads feed for consistency
-
-    final chatMessagesState = ref.watch(query<ChatMessage>(
+    // Use reactive query only for initial loading
+    if (!_hasInitialized) {
+      final chatMessagesState = ref.watch(query<ChatMessage>(
         limit: 21,
         tags: {
           '#h': {widget.community.event.pubkey}
         },
-        and: (msg) => {msg.author}));
-    final queryEndTime = DateTime.now();
+        and: (msg) => {msg.author},
+      ));
 
-    // Background remote sync temporarily disabled for debugging
+      if (chatMessagesState case StorageData(:final models)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            _visibleMessages = models.cast<ChatMessage>().toList();
+            _hasInitialized = true;
+            _isInitializing = false; // Allow scroll-based loading now
+            print(
+                'Initialized _visibleMessages with ${_visibleMessages.length} messages');
 
-    // Handle loading state
-    if (chatMessagesState case StorageLoading()) {
+            // Add scroll listener only after initialization is complete
+            _scrollController.addListener(_onScroll);
+          });
+        });
+      }
+
+      if (chatMessagesState case StorageLoading()) {
+        return const LabLoadingFeed(type: LoadingFeedType.chat);
+      }
+
+      if (chatMessagesState case StorageError()) {
+        return LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s12),
+          child: LabModelEmptyStateCard(
+            contentType: "chat",
+            onCreateTap: () =>
+                context.push('/create/message', extra: widget.community),
+          ),
+        );
+      }
+
       return const LabLoadingFeed(type: LoadingFeedType.chat);
     }
 
-    if (chatMessagesState case StorageError()) {
-      return const LabLoadingFeed(type: LoadingFeedType.chat);
-    }
-
-    List<ChatMessage> messages = chatMessagesState.models.toList();
-
-    if (messages.isEmpty) {
+    // Show empty state if no messages
+    if (_visibleMessages.isEmpty) {
       return LabContainer(
         padding: const LabEdgeInsets.all(LabGapSize.s12),
         child: LabModelEmptyStateCard(
@@ -131,107 +256,85 @@ class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
       );
     }
 
-    // Simple auto-scroll for new outgoing messages
-    if (activePubkey != null) {
-      // Count individual outgoing messages
-      final currentOutgoingCount = messages
-          .where((message) => message.author.value?.pubkey == activePubkey)
-          .length;
+    return _buildChatList(theme, activePubkey, resolvers);
+  }
 
-      if (currentOutgoingCount > _previousMessageIds.length) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            _scrollToBottom();
-          }
-        });
-      }
-    }
-
-    // Update previous message IDs
-    _previousMessageIds = messages.map((m) => m.id).toList();
-
+  Widget _buildChatList(
+      LabThemeData theme, String? activePubkey, Resolvers resolvers) {
     return LabContainer(
       height: MediaQuery.of(context).size.height / theme.system.scale -
-          (16 +
+          (12 +
               (LabPlatformUtils.isMobile
                   ? MediaQuery.of(context).padding.top
                   : 20)),
-      child: ListView.builder(
+      child: CustomScrollView(
         reverse: true,
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 8.0,
-        ),
-        cacheExtent: 500, // Reduce cache to prevent memory issues
-        itemCount: messages.length + 1, // +1 for the bottom padding
-        itemBuilder: (context, index) {
-          // If this is the first item (which is now the bottom due to reverse), return bottom padding
-          if (index == 0) {
-            return const SizedBox(height: 160);
-          }
+        cacheExtent: 1000,
+        slivers: [
+          // Bottom padding for input area
+          SliverToBoxAdapter(
+            child: SizedBox(
+                height: 172 +
+                    MediaQuery.of(context).padding.bottom +
+                    (LabPlatformUtils.isMobile ? 0 : 10)),
+          ),
+          // Messages list
+          SliverList.builder(
+            itemCount: _visibleMessages.length,
+            itemBuilder: (context, index) {
+              final message = _visibleMessages[index];
+              final isOutgoing = message.author.value?.pubkey == activePubkey;
 
-          final messageIndex =
-              index - 1; // Adjust index since we added padding at the beginning
-          final message = messages[messageIndex];
-          final isOutgoing = message.author.value?.pubkey == activePubkey;
+              // For reversed list: visual "previous" is actually next in array, visual "next" is actually previous in array
+              final isSameSenderAsPrevious = _isSameSenderAsNext(
+                  _visibleMessages, index); // Visual previous = array next
+              final isSameSenderAsNext = _isSameSenderAsPrevious(
+                  _visibleMessages, index); // Visual next = array previous
 
-          // For reversed list: visual "previous" is actually next in array, visual "next" is actually previous in array
-          final isSameSenderAsPrevious = _isSameSenderAsNext(
-              messages, messageIndex); // Visual previous = array next
-          final isSameSenderAsNext = _isSameSenderAsPrevious(
-              messages, messageIndex); // Visual next = array previous
+              // Create a unique key for this message
+              final messageKey = GlobalKey();
+              _messageKeys[message.id] = messageKey;
 
-          // Create a unique key for this message
-          final messageKey = GlobalKey();
-          _messageKeys[message.id] = messageKey;
-
-          try {
-            return RepaintBoundary(
-              child: LabMessageBubble(
-                key: messageKey,
-                message: message,
-                isFirstInStack:
-                    !isSameSenderAsPrevious, // First in stack for both incoming and outgoing
-                isLastInStack:
-                    !isSameSenderAsNext, // Last in stack if no next message from same sender
-                isOutgoing: isOutgoing,
-                onResolveEvent: resolvers.eventResolver,
-                onResolveProfile: resolvers.profileResolver,
-                onResolveEmoji: resolvers.emojiResolver,
-                onResolveHashtag: (identifier) async {
-                  return () {};
-                },
-                onReply: (event) => context.push('/reply-to/${event.id}',
-                    extra: (model: event, community: widget.community)),
-                onActions: (event) => context.push('/actions/${event.id}',
-                    extra: (model: event, community: widget.community)),
-                onReactionTap: (reaction) {},
-                onZapTap: (zap) {},
-                onLinkTap: (url) {},
-                onProfileTap: (profile) =>
-                    context.push('/profile/${profile.npub}', extra: profile),
-              ),
-            );
-          } catch (e) {
-            return Container(
-              padding: const EdgeInsets.all(8),
-              child: Text('Error rendering message: ${e.toString()}'),
-            );
-          }
-        },
+              try {
+                return RepaintBoundary(
+                  key: ValueKey(message.id),
+                  child: LabMessageBubble(
+                    key: messageKey,
+                    message: message,
+                    isFirstInStack:
+                        !isSameSenderAsPrevious, // First in stack for both incoming and outgoing
+                    isLastInStack:
+                        !isSameSenderAsNext, // Last in stack if no next message from same sender
+                    isOutgoing: isOutgoing,
+                    onResolveEvent: resolvers.eventResolver,
+                    onResolveProfile: resolvers.profileResolver,
+                    onResolveEmoji: resolvers.emojiResolver,
+                    onResolveHashtag: (identifier) async {
+                      return () {};
+                    },
+                    onReply: (event) => context.push('/reply-to/${event.id}',
+                        extra: (model: event, community: widget.community)),
+                    onActions: (event) => context.push('/actions/${event.id}',
+                        extra: (model: event, community: widget.community)),
+                    onReactionTap: (reaction) {},
+                    onZapTap: (zap) {},
+                    onLinkTap: (url) {},
+                    onProfileTap: (profile) => context
+                        .push('/profile/${profile.npub}', extra: profile),
+                  ),
+                );
+              } catch (e) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text('Error rendering message: ${e.toString()}'),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
-  }
-
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: LabDurationsData.normal().normal,
-        curve: Curves.easeOut,
-      );
-    }
   }
 }

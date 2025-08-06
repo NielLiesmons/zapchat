@@ -43,12 +43,26 @@ class HomeTab extends StatelessWidget {
       content: HookConsumer(
         builder: (context, ref, _) {
           final resolvers = ref.read(resolversProvider);
-          final state = ref
-              .watch(query<Community>(and: (c) => {c.author, c.chatMessages}));
-          final activePubkey = ref.watch(Signer.activePubkeyProvider);
-          final activeProfile = ref.watch(
-            Signer.activeProfileProvider(LocalAndRemoteSource()),
-          );
+
+          // Specific community authors to show on home page (npubs will be decoded to hex)
+          final communityAuthors = {
+            Utils.decodeShareableToString(
+                'npub1pr28pamqhcfacyqudjrfyyfzhjwgz3xxfc85yjp42396he30ztls42rfw8'), // Replace with actual npub
+            Utils.decodeShareableToString(
+                'npub1w5d4ws7d607qwszk4nwm3ugkzkzvvge8mmv0jxfk7edthfnlqhrs8n72uv'),
+            Utils.decodeShareableToString(
+                'npub18stt78efprta2el02tzgnez6ehghzgtt000v58967wvkgezjmprs0n7h7u'), // Replace with actual npub
+            Utils.decodeShareableToString(
+                'npub1vcxcc7r9racyslkfhrwu9qlznne9v95nmk3m5frd8lfuprdmwzpsxqzqcr'), // Replace with actual npub
+          };
+
+          // Show cached data immediately, then sync in background
+          final state = ref.watch(query<Community>(
+            authors: communityAuthors,
+            and: (c) => {c.author, c.chatMessages},
+            source: LocalAndRemoteSource(
+                background: true), // Local first, remote in background
+          ));
 
           final communities = state.models;
 

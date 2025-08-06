@@ -49,7 +49,7 @@ class _ResolverCache<T> {
 }
 
 final resolversProvider = Provider<Resolvers>((ref) {
-  final eventCache = _ResolverCache<({Model model, VoidCallback? onTap})>();
+  final eventCache = _ResolverCache<({Model? model, VoidCallback? onTap})>();
   final hashtagCache = _ResolverCache<void Function()?>();
 
   return Resolvers(
@@ -60,32 +60,165 @@ final resolversProvider = Provider<Resolvers>((ref) {
         eventId = identifier.substring(6); // Remove 'nostr:' prefix
       }
 
-      // Handle nevent1... format - decode to get the actual event ID
+      // Handle nevent1, naddr1, and note1 formats - decode to get the actual data
       if (eventId.startsWith('nevent1')) {
         try {
           final decoded = Utils.decodeShareableIdentifier(eventId);
           if (decoded is EventData) {
             eventId = decoded.eventId;
+          } else {
+            throw Exception('Invalid nevent1 format');
           }
         } catch (e) {
           print('Failed to decode nevent1: $e');
-          // Skip this identifier if decoding fails
-          eventId = '';
+          // Check if this might be a hex ID with nevent1 prefix (malformed)
+          if (eventId.length == 7 + 64) {
+            // nevent1 + 64 hex chars
+            final hexPart = eventId.substring(7);
+            if (RegExp(r'^[0-9a-fA-F]{64}$').hasMatch(hexPart)) {
+              print('Extracting hex ID from malformed nevent1: $hexPart');
+              eventId = hexPart;
+            } else {
+              throw Exception('Invalid nevent1 format: $eventId');
+            }
+          } else {
+            throw Exception('Invalid nevent1 format: $eventId');
+          }
+        }
+      } else if (eventId.startsWith('naddr1')) {
+        try {
+          final decoded = Utils.decodeShareableIdentifier(eventId);
+          if (decoded is AddressData) {
+            // For naddr, we need to query by kind, author, and d-tag
+            if (decoded.kind == null ||
+                decoded.author == null ||
+                decoded.identifier == null) {
+              throw Exception('Invalid naddr1 data: missing required fields');
+            }
+
+            // Check if this kind is registered in the models package
+            final knownKinds = {
+              0, // Profile
+              1, // Note
+              3, // ContactList
+              4, // DirectMessage
+              6, // Repost
+              7, // Reaction
+              9, // ChatMessage
+              11, // ForumPost
+              145, // Mail
+              1018, // PollResponse
+              1068, // Poll
+              1055, // Book
+              10456, // Group
+              30617, // Repository
+              32767, // Job
+              9321, // CashuZap
+              33333, // Service
+              30402, // Product
+              37060, // Task
+            };
+
+            if (knownKinds.contains(decoded.kind)) {
+              // Try to query for models only for known kinds
+              try {
+                final models =
+                    await ref.watch(storageNotifierProvider.notifier).query(
+                          RequestFilter(
+                            kinds: {decoded.kind!},
+                            authors: {decoded.author!},
+                            tags: {
+                              '#d': {decoded.identifier!}
+                            },
+                          ).toRequest(),
+                        );
+
+                // Trigger background sync
+                ref.read(storageNotifierProvider.notifier).query(
+                      RequestFilter(
+                        kinds: {decoded.kind!},
+                        authors: {decoded.author!},
+                        tags: {
+                          '#d': {decoded.identifier!}
+                        },
+                      ).toRequest(),
+                      source: RemoteSource(),
+                    );
+
+                final model = models.firstOrNull as Model?;
+                if (model != null) {
+                  return (model: model, onTap: null);
+                }
+              } catch (e) {
+                print(
+                    'Failed to query for naddr model with kind ${decoded.kind}: $e');
+              }
+            } else {
+              print(
+                  'Skipping query for unregistered kind ${decoded.kind} (naddr: ${decoded.identifier})');
+            }
+
+            // If we get here, either no model was found or the kind is unknown
+            print(
+                'Addressable event not found or unknown kind: ${decoded.identifier}');
+            return (model: null, onTap: null);
+          } else {
+            throw Exception('Invalid naddr1 format');
+          }
+        } catch (e) {
+          print('Failed to decode naddr1: $e');
+          throw Exception('Invalid naddr1 format: $eventId');
+        }
+      } else if (eventId.startsWith('note1')) {
+        try {
+          final decoded = Utils.decodeShareableIdentifier(eventId);
+          if (decoded is EventData) {
+            eventId = decoded.eventId;
+          } else {
+            throw Exception('Invalid note1 format');
+          }
+        } catch (e) {
+          print('Failed to decode note1: $e');
+          // Check if this might be a hex ID with note1 prefix (malformed)
+          if (eventId.length == 5 + 64) {
+            // note1 + 64 hex chars
+            final hexPart = eventId.substring(5);
+            if (RegExp(r'^[0-9a-fA-F]{64}$').hasMatch(hexPart)) {
+              print('Extracting hex ID from malformed note1: $hexPart');
+              eventId = hexPart;
+            } else {
+              throw Exception('Invalid note1 format: $eventId');
+            }
+          } else {
+            throw Exception('Invalid note1 format: $eventId');
+          }
         }
       }
 
-      // Query for any model with this ID
-      final models = await ref.read(storageNotifierProvider.notifier).query(
-            RequestFilter(ids: {eventId}).toRequest(),
-          );
+      // Try to query for models first (for known kinds)
+      try {
+        final models = await ref.watch(storageNotifierProvider.notifier).query(
+              RequestFilter(ids: {eventId}).toRequest(),
+            );
 
-      // Trigger background sync to keep looking for the event
-      ref.read(storageNotifierProvider.notifier).query(
-            RequestFilter(ids: {eventId}).toRequest(),
-            source: RemoteSource(),
-          );
+        // Trigger background sync to keep looking for the event
+        ref.read(storageNotifierProvider.notifier).query(
+              RequestFilter(ids: {eventId}).toRequest(),
+              source: RemoteSource(),
+            );
 
-      return (model: models.firstOrNull as Model, onTap: null);
+        final model = models.firstOrNull as Model?;
+        if (model != null) {
+          return (model: model, onTap: null);
+        }
+      } catch (e) {
+        print('Failed to query for model with kind, likely unknown kind: $e');
+      }
+
+      // If we get here, either no model was found or the kind is unknown
+      // Return null to indicate the event couldn't be resolved
+      print('Event not found or unknown kind: $eventId');
+      return (model: null, onTap: null);
     }),
     profileResolver: (identifier) async {
       // Handle nostr: prefix and extract the actual identifier

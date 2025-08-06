@@ -12,7 +12,9 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return HomePage();
+        return HomePage(
+          tab: 'home',
+        );
       },
     ),
     GoRoute(

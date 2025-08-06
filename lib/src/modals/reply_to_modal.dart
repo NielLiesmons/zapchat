@@ -63,12 +63,24 @@ class _ReplyModalState extends ConsumerState<ReplyToModal> {
     if (text.isNotEmpty) {
       try {
         // Add the Nostr event reference to the message content
+        final quotedMessage =
+            widget.model is ChatMessage ? (widget.model as ChatMessage) : null;
+
+        // Add quoted message URI to content if it's a ChatMessage
+        String contentWithQuote = text;
+        if (quotedMessage != null) {
+          final quotedUri = Utils.encodeShareableFromString(quotedMessage.id,
+              type: 'nevent1');
+          // Only add if not already in content
+          if (!text.contains(quotedUri)) {
+            contentWithQuote = '$quotedUri\n$text';
+          }
+        }
+
         final message = PartialChatMessage(
-          text,
+          contentWithQuote,
           createdAt: DateTime.now(),
-          quotedMessage: widget.model is ChatMessage
-              ? (widget.model as ChatMessage)
-              : null,
+          quotedMessage: quotedMessage,
         );
 
         // Add h tag with community pubkey if community is provided

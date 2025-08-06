@@ -102,7 +102,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final replyData =
               state.extra as ({Model model, Community? community});
-          return LabSlideInModal(
+          return LabPopInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyToModal(

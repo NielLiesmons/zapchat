@@ -88,7 +88,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       feed: LabCommunityWelcomeFeed(
         community: widget.community,
         onProfileTap: () => context.push(
-            '/community/${widget.community.author.value?.npub}/info',
+            '/profile/${widget.community.author.value?.npub}',
             extra: widget.community),
       ),
       bottomBar: const LabBottomBarWelcome()

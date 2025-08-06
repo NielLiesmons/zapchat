@@ -104,7 +104,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/message',
         pageBuilder: (context, state) {
           final model = state.extra as Model;
-          return LabSlideInModal(
+          return LabPopInModal(
             child: CreateMessageModal(target: model),
           );
         },

@@ -19,6 +19,7 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
             'wss://relay.damus.io',
             'wss://zaplab.nostr1.com',
             'wss://theforest.nostr1.com',
+            'wss://nos.lol',
             // 'wss://groups.0xchat.com',
             // 'wss://nostr.wine',
             // 'wss://relay.primal.net',
