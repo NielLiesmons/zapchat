@@ -72,29 +72,18 @@ class HomeTab extends StatelessWidget {
                 LabCommunityHomePanel(
                   community: community,
                   lastModel: community.chatMessages.toList().firstOrNull,
-                  mainCount: 10,
+                  mainCount: 2,
                   contentCounts: {
                     'chat': 10,
-                    'thread': 10,
-                    'task': 10,
                   },
                   onNavigateToCommunity: (community) {
-                    context.push(
-                      '/community/${community.author.value?.npub}/chat',
-                      extra: community,
-                    );
+                    context.push('/simple-chat-test', extra: community);
                   },
                   onNavigateToContent: (community, contentType) {
-                    context.push(
-                      '/community/${community.author.value?.npub}/$contentType',
-                      extra: community,
-                    );
+                    context.push('/simple-chat-test', extra: community);
                   },
                   onNavigateToNotifications: (community) {
-                    context.push(
-                      '/community/${community.author.value?.npub}/notifications',
-                      extra: community,
-                    );
+                    context.push('/simple-chat-test', extra: community);
                   },
                   onResolveEvent: resolvers.eventResolver,
                   onResolveProfile: resolvers.profileResolver,

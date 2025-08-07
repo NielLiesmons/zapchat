@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/history.dart';
 import 'tabs/home/home.dart';
 import 'tabs/home/albums.dart';
 import 'tabs/home/notes.dart';
@@ -26,7 +27,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   static const double _heightWithProfile = 72.0;
   static const double _heightWithoutProfile = 62.0;
 
-  // Tab controller to switch bottom bar based on the tab that is selected.
   @override
   void initState() {
     super.initState();

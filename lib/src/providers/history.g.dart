@@ -178,7 +178,7 @@ class _RecentHistoryItemsProviderElement
       (origin as RecentHistoryItemsProvider).currentModelId;
 }
 
-String _$historyHash() => r'7bdf6554bbc24193d6a0e95ef4c52505abab220d';
+String _$historyHash() => r'ca34a6e2d874f836242dd2fca5722746da170870';
 
 /// See also [History].
 @ProviderFor(History)

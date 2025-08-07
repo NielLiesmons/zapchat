@@ -40,6 +40,7 @@ class HistoryEntry {
 @riverpod
 class History extends _$History {
   static const String _historyKey = 'navigation_history';
+
   static const int _maxEntries = 1000;
 
   @override
@@ -124,9 +125,22 @@ class History extends _$History {
       return [];
     }
 
-    final items = state.value!
+    // Check if we're on a home route - if so, don't show history
+    final router = GoRouter.of(context);
+    final location = router.routerDelegate.currentConfiguration.uri.toString();
+    final isOnHomeRoute = location == '/' || location.startsWith('/home/');
+
+    if (isOnHomeRoute) {
+      return [];
+    }
+
+    // Show latest 3 items when not on home route
+    final currentEntries = state.value!
         .where((entry) => entry.modelId != currentModelId)
         .take(3)
+        .toList();
+
+    final items = currentEntries
         .map((entry) => HistoryItem(
               modelType: entry.modelType,
               modelId: entry.modelId,
