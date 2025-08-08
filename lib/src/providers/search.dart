@@ -12,19 +12,6 @@ class Search {
   });
 }
 
-// Add cache classes
-class _ResolverCache<T> {
-  final Map<String, Future<T>> _cache = {};
-
-  Future<T> getOrCreate(String key, Future<T> Function() create) {
-    return _cache.putIfAbsent(key, create);
-  }
-
-  void clear() {
-    _cache.clear();
-  }
-}
-
 // Create a provider that ensures profiles are available
 final profileSearchProvider = Provider<NostrProfileSearch>((ref) {
   // Watch profiles in the provider context to ensure they're available
@@ -50,12 +37,18 @@ final profileSearchProvider = Provider<NostrProfileSearch>((ref) {
   };
 });
 
+// Create emoji search provider
+final emojiSearchProvider = Provider<NostrEmojiSearch>((ref) {
+  return (queryText) async {
+    // For now, just return all default emoji
+    // TODO: Add filtering based on queryText when needed
+    return LabDefaultData.defaultEmoji;
+  };
+});
+
 final searchProvider = Provider<Search>((ref) {
   return Search(
     profileSearch: ref.watch(profileSearchProvider),
-    emojiSearch: (queryText) async {
-      // TODO: Implement emoji search
-      return [];
-    },
+    emojiSearch: ref.watch(emojiSearchProvider),
   );
 });

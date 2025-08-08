@@ -8,11 +8,11 @@ import '../screens/thread_screen.dart';
 import '../screens/article_screen.dart';
 import '../screens/mail_screen.dart';
 import '../screens/service_screen.dart';
-import '../modals/reply_to_modal.dart';
-import '../modals/actions_modal.dart';
-import '../modals/label_modal.dart';
-import '../modals/reply_modal.dart';
-import '../modals/share_modal.dart';
+import '../modals & bottom bars/reply_to_modal.dart';
+import '../modals & bottom bars/actions_modal.dart';
+import '../modals & bottom bars/label_modal.dart';
+import '../modals & bottom bars/reply_modal.dart';
+import '../modals & bottom bars/share_modal.dart';
 
 String getModelRoute(String modelType) {
   return switch (modelType.toLowerCase()) {
@@ -56,13 +56,18 @@ List<GoRoute> get eventRoutes => [
       GoRoute(
         path: '/actions/:eventId',
         pageBuilder: (context, state) {
-          final extra = state.extra as ({Model model, Community? community});
+          final extra = state.extra as ({
+            Model model,
+            Community? community,
+            Function(Model)? onLocalReply
+          });
           return LabSlideInModal(
             child: Consumer(
               builder: (context, ref, _) {
                 return ActionsModal(
                   model: extra.model,
                   community: extra.community,
+                  onLocalReply: extra.onLocalReply,
                 );
               },
             ),

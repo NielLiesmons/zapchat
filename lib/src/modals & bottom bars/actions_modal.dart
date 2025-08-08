@@ -9,11 +9,13 @@ import '../providers/resolvers.dart';
 class ActionsModal extends ConsumerWidget {
   final Model model;
   final Community? community;
+  final Function(Model)? onLocalReply;
 
   const ActionsModal({
     super.key,
     required this.model,
     this.community,
+    this.onLocalReply,
   });
 
   @override
@@ -44,8 +46,18 @@ class ActionsModal extends ConsumerWidget {
                           model is CashuZap ||
                           model is Zap
                       ? TapBuilder(
-                          onTap: () => context.replace('/reply-to/${model.id}',
-                              extra: (model: model, community: community)),
+                          onTap: () {
+                            if (onLocalReply != null) {
+                              // Use local reply functionality
+                              Navigator.of(context)
+                                  .pop(); // Close the actions modal
+                              onLocalReply!(model);
+                            } else {
+                              // Use the modal reply
+                              context.replace('/reply-to/${model.id}',
+                                  extra: (model: model, community: community));
+                            }
+                          },
                           builder: (context, state, hasFocus) {
                             return LabContainer(
                               decoration: BoxDecoration(
@@ -182,9 +194,21 @@ class ActionsModal extends ConsumerWidget {
                               ],
                             ),
                             TapBuilder(
-                              onTap: () => context.replace(
-                                  '/reply-to/${model.id}',
-                                  extra: (model: model, community: community)),
+                              onTap: () {
+                                if (onLocalReply != null) {
+                                  // Use local reply functionality
+                                  Navigator.of(context)
+                                      .pop(); // Close the actions modal
+                                  onLocalReply!(model);
+                                } else {
+                                  // Use the modal reply
+                                  context.replace('/reply-to/${model.id}',
+                                      extra: (
+                                        model: model,
+                                        community: community
+                                      ));
+                                }
+                              },
                               builder: (context, state, hasFocus) {
                                 double scaleFactor = 1.0;
                                 if (state == TapState.pressed) {
@@ -279,8 +303,41 @@ class ActionsModal extends ConsumerWidget {
                             for (final emoji
                                 in LabDefaultData.defaultEmoji.take(24)) ...[
                               TapBuilder(
-                                onTap: () {
-                                  // TODO: Implement emoji reaction
+                                onTap: () async {
+                                  // Create and publish emoji reaction
+                                  try {
+                                    final signer =
+                                        ref.read(Signer.activeSignerProvider);
+                                    if (signer != null) {
+                                      // Create the reaction with the emoji content
+                                      final reaction = PartialReaction(
+                                        reactedOn: model,
+                                        emojiTag: (
+                                          emoji.emojiName,
+                                          emoji.emojiUrl
+                                        ),
+                                      );
+
+                                      final signedReaction =
+                                          await reaction.signWith(signer);
+
+                                      // Save locally and publish to relays
+                                      await ref
+                                          .read(
+                                              storageNotifierProvider.notifier)
+                                          .save({signedReaction});
+                                      await ref
+                                          .read(
+                                              storageNotifierProvider.notifier)
+                                          .publish({signedReaction});
+
+                                      // Close the modal after successful reaction
+                                      Navigator.of(context).pop();
+                                    }
+                                  } catch (e) {
+                                    print('Error creating reaction: $e');
+                                    // You might want to show an error toast here
+                                  }
                                 },
                                 builder: (context, state, isFocused) {
                                   double scaleFactor = 1.0;

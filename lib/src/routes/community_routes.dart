@@ -2,9 +2,9 @@ import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import '../screens/community_screen.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import '../modals/community_info_modal.dart';
-import '../modals/community_pricing_modal.dart';
-import '../modals/community_notifications_modal.dart';
+import '../modals & bottom bars/community_info_modal.dart';
+import '../modals & bottom bars/community_pricing_modal.dart';
+import '../modals & bottom bars/community_notifications_modal.dart';
 
 List<GoRoute> get communityRoutes => [
       GoRoute(

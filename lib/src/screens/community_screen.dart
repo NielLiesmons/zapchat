@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'dart:ui';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
-import '../modals/morphing_chat_bottom_bar.dart';
+import '../modals & bottom bars/chat_bottom_bar.dart';
 
 class CommunityScreen extends ConsumerStatefulWidget {
   final Community community;
@@ -37,6 +37,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
   String?
       _currentPublishingMessageId; // Track the message currently being published
   bool _isBottomBarExpanded = false; // Track bottom bar expanded state
+  ChatMessage? _quotedMessage; // Track the message being replied to
+  final GlobalKey<MorphingChatBottomBarState> _bottomBarKey =
+      GlobalKey<MorphingChatBottomBarState>();
 
   // Real history items from provider
   List<HistoryItem> get _history {
@@ -271,11 +274,19 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
         final resolvers = ref.read(resolversProvider);
 
         // Handle message publishing directly from bottom bar callback
-        void handleNewMessage(ChatMessage message) {
+        void handleNewMessage(ChatMessage message) async {
+          // Set the publishing state to show loading in the message bubble
           setState(() {
             _currentPublishingMessageId = message.id;
           });
-          _publishMessage(message);
+
+          // Publish the message to relays
+          await _publishMessage(message);
+
+          // Clear the quoted message after sending
+          setState(() {
+            _quotedMessage = null;
+          });
         }
 
         // Handle bottom bar expanded state changes
@@ -294,10 +305,11 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
 
         final messagesState = ref.watch(
           query<ChatMessage>(
+            and: (msg) => {msg.author, msg.reactions, msg.zaps},
             tags: {
               '#h': {widget.community.author.value?.pubkey ?? ''}
             },
-            limit: 100,
+            limit: 50,
             source: querySource,
           ),
         );
@@ -424,11 +436,40 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                                       model as ChatMessage);
                                                 }
                                               : null,
-                                          onActions: (model) {
-                                            // Handle actions
-                                          },
+                                          onActions: (model) => context.push(
+                                              '/actions/${model.id}',
+                                              extra: (
+                                                model: model,
+                                                community: widget.community,
+                                                onLocalReply: (model) {
+                                                  // Handle reply - set quoted message and expand bottom bar
+                                                  setState(() {
+                                                    _quotedMessage =
+                                                        model as ChatMessage;
+                                                    _isBottomBarExpanded = true;
+                                                  });
+                                                  // Actually expand the bottom bar
+                                                  if (_bottomBarKey
+                                                          .currentState !=
+                                                      null) {
+                                                    _bottomBarKey.currentState!
+                                                        .expand();
+                                                  }
+                                                },
+                                              )),
                                           onReply: (model) {
-                                            // Handle reply
+                                            // Handle reply - set quoted message and expand bottom bar
+                                            setState(() {
+                                              _quotedMessage =
+                                                  model as ChatMessage;
+                                              _isBottomBarExpanded = true;
+                                            });
+                                            // Actually expand the bottom bar
+                                            if (_bottomBarKey.currentState !=
+                                                null) {
+                                              _bottomBarKey.currentState!
+                                                  .expand();
+                                            }
                                           },
                                           onResolveEvent:
                                               resolvers.eventResolver,
@@ -447,6 +488,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                             print(
                                                 'Profile tapped: ${profile.name}');
                                           },
+                                          activePubkey: ref.read(
+                                              Signer.activePubkeyProvider),
                                         );
                                       },
                                     ),
@@ -688,7 +731,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                 right: 0,
                 bottom: 0,
                 child: MorphingChatBottomBar(
+                  key: _bottomBarKey,
                   model: widget.community,
+                  quotedMessage: _quotedMessage,
                   onAddTap: (model) {
                     // Handle add tap
                     print('Add tapped');

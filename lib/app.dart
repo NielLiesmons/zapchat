@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'src/router.dart';
 import 'src/providers/theme_settings.dart';
-import 'src/modals/settings_history_modal.dart';
+import 'src/modals & bottom bars/settings_history_modal.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});

@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import '../modals/start_modal.dart';
-import '../modals/start_add_existing_key_modal.dart';
-import '../modals/start_paste_key_modal.dart';
-import '../modals/start_your_key_modal.dart';
-import '../modals/spin_up_key_modal.dart';
+import '../modals & bottom bars/start_modal.dart';
+import '../modals & bottom bars/start_add_existing_key_modal.dart';
+import '../modals & bottom bars/start_paste_key_modal.dart';
+import '../modals & bottom bars/start_your_key_modal.dart';
+import '../modals & bottom bars/spin_up_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<GoRoute> get startRoutes => [

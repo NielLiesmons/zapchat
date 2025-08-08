@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import '../modals/create_new_stuff_modal.dart';
-import '../modals/create_message_modal.dart';
-import '../modals/spin_up_community_key_modal.dart';
+import '../modals & bottom bars/create_new_stuff_modal.dart';
+import '../modals & bottom bars/create_message_modal.dart';
+import '../modals & bottom bars/spin_up_community_key_modal.dart';
 import '../screens/create_group_screen.dart';
 import '../screens/create_community_screen.dart';
 import '../screens/create_event_screen.dart';
@@ -11,7 +11,7 @@ import '../screens/create_mail_screen.dart';
 import '../screens/create_task_screen.dart';
 import '../screens/create_note_screen.dart';
 import '../screens/your_community_screen.dart';
-import '../modals/community_key_modal.dart';
+import '../modals & bottom bars/community_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<GoRoute> get createRoutes => [

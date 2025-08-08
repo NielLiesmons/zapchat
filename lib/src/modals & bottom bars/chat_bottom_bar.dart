@@ -13,6 +13,7 @@ class MorphingChatBottomBar extends ConsumerStatefulWidget {
   final Function(Model) onActions;
   final Function(ChatMessage)? onMessageSent;
   final Function(bool)? onExpandedStateChanged;
+  final ChatMessage? quotedMessage;
 
   const MorphingChatBottomBar({
     super.key,
@@ -22,14 +23,15 @@ class MorphingChatBottomBar extends ConsumerStatefulWidget {
     required this.onActions,
     this.onMessageSent,
     this.onExpandedStateChanged,
+    this.quotedMessage,
   });
 
   @override
   ConsumerState<MorphingChatBottomBar> createState() =>
-      _MorphingChatBottomBarState();
+      MorphingChatBottomBarState();
 }
 
-class _MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
+class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -84,6 +86,15 @@ class _MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
     }
   }
 
+  void expandWithReply(ChatMessage messageToReply) {
+    _expand();
+  }
+
+  // Public method to expand the bottom bar programmatically
+  void expand() {
+    _expand();
+  }
+
   void _deleteAndCollapse() {
     _controller.clear();
     _onContentChanged('');
@@ -112,21 +123,43 @@ class _MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
   }
 
   void _sendMessage() async {
+    print('DEBUG: _sendMessage called');
     final textFieldState = _textFieldStateKey.currentState;
-    if (textFieldState == null) return;
+    if (textFieldState == null) {
+      print('DEBUG: textFieldState is null');
+      return;
+    }
 
     final editorState =
         (textFieldState as dynamic).editorState as LabEditableShortTextState?;
-    if (editorState == null) return;
+    if (editorState == null) {
+      print('DEBUG: editorState is null');
+      return;
+    }
 
     final content = editorState.getTextForPublishing();
+    print('DEBUG: content = "$content"');
     if (content.isNotEmpty) {
       try {
         final signer = ref.read(Signer.activeSignerProvider);
         if (signer != null) {
+          print('DEBUG: signer found, creating message');
+          // Add the Nostr event reference to the message content if we have a quoted message
+          String contentWithQuote = content;
+          if (widget.quotedMessage != null) {
+            final quotedUri = Utils.encodeShareableFromString(
+                widget.quotedMessage!.id,
+                type: 'nevent');
+            // Only add if not already in content
+            if (!content.contains(quotedUri)) {
+              contentWithQuote = 'nostr:$quotedUri\n$content';
+            }
+          }
+
           final message = PartialChatMessage(
-            content,
+            contentWithQuote,
             createdAt: DateTime.now(),
+            quotedMessage: widget.quotedMessage,
           );
 
           // Add community tag
@@ -135,16 +168,31 @@ class _MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
             message.event.addTag('h', [community.author.value?.pubkey ?? '']);
           }
 
+          // Add emoji tags from the editor
+          final emojiData = editorState.getEmojiData();
+          for (final emoji in emojiData) {
+            message.event.addTag('emoji', [emoji.name, emoji.url]);
+          }
+
+          // Add profile tags from the editor (if needed for mentions)
+          final profileNpubs = editorState.getProfileData();
+          for (final npub in profileNpubs) {
+            message.event.addTag('p', [npub]);
+          }
+
           final signedMessage = await message.signWith(signer);
+          print('DEBUG: message signed successfully');
 
           // Save locally and notify the feed
           await ref
               .read(storageNotifierProvider.notifier)
               .save({signedMessage});
+          print('DEBUG: message saved locally');
 
           // Notify the feed about the new message
           if (widget.onMessageSent != null) {
             widget.onMessageSent!(signedMessage);
+            print('DEBUG: onMessageSent callback called');
           }
 
           // Clear text but maintain focus
@@ -155,10 +203,14 @@ class _MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _focusNode.requestFocus();
           });
+        } else {
+          print('DEBUG: signer is null');
         }
       } catch (e) {
         print('Error creating message: $e');
       }
+    } else {
+      print('DEBUG: content is empty');
     }
   }
 
@@ -320,6 +372,7 @@ class _MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
             color: theme.colors.white33,
           ),
         ],
+        quotedChatMessage: widget.quotedMessage,
         onSearchProfiles: search.profileSearch,
         onSearchEmojis: search.emojiSearch,
         onResolveEvent: resolvers.eventResolver,

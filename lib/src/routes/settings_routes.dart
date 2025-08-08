@@ -1,13 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import '../screens/settings_screen.dart';
-import '../modals/settings_preferences_modal.dart';
-import '../modals/start_add_existing_key_modal.dart';
-import '../modals/settings_add_profile_modal.dart';
-import '../modals/settings_history_modal.dart';
-import '../modals/settings_hosting_modal.dart';
-import '../modals/start_your_key_modal.dart';
-import '../modals/spin_up_key_modal.dart';
+import '../modals & bottom bars/settings_preferences_modal.dart';
+import '../modals & bottom bars/start_add_existing_key_modal.dart';
+import '../modals & bottom bars/settings_add_profile_modal.dart';
+import '../modals & bottom bars/settings_history_modal.dart';
+import '../modals & bottom bars/settings_hosting_modal.dart';
+import '../modals & bottom bars/start_your_key_modal.dart';
+import '../modals & bottom bars/spin_up_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<GoRoute> get settingsRoutes => [
