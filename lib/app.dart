@@ -71,7 +71,7 @@ class App extends ConsumerWidget {
                   systemScale: LabSystemScale.normal,
                 ),
               ),
-            AsyncValue() => _LabWithTheme(),
+            AsyncValue() => _AppWithTheme(),
           };
         },
       ),
@@ -79,14 +79,12 @@ class App extends ConsumerWidget {
   }
 }
 
-class _LabWithTheme extends ConsumerWidget {
-  const _LabWithTheme();
+class _AppWithTheme extends ConsumerWidget {
+  const _AppWithTheme();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeState = ref.watch(themeSettingsProvider);
-
-    // Nostr debug info removed to prevent console flooding and UI freezing
 
     return themeState.when(
       data: (state) {
