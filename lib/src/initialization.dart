@@ -13,19 +13,39 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
   try {
     await ref.read(initializationProvider(
       StorageConfiguration(
-        databasePath: '',
-        // path.join(dir.path, 'zapchat.db'),
+        databasePath: path.join(dir.path, 'zapchat.db'),
         relayGroups: {
-          // 'default': {
-          //   'wss://relay.damus.io',
-          //   'wss://zaplab.nostr1.com',
-          //   'wss://theforest.nostr1.com',
-          //   // 'wss://groups.0xchat.com',
-          //   // 'wss://nostr.wine',
-          //   // 'wss://relay.primal.net',
-          // }
+          'default': {
+            'wss://relay.damus.io',
+            'wss://zaplab.nostr1.com',
+            'wss://theforest.nostr1.com',
+            // 'wss://groups.0xchat.com',
+            // 'wss://nostr.wine',
+            // 'wss://relay.primal.net',
+          }
         },
+
+        // Whether to keep signatures in local storage
         keepSignatures: false,
+
+        // Whether to skip BIP-340 verification
+        skipVerification: false,
+
+        // Default relay group
+        defaultRelayGroup: 'default',
+
+        // Default source for queries when not specified
+        defaultQuerySource: LocalAndRemoteSource(stream: false),
+
+        // Connection timeouts
+        idleTimeout: Duration(minutes: 5),
+        responseTimeout: Duration(seconds: 6),
+
+        // Streaming configuration
+        streamingBufferWindow: Duration(seconds: 2),
+
+        // Storage limits
+        keepMaxModels: 20000,
       ),
     ).future);
 
