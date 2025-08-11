@@ -13,30 +13,30 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
   try {
     await ref.read(initializationProvider(
       StorageConfiguration(
-        databasePath: path.join(dir.path, 'zapchat.db'),
+        databasePath: '',
+        // path.join(dir.path, 'zapchat.db'),
         relayGroups: {
-          'default': {
-            'wss://relay.damus.io',
-            'wss://zaplab.nostr1.com',
-            'wss://theforest.nostr1.com',
-            'wss://nos.lol',
-            // 'wss://groups.0xchat.com',
-            // 'wss://nostr.wine',
-            // 'wss://relay.primal.net',
-          }
+          // 'default': {
+          //   'wss://relay.damus.io',
+          //   'wss://zaplab.nostr1.com',
+          //   'wss://theforest.nostr1.com',
+          //   // 'wss://groups.0xchat.com',
+          //   // 'wss://nostr.wine',
+          //   // 'wss://relay.primal.net',
+          // }
         },
         keepSignatures: false,
       ),
     ).future);
 
-    // Attempt auto sign-in for Amber signer
-    try {
-      final amberSigner = ref.read(amberSignerProvider);
-      await amberSigner.attemptAutoSignIn();
-    } catch (e) {
-      print('Amber auto sign-in failed: $e');
-      // Continue with initialization even if Amber auto sign-in fails
-    }
+    // // Attempt auto sign-in for Amber signer
+    // try {
+    //   final amberSigner = ref.read(amberSignerProvider);
+    //   await amberSigner.attemptAutoSignIn();
+    // } catch (e) {
+    //   print('Amber auto sign-in failed: $e');
+    //   // Continue with initialization even if Amber auto sign-in fails
+    // }
 
     Model.register(kind: 1055, constructor: Book.fromMap);
     Model.register(kind: 10456, constructor: Group.fromMap);
@@ -490,57 +490,3255 @@ final zapchatInitializationProvider = FutureProvider<void>((ref) async {
     // Chat messages
     dummyChatMessages.addAll([
       PartialChatMessage(
-        'Do you guys have pics from the farm visit??',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
-        community: zapchatCommunity,
-      ).dummySign(franzap.pubkey),
-      PartialChatMessage(
-        "I didn't have my phone",
-        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
-        community: zapchatCommunity,
-      ).dummySign(franzap.pubkey),
-      PartialChatMessage(
-        'nostr:nevent1blablabla Yes! Let me check.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
-        community: zapchatCommunity,
-      ).dummySign(niel.pubkey),
-      PartialChatMessage(
-        '''https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fgardening-season-little-baby-watches-as-his-mother-waters-flowers-watering-can-vertical-family-concept-246956758.jpg
-                      https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F28%2F55%2F58%2F285558f2c9d2865c7f46f197228a42f4.jpg
-                      https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.sheknows.com%2Fwp-content%2Fuploads%2F2018%2F08%2Fmom-toddler-gardening_bp3w3w.jpeg''',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
-        community: zapchatCommunity,
-      ).dummySign(verbiricha.pubkey),
-      PartialChatMessage(
-        'Awesome!',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
-        community: zapchatCommunity,
-      ).dummySign(niel.pubkey),
-      PartialChatMessage(
-        ':beautiful:',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
-        community: zapchatCommunity,
-      ).dummySign(niel.pubkey),
-      PartialChatMessage(
-        'Yeah, this was a great way to get the families together.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
-        community: zapchatCommunity,
-      ).dummySign(franzap.pubkey),
-      PartialChatMessage(
-        'I was just about to say that.',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
-        community: zapchatCommunity,
-      ).dummySign(niel.pubkey),
-      PartialChatMessage(
-        'This is a test message with a link: https://zapchat.com',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
-        community: zapchatCommunity,
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
       ).dummySign(hzrd149.pubkey),
       PartialChatMessage(
-        'This is a test message with a some ~~strike-through~~ text',
-        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
-        community: zapchatCommunity,
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
       ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Welcome to the Communikeys community! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Hey everyone! Just joined this awesome community',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 49)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this cool note from @npub1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 48)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new Lightning features? ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 47)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion about NIP-90 in this thread: nostr:nevent1dfghjkggh1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 46)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The purplebase integration is working perfectly! 🎉',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Just deployed my first Nostr app using the models package',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone here working on Flutter + Nostr integration?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 43)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This community is growing fast! Love the energy here 💪',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc latest post about DVM',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 41)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The Riverpod + Nostr combination is a game changer',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried implementing NIP-44 encryption?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 39)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event has some great insights: nostr:nevent1abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abc',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The local-first approach really makes a difference',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 37)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Working on a new feature - any beta testers interested?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 36)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfectly balanced',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone here from the early days of Nostr?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile has amazing content: @npub1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 33)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The relay pool management is so smooth now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1ghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdef',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 31)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error handling in the new version is much better',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on mobile apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 29)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting really comprehensive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 28)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh is gold',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 27)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The testing framework is so easy to use',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 26)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1ijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefgh',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 25)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance improvements are noticeable',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 24)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new caching system?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 23)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is so supportive! 🙏',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 22)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out @npub1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi latest work',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 21)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The event parsing is lightning fast now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 20)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This event has great insights: nostr:nevent1jklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghi',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 19)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The relationship system is so intuitive',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 18)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone working on web apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 17)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The code examples are really helpful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 16)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'This profile is amazing: @npub1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The storage abstraction is so clean',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 14)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Check out this thread: nostr:nevent1klmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghij',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 13)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'The query system is so powerful',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 12)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'Anyone tried the new debugging tools?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 11)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community is growing so fast! 🚀',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This note from @npub1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk is brilliant',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 9)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The error messages are much clearer now',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 8)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Great discussion here: nostr:nevent1lmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijk',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 7)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The performance is incredible! ⚡',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 6)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Anyone working on desktop apps?',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The community guidelines are perfect',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 4)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'Check out @npub1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl latest post',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 3)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
+      PartialChatMessage(
+        'The documentation is getting better every day',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
+        community: communikeysCommunity,
+      ).dummySign(cypherchads.pubkey),
+      PartialChatMessage(
+        'This event is worth reading: nostr:nevent1mnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijkl',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 1)),
+        community: communikeysCommunity,
+      ).dummySign(hzrd149.pubkey),
     ]);
 
     dummyArticles.addAll([

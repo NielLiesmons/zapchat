@@ -266,6 +266,44 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
       ..forward();
   }
 
+  // Performance optimized callback methods to avoid function creation in itemBuilder
+  Future<void> _onSendAgain(dynamic model) async {
+    await _publishMessage(model as ChatMessage);
+  }
+
+  void _onActions(dynamic model) {
+    context.push(
+      '/actions/${model.id}',
+      extra: (
+        model: model,
+        community: widget.community,
+        onLocalReply: _onLocalReply,
+      ),
+    );
+  }
+
+  void _onLocalReply(dynamic model) {
+    setState(() {
+      _quotedMessage = model as ChatMessage;
+      _isBottomBarExpanded = true;
+    });
+    // Actually expand the bottom bar
+    if (_bottomBarKey.currentState != null) {
+      _bottomBarKey.currentState!.expand();
+    }
+  }
+
+  void _onReply(dynamic model) {
+    setState(() {
+      _quotedMessage = model as ChatMessage;
+      _isBottomBarExpanded = true;
+    });
+    // Actually expand the bottom bar
+    if (_bottomBarKey.currentState != null) {
+      _bottomBarKey.currentState!.expand();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return HookConsumer(
@@ -305,12 +343,16 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
 
         final messagesState = ref.watch(
           query<ChatMessage>(
-            and: (msg) => {msg.author, msg.reactions, msg.zaps},
+            and: (msg) => {
+              msg.author,
+              msg.reactions,
+              msg.zaps
+            }, // Restored relationships you need
             tags: {
               '#h': {widget.community.author.value?.pubkey ?? ''}
             },
-            limit: 50,
-            source: querySource,
+            limit: 1000,
+            // source: querySource,
           ),
         );
 
@@ -409,6 +451,12 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                       ),
                                       reverse: true, // Newest at bottom
                                       itemCount: messagesState.models.length,
+                                      // Performance optimizations
+                                      cacheExtent: 500, // Cache more items
+                                      addAutomaticKeepAlives:
+                                          false, // Don't keep items alive automatically
+                                      addRepaintBoundaries:
+                                          true, // Add repaint boundaries
                                       itemBuilder: (context, index) {
                                         final message =
                                             messagesState.models[index];
@@ -418,6 +466,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                                 Signer.activePubkeyProvider);
 
                                         return LabMessageBubble(
+                                          key: ValueKey(message
+                                              .id), // Unique key for performance
                                           message: message,
                                           isOutgoing: isOutgoing,
                                           isFirstInStack: true,
@@ -426,51 +476,12 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                               message.id ==
                                                   _currentPublishingMessageId,
                                           onSendAgain: isOutgoing &&
-                                                  message
-                                                      .event.relays.isEmpty &&
                                                   message.id ==
                                                       _currentPublishingMessageId
-                                              ? (model) async {
-                                                  // Retry publishing the message
-                                                  await _publishMessage(
-                                                      model as ChatMessage);
-                                                }
+                                              ? _onSendAgain
                                               : null,
-                                          onActions: (model) => context.push(
-                                              '/actions/${model.id}',
-                                              extra: (
-                                                model: model,
-                                                community: widget.community,
-                                                onLocalReply: (model) {
-                                                  // Handle reply - set quoted message and expand bottom bar
-                                                  setState(() {
-                                                    _quotedMessage =
-                                                        model as ChatMessage;
-                                                    _isBottomBarExpanded = true;
-                                                  });
-                                                  // Actually expand the bottom bar
-                                                  if (_bottomBarKey
-                                                          .currentState !=
-                                                      null) {
-                                                    _bottomBarKey.currentState!
-                                                        .expand();
-                                                  }
-                                                },
-                                              )),
-                                          onReply: (model) {
-                                            // Handle reply - set quoted message and expand bottom bar
-                                            setState(() {
-                                              _quotedMessage =
-                                                  model as ChatMessage;
-                                              _isBottomBarExpanded = true;
-                                            });
-                                            // Actually expand the bottom bar
-                                            if (_bottomBarKey.currentState !=
-                                                null) {
-                                              _bottomBarKey.currentState!
-                                                  .expand();
-                                            }
-                                          },
+                                          onActions: _onActions,
+                                          onReply: _onReply,
                                           onResolveEvent:
                                               resolvers.eventResolver,
                                           onResolveProfile:

@@ -58,7 +58,7 @@ class HomeTab extends StatelessWidget {
 
           // Show cached data immediately, then sync in background
           final state = ref.watch(query<Community>(
-            authors: communityAuthors,
+            // authors: communityAuthors,
             and: (c) => {c.author, c.chatMessages},
             source: LocalAndRemoteSource(
                 background: true), // Local first, remote in background

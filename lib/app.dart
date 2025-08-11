@@ -15,9 +15,9 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ProviderScope(
-      overrides: [
-        storageNotifierProvider.overrideWith(PurplebaseStorageNotifier.new),
-      ],
+      // overrides: [
+      //   storageNotifierProvider.overrideWith(PurplebaseStorageNotifier.new),
+      // ],
       child: Consumer(
         builder: (context, ref, _) {
           final value = ref.watch(zapchatInitializationProvider);

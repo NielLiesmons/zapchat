@@ -82,7 +82,10 @@ final resolversProvider = Provider<Resolvers>((ref) {
               throw Exception('Invalid nevent1 format: $eventId');
             }
           } else {
-            throw Exception('Invalid nevent1 format: $eventId');
+            return (
+              model: null,
+              onTap: null
+            ); // Return null tuple for invalid nevent1 format instead of throwing
           }
         }
       } else if (eventId.startsWith('naddr1')) {
