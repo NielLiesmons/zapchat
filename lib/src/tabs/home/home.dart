@@ -54,15 +54,16 @@ class HomeTab extends StatelessWidget {
                 'npub18stt78efprta2el02tzgnez6ehghzgtt000v58967wvkgezjmprs0n7h7u'), // Replace with actual npub
             Utils.decodeShareableToString(
                 'npub1vcxcc7r9racyslkfhrwu9qlznne9v95nmk3m5frd8lfuprdmwzpsxqzqcr'), // Replace with actual npub
+            Utils.decodeShareableToString(
+                'npub1229y50ruvq9hjdxsjknh43gq4n9ef7h3h5hc4ezzrkg0q7kgg0tsv9a402'), // Replace with actual npub
           };
 
-          // Show cached data immediately, then sync in background
           final state = ref.watch(
             query<Community>(
               authors: communityAuthors,
-              and: (c) => {c.author},
+              and: (c) => {c.author, c.chatMessages},
               source: LocalAndRemoteSource(background: true),
-              limit: 4,
+              limit: 5,
             ),
           );
 

@@ -296,6 +296,48 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
           });
         }
 
+        // Helper function to determine message stack grouping
+        (bool isFirstInStack, bool isLastInStack) getMessageStackInfo(
+            List<ChatMessage> messages, int index) {
+          if (messages.isEmpty) return (true, true);
+
+          final currentMessage = messages[index];
+          final currentAuthor = currentMessage.author.value?.pubkey;
+          final currentTime = currentMessage.createdAt;
+
+          // Check if previous message (higher index) is from same author and within 21 minutes
+          bool isFirstInStack = true;
+          if (index < messages.length - 1) {
+            final previousMessage = messages[index + 1];
+            final previousAuthor = previousMessage.author.value?.pubkey;
+            final previousTime = previousMessage.createdAt;
+
+            if (currentAuthor == previousAuthor) {
+              final timeDifference = currentTime.difference(previousTime);
+              if (timeDifference.inMinutes <= 21) {
+                isFirstInStack = false;
+              }
+            }
+          }
+
+          // Check if next message (lower index) is from same author and within 21 minutes
+          bool isLastInStack = true;
+          if (index > 0) {
+            final nextMessage = messages[index - 1];
+            final nextAuthor = nextMessage.author.value?.pubkey;
+            final nextTime = nextMessage.createdAt;
+
+            if (currentAuthor == nextAuthor) {
+              final timeDifference = nextTime.difference(currentTime);
+              if (timeDifference.inMinutes <= 21) {
+                isLastInStack = false;
+              }
+            }
+          }
+
+          return (isFirstInStack, isLastInStack);
+        }
+
         // Simple query for chat messages only
         final communityRelayUrls = widget.community.relayUrls;
         final querySource = communityRelayUrls.isNotEmpty
@@ -417,11 +459,16 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                             ref.read(
                                                 Signer.activePubkeyProvider);
 
+                                        // Get stack grouping info
+                                        final (isFirstInStack, isLastInStack) =
+                                            getMessageStackInfo(
+                                                messagesState.models, index);
+
                                         return LabMessageBubble(
                                           message: message,
                                           isOutgoing: isOutgoing,
-                                          isFirstInStack: true,
-                                          isLastInStack: true,
+                                          isFirstInStack: isFirstInStack,
+                                          isLastInStack: isLastInStack,
                                           isPublishing: isOutgoing &&
                                               message.id ==
                                                   _currentPublishingMessageId,
