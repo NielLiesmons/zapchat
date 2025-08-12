@@ -48,31 +48,26 @@ class LabCommunityWelcomeFeed extends ConsumerWidget {
               ],
             ),
             const LabGap.s16(),
-            ClipRRect(
-              borderRadius: theme.radius.asBorderRadius().rad16,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: LabContainer(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const LabEdgeInsets.symmetric(
-                    horizontal: LabGapSize.s12,
-                    vertical: LabGapSize.s10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colors.gray66,
-                    borderRadius: theme.radius.asBorderRadius().rad16,
-                  ),
-                  child: LabText.reg14(
-                    community.description ?? '',
-                    color: LabTheme.of(context).colors.white,
-                    maxLines: 3,
-                    textOverflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+            LabContainer(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: const LabEdgeInsets.symmetric(
+                horizontal: LabGapSize.s12,
+                vertical: LabGapSize.s10,
+              ),
+              decoration: BoxDecoration(
+                color: theme.colors.gray66,
+                borderRadius: theme.radius.asBorderRadius().rad16,
+              ),
+              child: LabText.reg14(
+                community.description ?? '',
+                color: LabTheme.of(context).colors.white,
+                maxLines: 3,
+                textOverflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
             ),
+
             const LabGap.s12(),
             // LabContainer(
             //   width: double.infinity,

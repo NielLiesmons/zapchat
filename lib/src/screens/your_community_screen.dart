@@ -268,7 +268,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                                         BorderRadius.circular(theme.sizes.s38),
                                     child: BackdropFilter(
                                       filter: ImageFilter.blur(
-                                          sigmaX: 8, sigmaY: 8),
+                                          sigmaX: 4, sigmaY: 4),
                                       child: LabContainer(
                                         width: theme.sizes.s38,
                                         height: theme.sizes.s38,
@@ -439,7 +439,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                         child: ClipRRect(
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                             child: LabButton(
                               onTap: () {},
                               color: theme.colors.white8,
@@ -529,7 +529,7 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                         child: ClipRRect(
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                             child: LabButton(
                               onTap: () {},
                               color: theme.colors.white8,

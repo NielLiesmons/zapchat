@@ -62,6 +62,7 @@ List<GoRoute> get eventRoutes => [
             Function(Model)? onLocalReply
           });
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ActionsModal(
@@ -79,6 +80,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return LabZapModal(
@@ -108,6 +110,7 @@ List<GoRoute> get eventRoutes => [
           final replyData =
               state.extra as ({Model model, Community? community});
           return LabPopInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyToModal(
@@ -124,6 +127,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return LabelModal(
@@ -139,6 +143,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ShareModal(
@@ -154,6 +159,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ReplyModal(

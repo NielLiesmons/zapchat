@@ -41,6 +41,13 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
   final GlobalKey<MorphingChatBottomBarState> _bottomBarKey =
       GlobalKey<MorphingChatBottomBarState>();
 
+  // ✅ CACHED: Expensive gradients and decorations to prevent recreation every frame
+  LinearGradient? _topBarGradient;
+  BorderRadius? _expandedBorderRadius;
+  BorderRadius? _collapsedBorderRadius;
+  BorderSide? _expandedBorderSide;
+  BorderSide? _collapsedBorderSide;
+
   // Real history items from provider
   List<HistoryItem> get _history {
     return ref.watch(recentHistoryItemsProvider(context, widget.community.id));
@@ -57,6 +64,29 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
+
+    // ✅ INITIALIZE: Cache expensive decorations to prevent recreation every frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final theme = LabTheme.of(context);
+      _topBarGradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          theme.colors.black,
+          theme.colors.black.withValues(alpha: 0.33),
+        ],
+      );
+      _expandedBorderRadius = BorderRadius.vertical(top: theme.radius.rad16);
+      _collapsedBorderRadius = BorderRadius.zero;
+      _expandedBorderSide = BorderSide(
+        color: theme.colors.white16,
+        width: LabLineThicknessData.normal().thin,
+      );
+      _collapsedBorderSide = BorderSide(
+        color: theme.colors.white16,
+        width: LabLineThicknessData.normal().medium,
+      );
+    });
 
     // Add this community to history when screen opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -223,19 +253,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
       curve: Curves.easeOut,
     ));
 
-    tween.addListener(() {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            _currentDrag = tween.value;
-            if (_currentDrag >= _menuHeight) {
-              _menuOpenedAt = DateTime.now();
-            }
-          });
-        }
-      });
-    });
-
+    // ❌ REMOVED: setState in every frame - this was causing constant rebuilds!
+    // ✅ FIXED: Will use AnimatedBuilder in build method instead
     _animationControllerOpen
       ..reset()
       ..forward();
@@ -250,17 +269,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
       curve: Curves.easeOut,
     ));
 
-    tween.addListener(() {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            _currentDrag = tween.value;
-            _showTopZone = _currentDrag <= 7.0;
-          });
-        }
-      });
-    });
-
+    // ❌ REMOVED: setState in every frame - this was causing constant rebuilds!
+    // ✅ FIXED: Will use AnimatedBuilder in build method instead
     _animationControllerClose
       ..reset()
       ..forward();
@@ -351,7 +361,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
             tags: {
               '#h': {widget.community.author.value?.pubkey ?? ''}
             },
-            limit: 50,
+            limit: 200,
             source: querySource,
           ),
         );
@@ -403,18 +413,26 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                             clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
                               color: theme.colors.black,
-                              borderRadius: BorderRadius.vertical(
-                                top: _currentDrag > 0
-                                    ? theme.radius.rad16
-                                    : Radius.zero,
-                              ),
+                              borderRadius: _currentDrag > 0
+                                  ? (_expandedBorderRadius ??
+                                      BorderRadius.vertical(
+                                          top: theme.radius.rad16))
+                                  : (_collapsedBorderRadius ??
+                                      BorderRadius.zero),
                               border: Border(
-                                top: BorderSide(
-                                  color: theme.colors.white16,
-                                  width: _currentDrag > 0
-                                      ? LabLineThicknessData.normal().thin
-                                      : LabLineThicknessData.normal().medium,
-                                ),
+                                top: _currentDrag > 0
+                                    ? (_expandedBorderSide ??
+                                        BorderSide(
+                                          color: theme.colors.white16,
+                                          width: LabLineThicknessData.normal()
+                                              .thin,
+                                        ))
+                                    : (_collapsedBorderSide ??
+                                        BorderSide(
+                                          color: theme.colors.white16,
+                                          width: LabLineThicknessData.normal()
+                                              .medium,
+                                        )),
                               ),
                             ),
                             child: Stack(
@@ -596,165 +614,151 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          ClipRRect(
-                                            child: BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 24, sigmaY: 24),
-                                              child: LabContainer(
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                    colors: [
-                                                      theme.colors.black,
-                                                      theme.colors.black
-                                                          .withValues(
-                                                              alpha: 0.33),
-                                                    ],
-                                                  ),
-                                                ),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    const LabGap.s8(),
-                                                    const LabDragHandle(),
-                                                    LabContainer(
-                                                      child: Column(
-                                                        children: [
-                                                          // Header with community profile pic + name + notifications
-                                                          LabContainer(
-                                                            padding:
-                                                                LabEdgeInsets
-                                                                    .only(
-                                                              left: LabGapSize
-                                                                  .s12,
-                                                              right: LabGapSize
-                                                                  .s12,
-                                                              bottom: LabGapSize
-                                                                  .s12,
-                                                              top: LabPlatformUtils
-                                                                      .isMobile
-                                                                  ? LabGapSize
-                                                                      .s4
-                                                                  : LabGapSize
-                                                                      .s12,
-                                                            ),
-                                                            child: Row(
-                                                              children: [
-                                                                LabProfilePic.s32(
-                                                                    widget
-                                                                        .community
-                                                                        .author
-                                                                        .value,
-                                                                    onTap: () => context.push(
-                                                                        '/community/${widget.community.author.value?.npub}/info',
-                                                                        extra: widget
-                                                                            .community)),
-                                                                Expanded(
-                                                                  child: Row(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      const LabGap
-                                                                          .s12(),
-                                                                      Expanded(
-                                                                        child:
-                                                                            TapBuilder(
-                                                                          onTap: () => context.push(
-                                                                              '/community/${widget.community.author.value?.npub}/info',
-                                                                              extra: widget.community),
-                                                                          builder: (context,
-                                                                              state,
-                                                                              hasFocus) {
-                                                                            return LabText.bold14(
-                                                                              widget.community.author.value?.name ?? '',
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                      TapBuilder(
-                                                                        onTap:
-                                                                            () {},
-                                                                        builder: (context,
-                                                                            state,
-                                                                            hasFocus) {
-                                                                          return Stack(
-                                                                            clipBehavior:
-                                                                                Clip.none,
-                                                                            children: [
-                                                                              LabContainer(
-                                                                                height: 32,
-                                                                                width: 32,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: theme.colors.gray66,
-                                                                                  shape: BoxShape.circle,
+                                          LabContainer(
+                                            decoration: BoxDecoration(
+                                              color: theme.colors.black,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const LabGap.s8(),
+                                                const LabDragHandle(),
+                                                LabContainer(
+                                                  child: Column(
+                                                    children: [
+                                                      // Header with community profile pic + name + notifications
+                                                      LabContainer(
+                                                        padding:
+                                                            LabEdgeInsets.only(
+                                                          left: LabGapSize.s12,
+                                                          right: LabGapSize.s12,
+                                                          bottom:
+                                                              LabGapSize.s12,
+                                                          top: LabPlatformUtils
+                                                                  .isMobile
+                                                              ? LabGapSize.s4
+                                                              : LabGapSize.s12,
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            LabProfilePic.s32(
+                                                                widget
+                                                                    .community
+                                                                    .author
+                                                                    .value,
+                                                                onTap: () => context.push(
+                                                                    '/community/${widget.community.author.value?.npub}/info',
+                                                                    extra: widget
+                                                                        .community)),
+                                                            Expanded(
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  const LabGap
+                                                                      .s12(),
+                                                                  Expanded(
+                                                                    child:
+                                                                        TapBuilder(
+                                                                      onTap: () => context.push(
+                                                                          '/community/${widget.community.author.value?.npub}/info',
+                                                                          extra:
+                                                                              widget.community),
+                                                                      builder: (context,
+                                                                          state,
+                                                                          hasFocus) {
+                                                                        return LabText
+                                                                            .bold14(
+                                                                          widget.community.author.value?.name ??
+                                                                              '',
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                  TapBuilder(
+                                                                    onTap:
+                                                                        () {},
+                                                                    builder: (context,
+                                                                        state,
+                                                                        hasFocus) {
+                                                                      return Stack(
+                                                                        clipBehavior:
+                                                                            Clip.none,
+                                                                        children: [
+                                                                          LabContainer(
+                                                                            height:
+                                                                                32,
+                                                                            width:
+                                                                                32,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: theme.colors.gray66,
+                                                                              shape: BoxShape.circle,
+                                                                            ),
+                                                                            child:
+                                                                                Center(
+                                                                              child: LabIcon(
+                                                                                theme.icons.characters.bell,
+                                                                                color: theme.colors.white33,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          if (10 >
+                                                                              0) // Hardcoded count for now
+                                                                            Positioned(
+                                                                              top: -4,
+                                                                              right: -10,
+                                                                              child: LabContainer(
+                                                                                height: theme.sizes.s20,
+                                                                                padding: const LabEdgeInsets.symmetric(
+                                                                                  horizontal: LabGapSize.s6,
                                                                                 ),
-                                                                                child: Center(
-                                                                                  child: LabIcon(
-                                                                                    theme.icons.characters.bell,
-                                                                                    color: theme.colors.white33,
+                                                                                decoration: BoxDecoration(
+                                                                                  gradient: theme.colors.blurple,
+                                                                                  borderRadius: BorderRadius.circular(100),
+                                                                                ),
+                                                                                child: ConstrainedBox(
+                                                                                  constraints: const BoxConstraints(
+                                                                                    minWidth: 8,
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                    child: LabText.med10(
+                                                                                      '10',
+                                                                                      color: theme.colors.whiteEnforced,
+                                                                                    ),
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                              if (10 > 0) // Hardcoded count for now
-                                                                                Positioned(
-                                                                                  top: -4,
-                                                                                  right: -10,
-                                                                                  child: LabContainer(
-                                                                                    height: theme.sizes.s20,
-                                                                                    padding: const LabEdgeInsets.symmetric(
-                                                                                      horizontal: LabGapSize.s6,
-                                                                                    ),
-                                                                                    decoration: BoxDecoration(
-                                                                                      gradient: theme.colors.blurple,
-                                                                                      borderRadius: BorderRadius.circular(100),
-                                                                                    ),
-                                                                                    child: ConstrainedBox(
-                                                                                      constraints: const BoxConstraints(
-                                                                                        minWidth: 8,
-                                                                                      ),
-                                                                                      child: Center(
-                                                                                        child: LabText.med10(
-                                                                                          '10',
-                                                                                          color: theme.colors.whiteEnforced,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                            ],
-                                                                          );
-                                                                        },
-                                                                      ),
-                                                                      if (10 >
-                                                                          0)
-                                                                        const LabGap
-                                                                            .s10(),
-                                                                    ],
+                                                                            ),
+                                                                        ],
+                                                                      );
+                                                                    },
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                  if (10 > 0)
+                                                                    const LabGap
+                                                                        .s10(),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                          // TabView with actual community content sections
-                                                          LabTabView(
-                                                            controller: LabTabController(
-                                                                length:
-                                                                    _getCommunityTabs()
-                                                                        .length,
-                                                                initialIndex:
-                                                                    _getInitialTabIndex()),
-                                                            tabs:
-                                                                _getCommunityTabs(),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      // TabView with actual community content sections
+                                                      LabTabView(
+                                                        controller: LabTabController(
+                                                            length:
+                                                                _getCommunityTabs()
+                                                                    .length,
+                                                            initialIndex:
+                                                                _getInitialTabIndex()),
+                                                        tabs:
+                                                            _getCommunityTabs(),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ),
                                         ],

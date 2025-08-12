@@ -23,6 +23,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/add-profile',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: SettingsAddProfileModal(
               onStart: (profileName) {
                 context.replace('/settings/spin-up-key', extra: profileName);
@@ -39,6 +40,7 @@ List<GoRoute> get settingsRoutes => [
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
           return LabSlideInModal(
+            context: context,
             child: SpinUpKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
@@ -55,6 +57,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/your-key',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, child) {
                 final extra = state.extra as Map<String, dynamic>;
@@ -71,6 +74,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/existing-profile',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: StartAddExistingKeyModal(),
           );
         },
@@ -79,6 +83,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/history',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: const SettingsHistoryModal(),
           );
         },
@@ -87,6 +92,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/appearance',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: const PreferencesModal(),
           );
         },
@@ -95,6 +101,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings/hosting',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: const SettingsHostingModal(),
           );
         },

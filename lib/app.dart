@@ -22,54 +22,50 @@ class App extends ConsumerWidget {
         builder: (context, ref, _) {
           final value = ref.watch(zapchatInitializationProvider);
           return switch (value) {
-            AsyncLoading() => LabResponsiveTheme(
-                child: LabBase(
-                  title: 'Zapchat',
-                  routerConfig: GoRouter(
-                    routes: [
-                      GoRoute(
-                        path: '/',
-                        builder: (context, state) => LabScaffold(
-                          body: LabContainer(
-                            alignment: Alignment.center,
-                            child: const LabLoadingDots(),
-                          ),
+            AsyncLoading() => LabBase(
+                title: 'Zapchat',
+                routerConfig: GoRouter(
+                  routes: [
+                    GoRoute(
+                      path: '/',
+                      builder: (context, state) => LabScaffold(
+                        body: LabContainer(
+                          alignment: Alignment.center,
+                          child: const LabLoadingDots(),
                         ),
                       ),
-                    ],
-                  ),
-                  colorMode: null,
-                  textScale: LabTextScale.normal,
-                  systemScale: LabSystemScale.normal,
+                    ),
+                  ],
                 ),
+                colorMode: null,
+                textScale: LabTextScale.normal,
+                systemScale: LabSystemScale.normal,
               ),
-            AsyncError(:final error) => LabResponsiveTheme(
-                child: LabBase(
-                  title: 'Zapchat',
-                  routerConfig: GoRouter(
-                    routes: [
-                      GoRoute(
-                        path: '/',
-                        builder: (context, state) => LabScaffold(
-                          body: LabContainer(
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LabText.h2('Error during initialization:'),
-                                const LabGap.s8(),
-                                LabSelectableText(text: error.toString()),
-                              ],
-                            ),
+            AsyncError(:final error) => LabBase(
+                title: 'Zapchat',
+                routerConfig: GoRouter(
+                  routes: [
+                    GoRoute(
+                      path: '/',
+                      builder: (context, state) => LabScaffold(
+                        body: LabContainer(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LabText.h2('Error during initialization:'),
+                              const LabGap.s8(),
+                              LabSelectableText(text: error.toString()),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  colorMode: null,
-                  textScale: LabTextScale.normal,
-                  systemScale: LabSystemScale.normal,
+                    ),
+                  ],
                 ),
+                colorMode: null,
+                textScale: LabTextScale.normal,
+                systemScale: LabSystemScale.normal,
               ),
             AsyncValue() => _AppWithTheme(),
           };

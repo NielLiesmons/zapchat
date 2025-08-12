@@ -379,7 +379,7 @@ class ActionsModal extends ConsumerWidget {
                     child: ClipRRect(
                       borderRadius: theme.radius.asBorderRadius().rad8,
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                         child: TapBuilder(
                           onTap: () {
                             // TODO: Implement more emojis
@@ -510,7 +510,7 @@ class ActionsModal extends ConsumerWidget {
                     child: ClipRRect(
                       borderRadius: theme.radius.asBorderRadius().rad8,
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                         child: TapBuilder(
                           onTap: () {
                             context.replace('/zap/${model.id}', extra: model);

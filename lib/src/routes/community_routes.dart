@@ -9,11 +9,10 @@ import '../modals & bottom bars/community_notifications_modal.dart';
 List<GoRoute> get communityRoutes => [
       GoRoute(
         path: '/community/:npub',
-        pageBuilder: (context, state) {
+        builder: (context, state) {
           final community = state.extra as Community;
-          return LabSlideInScreen(
-            child: CommunityScreen(community: community),
-          );
+          // ✅ TEST: Direct navigation without LabSlideInScreen
+          return CommunityScreen(community: community);
         },
       ),
       GoRoute(
@@ -21,6 +20,7 @@ List<GoRoute> get communityRoutes => [
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           return LabSlideInModal(
+            context: context,
             child: CommunityInfoModal(community: community),
           );
         },
@@ -30,6 +30,7 @@ List<GoRoute> get communityRoutes => [
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           return LabSlideInModal(
+            context: context,
             child: CommunityPricingModal(community: community),
           );
         },
@@ -39,20 +40,19 @@ List<GoRoute> get communityRoutes => [
         pageBuilder: (context, state) {
           final community = state.extra as Community;
           return LabSlideInModal(
+            context: context,
             child: CommunityNotificationsModal(community: community),
           );
         },
       ),
       GoRoute(
         path: '/community/:npub/:contentType',
-        pageBuilder: (context, state) {
+        builder: (context, state) {
           final community = state.extra as Community;
           final contentType = state.pathParameters['contentType']?.capitalize();
-          return LabSlideInScreen(
-            child: CommunityScreen(
-              community: community,
-              initialContentType: contentType,
-            ),
+          return CommunityScreen(
+            community: community,
+            initialContentType: contentType,
           );
         },
       ),

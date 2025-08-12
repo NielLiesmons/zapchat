@@ -19,6 +19,7 @@ List<GoRoute> get createRoutes => [
         path: '/create',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: CreateNewStuffModal(),
           );
         },
@@ -44,6 +45,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           final profileName = state.extra as String;
           return LabSlideInModal(
+            context: context,
             child: SpinUpCommunityKeyModal(
               profileName: profileName,
               onSpinComplete: (secretKey, profileName) {
@@ -60,6 +62,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/community/your-community-key',
         pageBuilder: (context, state) {
           return LabSlideInModal(
+            context: context,
             child: Consumer(
               builder: (context, ref, child) {
                 final extra = state.extra as Map<String, dynamic>;
@@ -105,6 +108,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabPopInModal(
+            context: context,
             child: CreateMessageModal(target: model),
           );
         },

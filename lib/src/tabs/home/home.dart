@@ -80,13 +80,18 @@ class HomeTab extends StatelessWidget {
                     'chat': 10,
                   },
                   onNavigateToCommunity: (community) {
-                    context.push('/simple-chat-test', extra: community);
+                    context.push('/community/${community.author.value?.pubkey}',
+                        extra: community);
                   },
                   onNavigateToContent: (community, contentType) {
-                    context.push('/simple-chat-test', extra: community);
+                    context.push(
+                        '/community/${community.author.value?.pubkey}/$contentType',
+                        extra: community);
                   },
                   onNavigateToNotifications: (community) {
-                    context.push('/simple-chat-test', extra: community);
+                    context.push(
+                        '/community/${community.author.value?.pubkey}/notifications',
+                        extra: community);
                   },
                   onResolveEvent: resolvers.eventResolver,
                   onResolveProfile: resolvers.profileResolver,
@@ -95,6 +100,7 @@ class HomeTab extends StatelessWidget {
                     context.push('/create/', extra: community);
                   },
                 ),
+              // Keep the "Add a Community" button
               LabContainer(
                 padding: LabEdgeInsets.all(LabGapSize.s12),
                 height: 1000,

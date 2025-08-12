@@ -91,7 +91,7 @@ class CreateNewStuffModal extends ConsumerWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(theme.sizes.s16),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                       child: LabContainer(
                         height: 260,
                         padding: LabEdgeInsets.all(LabGapSize.s24),
