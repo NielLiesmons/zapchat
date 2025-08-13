@@ -46,12 +46,13 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(
+          milliseconds: 150), // Slightly longer for smoother animation
       vsync: this,
     );
     _animation = CurvedAnimation(
       parent: _animationController,
-      curve: Curves.easeInOut,
+      curve: Curves.easeOutCubic, // Smoother curve for keyboard animation
     );
     _controller = TextEditingController();
     _focusNode = FocusNode();
@@ -111,14 +112,17 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
   }
 
   void _onContentChanged(String content) {
-    setState(() {
-      _partialMessage = PartialChatMessage(content);
-    });
-    if (_controller.text != content) {
-      _controller.text = content;
-      _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: content.length),
-      );
+    // Only update if content actually changed to reduce unnecessary rebuilds
+    if (_partialMessage.content != content) {
+      setState(() {
+        _partialMessage = PartialChatMessage(content);
+      });
+      if (_controller.text != content) {
+        _controller.text = content;
+        _controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: content.length),
+        );
+      }
     }
   }
 
@@ -223,22 +227,20 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
+        final animationValue = _animation.value;
+        final isExpanded = animationValue > 0.5;
+
         return LabBottomBar(
           bottomSafeArea: !isExpanded,
           child: Row(
             children: [
-              // Left button (Add) - instantly replaced with SizedBox when expanded
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 0), // Instant switch
-                child: _animation.value > 0.1
-                    ? AnimatedContainer(
-                        key: const ValueKey('left-spacer'),
-                        duration: const Duration(milliseconds: 100),
-                        width: 50 * (1.0 - _animation.value),
-                        child: const SizedBox(),
-                      )
+              // Left button (Add) - optimized with single AnimatedContainer
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                width: isExpanded ? 0 : 50,
+                child: isExpanded
+                    ? const SizedBox.shrink()
                     : LabContainer(
-                        key: const ValueKey('left-button'),
                         padding:
                             const LabEdgeInsets.only(right: LabGapSize.s12),
                         child: LabButton(
@@ -257,27 +259,20 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
                       ),
               ),
 
-              // Center content - switches between button and text field
+              // Center content - optimized with single conditional
               Expanded(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 0),
-                  child: _animation.value < 0.5
-                      ? _buildMessageButton(theme)
-                      : _buildTextField(theme, resolvers, search),
-                ),
+                child: isExpanded
+                    ? _buildTextField(theme, resolvers, search)
+                    : _buildMessageButton(theme),
               ),
-              // Right button (Actions) - instantly replaced with SizedBox when expanded
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 0), // Instant switch
-                child: _animation.value > 0.1
-                    ? AnimatedContainer(
-                        key: const ValueKey('right-spacer'),
-                        duration: const Duration(milliseconds: 100),
-                        width: 50 * (1.0 - _animation.value),
-                        child: const SizedBox(),
-                      )
+
+              // Right button (Actions) - optimized with single AnimatedContainer
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                width: isExpanded ? 0 : 50,
+                child: isExpanded
+                    ? const SizedBox.shrink()
                     : LabContainer(
-                        key: const ValueKey('right-button'),
                         padding: const LabEdgeInsets.only(left: LabGapSize.s12),
                         child: LabButton(
                           square: true,
@@ -311,12 +306,12 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
     return TapBuilder(
       onTap: _expand,
       builder: (context, state, hasFocus) {
-        double scaleFactor = 1.0;
-        if (state == TapState.pressed) {
-          scaleFactor = 0.99;
-        } else if (state == TapState.hover) {
-          scaleFactor = 1.005;
-        }
+        // Cache scale factor to avoid recalculation
+        final scaleFactor = switch (state) {
+          TapState.pressed => 0.98,
+          TapState.hover => 1.01,
+          _ => 1.0,
+        };
 
         return Transform.scale(
           scale: scaleFactor,

@@ -44,6 +44,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           // Show the default nostr publication view
           return LabSlideInScreen(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return LabText.h1(
@@ -175,6 +176,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInScreen(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ArticleScreen(
@@ -190,6 +192,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInScreen(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return MailScreen(
@@ -205,6 +208,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInScreen(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ServiceScreen(
@@ -220,6 +224,7 @@ List<GoRoute> get eventRoutes => [
         pageBuilder: (context, state) {
           final model = state.extra as Model;
           return LabSlideInScreen(
+            context: context,
             child: Consumer(
               builder: (context, ref, _) {
                 return ThreadScreen(

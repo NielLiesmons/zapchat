@@ -15,6 +15,7 @@ List<GoRoute> get settingsRoutes => [
         path: '/settings',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: const SettingsScreen(),
           );
         },

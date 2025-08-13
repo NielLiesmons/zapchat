@@ -28,6 +28,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/group',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: CreateGroupScreen(),
           );
         },
@@ -36,6 +37,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/community',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: CreateCommunityScreen(),
           );
         },
@@ -80,6 +82,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           return LabSlideInScreen(
+            context: context,
             child: YourCommunityScreen(
               profile: extra['profile'] as Profile,
               communityName: extra['communityName'] as String,
@@ -91,6 +94,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/event',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: CreateEventScreen(),
           );
         },
@@ -99,6 +103,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/mail',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: CreateMailScreen(),
           );
         },
@@ -117,6 +122,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/note',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: CreateNoteScreen(),
           );
         },
@@ -125,6 +131,7 @@ List<GoRoute> get createRoutes => [
         path: '/create/task',
         pageBuilder: (context, state) {
           return LabSlideInScreen(
+            context: context,
             child: CreateTaskScreen(),
           );
         },

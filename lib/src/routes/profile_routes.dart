@@ -9,6 +9,7 @@ List<GoRoute> get profileRoutes => [
         pageBuilder: (context, state) {
           final profile = state.extra as Profile;
           return LabSlideInScreen(
+            context: context,
             child: ProfileScreen(profile: profile),
           );
         },

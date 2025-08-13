@@ -99,7 +99,7 @@ class _StartPasteKeyModalState extends ConsumerState<StartPasteKeyModal> {
             ),
             const LabGap.s24(),
             LabInputTextField(
-              placeholder: 'Nsec, Ncryptsec, 12 words or 12 emoji',
+              placeholder: 'Nsec, 12 words or 12 emoji',
               title: "Your Key",
               warning: _errorMessage,
               controller: _controller,

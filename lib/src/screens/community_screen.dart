@@ -3,8 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
-import 'package:flutter/scheduler.dart';
-import 'dart:ui';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
 import '../modals & bottom bars/chat_bottom_bar.dart';
@@ -469,6 +467,15 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                       ),
                                       reverse: true, // Newest at bottom
                                       itemCount: messagesState.models.length,
+                                      // Performance optimizations
+                                      addAutomaticKeepAlives:
+                                          false, // Don't keep off-screen items alive
+                                      addRepaintBoundaries:
+                                          true, // Add repaint boundaries for better performance
+                                      cacheExtent:
+                                          500.0, // Cache more items for smoother scrolling
+                                      itemExtent:
+                                          null, // Let items determine their own height
                                       itemBuilder: (context, index) {
                                         final message =
                                             messagesState.models[index];
@@ -556,6 +563,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                           activePubkey: ref.read(
                                               Signer.activePubkeyProvider),
                                         );
+                                        // return LabText.reg14(
+                                        //   message.content,
+                                        //   color: theme.colors.white,
+                                        // );
                                       },
                                     ),
                                 },
@@ -607,7 +618,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                     onHorizontalDragEnd: (_) {},
                                     onTap: _currentDrag > 0 ? _closeMenu : null,
                                     child: LabContainer(
-                                      height: _currentDrag > 0 ? 2000 : null,
                                       decoration: const BoxDecoration(
                                         color: Color(0x00000000),
                                       ),

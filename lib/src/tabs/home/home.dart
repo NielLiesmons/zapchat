@@ -80,12 +80,13 @@ class HomeTab extends StatelessWidget {
                     'chat': 10,
                   },
                   onNavigateToCommunity: (community) {
-                    context.push('/community/${community.author.value?.pubkey}',
+                    context.push('/community/${community.event.pubkey}',
                         extra: community);
+                    // context.push('/simple-community-test', extra: community);
                   },
                   onNavigateToContent: (community, contentType) {
                     context.push(
-                        '/community/${community.author.value?.pubkey}/$contentType',
+                        '/community/${community.event.pubkey}/$contentType',
                         extra: community);
                   },
                   onNavigateToNotifications: (community) {
