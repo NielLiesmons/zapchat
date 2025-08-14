@@ -5,6 +5,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import '../providers/resolvers.dart';
 import '../providers/history.dart';
+import '../providers/communities_provider.dart';
 import '../modals & bottom bars/chat_bottom_bar.dart';
 
 class CommunityScreen extends ConsumerStatefulWidget {
@@ -346,23 +347,12 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
           return (isFirstInStack, isLastInStack);
         }
 
-        // Simple query for chat messages only
-        final communityRelayUrls = widget.community.relayUrls;
-        final querySource = communityRelayUrls.isNotEmpty
-            ? LocalAndRemoteSource(
-                relayUrls: {communityRelayUrls.first}, background: true)
-            : LocalAndRemoteSource(background: true);
+        // Use centralized communities provider for zero-delay access
+        final messages =
+            ref.watch(communityMessagesProvider(widget.community.id));
 
-        final messagesState = ref.watch(
-          query<ChatMessage>(
-            and: (msg) => {msg.author, msg.reactions, msg.zaps},
-            tags: {
-              '#h': {widget.community.author.value?.pubkey ?? ''}
-            },
-            limit: 200,
-            source: querySource,
-          ),
-        );
+        print(
+            '🏘️ Community screen using centralized provider - Messages: ${messages.length}');
 
         return LabScaffold(
           resizeToAvoidBottomInset: true,
@@ -435,142 +425,106 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                             ),
                             child: Stack(
                               children: [
-                                // Chat content
-                                switch (messagesState) {
-                                  StorageLoading() => Center(
-                                      child: SingleChildScrollView(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        child: LabLoadingFeed(
-                                          type: LoadingFeedType.chat,
-                                        ),
-                                      ),
-                                    ),
-                                  StorageError() => Center(
-                                      child: LabText.reg14(
-                                        'Error: ${messagesState.exception}',
-                                        color: theme.colors.white66,
-                                      ),
-                                    ),
-                                  StorageData() => ListView.builder(
-                                      padding: EdgeInsets.only(
-                                        top: LabPlatformUtils.isMobile
-                                            ? 116
-                                            : 120,
-                                        bottom: _isBottomBarExpanded
-                                            ? (LabPlatformUtils.isMobile
-                                                ? 128
-                                                : 118) // Extra padding when expanded
-                                            : (LabPlatformUtils.isMobile
-                                                ? 91
-                                                : 81),
-                                      ),
-                                      reverse: true, // Newest at bottom
-                                      itemCount: messagesState.models.length,
-                                      // Performance optimizations
-                                      addAutomaticKeepAlives:
-                                          false, // Don't keep off-screen items alive
-                                      addRepaintBoundaries:
-                                          true, // Add repaint boundaries for better performance
-                                      cacheExtent:
-                                          500.0, // Cache more items for smoother scrolling
-                                      itemExtent:
-                                          null, // Let items determine their own height
-                                      itemBuilder: (context, index) {
-                                        final message =
-                                            messagesState.models[index];
-                                        final isOutgoing = message
-                                                .author.value?.pubkey ==
-                                            ref.read(
-                                                Signer.activePubkeyProvider);
+                                // Chat content - using centralized provider data
+                                ListView.builder(
+                                  padding: EdgeInsets.only(
+                                    top: LabPlatformUtils.isMobile ? 116 : 120,
+                                    bottom: _isBottomBarExpanded
+                                        ? (LabPlatformUtils.isMobile
+                                            ? 128
+                                            : 118) // Extra padding when expanded
+                                        : (LabPlatformUtils.isMobile ? 91 : 81),
+                                  ),
+                                  reverse: true, // Newest at bottom
+                                  itemCount: messages.length,
+                                  // Performance optimizations
+                                  addAutomaticKeepAlives:
+                                      false, // Don't keep off-screen items alive
+                                  addRepaintBoundaries:
+                                      true, // Add repaint boundaries for better performance
+                                  cacheExtent:
+                                      500.0, // Cache more items for smoother scrolling
+                                  itemExtent:
+                                      null, // Let items determine their own height
+                                  itemBuilder: (context, index) {
+                                    final message = messages[index];
+                                    final isOutgoing = message
+                                            .author.value?.pubkey ==
+                                        ref.read(Signer.activePubkeyProvider);
 
-                                        // Get stack grouping info
-                                        final (isFirstInStack, isLastInStack) =
-                                            getMessageStackInfo(
-                                                messagesState.models, index);
+                                    // Get stack grouping info
+                                    final (isFirstInStack, isLastInStack) =
+                                        getMessageStackInfo(messages, index);
 
-                                        return LabMessageBubble(
-                                          message: message,
-                                          isOutgoing: isOutgoing,
-                                          isFirstInStack: isFirstInStack,
-                                          isLastInStack: isLastInStack,
-                                          isPublishing: isOutgoing &&
+                                    return LabMessageBubble(
+                                      message: message,
+                                      isOutgoing: isOutgoing,
+                                      isFirstInStack: isFirstInStack,
+                                      isLastInStack: isLastInStack,
+                                      isPublishing: isOutgoing &&
+                                          message.id ==
+                                              _currentPublishingMessageId,
+                                      onSendAgain: isOutgoing &&
+                                              message.event.relays.isEmpty &&
                                               message.id ==
-                                                  _currentPublishingMessageId,
-                                          onSendAgain: isOutgoing &&
-                                                  message
-                                                      .event.relays.isEmpty &&
-                                                  message.id ==
-                                                      _currentPublishingMessageId
-                                              ? (model) async {
-                                                  // Retry publishing the message
-                                                  await _publishMessage(
-                                                      model as ChatMessage);
-                                                }
-                                              : null,
-                                          onActions: (model) => context.push(
-                                              '/actions/${model.id}',
-                                              extra: (
-                                                model: model,
-                                                community: widget.community,
-                                                onLocalReply: (model) {
-                                                  // Handle reply - set quoted message and expand bottom bar
-                                                  setState(() {
-                                                    _quotedMessage =
-                                                        model as ChatMessage;
-                                                    _isBottomBarExpanded = true;
-                                                  });
-                                                  // Actually expand the bottom bar
-                                                  if (_bottomBarKey
-                                                          .currentState !=
-                                                      null) {
-                                                    _bottomBarKey.currentState!
-                                                        .expand();
-                                                  }
-                                                },
-                                              )),
-                                          onReply: (model) {
-                                            // Handle reply - set quoted message and expand bottom bar
-                                            setState(() {
-                                              _quotedMessage =
-                                                  model as ChatMessage;
-                                              _isBottomBarExpanded = true;
-                                            });
-                                            // Actually expand the bottom bar
-                                            if (_bottomBarKey.currentState !=
-                                                null) {
-                                              _bottomBarKey.currentState!
-                                                  .expand();
+                                                  _currentPublishingMessageId
+                                          ? (model) async {
+                                              // Retry publishing the message
+                                              await _publishMessage(
+                                                  model as ChatMessage);
                                             }
-                                          },
-                                          onResolveEvent:
-                                              resolvers.eventResolver,
-                                          onResolveProfile:
-                                              resolvers.profileResolver,
-                                          onResolveEmoji:
-                                              resolvers.emojiResolver,
-                                          onResolveHashtag:
-                                              resolvers.hashtagResolver,
-                                          onLinkTap: (url) {
-                                            // Handle link tap
-                                            print('Link tapped: $url');
-                                          },
-                                          onProfileTap: (profile) {
-                                            // Handle profile tap
-                                            print(
-                                                'Profile tapped: ${profile.name}');
-                                          },
-                                          activePubkey: ref.read(
-                                              Signer.activePubkeyProvider),
-                                        );
-                                        // return LabText.reg14(
-                                        //   message.content,
-                                        //   color: theme.colors.white,
-                                        // );
+                                          : null,
+                                      onActions: (model) => context
+                                          .push('/actions/${model.id}', extra: (
+                                        model: model,
+                                        community: widget.community,
+                                        onLocalReply: (model) {
+                                          // Handle reply - set quoted message and expand bottom bar
+                                          setState(() {
+                                            _quotedMessage =
+                                                model as ChatMessage;
+                                            _isBottomBarExpanded = true;
+                                          });
+                                          // Actually expand the bottom bar
+                                          if (_bottomBarKey.currentState !=
+                                              null) {
+                                            _bottomBarKey.currentState!
+                                                .expand();
+                                          }
+                                        },
+                                      )),
+                                      onReply: (model) {
+                                        // Handle reply - set quoted message and expand bottom bar
+                                        setState(() {
+                                          _quotedMessage = model as ChatMessage;
+                                          _isBottomBarExpanded = true;
+                                        });
+                                        // Actually expand the bottom bar
+                                        if (_bottomBarKey.currentState !=
+                                            null) {
+                                          _bottomBarKey.currentState!.expand();
+                                        }
                                       },
-                                    ),
-                                },
-
+                                      onResolveEvent: resolvers.eventResolver,
+                                      onResolveProfile:
+                                          resolvers.profileResolver,
+                                      onResolveEmoji: resolvers.emojiResolver,
+                                      onResolveHashtag:
+                                          resolvers.hashtagResolver,
+                                      onLinkTap: (url) {
+                                        // Handle link tap
+                                        print('Link tapped: $url');
+                                      },
+                                      onProfileTap: (profile) {
+                                        // Handle profile tap
+                                        print(
+                                            'Profile tapped: ${profile.name}');
+                                      },
+                                      activePubkey:
+                                          ref.read(Signer.activePubkeyProvider),
+                                    );
+                                  },
+                                ),
                                 // Black bar that renders the top 8px of the screen always in black
                                 Positioned(
                                   top: 0,

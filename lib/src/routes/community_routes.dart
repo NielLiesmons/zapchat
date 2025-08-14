@@ -9,10 +9,12 @@ import '../modals & bottom bars/community_notifications_modal.dart';
 List<GoRoute> get communityRoutes => [
       GoRoute(
         path: '/community/:npub',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final community = state.extra as Community;
-          // ✅ TEST: Direct navigation without LabSlideInScreen
-          return CommunityScreen(community: community);
+          return LabSlideInScreen(
+            context: context,
+            child: CommunityScreen(community: community),
+          );
         },
       ),
       GoRoute(

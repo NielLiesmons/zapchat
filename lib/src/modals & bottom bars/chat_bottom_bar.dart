@@ -3,6 +3,7 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/scheduler.dart';
 import '../providers/resolvers.dart';
 import '../providers/search.dart';
 
@@ -78,13 +79,15 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
   }
 
   void _expand() {
-    // Request focus immediately to start keyboard animation
-    _focusNode.requestFocus();
-    _animationController.forward();
-    // Notify parent of expanded state
-    if (widget.onExpandedStateChanged != null) {
-      widget.onExpandedStateChanged!(true);
-    }
+    // HIGH PRIORITY - This runs before the next frame
+    SchedulerBinding.instance.scheduleFrameCallback((timeStamp) {
+      _focusNode.requestFocus();
+      _animationController.forward();
+      // Notify parent of expanded state
+      if (widget.onExpandedStateChanged != null) {
+        widget.onExpandedStateChanged!(true);
+      }
+    });
   }
 
   void expandWithReply(ChatMessage messageToReply) {
@@ -144,75 +147,79 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
     final content = editorState.getTextForPublishing();
     print('DEBUG: content = "$content"');
     if (content.isNotEmpty) {
-      try {
-        final signer = ref.read(Signer.activeSignerProvider);
-        if (signer != null) {
-          print('DEBUG: signer found, creating message');
-          // Add the Nostr event reference to the message content if we have a quoted message
-          String contentWithQuote = content;
-          if (widget.quotedMessage != null) {
-            final quotedUri = Utils.encodeShareableFromString(
-                widget.quotedMessage!.id,
-                type: 'nevent');
-            // Only add if not already in content
-            if (!content.contains(quotedUri)) {
-              contentWithQuote = 'nostr:$quotedUri\n$content';
+      // HIGH PRIORITY - UI updates immediately
+      _controller.clear();
+      _onContentChanged('');
+
+      // LOW PRIORITY - Nostr work happens after frame
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        try {
+          final signer = ref.read(Signer.activeSignerProvider);
+          if (signer != null) {
+            print('DEBUG: signer found, creating message');
+            // Add the Nostr event reference to the message content if we have a quoted message
+            String contentWithQuote = content;
+            if (widget.quotedMessage != null) {
+              final quotedUri = Utils.encodeShareableFromString(
+                  widget.quotedMessage!.id,
+                  type: 'nevent');
+              // Only add if not already in content
+              if (!content.contains(quotedUri)) {
+                contentWithQuote = 'nostr:$quotedUri\n$content';
+              }
             }
+
+            final message = PartialChatMessage(
+              contentWithQuote,
+              createdAt: DateTime.now(),
+              quotedMessage: widget.quotedMessage,
+            );
+
+            // Add community tag
+            if (widget.model is Community) {
+              final community = widget.model as Community;
+              message.event.addTag('h', [community.author.value?.pubkey ?? '']);
+            }
+
+            // Add emoji tags from the editor
+            final emojiData = editorState.getEmojiData();
+            for (final emoji in emojiData) {
+              message.event.addTag('emoji', [emoji.name, emoji.url]);
+            }
+
+            // Add profile tags from the editor (if needed for mentions)
+            final profileNpubs = editorState.getProfileData();
+            for (final npub in profileNpubs) {
+              message.event.addTag('p', [npub]);
+            }
+
+            final signedMessage = await message.signWith(signer);
+            print('DEBUG: message signed successfully');
+
+            // Save locally and notify the feed
+            await ref
+                .read(storageNotifierProvider.notifier)
+                .save({signedMessage});
+            print('DEBUG: message saved locally');
+
+            // Notify the feed about the new message
+            if (widget.onMessageSent != null) {
+              widget.onMessageSent!(signedMessage);
+              print('DEBUG: onMessageSent callback called');
+            }
+          } else {
+            print('DEBUG: signer is null');
           }
-
-          final message = PartialChatMessage(
-            contentWithQuote,
-            createdAt: DateTime.now(),
-            quotedMessage: widget.quotedMessage,
-          );
-
-          // Add community tag
-          if (widget.model is Community) {
-            final community = widget.model as Community;
-            message.event.addTag('h', [community.author.value?.pubkey ?? '']);
-          }
-
-          // Add emoji tags from the editor
-          final emojiData = editorState.getEmojiData();
-          for (final emoji in emojiData) {
-            message.event.addTag('emoji', [emoji.name, emoji.url]);
-          }
-
-          // Add profile tags from the editor (if needed for mentions)
-          final profileNpubs = editorState.getProfileData();
-          for (final npub in profileNpubs) {
-            message.event.addTag('p', [npub]);
-          }
-
-          final signedMessage = await message.signWith(signer);
-          print('DEBUG: message signed successfully');
-
-          // Save locally and notify the feed
-          await ref
-              .read(storageNotifierProvider.notifier)
-              .save({signedMessage});
-          print('DEBUG: message saved locally');
-
-          // Notify the feed about the new message
-          if (widget.onMessageSent != null) {
-            widget.onMessageSent!(signedMessage);
-            print('DEBUG: onMessageSent callback called');
-          }
-
-          // Clear text but maintain focus
-          _controller.clear();
-          _onContentChanged('');
-          // Don't collapse - keep expanded for continued typing
-          // Ensure focus is maintained after clearing
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _focusNode.requestFocus();
-          });
-        } else {
-          print('DEBUG: signer is null');
+        } catch (e) {
+          print('Error creating message: $e');
         }
-      } catch (e) {
-        print('Error creating message: $e');
-      }
+      });
+
+      // Don't collapse - keep expanded for continued typing
+      // Ensure focus is maintained after clearing
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _focusNode.requestFocus();
+      });
     } else {
       print('DEBUG: content is empty');
     }

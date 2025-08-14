@@ -53,7 +53,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (mounted) {
         setState(() {
           _cachedTabs = [
-            const HomeTab().tabData(context),
+            HomeTab.tabData(context),
             const MailTab().tabData(context),
             const TasksTab().tabData(context),
             const NotesTab().tabData(context),
@@ -118,7 +118,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       key: HomePage._homeKey,
                       tabs: _cachedTabs ??
                           [
-                            const HomeTab().tabData(context),
+                            HomeTab.tabData(context),
                             const MailTab().tabData(context),
                             const TasksTab().tabData(context),
                             const NotesTab().tabData(context),
