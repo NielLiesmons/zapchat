@@ -1,156 +1,278 @@
-import 'package:go_router/go_router.dart';
-import 'package:zaplab_design/zaplab_design.dart';
-import 'package:models/models.dart';
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/resolvers.dart';
-import '../providers/communities_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:models/models.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
-class CommunityChatFeed extends ConsumerWidget {
+import '../modals & bottom bars/chat_bottom_bar.dart';
+// import '../providers/communities_provider.dart';
+import '../providers/resolvers.dart';
+import '../providers/url_launcher_provider.dart';
+
+class CommunityChatFeed extends ConsumerStatefulWidget {
   final Community community;
-  final EdgeInsets? padding;
-  final bool reverse;
-  final ScrollController? controller;
-  final Function(ChatMessage)? onMessageTap;
-  final Function(ChatMessage)? onMessageReply;
-  final Function(ChatMessage)? onMessageActions;
-  final Function(ChatMessage)? onMessageResend;
-  final bool showPublishingState;
-  final String? publishingMessageId;
+  final String? activePubkey;
 
   const CommunityChatFeed({
     super.key,
     required this.community,
-    this.padding,
-    this.reverse = true,
-    this.controller,
-    this.onMessageTap,
-    this.onMessageReply,
-    this.onMessageActions,
-    this.onMessageResend,
-    this.showPublishingState = false,
-    this.publishingMessageId,
+    this.activePubkey,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final resolvers = ref.read(resolversProvider);
-    final activePubkey = ref.watch(Signer.activePubkeyProvider);
+  ConsumerState<CommunityChatFeed> createState() => _CommunityChatFeedState();
+}
 
-    // Use centralized communities provider for zero-delay access to hot cached data
-    final messages = ref.watch(communityMessagesProvider(community.id));
+class _CommunityChatFeedState extends ConsumerState<CommunityChatFeed> {
+  final GlobalKey<MorphingChatBottomBarState> _bottomBarKey =
+      GlobalKey<MorphingChatBottomBarState>();
 
-    print(
-        '🏘️ CommunityChatFeed using centralized provider - Community: ${community.name}, Messages: ${messages.length}');
+  // Local UI state
+  bool _isBottomBarExpanded = false;
+  ChatMessage? _quotedMessage;
+  String? _currentPublishingMessageId;
+  final Set<String> _failedPublishMessageIds = {};
 
-    if (messages.isEmpty) {
-      return LabContainer(
-        padding: const LabEdgeInsets.all(LabGapSize.s16),
-        child: LabModelEmptyStateCard(
-          contentType: "chat",
-          onCreateTap: () => context.push('/create/message', extra: community),
-        ),
-      );
+  // Smooth scrolling/watch pause for performance
+  late final ScrollController _scrollController;
+  // Timer? _scrollPauseTimer; // reserved for future scroll throttling
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+
+    super.dispose();
+  }
+
+  void _onScroll() {}
+
+  (bool, bool) _getMessageStackInfo(List<ChatMessage> messages, int index) {
+    final isFirstInStack = () {
+      if (index >= messages.length - 1) return true;
+      final current = messages[index];
+      final next = messages[index + 1];
+      if (current.author.value?.pubkey == next.author.value?.pubkey) {
+        final diff = next.createdAt.difference(current.createdAt).inMinutes;
+        return diff.abs() > 21;
+      }
+      return true;
+    }();
+
+    final isLastInStack = () {
+      if (index <= 0) return true;
+      final current = messages[index];
+      final prev = messages[index - 1];
+      if (current.author.value?.pubkey == prev.author.value?.pubkey) {
+        final diff = current.createdAt.difference(prev.createdAt).inMinutes;
+        return diff.abs() > 21;
+      }
+      return true;
+    }();
+
+    return (isFirstInStack, isLastInStack);
+  }
+
+  void _handleNewMessage(ChatMessage message) async {
+    setState(() {
+      _currentPublishingMessageId = message.id;
+      _quotedMessage = null;
+    });
+    await _publishMessage(message);
+  }
+
+  Future<void> _publishMessage(ChatMessage message) async {
+    try {
+      final communityRelayUrls = widget.community.relayUrls;
+      final source = communityRelayUrls.isNotEmpty
+          ? RemoteSource(group: 'custom', relayUrls: {communityRelayUrls.first})
+          : const RemoteSource();
+
+      final response = await ref
+          .read(storageNotifierProvider.notifier)
+          .publish({message}, source: source);
+
+      // Check if any relay accepted the message
+      final eventId = message.event.id;
+      final relayStates = response.results[eventId] ?? {};
+      final bool anyAccepted = relayStates.any((s) => s.accepted);
+
+      print(
+          'Event ID: $eventId, Relay states: $relayStates, anyAccepted: $anyAccepted');
+
+      // Debug: see what the relay is actually saying
+      for (final state in relayStates) {
+        print(
+            'Relay state: accepted=${state.accepted}, message=${state.message}');
+      }
+
+      if (anyAccepted) {
+        // Success - remove from failed set
+        if (_failedPublishMessageIds.contains(message.id)) {
+          setState(() => _failedPublishMessageIds.remove(message.id));
+        }
+      } else {
+        // Failed - add to failed set
+        setState(() => _failedPublishMessageIds.add(message.id));
+      }
+    } catch (e) {
+      // On exception, mark as failed
+      setState(() => _failedPublishMessageIds.add(message.id));
+    } finally {
+      if (mounted) {
+        setState(() => _currentPublishingMessageId = null);
+      }
     }
+  }
 
-    // Wrap entire feed in RepaintBoundary for better performance
-    return RepaintBoundary(
-      child: ListView.builder(
-        controller: controller,
-        reverse: false,
-        padding: padding ?? EdgeInsets.zero,
-        itemCount: messages.length,
-        // Performance optimizations for smooth scrolling
-        addAutomaticKeepAlives: false, // Don't keep off-screen items alive
-        addRepaintBoundaries: true, // Prevent unnecessary repaints
-        cacheExtent: 1000.0, // Cache more items for smoother scrolling
-        // Scroll performance optimizations
-        physics: const ClampingScrollPhysics(), // Better scroll physics
-        itemBuilder: (context, index) {
-          final message = messages[index];
-          final isOutgoing = message.author.value?.pubkey == activePubkey;
+  @override
+  Widget build(BuildContext context) {
+    final resolvers = ref.read(resolversProvider);
+    final activePubkey =
+        widget.activePubkey ?? ref.read(Signer.activePubkeyProvider);
 
-          // Use your existing LabMessageBubble with all its built-in logic
-          return RepaintBoundary(
-            key: ValueKey(
-                '${message.id}_$index'), // Better key for ListView optimization
-            child: LabMessageBubble(
-              message: message,
-              isOutgoing: isOutgoing,
-              isFirstInStack: _isFirstInStack(messages, index),
-              isLastInStack: _isLastInStack(messages, index),
-              isPublishing: showPublishingState &&
-                  isOutgoing &&
-                  message.id == publishingMessageId,
-              onSendAgain: onMessageResend != null &&
-                      isOutgoing &&
-                      message.event.relays.isEmpty &&
-                      message.id == publishingMessageId
-                  ? (model) => onMessageResend!(model as ChatMessage)
-                  : null,
-              onActions: onMessageActions != null
-                  ? (model) => onMessageActions!(model as ChatMessage)
-                  : (model) => context.push('/actions/${model.id}',
-                      extra: (model: model, community: community)),
-              onReply: onMessageReply != null
-                  ? (model) => onMessageReply!(model as ChatMessage)
-                  : (model) => context.push('/reply-to/${model.id}',
-                      extra: (model: model, community: community)),
-              onResolveEvent: resolvers.eventResolver,
-              onResolveProfile: resolvers.profileResolver,
-              onResolveEmoji: resolvers.emojiResolver,
-              onResolveHashtag: resolvers.hashtagResolver,
-              onLinkTap: (url) {
-                // Handle link tap
-                print('Link tapped: $url');
-              },
-              onProfileTap: (profile) {
-                // Handle profile tap
-                context.push('/profile/${profile.npub}', extra: profile);
-              },
-              activePubkey: activePubkey,
-            ),
-          );
+    // Direct query for latest 50 messages
+    final messagesState = ref.watch(
+      query<ChatMessage>(
+        tags: {
+          '#h': {widget.community.author.value?.pubkey ?? ''}
         },
+        and: (c) => {c.author, c.reactions, c.zaps},
+        limit: 300,
       ),
     );
-  }
+    return Stack(
+      children: [
+        // Show loading state
+        if (messagesState is StorageLoading)
+          const SingleChildScrollView(
+            child: LabLoadingFeed(type: LoadingFeedType.chat),
+          ),
 
-  /// Use your existing logic for determining message stack grouping
-  bool _isFirstInStack(List<ChatMessage> messages, int index) {
-    if (index >= messages.length - 1) return true;
+        // Show empty state if no messages
+        if (messagesState is StorageData && messagesState.models.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 116, bottom: 16, left: 16, right: 16),
+            child: LabModelEmptyStateCard(
+              contentType: 'chat',
+              onCreateTap: () =>
+                  context.push('/create/message', extra: widget.community),
+            ),
+          ),
 
-    final currentMessage = messages[index];
-    final nextMessage = messages[index + 1];
+        // Show messages
+        if (messagesState is StorageData &&
+            messagesState.models.isNotEmpty) ...[
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              padding: EdgeInsets.only(
+                top: 116,
+                bottom: _isBottomBarExpanded ? 128 : 91,
+              ),
+              reverse: true, // Newest at bottom
+              itemCount: messagesState.models.length,
+              addAutomaticKeepAlives: false,
+              addRepaintBoundaries: true,
+              cacheExtent: 600,
+              itemBuilder: (context, index) {
+                final message = messagesState.models[index];
+                final isOutgoing = activePubkey == null
+                    ? false
+                    : message.author.value?.pubkey == activePubkey;
+                final (isFirstInStack, isLastInStack) =
+                    _getMessageStackInfo(messagesState.models, index);
 
-    // Check if next message is from same author within 21 minutes
-    if (currentMessage.author.value?.pubkey ==
-        nextMessage.author.value?.pubkey) {
-      final timeDiff = nextMessage.createdAt
-          .difference(currentMessage.createdAt)
-          .inMinutes
-          .abs();
-      return timeDiff > 21;
-    }
+                return LabMessageBubble(
+                  message: message,
+                  isOutgoing: isOutgoing,
+                  isFirstInStack: isFirstInStack,
+                  isLastInStack: isLastInStack,
+                  isPublishing:
+                      isOutgoing && message.id == _currentPublishingMessageId,
+                  onSendAgain: isOutgoing &&
+                          _failedPublishMessageIds.contains(message.id) &&
+                          message.id != _currentPublishingMessageId
+                      ? (model) async {
+                          final m = model as ChatMessage;
+                          // Clear failed state before retrying
+                          setState(() => _failedPublishMessageIds.remove(m.id));
+                          // Re-sign the message before retry (relay rejected due to missing sig)
+                          final signer = ref.read(Signer.activeSignerProvider);
+                          if (signer != null) {
+                            final partialMessage =
+                                m.toPartial<PartialChatMessage>();
+                            final reSignedMessage =
+                                await partialMessage.signWith(signer);
+                            _handleNewMessage(reSignedMessage);
+                          }
+                        }
+                      : null,
+                  onActions: (model) => context.push(
+                    '/actions/${model.id}',
+                    extra: (
+                      model: model,
+                      community: widget.community,
+                      onLocalReply: (m) {
+                        setState(() {
+                          _quotedMessage = m as ChatMessage;
+                          _isBottomBarExpanded = true;
+                        });
+                        _bottomBarKey.currentState?.expand();
+                      },
+                    ),
+                  ),
+                  onReply: (model) {
+                    setState(() {
+                      _quotedMessage = model as ChatMessage;
+                      _isBottomBarExpanded = true;
+                    });
+                    _bottomBarKey.currentState?.expand();
+                  },
+                  onResolveEvent: resolvers.eventResolver,
+                  onResolveProfile: resolvers.profileResolver,
+                  onResolveEmoji: resolvers.emojiResolver,
+                  onResolveHashtag: resolvers.hashtagResolver,
+                  onLinkTap: (url) {
+                    ref.read(urlLauncherProvider).launchUrl(url);
+                  },
+                  onProfileTap: (profile) {
+                    context.push('/profile/${profile.npub}', extra: profile);
+                  },
+                  activePubkey: activePubkey,
+                );
+              },
+            ),
+          ),
+        ],
 
-    return true;
-  }
-
-  bool _isLastInStack(List<ChatMessage> messages, int index) {
-    if (index <= 0) return true;
-
-    final currentMessage = messages[index];
-    final previousMessage = messages[index - 1];
-
-    // Check if previous message is from same author within 21 minutes
-    if (currentMessage.author.value?.pubkey ==
-        previousMessage.author.value?.pubkey) {
-      final timeDiff = currentMessage.createdAt
-          .difference(previousMessage.createdAt)
-          .inMinutes
-          .abs();
-      return timeDiff > 21;
-    }
-
-    return true;
+        // Bottom bar
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: MorphingChatBottomBar(
+            key: _bottomBarKey,
+            model: widget.community,
+            quotedMessage: _quotedMessage,
+            onAddTap: (_) {},
+            onVoiceTap: (_) {},
+            onActions: (_) {},
+            onMessageSent: _handleNewMessage,
+            onExpandedStateChanged: (expanded) {
+              if (_isBottomBarExpanded != expanded) {
+                setState(() => _isBottomBarExpanded = expanded);
+              }
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

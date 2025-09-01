@@ -157,8 +157,8 @@ class History extends _$History {
                 );
                 if (models.isNotEmpty) {
                   final model = models.first;
-                  final route = getModelRoute(entry.modelType);
-                  context.push('$route/${model.id}', extra: model);
+                  // final route = getModelRoute(entry.modelType);
+                  // context.push('$route/${model.id}', extra: model);
                 }
               },
             ))

@@ -31,21 +31,19 @@ class LabCommunityWelcomeFeed extends ConsumerWidget {
 
     return LabScope(
       isInsideScope: true,
-      child: LabContainer(
-        padding: const LabEdgeInsets.all(LabGapSize.s12),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          top: 160,
+          bottom: 16,
+          left: 16,
+          right: 16,
+        ),
         child: Column(
           children: [
-            const LabGap.s48(),
             LabCommunityWelcomeHeader(
               community: community,
               onProfileTap: onProfileTap,
               profiles: profiles,
-              emojiImageUrls: [
-                'https://cdn.satellite.earth/f388f24d87d9d96076a53773c347a79767402d758edd3b2ac21da51db5ce6e73.png',
-                'https://cdn.satellite.earth/503809a3c13a45b79506034e767dc693cc87566cf06263be0e28a5e15f3f8711.png',
-                'https://cdn.satellite.earth/9eab0a2b2fa26a00f444213c1424ed59745e8b160572964a79739435627a83f6.png',
-                'https://cdn.satellite.earth/aa1557833a08864d55bef51146d1ed9b7a19099b2e4e880fe5f2e0aeedf85d69.png',
-              ],
             ),
             const LabGap.s16(),
             LabContainer(

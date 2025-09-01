@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -48,7 +47,7 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
     super.initState();
     _animationController = AnimationController(
       duration: const Duration(
-          milliseconds: 150), // Slightly longer for smoother animation
+          milliseconds: 100), // Faster animation for better responsiveness
       vsync: this,
     );
     _animation = CurvedAnimation(
@@ -79,9 +78,11 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
   }
 
   void _expand() {
-    // HIGH PRIORITY - This runs before the next frame
+    // IMMEDIATE: Request focus first to start keyboard animation
+    _focusNode.requestFocus();
+
+    // HIGH PRIORITY: Start bottom bar animation in next frame
     SchedulerBinding.instance.scheduleFrameCallback((timeStamp) {
-      _focusNode.requestFocus();
       _animationController.forward();
       // Notify parent of expanded state
       if (widget.onExpandedStateChanged != null) {
@@ -215,11 +216,11 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
         }
       });
 
-      // Don't collapse - keep expanded for continued typing
-      // Ensure focus is maintained after clearing
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _focusNode.requestFocus();
-      });
+      _focusNode.requestFocus();
+
+      if (!isExpanded) {
+        _expand();
+      }
     } else {
       print('DEBUG: content is empty');
     }
@@ -243,7 +244,7 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
             children: [
               // Left button (Add) - optimized with single AnimatedContainer
               AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
+                duration: const Duration(milliseconds: 100),
                 width: isExpanded ? 0 : 50,
                 child: isExpanded
                     ? const SizedBox.shrink()
@@ -310,53 +311,39 @@ class MorphingChatBottomBarState extends ConsumerState<MorphingChatBottomBar>
   }
 
   Widget _buildMessageButton(LabThemeData theme) {
-    return TapBuilder(
+    return GestureDetector(
       onTap: _expand,
-      builder: (context, state, hasFocus) {
-        // Cache scale factor to avoid recalculation
-        final scaleFactor = switch (state) {
-          TapState.pressed => 0.98,
-          TapState.hover => 1.01,
-          _ => 1.0,
-        };
-
-        return Transform.scale(
-          scale: scaleFactor,
-          child: LabContainer(
-            height: theme.sizes.s40,
-            decoration: BoxDecoration(
-              color: theme.colors.black33,
-              borderRadius: theme.radius.asBorderRadius().rad16,
-              border: Border.all(
-                color: theme.colors.white33,
-                width: LabLineThicknessData.normal().thin,
-              ),
-            ),
-            padding: const LabEdgeInsets.only(
-              left: LabGapSize.s16,
-              right: LabGapSize.s12,
-            ),
-            child: Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  LabText.med14('Message', color: theme.colors.white33),
-                  const Spacer(),
-                  TapBuilder(
-                    onTap: () => widget.onVoiceTap(widget.model),
-                    builder: (context, state, hasFocus) {
-                      return LabIcon.s18(
-                        theme.icons.characters.voice,
-                        color: theme.colors.white33,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+      child: LabContainer(
+        height: theme.sizes.s40,
+        decoration: BoxDecoration(
+          color: theme.colors.black33,
+          borderRadius: theme.radius.asBorderRadius().rad16,
+          border: Border.all(
+            color: theme.colors.white33,
+            width: LabLineThicknessData.normal().thin,
           ),
-        );
-      },
+        ),
+        padding: const LabEdgeInsets.only(
+          left: LabGapSize.s16,
+          right: LabGapSize.s12,
+        ),
+        child: Center(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LabText.med14('Message', color: theme.colors.white33),
+              const Spacer(),
+              GestureDetector(
+                onTap: () => widget.onVoiceTap(widget.model),
+                child: LabIcon.s18(
+                  theme.icons.characters.voice,
+                  color: theme.colors.white33,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

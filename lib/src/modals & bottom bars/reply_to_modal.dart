@@ -1,232 +1,232 @@
-import 'package:zaplab_design/zaplab_design.dart';
-import 'package:models/models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import '../providers/resolvers.dart';
-import '../providers/search.dart';
+// import 'package:zaplab_design/zaplab_design.dart';
+// import 'package:models/models.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:go_router/go_router.dart';
+// import '../providers/resolvers.dart';
+// import '../providers/search.dart';
 
-class ReplyToModal extends ConsumerStatefulWidget {
-  final Model model;
-  final Community? community;
+// class ReplyToModal extends ConsumerStatefulWidget {
+//   final Model model;
+//   final Community? community;
 
-  const ReplyToModal({
-    super.key,
-    required this.model,
-    this.community,
-  });
+//   const ReplyToModal({
+//     super.key,
+//     required this.model,
+//     this.community,
+//   });
 
-  @override
-  ConsumerState<ReplyToModal> createState() => _ReplyModalState();
-}
+//   @override
+//   ConsumerState<ReplyToModal> createState() => _ReplyModalState();
+// }
 
-class _ReplyModalState extends ConsumerState<ReplyToModal> {
-  late TextEditingController _controller;
-  late FocusNode _focusNode;
-  // ignore: unused_field
-  late PartialChatMessage _partialMessage;
+// class _ReplyModalState extends ConsumerState<ReplyToModal> {
+//   late TextEditingController _controller;
+//   late FocusNode _focusNode;
+//   // ignore: unused_field
+//   late PartialChatMessage _partialMessage;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-    _focusNode = FocusNode();
-    _partialMessage = PartialChatMessage('');
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = TextEditingController();
+//     _focusNode = FocusNode();
+//     _partialMessage = PartialChatMessage('');
 
-    // Request focus after modal is built
-    Future.microtask(() => _focusNode.requestFocus());
-  }
+//     // Request focus after modal is built
+//     Future.microtask(() => _focusNode.requestFocus());
+//   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     _focusNode.dispose();
+//     super.dispose();
+//   }
 
-  void _onContentChanged(String content) {
-    setState(() {
-      _partialMessage = PartialChatMessage(content);
-    });
-    // Update the controller's text
-    if (_controller.text != content) {
-      _controller.text = content;
-      _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: content.length),
-      );
-    }
-  }
+//   void _onContentChanged(String content) {
+//     setState(() {
+//       _partialMessage = PartialChatMessage(content);
+//     });
+//     // Update the controller's text
+//     if (_controller.text != content) {
+//       _controller.text = content;
+//       _controller.selection = TextSelection.fromPosition(
+//         TextPosition(offset: content.length),
+//       );
+//     }
+//   }
 
-  void _sendMessage() async {
-    final text = _controller.text;
-    final signer = ref.read(Signer.activeSignerProvider)!;
+//   void _sendMessage() async {
+//     final text = _controller.text;
+//     final signer = ref.read(Signer.activeSignerProvider)!;
 
-    if (text.isNotEmpty) {
-      try {
-        // Add the Nostr event reference to the message content
-        final quotedMessage =
-            widget.model is ChatMessage ? (widget.model as ChatMessage) : null;
+//     if (text.isNotEmpty) {
+//       try {
+//         // Add the Nostr event reference to the message content
+//         final quotedMessage =
+//             widget.model is ChatMessage ? (widget.model as ChatMessage) : null;
 
-        // Add quoted message URI to content if it's a ChatMessage
-        String contentWithQuote = text;
-        if (quotedMessage != null) {
-          final quotedUri =
-              Utils.encodeShareableFromString(quotedMessage.id, type: 'nevent');
-          // Only add if not already in content
-          if (!text.contains(quotedUri)) {
-            contentWithQuote = 'nostr:$quotedUri\n$text';
-          }
-        }
+//         // Add quoted message URI to content if it's a ChatMessage
+//         String contentWithQuote = text;
+//         if (quotedMessage != null) {
+//           final quotedUri =
+//               Utils.encodeShareableFromString(quotedMessage.id, type: 'nevent');
+//           // Only add if not already in content
+//           if (!text.contains(quotedUri)) {
+//             contentWithQuote = 'nostr:$quotedUri\n$text';
+//           }
+//         }
 
-        final message = PartialChatMessage(
-          contentWithQuote,
-          createdAt: DateTime.now(),
-          quotedMessage: quotedMessage,
-        );
+//         final message = PartialChatMessage(
+//           contentWithQuote,
+//           createdAt: DateTime.now(),
+//           quotedMessage: quotedMessage,
+//         );
 
-        // Add h tag with community pubkey if community is provided
-        if (widget.community != null) {
-          message.event.addTag('h', [widget.community!.event.pubkey]);
-        }
+//         // Add h tag with community pubkey if community is provided
+//         if (widget.community != null) {
+//           message.event.addTag('h', [widget.community!.event.pubkey]);
+//         }
 
-        final signedMessage = await message.signWith(signer);
+//         final signedMessage = await message.signWith(signer);
 
-        // Save locally AND publish to relays
-        await ref.read(storageNotifierProvider.notifier).save({signedMessage});
-        await ref
-            .read(storageNotifierProvider.notifier)
-            .publish({signedMessage});
+//         // Save locally AND publish to relays
+//         await ref.read(storageNotifierProvider.notifier).save({signedMessage});
+//         await ref
+//             .read(storageNotifierProvider.notifier)
+//             .publish({signedMessage});
 
-        context.pop();
-      } catch (e, stackTrace) {
-        print('ERROR: Failed to send reply: $e');
-        print('ERROR: Stack trace: $stackTrace');
-      }
-    }
-  }
+//         context.pop();
+//       } catch (e, stackTrace) {
+//         print('ERROR: Failed to send reply: $e');
+//         print('ERROR: Stack trace: $stackTrace');
+//       }
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = LabTheme.of(context);
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = LabTheme.of(context);
 
-    return LabInputModal(
-      children: [
-        SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              if (widget.model is! ChatMessage &&
-                  widget.model is! CashuZap &&
-                  widget.model is! Zap)
-                Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        LabProfilePic.s40(widget.model.author.value),
-                        const LabGap.s12(),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  LabEmojiImage(
-                                    emojiUrl:
-                                        'assets/emoji/${getModelContentType(widget.model)}.png',
-                                    emojiName:
-                                        getModelContentType(widget.model),
-                                    size: 16,
-                                  ),
-                                  const LabGap.s10(),
-                                  Expanded(
-                                    child: LabCompactTextRenderer(
-                                      model: widget.model,
-                                      content:
-                                          getModelDisplayText(widget.model),
-                                      onResolveEvent: ref
-                                          .read(resolversProvider)
-                                          .eventResolver,
-                                      onResolveProfile: ref
-                                          .read(resolversProvider)
-                                          .profileResolver,
-                                      onResolveEmoji: ref
-                                          .read(resolversProvider)
-                                          .emojiResolver,
-                                      isWhite: true,
-                                      isMedium: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const LabGap.s2(),
-                              LabText.reg12(
-                                widget.model.author.value?.name ??
-                                    formatNpub(
-                                        widget.model.author.value?.pubkey ??
-                                            ''),
-                                color: theme.colors.white66,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const LabGap.s8(),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        LabContainer(
-                          width: theme.sizes.s38,
-                          child: Center(
-                            child: LabContainer(
-                              decoration:
-                                  BoxDecoration(color: theme.colors.white33),
-                              width: LabLineThicknessData.normal().medium,
-                              height: theme.sizes.s16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              LabKeyboardSubmitHandler(
-                onSubmit: _sendMessage,
-                child: LabShortTextField(
-                  controller: _controller,
-                  focusNode: _focusNode,
-                  placeholder: [
-                    LabText.reg16(
-                      'Your Reply',
-                      color: theme.colors.white33,
-                    ),
-                  ],
-                  quotedChatMessage: widget.model is ChatMessage
-                      ? (widget.model as ChatMessage)
-                      : null,
-                  quotedCashuZap: widget.model is CashuZap
-                      ? (widget.model as CashuZap)
-                      : null,
-                  quotedZap: widget.model is Zap ? (widget.model as Zap) : null,
-                  onSearchProfiles: ref.read(searchProvider).profileSearch,
-                  onSearchEmojis: ref.read(searchProvider).emojiSearch,
-                  onResolveEvent: ref.read(resolversProvider).eventResolver,
-                  onResolveProfile: ref.read(resolversProvider).profileResolver,
-                  onResolveEmoji: ref.read(resolversProvider).emojiResolver,
-                  onCameraTap: () {}, // TODO: Implement camera tap
-                  onEmojiTap: () {}, // TODO: Implement emoji tap
-                  onGifTap: () {}, // TODO: Implement gif tap
-                  onAddTap: () {}, // TODO: Implement add tap
-                  onSendTap: _sendMessage,
-                  onChevronTap: () {}, // TODO: Implement chevron tap
-                  onProfileTap: (profile) =>
-                      context.push('/profile/${profile.npub}', extra: profile),
-                  onChanged: _onContentChanged,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
+//     return LabInputModal(
+//       children: [
+//         SingleChildScrollView(
+//           physics: const NeverScrollableScrollPhysics(),
+//           child: Column(
+//             children: [
+//               if (widget.model is! ChatMessage &&
+//                   widget.model is! CashuZap &&
+//                   widget.model is! Zap)
+//                 Column(
+//                   children: [
+//                     Row(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       children: [
+//                         LabProfilePic.s40(widget.model.author.value),
+//                         const LabGap.s12(),
+//                         Expanded(
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Row(
+//                                 children: [
+//                                   LabEmojiImage(
+//                                     emojiUrl:
+//                                         'assets/emoji/${getModelContentType(widget.model)}.png',
+//                                     emojiName:
+//                                         getModelContentType(widget.model),
+//                                     size: 16,
+//                                   ),
+//                                   const LabGap.s10(),
+//                                   Expanded(
+//                                     child: LabCompactTextRenderer(
+//                                       model: widget.model,
+//                                       content:
+//                                           getModelDisplayText(widget.model),
+//                                       onResolveEvent: ref
+//                                           .read(resolversProvider)
+//                                           .eventResolver,
+//                                       onResolveProfile: ref
+//                                           .read(resolversProvider)
+//                                           .profileResolver,
+//                                       onResolveEmoji: ref
+//                                           .read(resolversProvider)
+//                                           .emojiResolver,
+//                                       isWhite: true,
+//                                       isMedium: true,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                               const LabGap.s2(),
+//                               LabText.reg12(
+//                                 widget.model.author.value?.name ??
+//                                     formatNpub(
+//                                         widget.model.author.value?.pubkey ??
+//                                             ''),
+//                                 color: theme.colors.white66,
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                         const LabGap.s8(),
+//                       ],
+//                     ),
+//                     Row(
+//                       children: [
+//                         LabContainer(
+//                           width: theme.sizes.s38,
+//                           child: Center(
+//                             child: LabContainer(
+//                               decoration:
+//                                   BoxDecoration(color: theme.colors.white33),
+//                               width: LabLineThicknessData.normal().medium,
+//                               height: theme.sizes.s16,
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               LabKeyboardSubmitHandler(
+//                 onSubmit: _sendMessage,
+//                 child: LabShortTextField(
+//                   controller: _controller,
+//                   focusNode: _focusNode,
+//                   placeholder: [
+//                     LabText.reg16(
+//                       'Your Reply',
+//                       color: theme.colors.white33,
+//                     ),
+//                   ],
+//                   quotedChatMessage: widget.model is ChatMessage
+//                       ? (widget.model as ChatMessage)
+//                       : null,
+//                   quotedCashuZap: widget.model is CashuZap
+//                       ? (widget.model as CashuZap)
+//                       : null,
+//                   quotedZap: widget.model is Zap ? (widget.model as Zap) : null,
+//                   onSearchProfiles: ref.read(searchProvider).profileSearch,
+//                   onSearchEmojis: ref.read(searchProvider).emojiSearch,
+//                   onResolveEvent: ref.read(resolversProvider).eventResolver,
+//                   onResolveProfile: ref.read(resolversProvider).profileResolver,
+//                   onResolveEmoji: ref.read(resolversProvider).emojiResolver,
+//                   onCameraTap: () {}, // TODO: Implement camera tap
+//                   onEmojiTap: () {}, // TODO: Implement emoji tap
+//                   onGifTap: () {}, // TODO: Implement gif tap
+//                   onAddTap: () {}, // TODO: Implement add tap
+//                   onSendTap: _sendMessage,
+//                   onChevronTap: () {}, // TODO: Implement chevron tap
+//                   onProfileTap: (profile) =>
+//                       context.push('/profile/${profile.npub}', extra: profile),
+//                   onChanged: _onContentChanged,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

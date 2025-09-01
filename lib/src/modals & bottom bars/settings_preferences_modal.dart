@@ -153,8 +153,7 @@ class PreferencesModal extends ConsumerWidget {
             switch (index) {
               case 0:
                 LabResponsiveTheme.of(context).setTextScale(LabTextScale.small);
-                LabResponsiveTheme.of(context)
-                    .setSystemScale(LabSystemScale.small);
+
                 ref.read(themeSettingsProvider.notifier)
                   ..setTextScale(LabTextScale.small)
                   ..setSystemScale(LabSystemScale.small);
@@ -162,16 +161,14 @@ class PreferencesModal extends ConsumerWidget {
               case 1:
                 LabResponsiveTheme.of(context)
                     .setTextScale(LabTextScale.normal);
-                LabResponsiveTheme.of(context)
-                    .setSystemScale(LabSystemScale.normal);
+
                 ref.read(themeSettingsProvider.notifier)
                   ..setTextScale(LabTextScale.normal)
                   ..setSystemScale(LabSystemScale.normal);
                 break;
               case 2:
                 LabResponsiveTheme.of(context).setTextScale(LabTextScale.large);
-                LabResponsiveTheme.of(context)
-                    .setSystemScale(LabSystemScale.large);
+
                 ref.read(themeSettingsProvider.notifier)
                   ..setTextScale(LabTextScale.large)
                   ..setSystemScale(LabSystemScale.large);

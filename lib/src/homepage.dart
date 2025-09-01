@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'providers/history.dart';
+import 'package:tap_builder/tap_builder.dart';
 import 'tabs/home/home.dart';
 import 'tabs/home/albums.dart';
 import 'tabs/home/notes.dart';
@@ -30,9 +30,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   // Cache expensive calculations to avoid recalculation on every scroll
   late final double _scrollMultiplier = 2.0 / _heightWithProfile;
 
-  // Cache tab data to prevent recreation on every build
-  List<TabData>? _cachedTabs;
-
   // Cache container height to avoid recalculation
   double? _cachedContainerHeight;
   String? _lastActivePubkey;
@@ -40,27 +37,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    _tabController = LabTabController(length: 12);
+    _tabController = LabTabController(length: 6);
     _tabController.addListener(() {
       // Only call setState if we actually need to rebuild
       if (mounted) {
         setState(() {});
-      }
-    });
-
-    // Initialize cached tabs
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          _cachedTabs = [
-            HomeTab.tabData(context),
-            const MailTab().tabData(context),
-            const TasksTab().tabData(context),
-            const NotesTab().tabData(context),
-            const AlbumsTab().tabData(context),
-            const FilesTab().tabData(context),
-          ];
-        });
       }
     });
   }
@@ -88,6 +69,16 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
     final containerHeight = _cachedContainerHeight!;
 
+    // Create tabs with activePubkey
+    final tabs = [
+      HomeTab.tabData(context, activePubkey: activePubkey),
+      const MailTab().tabData(context),
+      const TasksTab().tabData(context),
+      const NotesTab().tabData(context),
+      const AlbumsTab().tabData(context),
+      const FilesTab().tabData(context),
+    ];
+
     return Stack(
       children: [
         LabScaffold(
@@ -107,7 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         child: activePubkey == null
                             ? _buildStartRow(theme)
                             : _buildProfileRow(
-                                theme, activeProfile, activePubkey!),
+                                theme, activeProfile, activePubkey),
                       ),
                     ),
                   ),
@@ -116,15 +107,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   child: RepaintBoundary(
                     child: LabTabView(
                       key: HomePage._homeKey,
-                      tabs: _cachedTabs ??
-                          [
-                            HomeTab.tabData(context),
-                            const MailTab().tabData(context),
-                            const TasksTab().tabData(context),
-                            const NotesTab().tabData(context),
-                            const AlbumsTab().tabData(context),
-                            const FilesTab().tabData(context),
-                          ],
+                      tabs: tabs,
                       controller: _tabController,
                       scrollableContent: true,
                       onScroll: (position) {
@@ -184,37 +167,70 @@ class _HomePageState extends ConsumerState<HomePage> {
           activeProfile != null
               ? LabProfilePic.s48(
                   activeProfile,
-                  onTap: () => context.push('/settings'),
+                  onTap: () => context.push('/settings', extra: activeProfile),
                 )
               : LabProfilePic.fromPubkey(
                   activePubkey,
-                  onTap: () => context.push('/settings'),
+                  onTap: () => context.push('/settings', extra: null),
                   size: LabProfilePicSize.s48,
                 ),
         if (LabPlatformUtils.isMobile) const LabGap.s12(),
         Expanded(
-          child: LabContainer(
-            height: theme.sizes.s48,
-            padding: const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
-            decoration: BoxDecoration(
-              color: theme.colors.gray33,
-              borderRadius: BorderRadius.circular(theme.sizes.s24),
-              border: Border.all(
-                color: theme.colors.gray,
-                width: LabLineThicknessData.normal().medium,
-              ),
-            ),
-            child: Row(
-              children: [
-                LabIcon.s16(
-                  theme.icons.characters.zap,
-                  gradient: theme.colors.blurple,
+          child: TapBuilder(
+            onTap: () {
+              LabModal.show(
+                context,
+                title: "You wish!",
+                description: "Actual Wallet functionality is being built",
+                children: [
+                  LabPanel(
+                    height: 200,
+                    child: Center(
+                      child: LabText.med12(
+                        "Coming soon",
+                        color: theme.colors.white33,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            builder: (context, state, isFocused) {
+              double scaleFactor = 1.0;
+              if (state == TapState.pressed) {
+                scaleFactor = 0.98;
+              } else if (state == TapState.hover) {
+                scaleFactor = 1.02;
+              }
+
+              return Transform.scale(
+                scale: scaleFactor,
+                child: LabContainer(
+                  height: theme.sizes.s48,
+                  padding:
+                      const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
+                  decoration: BoxDecoration(
+                    color: theme.colors.gray33,
+                    borderRadius: BorderRadius.circular(theme.sizes.s24),
+                    border: Border.all(
+                      color: theme.colors.gray,
+                      width: LabLineThicknessData.normal().medium,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      LabIcon.s16(
+                        theme.icons.characters.zap,
+                        gradient: theme.colors.blurple,
+                      ),
+                      const LabGap.s4(),
+                      LabAmount(124608,
+                          color: theme.colors.white, level: LabTextLevel.h2),
+                    ],
+                  ),
                 ),
-                const LabGap.s4(),
-                LabAmount(124608,
-                    color: theme.colors.white, level: LabTextLevel.h2),
-              ],
-            ),
+              );
+            },
           ),
         )
       ],

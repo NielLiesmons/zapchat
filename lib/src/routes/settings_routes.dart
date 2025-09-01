@@ -9,6 +9,7 @@ import '../modals & bottom bars/settings_hosting_modal.dart';
 import '../modals & bottom bars/start_your_key_modal.dart';
 import '../modals & bottom bars/spin_up_key_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:models/models.dart';
 
 List<GoRoute> get settingsRoutes => [
       GoRoute(
@@ -16,7 +17,9 @@ List<GoRoute> get settingsRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: const SettingsScreen(),
+            child: SettingsScreen(
+              activeProfile: state.extra as Profile?,
+            ),
           );
         },
       ),
@@ -30,7 +33,7 @@ List<GoRoute> get settingsRoutes => [
                 context.replace('/settings/spin-up-key', extra: profileName);
               },
               onAlreadyHaveKey: () {
-                context.replace('/settings/existing-profile');
+                context.replace('/settings/existing-profile', extra: null);
               },
             ),
           );

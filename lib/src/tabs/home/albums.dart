@@ -10,7 +10,11 @@ class AlbumsTab extends StatelessWidget {
       content: Builder(
         builder: (context) {
           return LabContainer(
-            child: const LabLoadingFeed(),
+            padding: const LabEdgeInsets.all(LabGapSize.s12),
+            child: LabModelEmptyStateCard(
+              contentType: "album",
+              onCreateTap: () {},
+            ),
           );
         },
       ),

@@ -10,10 +10,15 @@ List<GoRoute> get communityRoutes => [
       GoRoute(
         path: '/community/:npub',
         pageBuilder: (context, state) {
-          final community = state.extra as Community;
+          final extra = state.extra as Map<String, dynamic>;
+          final community = extra['community'] as Community;
+          final activePubkey = extra['activePubkey'] as String?;
           return LabSlideInScreen(
             context: context,
-            child: CommunityScreen(community: community),
+            child: CommunityScreen(
+              community: community,
+              activePubkey: activePubkey,
+            ),
           );
         },
       ),
@@ -50,11 +55,14 @@ List<GoRoute> get communityRoutes => [
       GoRoute(
         path: '/community/:npub/:contentType',
         builder: (context, state) {
-          final community = state.extra as Community;
+          final extra = state.extra as Map<String, dynamic>;
+          final community = extra['community'] as Community;
           final contentType = state.pathParameters['contentType']?.capitalize();
+          final activePubkey = extra['activePubkey'] as String?;
           return CommunityScreen(
             community: community,
             initialContentType: contentType,
+            activePubkey: activePubkey,
           );
         },
       ),

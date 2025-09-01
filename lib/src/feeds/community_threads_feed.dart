@@ -3,6 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/resolvers.dart';
+import '../providers/url_launcher_provider.dart';
 
 class CommunityThreadsFeed extends ConsumerWidget {
   final Community community;
@@ -49,7 +50,7 @@ class CommunityThreadsFeed extends ConsumerWidget {
             onResolveEmoji: ref.read(resolversProvider).emojiResolver,
             onResolveHashtag: ref.read(resolversProvider).hashtagResolver,
             onLinkTap: (url) {
-              print(url);
+              ref.read(urlLauncherProvider).launchUrl(url);
             },
             onProfileTap: (profile) =>
                 context.push('/profile/${profile.npub}', extra: profile),

@@ -116,7 +116,7 @@ class _StartModalState extends State<StartModal> {
                     color: LabColorsData.dark().blurpleLightColor,
                   ),
                   const LabGap.s12(),
-                  LabText.reg14("Already have a Nostr key?",
+                  LabText.reg16("Already have a Nostr key?",
                       color: theme.colors.white66),
                 ],
               ),

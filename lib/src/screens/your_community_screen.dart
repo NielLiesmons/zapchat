@@ -4,8 +4,9 @@ import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class YourCommunityScreen extends StatefulWidget {
+class YourCommunityScreen extends ConsumerStatefulWidget {
   final Profile profile;
   final String communityName;
 
@@ -16,10 +17,11 @@ class YourCommunityScreen extends StatefulWidget {
   });
 
   @override
-  State<YourCommunityScreen> createState() => _YourCommunityScreenState();
+  ConsumerState<YourCommunityScreen> createState() =>
+      _YourCommunityScreenState();
 }
 
-class _YourCommunityScreenState extends State<YourCommunityScreen> {
+class _YourCommunityScreenState extends ConsumerState<YourCommunityScreen> {
   late PartialCommunity _community;
   late PartialProfile _profile;
   late Set<CommunityContentSection> _contentSections;
@@ -50,14 +52,33 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
   void initState() {
     super.initState();
     _contentSections = {
-      CommunityContentSection(content: 'Chat', kinds: {1}, feeInSats: 0),
-      CommunityContentSection(content: 'Forum', kinds: {2}, feeInSats: 0),
-      CommunityContentSection(content: 'Articles', kinds: {3}, feeInSats: 0),
-      CommunityContentSection(content: 'Labels', kinds: {4}, feeInSats: 0),
+      CommunityContentSection(content: 'Chat', kinds: {9}, feeInSats: 0),
+      CommunityContentSection(content: 'Labels', kinds: {1985}, feeInSats: 0),
+      CommunityContentSection(content: 'Tasks', kinds: {37060}, feeInSats: 0),
+      CommunityContentSection(content: 'Forum', kinds: {11}, feeInSats: 0),
+      CommunityContentSection(
+          content: 'Articles', kinds: {30032}, feeInSats: 0),
+      CommunityContentSection(content: 'Polls', kinds: {1068}, feeInSats: 0),
+      CommunityContentSection(content: 'Wikis', kinds: {30808}, feeInSats: 0),
+      CommunityContentSection(
+          content: 'Graphs', kinds: {1000000000}, feeInSats: 0),
+      CommunityContentSection(
+          content: 'Albums', kinds: {10000000000}, feeInSats: 0),
+      CommunityContentSection(
+          content: 'Files', kinds: {1000000000000}, feeInSats: 0),
     };
+
+    // Default relay URLs from initialization
+    final defaultRelayUrls = {
+      'wss://relay.damus.io',
+      'wss://relay.primal.net',
+      'wss://theforest.nostr1.com',
+      'wss://zaplab.nostr1.com',
+    };
+
     _community = PartialCommunity(
       name: widget.communityName,
-      relayUrls: {},
+      relayUrls: defaultRelayUrls,
       contentSections: _contentSections,
     );
     _profile = PartialProfile(
@@ -125,6 +146,99 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
     );
   }
 
+  Future<void> _publishCommunity() async {
+    try {
+      print('DEBUG: Starting community publish...');
+      print('DEBUG: Profile name: ${_profile.name}');
+      print('DEBUG: Community name: ${widget.communityName}');
+
+      // Update community with current profile data - use the profile name as community name
+      final communityName = _profile.name ?? widget.communityName;
+      _community = PartialCommunity(
+        name: communityName,
+        relayUrls: _community.relayUrls,
+        contentSections: _contentSections,
+      );
+
+      print('DEBUG: Community updated with name: ${_community.name}');
+
+      // Get the active signer (same pattern as chat messages)
+      final signer = ref.read(Signer.activeSignerProvider);
+      if (signer == null) {
+        print('DEBUG: signer is null');
+        return;
+      }
+
+      print('DEBUG: signer found, creating community');
+
+      // Sign the community
+      final signedCommunity = await _community.signWith(signer);
+      print(
+          'DEBUG: community signed successfully with ID: ${signedCommunity.event.id}');
+
+      // Save locally (same as chat messages)
+      print('DEBUG: Saving community locally...');
+      await ref.read(storageNotifierProvider.notifier).save({signedCommunity});
+      print('DEBUG: community saved locally successfully');
+
+      // Publish to relays (same pattern as chat feed)
+      final communityRelayUrls = _community.relayUrls;
+      print('DEBUG: Publishing to relays: $communityRelayUrls');
+
+      final source = communityRelayUrls.isNotEmpty
+          ? RemoteSource(group: 'custom', relayUrls: communityRelayUrls)
+          : const RemoteSource();
+
+      print('DEBUG: Publishing community to relays...');
+      final response = await ref
+          .read(storageNotifierProvider.notifier)
+          .publish({signedCommunity}, source: source);
+
+      // Get detailed publish feedback
+      final eventId = signedCommunity.event.id;
+      final relayStates = response.results[eventId] ?? {};
+
+      print('DEBUG: Publish response received');
+      print('DEBUG: Event ID: $eventId');
+      print('DEBUG: Total relays contacted: ${response.results.length}');
+      print('DEBUG: Relay states: $relayStates');
+
+      // Check each relay's response
+      for (final entry in response.results.entries) {
+        final relayUrl = entry.key;
+        final states = entry.value;
+        print('DEBUG: Relay $relayUrl states: $states');
+
+        for (final state in states) {
+          print(
+              'DEBUG: Relay $relayUrl - accepted: ${state.accepted}, message: ${state.message}');
+        }
+      }
+
+      final bool anyAccepted = relayStates.any((s) => s.accepted);
+      print('DEBUG: Any relay accepted: $anyAccepted');
+
+      if (anyAccepted) {
+        print('DEBUG: Community published successfully!');
+        print('DEBUG: Community name: ${_community.name}');
+        print('DEBUG: Community ID: ${signedCommunity.event.id}');
+        print(
+            'DEBUG: Content sections: ${_contentSections.map((s) => s.content).toList()}');
+
+        // Navigate back on success
+        Navigator.of(context).pop();
+      } else {
+        print('DEBUG: Community publish failed on all relays');
+        print('DEBUG: Relay responses: ${response.results}');
+        // You could show an error message here
+      }
+    } catch (e) {
+      print('Error publishing community: $e');
+      print('Error stack trace: ${StackTrace.current}');
+      // You could show an error message here
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
@@ -147,12 +261,12 @@ class _YourCommunityScreenState extends State<YourCommunityScreen> {
                 const LabGap.s12(),
                 const Spacer(),
                 LabSmallButton(
-                  onTap: () {},
+                  onTap: _publishCommunity,
                   rounded: true,
-                  gradient: theme.colors.blurple33,
+                  gradient: theme.colors.blurple,
                   children: [
                     const LabGap.s4(),
-                    LabText.med14('Publish', color: theme.colors.white66),
+                    LabText.med14('Publish', color: theme.colors.whiteEnforced),
                     const LabGap.s4(),
                   ],
                 ),

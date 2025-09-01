@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
-import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter/material.dart';
 
 class SimpleCommunityTest extends ConsumerWidget {
-  const SimpleCommunityTest({super.key});
+  const SimpleCommunityTest({super.key, required this.community});
+  final Community community;
 
   // Helper function to determine message stack grouping
   (bool, bool) getMessageStackInfo(List<ChatMessage> messages, int index) {
@@ -36,6 +37,9 @@ class SimpleCommunityTest extends ConsumerWidget {
 
     final messagesState = ref.watch(
       query<ChatMessage>(
+        tags: {
+          '#h': {community.event.pubkey}
+        },
         and: (msg) => {msg.author, msg.reactions, msg.zaps},
         limit: 1000,
         source: LocalAndRemoteSource(background: true),
@@ -45,18 +49,22 @@ class SimpleCommunityTest extends ConsumerWidget {
     print(
         '📊 Messages state: ${messagesState.runtimeType} with ${messagesState.models.length} models');
 
-    return LabScaffold(
+    return Scaffold(
       body: Column(
         children: [
           // Simple header
-          LabContainer(
-            padding: const LabEdgeInsets.all(LabGapSize.s16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF000000),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Color(0xFF000000),
             ),
-            child: const LabText.bold16(
+            child: const Text(
               'Message Content Test',
-              color: Color(0xFFFFFFFF),
+              style: TextStyle(
+                color: Color(0xFFFFFFFF),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
 
@@ -64,12 +72,15 @@ class SimpleCommunityTest extends ConsumerWidget {
           Expanded(
             child: switch (messagesState) {
               StorageLoading() => const Center(
-                  child: LabLoadingDots(),
+                  child: CircularProgressIndicator(),
                 ),
               StorageError() => Center(
-                  child: LabText.reg14(
+                  child: Text(
                     'Error: ${messagesState.exception}',
-                    color: const Color(0xFFB3B3B3),
+                    style: const TextStyle(
+                      color: Color(0xFFB3B3B3),
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               StorageData() => ListView.builder(
@@ -109,7 +120,7 @@ class SimpleCommunityTest extends ConsumerWidget {
                     //   },
                     //   activePubkey: ref.read(Signer.activePubkeyProvider),
                     // );
-                    return LabText(message.content);
+                    return Text(message.content);
                   },
                 ),
             },

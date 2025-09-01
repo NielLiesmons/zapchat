@@ -5,14 +5,19 @@ import 'package:models/models.dart';
 import '../providers/theme_settings.dart';
 
 class SettingsScreen extends ConsumerWidget {
-  const SettingsScreen({super.key});
+  final Profile? activeProfile;
+
+  const SettingsScreen({
+    this.activeProfile,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final signedInPubkeys = ref.watch(Signer.signedInPubkeysProvider);
     final activePubkey = ref.watch(Signer.activePubkeyProvider);
-    print('[DEBUG] activePubkey: $activePubkey');
-    final activeProfile =
+    // Use passed activeProfile if available, otherwise fall back to provider
+    final profile = activeProfile ??
         ref.watch(Signer.activeProfileProvider(LocalAndRemoteSource()));
     final themeState = ref.watch(themeSettingsProvider);
 
@@ -24,11 +29,8 @@ class SettingsScreen extends ConsumerWidget {
 
     final profilesState = ref.watch(query<Profile>(authors: signedInPubkeys));
 
-    if (profilesState case StorageLoading()) {
-      return const Center(
-        child: LabLoadingDots(),
-      );
-    }
+    // No loading state needed - we can show the screen immediately with the passed profile
+    // and update the other profiles as they load
 
     final profiles = profilesState is StorageData<Profile>
         ? profilesState.models
@@ -42,7 +44,7 @@ class SettingsScreen extends ConsumerWidget {
     final textScale = themeState.value?.textScale ?? LabTextScale.normal;
 
     return LabSettingsScreen(
-      activeProfile: activeProfile,
+      activeProfile: profile,
       activePubkey: activePubkey,
       profiles: profiles,
       incompleteProfilePubkeys: incompleteProfilePubkeys,
@@ -80,8 +82,8 @@ class SettingsScreen extends ConsumerWidget {
       onDisconnectTap: () async {
         await LabConfirmationModal.show(
           context,
-          description: activeProfile != null
-              ? 'Disconnect ${activeProfile.name}'
+          description: profile != null
+              ? 'Disconnect ${profile.name}'
               : activePubkey != null
                   ? 'Disconnect ${formatNpub(Utils.encodeShareableFromString(activePubkey, type: 'npub'))}'
                   : 'Disconnect',

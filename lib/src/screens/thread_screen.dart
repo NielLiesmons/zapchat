@@ -1,8 +1,9 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/resolvers.dart';
+import '../providers/url_launcher_provider.dart';
 import '../providers/history.dart';
 import '../tabs/details/details.dart';
 
@@ -105,7 +106,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
               onResolveEmoji: resolvers.emojiResolver,
               onResolveHashtag: resolvers.hashtagResolver,
               onLinkTap: (url) {
-                print(url);
+                ref.read(urlLauncherProvider).launchUrl(url);
               },
               onProfileTap: (profile) =>
                   context.push('/profile/${profile.npub}', extra: profile),
@@ -145,7 +146,7 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen>
                             onResolveEmoji: resolvers.emojiResolver,
                             onResolveHashtag: resolvers.hashtagResolver,
                             onLinkTap: (url) {
-                              print(url);
+                              ref.read(urlLauncherProvider).launchUrl(url);
                             },
                             onProfileTap: (profile) => context.push(
                                 '/profile/${profile.npub}',

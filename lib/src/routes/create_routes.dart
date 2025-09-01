@@ -20,7 +20,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInModal(
             context: context,
-            child: CreateNewStuffModal(),
+            child: const CreateNewStuffModal(),
           );
         },
       ),
@@ -29,7 +29,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: CreateGroupScreen(),
+            child: const CreateGroupScreen(),
           );
         },
       ),
@@ -38,7 +38,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: CreateCommunityScreen(),
+            child: const CreateCommunityScreen(),
           );
         },
       ),
@@ -95,7 +95,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: CreateEventScreen(),
+            child: const CreateEventScreen(),
           );
         },
       ),
@@ -104,7 +104,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: CreateMailScreen(),
+            child: const CreateMailScreen(),
           );
         },
       ),
@@ -123,7 +123,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: CreateNoteScreen(),
+            child: const CreateNoteScreen(),
           );
         },
       ),
@@ -132,7 +132,7 @@ List<GoRoute> get createRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInScreen(
             context: context,
-            child: CreateTaskScreen(),
+            child: const CreateTaskScreen(),
           );
         },
       ),

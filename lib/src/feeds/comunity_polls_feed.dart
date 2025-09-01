@@ -3,6 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/resolvers.dart';
+import '../providers/url_launcher_provider.dart';
 
 class CommunityPollsFeed extends ConsumerWidget {
   final Community community;
@@ -42,7 +43,7 @@ class CommunityPollsFeed extends ConsumerWidget {
                   onProfileTap: (profile) =>
                       context.push('/profile/${profile.npub}', extra: profile),
                   onLinkTap: (url) {
-                    print(url);
+                    ref.read(urlLauncherProvider).launchUrl(url);
                   },
                   onResolveEvent: resolvers.eventResolver,
                   onResolveProfile: resolvers.profileResolver,

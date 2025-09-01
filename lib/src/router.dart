@@ -8,7 +8,6 @@ import 'routes/event_routes.dart';
 import 'routes/profile_routes.dart';
 import 'routes/start_routes.dart';
 import 'routes/settings_routes.dart';
-import 'screens/simple_community_test.dart';
 
 final goRouter = GoRouter(
   redirect: (context, state) {
@@ -56,6 +55,6 @@ final goRouter = GoRouter(
     ...eventRoutes,
     ...settingsRoutes,
     ...startRoutes,
-    ...profileRoutes,
+    // ...profileRoutes,
   ],
 );

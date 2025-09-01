@@ -76,7 +76,7 @@ List<GoRoute> get startRoutes => [
         pageBuilder: (context, state) {
           return LabSlideInModal(
             context: context,
-            child: StartPasteKeyModal(),
+            child: const StartPasteKeyModal(),
           );
         },
       ),

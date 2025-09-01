@@ -111,9 +111,6 @@ class _CreateNoteScreenState extends ConsumerState<CreateNoteScreen> {
           const LabGap.s48(),
           const LabGap.s2(),
           LabContainer(
-            height: MediaQuery.of(context).size.height / theme.system.scale -
-                80 -
-                MediaQuery.of(context).viewInsets.bottom,
             padding: const LabEdgeInsets.all(
               LabGapSize.s16,
             ),
